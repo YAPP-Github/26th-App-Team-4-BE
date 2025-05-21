@@ -1,0 +1,23 @@
+#!/bin/sh
+# 서브모듈 업데이트
+git submodule update --remote
+
+# git diff 결과 중 "Subproject" 문자열이 있으면, push 중단
+if git diff --exit-code | grep -q 'Subproject'; then
+    echo "서브모듈 변경 사항이 감지되었습니다. 커밋 후 다시 push 해주세요."
+    exit 1
+fi
+
+echo "Ktlint 코드 포맷팅을 확인하는 중입니다"
+
+./gradlew ktlintCheck
+
+status=$?
+
+if [ "$status" == 0 ] ; then
+	echo "포맷팅 문제가 없습니다"
+	exit 0
+else
+	echo>&2 "* 코드 포맷팅 문제가 있습니다. 수정 후 커밋해주세요"
+	exit 1
+fi
