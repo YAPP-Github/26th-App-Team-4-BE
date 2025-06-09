@@ -1,0 +1,22 @@
+name: Assign PR Creator as Assignee
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  assign-creator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Assign PR creator
+        run: |
+          AUTHOR=${{ github.event.pull_request.user.login }}
+          PR_NUMBER=${{ github.event.pull_request.number }}
+
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"assignees":["'"$AUTHOR"'"]}' \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${PR_NUMBER}"
