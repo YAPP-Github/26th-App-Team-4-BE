@@ -1,4 +1,4 @@
-name: Assign PR Creator as Assignee
+name: Auto Assign PR Creator as Assignee
 
 on:
   pull_request:
