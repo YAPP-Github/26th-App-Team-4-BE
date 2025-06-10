@@ -1,0 +1,67 @@
+name: Delete old merged branches
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 매일 UTC 기준 오전 7시에 실행 (한국 시간 정오 12시)
+  workflow_dispatch: # 수동 실행도 가능하게
+
+# 워크플로우가 브랜치를 삭제할 수 있도록 쓰기 권한을 부여합니다.
+permissions:
+  contents: write
+  pull-requests: read # PR 정보를 읽기 위해 필요합니다.
+
+jobs:
+  delete_old_branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # 모든 브랜치 정보를 가져오기 위해 fetch-depth: 0 설정
+          fetch-depth: 0
+
+      - name: Delete merged branches older than 7 days
+        # GITHUB_TOKEN을 환경 변수로 설정하여 gh CLI가 자동으로 인증되게 합니다.
+        env:
+          GH_TOKEN: ${{ secrets.REPO_TOKEN }}
+        run: |
+          # 1. 저장소의 기본 브랜치 이름을 동적으로 가져옵니다.
+          DEFAULT_BRANCH=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+          echo "Default branch is $DEFAULT_BRANCH"
+
+          # 2. 로컬에 최신 원격 브랜치 정보를 반영합니다.
+          git fetch --all --prune
+
+          # 3. 기본 브랜치에 이미 머지된 원격 브랜치 목록을 조회합니다.
+          #    - sed 's/ *origin\///' : 'origin/' 접두사를 제거하여 순수 브랜치 이름만 추출합니다.
+          #    - grep -v -E "^($DEFAULT_BRANCH|master|develop)$" : 보호할 브랜치(기본 브랜치, master, develop)를 제외합니다.
+          for branch in $(git branch -r --merged origin/$DEFAULT_BRANCH | sed 's/ *origin\///' | grep -v -E "^($DEFAULT_BRANCH|master|develop)$"); do
+            echo "Checking branch: $branch"
+
+            # 4. 해당 브랜치로 생성된 PR 중, 닫힌(closed) 상태이고 머지된(merged) PR을 찾습니다.
+            #    --head: 브랜치 이름 포맷이 'OWNER:branch' 형태여야 정확히 찾아옵니다.
+            #    --limit 1: 가장 최신 PR 1개만 확인하면 됩니다.
+            merged_at=$(gh pr list --state closed --head "$branch" --base "$DEFAULT_BRANCH" --limit 1 --json mergedAt --jq '.[0].mergedAt')
+
+            # 5. 머지된 기록이 없으면 건너뜁니다.
+            if [[ -z "$merged_at" || "$merged_at" == "null" ]]; then
+              echo "-> Branch '$branch' has no merged PR to $DEFAULT_BRANCH. Skipping."
+              continue
+            fi
+
+            # 6. 머지된 시점과 현재 시점의 차이를 일(day) 단위로 계산합니다.
+            merged_at_epoch=$(date --date="$merged_at" +%s)
+            now_epoch=$(date +%s)
+            diff_days=$(( (now_epoch - merged_at_epoch) / 86400 ))
+
+            # 7. 7일이 지났으면 브랜치를 삭제합니다.
+            if (( diff_days > 7 )); then
+              echo "-> Deleting branch '$branch' (merged $diff_days days ago)"
+              # 실제 삭제 명령어 (오작동을 방지하려면 앞에 echo를 붙여 테스트(Dry Run) 해보세요)
+              git push origin --delete "$branch"
+            else
+              echo "-> Branch '$branch' was merged $diff_days days ago. Keeping."
+            fi
+            echo "---------------------------------"
+          done
+          echo "Branch cleanup finished."
