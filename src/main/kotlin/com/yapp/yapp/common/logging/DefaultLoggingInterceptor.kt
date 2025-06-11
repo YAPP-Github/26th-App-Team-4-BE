@@ -6,14 +6,48 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
+import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.util.ContentCachingRequestWrapper
+import org.springframework.web.util.ContentCachingResponseWrapper
 import java.io.Serializable
+import java.util.UUID
 
 @Component
-class DefaultLoggingInterceptor : BaseLoggingInterceptor() {
+class DefaultLoggingInterceptor : HandlerInterceptor {
+    private val logger = KotlinLogging.logger {}
+
     companion object {
-        private val logger = KotlinLogging.logger {}
         const val IGNORE_URI = "/health"
+        const val REQUEST_ID = "requestId"
+        const val REQUEST_TIME = "requestTime"
+        val ignoreUrls = listOf<String>("/health", "/static", "/error")
+    }
+
+    override fun preHandle(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+    ): Boolean {
+        if (shouldIgnore(request)) {
+            logger.debug { "로깅이 필터링 되었습니다. request = ${request.requestURI}" }
+            return true
+        }
+        MDC.put(REQUEST_ID, UUID.randomUUID().toString().substring(0, 8))
+        MDC.put(REQUEST_TIME, System.currentTimeMillis().toString())
+
+        val requestId = MDC.get(REQUEST_ID) ?: "N/A"
+        val originalUri = request.requestURI
+        val headers = extractHeaders(request)
+        val body = extractRequestBody(request)
+
+        logger.info {
+            """{"type":"REQUEST ", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
+                getRequestParameters(
+                    request,
+                )
+            }", "body":$body}"""
+        }
+        return true
     }
 
     override fun afterCompletion(
@@ -30,25 +64,20 @@ class DefaultLoggingInterceptor : BaseLoggingInterceptor() {
                 ?: request.requestURI
         val duration = calculateDuration()
         val statusText = getStatusText(response.status)
-        val headers = extractHeaders(request)
-        val body = extractRequestBody(request)
+        val body = extractResponseBody(response)
 
         logger.info {
-            """
-            📦 RESPONSE $statusText [$requestId]
-            ▶ URI: ${request.method} ${originalUri}${getRequestParameters(request)}
-            ▶ Status: [${response.status}]
-            ▶ Duration: ${duration}ms
-            ▶ Headers: $headers
-            ▶ Body: $body
-            ▶ Exception: ${ex?.message}
-            """.trimIndent()
+            """{"type":"RESPONSE", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
+                getRequestParameters(
+                    request,
+                )
+            }", "status":"$statusText", "statusCode":${response.status}, "duration":$duration, "body":$body}"""
         }
     }
 
     private fun shouldIgnore(request: HttpServletRequest): Boolean {
         return request.method.equals("OPTIONS", ignoreCase = true) ||
-            request.requestURI.contains(IGNORE_URI)
+            ignoreUrls.any { request.requestURI.startsWith(it) }
     }
 
     private fun calculateDuration(): Long {
@@ -72,7 +101,12 @@ class DefaultLoggingInterceptor : BaseLoggingInterceptor() {
     private fun extractRequestBody(request: HttpServletRequest): Serializable {
         return if (request is ContentCachingRequestWrapper) {
             try {
-                java.lang.String(request.contentAsByteArray, request.characterEncoding ?: "UTF-8")
+                val string =
+                    java.lang.String(
+                        request.contentAsByteArray,
+                        request.characterEncoding ?: "UTF-8",
+                    )
+                string.take(300).toString()
             } catch (e: Exception) {
                 "[Body 조회를 실패했습니다: ${e.message}]"
             }
@@ -84,5 +118,17 @@ class DefaultLoggingInterceptor : BaseLoggingInterceptor() {
     private fun getRequestParameters(request: HttpServletRequest): String {
         val params = request.parameterNames.toList()
         return if (params.isEmpty()) "" else "?" + params.joinToString("&") { "$it=${request.getParameter(it)}" }
+    }
+
+    private fun extractResponseBody(response: HttpServletResponse): Serializable {
+        return if (response is ContentCachingResponseWrapper) {
+            try {
+                java.lang.String(response.contentAsByteArray, response.characterEncoding ?: "UTF-8")
+            } catch (e: Exception) {
+                "[Body 조회를 실패했습니다: ${e.message}]"
+            }
+        } else {
+            "[Response가 ContentCachingResponseWrapper로 변환되지 않았습니다]"
+        }
     }
 }
