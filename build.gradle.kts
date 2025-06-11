@@ -88,14 +88,13 @@ tasks.register("copyHooks") {
 }
 
 tasks.register<Copy>("copySecret") {
-    dependsOn(tasks.named("updateGitSubmodules"))
     from("./Yapp-26th-env")
     include("*.yml")
     into("src/main/resources")
     println("Secret files이 성공적으로 복사되었습니다.")
 }
 
-tasks.register<Exec>("updateGitSubmodules") {
+tasks.register<Exec>("initSubmodule") {
     group = "git"
     description = "Git submodule을 원격 저장소의 최신 버전으로 업데이트합니다."
     commandLine("git", "submodule", "update", "--remote")
