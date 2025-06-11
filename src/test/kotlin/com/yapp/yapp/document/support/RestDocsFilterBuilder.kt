@@ -58,13 +58,11 @@ class RestDocsFilterBuilder private constructor(
     }
 
     fun request(request: RestDocsRequest): RestDocsFilterBuilder {
-//        resourceBuilder.requestSchema(Schema.schema("$identifier-요청"))
         snippets.addAll(request.getSnippets().filterNotNull())
         return this
     }
 
     fun response(response: RestDocsResponse): RestDocsFilterBuilder {
-//        resourceBuilder.responseSchema(Schema.schema("$identifier-응답"))
         snippets.addAll(response.getSnippets().filterNotNull())
         return this
     }

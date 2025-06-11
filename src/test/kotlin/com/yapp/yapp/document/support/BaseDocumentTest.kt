@@ -45,9 +45,4 @@ abstract class BaseDocumentTest {
         identifierPrefix: String,
         identifier: String,
     ): RestDocsFilterBuilder = RestDocsFilterBuilder(resourceBuilder, identifierPrefix, identifier)
-
-//    protected fun build(request: RestDocsRequest, response: RestDocsResponse): RestDocsFilterBuilder {
-//        val snippets = request.getSnippets() + response.getSnippets()
-//
-//    }
 }
