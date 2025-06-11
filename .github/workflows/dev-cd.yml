@@ -2,7 +2,7 @@ name: DEV CD
 
 on:
   workflow_dispatch:
-  pull_request: # TODO
+  push:
     branches: [ dev ]
 
 jobs:
@@ -71,7 +71,6 @@ jobs:
           proxy_port: 22
 
           script: |
-            ls -Rla
             rm -rf ~/data
             mv ~/deployment/dev/* ~/
             rm -rf ~/deployment
