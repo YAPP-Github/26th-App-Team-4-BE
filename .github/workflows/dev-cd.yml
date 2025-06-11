@@ -57,6 +57,7 @@ jobs:
           key: ${{ secrets.DEV_BASTION_KEY }}
           port: 22
           script: |
+            ls -Rla
             rm -rf ~/data
             mv ~/deployment/dev/* ~/
             rm -rf ~/deployment
