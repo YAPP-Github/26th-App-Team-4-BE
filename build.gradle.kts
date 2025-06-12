@@ -7,6 +7,10 @@ plugins {
 
     // ktlint
     id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
+
+    // REST Docs & Swagger UI
+    id("com.epages.restdocs-api-spec") version "0.18.2"
+    id("org.hidetake.swagger.generator") version "2.18.2"
 }
 
 group = "com.yapp"
@@ -42,11 +46,39 @@ dependencies {
     // db
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("com.h2database:h2")
+
+    // Documentation
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
+    testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.2")
+    testImplementation("com.epages:restdocs-api-spec-restassured:0.18.2")
 }
 
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+}
+
+openapi3 {
+    this.setServer("https://localhost:8080")
+    title = "FitRun API"
+    description = "FitRun API 명세서"
+    version = "0.1.0"
+    format = "yaml"
+    snippetsDirectory = "build/generated-snippets"
+    outputDirectory = "build/docs"
+}
+
+tasks.register<Copy>("makeDocument") {
+    group = "documentation"
+    description = "Generate API Docs and copy to static folder."
+    dependsOn("ktlintFormat")
+    dependsOn("openapi3") // openapi3 Task가 먼저 실행되도록 설정
+    delete("src/main/resources/static/docs/")
+    copy {
+        from("build/docs/") // 복제할 OAS 파일 지정
+        into("src/main/resources/static/docs/") // 타겟 디렉터리로 파일 복제
     }
 }
 
