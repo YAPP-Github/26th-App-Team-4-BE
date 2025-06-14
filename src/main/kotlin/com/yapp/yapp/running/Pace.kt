@@ -6,6 +6,7 @@ import kotlin.math.roundToInt
 class Pace(
     val pacePerKm: Duration,
 ) {
+    constructor(pacePerKm: Long) : this(Duration.ofSeconds(pacePerKm))
     constructor(distance: Double, duration: Duration) :
         this(pacePerKm = Duration.ofSeconds((duration.seconds / distance).roundToInt().toLong()))
 

@@ -1,5 +1,6 @@
 package com.yapp.yapp.running
 
+import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.converter.PaceConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -9,9 +10,11 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 import java.time.OffsetDateTime
 
 @Entity
+@Table(name = "RUNNING_POINT")
 class RunningPoint(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,22 +23,22 @@ class RunningPoint(
     @JoinColumn(name = "running_record_id")
     val runningRecord: RunningRecord,
     @Column(nullable = false)
-    val order: Long,
+    val ord: Long = 0,
     @Column(nullable = false)
     val lat: Double,
     @Column(nullable = false)
     val lon: Double,
     @Column(nullable = false)
-    val speed: Double,
+    val speed: Double = 0.0,
     @Column(nullable = false)
-    val distance: Double,
+    val distance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
-    val pace: Pace,
+    val pace: Pace = Pace(0),
     @Column(nullable = false)
-    val heartRate: Int?,
+    val heartRate: Int = 0,
     @Column(nullable = false)
-    val calories: Int? = null,
+    val calories: Int = 0,
     @Column(nullable = false)
-    val timestamp: OffsetDateTime,
+    val timestamp: OffsetDateTime = TimeProvider.now(),
 )
