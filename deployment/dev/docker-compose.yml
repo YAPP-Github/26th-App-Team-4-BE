@@ -7,7 +7,7 @@ services:
     container_name: yapp-blue
     networks:
       - app-tier
-    image: asia-northeast3-docker.pkg.dev/nifty-acolyte-459503-p1/yapp-repo/yapp:latest
+    image: yapp26th/fitrun-dev:latest
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always
@@ -22,7 +22,7 @@ services:
     container_name: yapp-green
     networks:
       - app-tier
-    image: asia-northeast3-docker.pkg.dev/nifty-acolyte-459503-p1/yapp-repo/yapp:latest
+    image: yapp26th/fitrun-dev:latest
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always

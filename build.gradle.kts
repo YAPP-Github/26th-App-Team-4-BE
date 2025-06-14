@@ -125,3 +125,9 @@ tasks.register<Copy>("copySecret") {
     into("src/main/resources")
     println("Secret files이 성공적으로 복사되었습니다.")
 }
+
+tasks.register<Exec>("initSubmodule") {
+    group = "git"
+    description = "Git submodule을 원격 저장소의 최신 버전으로 업데이트합니다."
+    commandLine("git", "submodule", "update", "--remote")
+}
