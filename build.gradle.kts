@@ -26,6 +26,8 @@ repositories {
     mavenCentral()
 }
 
+extra["springCloudVersion"] = "2024.0.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -52,6 +54,23 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.2")
     testImplementation("com.epages:restdocs-api-spec-restassured:0.18.2")
+
+    // openFeign
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.12.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.0")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.0")
+
+    // Spring Data Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
 }
 
 kotlin {
@@ -84,6 +103,8 @@ tasks.register<Copy>("makeDocument") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("--add-opens", "java.base/sun.security.util=ALL-UNNAMED")
+    jvmArgs("--add-opens", "java.base/java.io=ALL-UNNAMED")
 }
 
 tasks.named<ProcessResources>("processResources") {
