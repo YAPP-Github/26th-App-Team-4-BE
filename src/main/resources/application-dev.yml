@@ -15,3 +15,27 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
   mvc:
     static-path-pattern: /static/**
+
+  data:
+    redis:
+      client-name: ${secret.redis.client-name}
+      host: ${secret.redis.host}
+      port: ${secret.redis.port}
+
+
+jwt:
+  issuer: ${secret.jwt.issuer}
+  access-secret: ${secret.jwt.access-secret}
+  access-expiration-millis: ${secret.jwt.access-expiration-ms}
+  refresh-secret: ${secret.jwt.refresh-secret}
+  refresh-expiration-millis: ${secret.jwt.refresh-expiration-ms}
+
+oidc:
+  apple:
+    api:
+      url: ${secret.oidc.apple.url}
+      clientId: ${secret.oidc.apple.client-id}
+  kakao:
+    api:
+      url: ${secret.oidc.kakao.url}
+      clientId: ${secret.oidc.kakao.client-id}
