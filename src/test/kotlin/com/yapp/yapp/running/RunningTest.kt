@@ -1,7 +1,7 @@
 package com.yapp.yapp.running
 
 import com.deepromeet.atcha.support.BaseServiceTest
-import com.yapp.yapp.running.request.RunningStartRequest
+import com.yapp.yapp.running.api.request.RunningStartRequest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

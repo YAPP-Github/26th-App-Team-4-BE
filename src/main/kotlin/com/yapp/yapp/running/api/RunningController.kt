@@ -1,4 +1,4 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.running.api
 
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController

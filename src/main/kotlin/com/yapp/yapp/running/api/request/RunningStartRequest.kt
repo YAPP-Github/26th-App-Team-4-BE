@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.request
+package com.yapp.yapp.running.api.request
 
 data class RunningStartRequest(
     val userId: Long,

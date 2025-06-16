@@ -1,7 +1,7 @@
 package com.yapp.yapp.running
 
-import com.yapp.yapp.running.request.RunningStartRequest
-import com.yapp.yapp.running.response.RunningStartResponse
+import com.yapp.yapp.running.api.request.RunningStartRequest
+import com.yapp.yapp.running.api.response.RunningStartResponse
 import org.springframework.stereotype.Service
 
 @Service
