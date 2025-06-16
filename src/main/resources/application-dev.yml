@@ -33,7 +33,7 @@ management:
 
   endpoint:
     prometheus:
-      enabled: true
+      access: unrestricted
     health:
-      enabled: true
       show-components: never
+      access: unrestricted
