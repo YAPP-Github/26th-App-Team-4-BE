@@ -11,6 +11,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always
+    pull_policy: always
     healthcheck:
       test: "curl -f http://localhost:8080/health || exit 1"
       interval: 1m
@@ -26,6 +27,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always
+    pull_policy: always
     healthcheck:
       test: "curl -f http://localhost:8080/health || exit 1"
       interval: 1m
