@@ -50,6 +50,18 @@ ensure_nginx_running() {
   fi
 }
 
+ensure_promtail_running() {
+  local promtail_exists
+  promtail_exists=$(docker compose ps -q promtail)
+  if [ -z "$promtail_exists" ]; then
+    echo "promtail 컨테이너가 존재하지 않습니다. promtail 컨테이너를 실행합니다."
+    docker compose up -d promtail
+    sleep 5
+  else
+    echo "promtail 컨테이너가 이미 실행 중입니다."
+  fi
+}
+
 restart_nginx() {
   echo "nginx 컨테이너를 재시작합니다."
   docker compose restart nginx
@@ -78,6 +90,9 @@ if [ -z "$IS_BLUE" ]; then
   docker compose stop yapp-green
   docker compose rm -f yapp-green
 
+  echo "Promtail 컨테이너 확인 및 실행"
+  ensure_promtail_running
+
   echo "불필요한 이미지 정리"
   docker image prune -f || true
 
@@ -103,6 +118,9 @@ else
   echo "4. BLUE 컨테이너 중지 및 삭제"
   docker compose stop yapp-blue
   docker compose rm -f yapp-blue
+
+  echo "Promtail 컨테이너 확인 및 실행"
+  ensure_promtail_running
 
   echo "불필요한 이미지 정리"
   docker image prune -f || true
