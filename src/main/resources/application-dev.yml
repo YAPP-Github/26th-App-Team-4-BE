@@ -16,6 +16,18 @@ spring:
   mvc:
     static-path-pattern: /static/**
 
+logging:
+  level:
+    root: info
+  pattern:
+    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  file:
+    name: ${secret.logging.file.name}
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${secret.logging.file.pattern}
+      max-history: 30
+
 management:
   server:
     port: ${secret.management.port}
