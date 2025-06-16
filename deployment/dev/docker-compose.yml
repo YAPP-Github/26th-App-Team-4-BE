@@ -55,3 +55,14 @@ services:
     ports:
       - "80:80"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./logs:/var/log/fitrun
+      - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml -log.level=debug
+    restart: unless-stopped
+    networks:
+      - app-tier
