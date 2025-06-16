@@ -1,0 +1,9 @@
+# 참고용입니다. 실제 적용된 버전은 다를 수 있습니다.
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'fitrun-dev-app'
+    metrics_path: '메트릭 경로'
+    static_configs:
+      - targets: ['{WAS HOST}:{PORT}']
