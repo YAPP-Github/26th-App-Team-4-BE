@@ -52,6 +52,10 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.2")
     testImplementation("com.epages:restdocs-api-spec-restassured:0.18.2")
+
+    // Spring Actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 }
 
 kotlin {
