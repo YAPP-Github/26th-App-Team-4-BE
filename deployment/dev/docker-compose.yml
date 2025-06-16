@@ -18,6 +18,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+    volumes:
+      - ./logs:/app/logs
 
   yapp-green:
     container_name: yapp-green
@@ -34,6 +36,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+    volumes:
+      - ./logs:/app/logs
 
   nginx:
     depends_on:
