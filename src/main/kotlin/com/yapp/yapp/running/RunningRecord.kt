@@ -26,4 +26,6 @@ class RunningRecord(
     val startAt: OffsetDateTime = TimeProvider.now(),
     @Column(nullable = false)
     var averageSpeed: Double = 0.0,
+    @Column(nullable = false)
+    var isDeleted: Boolean = false,
 )

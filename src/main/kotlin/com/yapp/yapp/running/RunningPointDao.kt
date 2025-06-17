@@ -18,7 +18,7 @@ class RunningPointDao(
     }
 
     fun getPrePointByRecordRecord(runningRecord: RunningRecord): RunningPoint {
-        return runningPointRepository.findLastByRunningRecord(runningRecord)
+        return runningPointRepository.findLastByRunningRecordAndIsDeletedFalse(runningRecord)
             ?: throw CustomException(ErrorCode.RUNNING_POINT_NOT_FOUND)
     }
 }

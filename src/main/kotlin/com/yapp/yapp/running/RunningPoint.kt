@@ -11,6 +11,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.time.Duration
 import java.time.OffsetDateTime
 
 @Entity
@@ -29,9 +30,9 @@ class RunningPoint(
     @Column(nullable = false)
     val lon: Double,
     @Column(nullable = false)
-    val speed: Double = 0.0,
+    var speed: Double = 0.0,
     @Column(nullable = false)
-    val distance: Double = 0.0,
+    var distance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
     val pace: Pace = Pace(0),
@@ -40,5 +41,9 @@ class RunningPoint(
     @Column(nullable = false)
     val calories: Int = 0,
     @Column(nullable = false)
-    val timestamp: OffsetDateTime = TimeProvider.now(),
+    val totalRunningTime: Duration = Duration.ZERO,
+    @Column(nullable = false)
+    val timeStamp: OffsetDateTime = TimeProvider.now(),
+    @Column(nullable = false)
+    val isDeleted: Boolean = false,
 )

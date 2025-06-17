@@ -21,7 +21,9 @@ class RunningRecordDao(
         return runningRecordRepository.save(runningRecord)
     }
 
+    // TODO null이 아닌 엔티티를 가져오는 것이 보장되면 get prefix를 사용합니다. 그렇지 않다면 find prefix를 사용합니다.
     fun getById(id: Long): RunningRecord {
-        return runningRecordRepository.findById(id).orElseThrow { throw CustomException(ErrorCode.RECORD_NOT_FOUND) }
+        return runningRecordRepository.findById(id)
+            .orElseThrow { throw CustomException(ErrorCode.RUNNING_RECORD_NOT_FOUND) }
     }
 }
