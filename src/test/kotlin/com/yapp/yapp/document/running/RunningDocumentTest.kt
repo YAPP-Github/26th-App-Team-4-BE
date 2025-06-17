@@ -44,8 +44,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        // when
-        // then
+        // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -79,7 +78,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수"),
                     fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
-                    fieldWithPath("timeStamp").description("데이터 수집 시간"),
+                    fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
                 )
         val restDocsResponse =
             response()
@@ -90,12 +89,12 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("ord").description("러닝 포인트 순서"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
-                    fieldWithPath("speed").description("현재 속도"),
-                    fieldWithPath("distance").description("현재 총 거리"),
-                    fieldWithPath("pace").description("현재 페이스"),
+                    fieldWithPath("speed").description("현재 속도 (m/s)"),
+                    fieldWithPath("distance").description("현재 총 거리 (m)"),
+                    fieldWithPath("pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
                     fieldWithPath("heartRate").description("현재 심박수"),
                     fieldWithPath("calories").description("총 소모 칼로리"),
-                    fieldWithPath("timeStamp").description("기록한 시간"),
+                    fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
                 )
         val filter =
             filter("러닝 API", "러닝 업데이트")
@@ -106,8 +105,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        // when
-        // then
+        // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
