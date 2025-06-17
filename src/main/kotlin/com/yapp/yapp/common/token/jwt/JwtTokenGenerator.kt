@@ -5,6 +5,7 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
 import java.util.Date
+import java.util.UUID
 
 @Component
 class JwtTokenGenerator(
@@ -33,6 +34,7 @@ class JwtTokenGenerator(
             .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.ACCESS.name.lowercase())
             .and()
             .subject(userId.toString())
+            .id(UUID.randomUUID().toString())
             .issuer(jwtProperties.issuer)
             .issuedAt(now)
             .expiration(Date(now.time + jwtProperties.accessExpirationMillis))
@@ -47,6 +49,7 @@ class JwtTokenGenerator(
             .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.REFRESH.name.lowercase())
             .and()
             .subject(userId.toString())
+            .id(UUID.randomUUID().toString())
             .issuer(jwtProperties.issuer)
             .issuedAt(now)
             .expiration(Date(now.time + jwtProperties.refreshExpirationMillis))
