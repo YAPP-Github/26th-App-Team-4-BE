@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "jwt")
 class JwtProperties {
     companion object {
-        val TOKEN_TYPE_CLIAM = "token_type"
+        val TOKEN_TYPE_CLAIM = "token_type"
     }
 
     lateinit var accessSecret: String

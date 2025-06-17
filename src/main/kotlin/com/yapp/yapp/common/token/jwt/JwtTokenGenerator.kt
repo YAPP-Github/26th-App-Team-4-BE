@@ -27,11 +27,10 @@ class JwtTokenGenerator(
     }
 
     private fun generateAccessToken(userId: Long): String {
-        println("refresh expiration: ${jwtProperties.accessExpirationMillis}")
         val now = Date()
         return Jwts.builder()
             .header()
-            .add(JwtProperties.TOKEN_TYPE_CLIAM, TokenType.ACCESS.name.lowercase())
+            .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.ACCESS.name.lowercase())
             .and()
             .subject(userId.toString())
             .issuer(jwtProperties.issuer)
@@ -42,11 +41,10 @@ class JwtTokenGenerator(
     }
 
     private fun generateRefreshToken(userId: Long): String {
-        println("refresh expiration: ${jwtProperties.refreshExpirationMillis}")
         val now = Date()
         return Jwts.builder()
             .header()
-            .add(JwtProperties.TOKEN_TYPE_CLIAM, TokenType.REFRESH.name.lowercase())
+            .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.REFRESH.name.lowercase())
             .and()
             .subject(userId.toString())
             .issuer(jwtProperties.issuer)
