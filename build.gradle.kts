@@ -55,6 +55,10 @@ dependencies {
     testImplementation("com.epages:restdocs-api-spec-mockmvc:0.18.2")
     testImplementation("com.epages:restdocs-api-spec-restassured:0.18.2")
 
+    // Spring Actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
     // openFeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 

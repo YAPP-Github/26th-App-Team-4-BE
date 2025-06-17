@@ -11,12 +11,15 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always
+    pull_policy: always
     healthcheck:
-      test: "curl -f http://localhost:8080/health || exit 1"
+      test: "curl -f http://localhost:8080/check/health || exit 1"
       interval: 1m
       timeout: 10s
       retries: 3
       start_period: 30s
+    volumes:
+      - ./logs:/app/logs
 
   yapp-green:
     container_name: yapp-green
@@ -26,12 +29,15 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     restart: always
+    pull_policy: always
     healthcheck:
-      test: "curl -f http://localhost:8080/health || exit 1"
+      test: "curl -f http://localhost:8080/check/health || exit 1"
       interval: 1m
       timeout: 10s
       retries: 3
       start_period: 30s
+    volumes:
+      - ./logs:/app/logs
 
   nginx:
     depends_on:
@@ -49,3 +55,14 @@ services:
     ports:
       - "80:80"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./logs:/var/log/fitrun
+      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml -log.level=debug
+    restart: unless-stopped
+    networks:
+      - app-tier
