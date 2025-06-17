@@ -23,7 +23,7 @@ class RunningController(
     }
 
     @PostMapping("/update")
-    fun start(
+    fun update(
         @RequestBody request: RunningUpdateRequest,
     ): RunningUpdateResponse {
         return runningService.update(request)
