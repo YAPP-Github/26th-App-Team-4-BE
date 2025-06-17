@@ -63,9 +63,9 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // jwt
-    implementation("io.jsonwebtoken:jjwt-api:0.12.0")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.0")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.0")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
     // Spring Data Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -107,8 +107,6 @@ tasks.register<Copy>("makeDocument") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    jvmArgs("--add-opens", "java.base/sun.security.util=ALL-UNNAMED")
-    jvmArgs("--add-opens", "java.base/java.io=ALL-UNNAMED")
 }
 
 tasks.named<ProcessResources>("processResources") {
