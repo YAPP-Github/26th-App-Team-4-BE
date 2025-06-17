@@ -7,10 +7,10 @@ import java.time.Duration
 @Converter(autoApply = true)
 class DurationConverter : AttributeConverter<Duration, Long> {
     override fun convertToDatabaseColumn(attribute: Duration?): Long? {
-        return attribute?.seconds
+        return attribute?.toMillis()
     }
 
     override fun convertToEntityAttribute(dbData: Long?): Duration? {
-        return dbData?.let { Duration.ofSeconds(it) }
+        return if (dbData != null) Duration.ofMillis(dbData) else null
     }
 }

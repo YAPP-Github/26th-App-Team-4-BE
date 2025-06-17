@@ -1,14 +1,16 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.running.converter.DurationConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.time.Duration
 import java.time.OffsetDateTime
-import kotlin.time.Duration
 
 @Entity
 @Table(name = "RUNNING_RECORD")
@@ -19,6 +21,7 @@ class RunningRecord(
     @Column(nullable = false)
     var totalDistance: Double = 0.0,
     @Column(nullable = false)
+    @Convert(converter = DurationConverter::class)
     var totalRunningTime: Duration = Duration.ZERO,
     @Column(nullable = false)
     var totalCalories: Int = 0,

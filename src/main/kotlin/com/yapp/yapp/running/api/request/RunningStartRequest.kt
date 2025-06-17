@@ -6,5 +6,5 @@ data class RunningStartRequest(
     val userId: Long,
     val lat: Double,
     val lon: Double,
-    val timeStamp: OffsetDateTime,
+    val timeStamp: OffsetDateTime = OffsetDateTime.now(),
 )
