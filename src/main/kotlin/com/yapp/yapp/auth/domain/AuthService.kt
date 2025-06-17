@@ -1,9 +1,9 @@
 package com.yapp.yapp.auth.domain
 
+import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.token.jwt.JwtTokenGenerator
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
-import com.yapp.yapp.common.token.jwt.TokenResponse
 import com.yapp.yapp.user.domain.User
 import com.yapp.yapp.user.domain.UserRepository
 import org.springframework.stereotype.Service
@@ -32,7 +32,8 @@ class AuthService(
                 ),
             )
 
-        return jwtTokenGenerator.generateTokens(user.id)
+        val tokenInfo = jwtTokenGenerator.generateTokens(user.id)
+        return TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
     }
 
     fun logout(refreshToken: String) {
@@ -42,6 +43,7 @@ class AuthService(
     fun refresh(refreshToken: String): TokenResponse {
         val userId = jwtTokenHandler.getUserId(refreshToken)
         jwtTokenHandler.expire(refreshToken)
-        return jwtTokenGenerator.generateTokens(userId)
+        val tokenInfo = jwtTokenGenerator.generateTokens(userId)
+        return TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
     }
 }

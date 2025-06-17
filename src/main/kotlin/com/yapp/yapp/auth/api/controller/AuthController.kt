@@ -1,9 +1,9 @@
 package com.yapp.yapp.auth.api.controller
 
+import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.domain.AuthService
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.ApiResponse
-import com.yapp.yapp.common.token.jwt.TokenResponse
 import com.yapp.yapp.common.token.jwt.annotation.Token
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping

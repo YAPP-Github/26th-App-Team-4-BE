@@ -20,10 +20,10 @@ class JwtTokenGenerator(
             Decoders.BASE64.decode(jwtProperties.refreshSecret),
         )
 
-    fun generateTokens(userId: Long): TokenResponse {
+    fun generateTokens(userId: Long): TokenInfo {
         val accessToken = generateAccessToken(userId)
         val refreshToken = generateRefreshToken(userId)
-        return TokenResponse(accessToken, refreshToken)
+        return TokenInfo(accessToken, refreshToken)
     }
 
     private fun generateAccessToken(userId: Long): String {
