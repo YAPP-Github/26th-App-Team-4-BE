@@ -1,6 +1,7 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.running.api.request.RunningStartRequest
+import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import org.springframework.stereotype.Service
 
@@ -21,5 +22,8 @@ class RunningService(
                 ),
             )
         return RunningStartResponse(runningRecord.id)
+    }
+
+    fun update(request: RunningUpdateRequest) {
     }
 }

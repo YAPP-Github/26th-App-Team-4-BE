@@ -22,4 +22,6 @@ enum class ErrorCode(
 
     UNSUPPORTED_ATTRIBUTE(400, "ATB_001", "지원 되지 않는 속성 입니다.", LogLevel.WARN),
     INVALID_REQUEST(401, "REQ_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
+
+    RECORD_NOT_FOUND(400, "REC_001", "기록이 존재하지 않습니다.", LogLevel.WARN),
 }
