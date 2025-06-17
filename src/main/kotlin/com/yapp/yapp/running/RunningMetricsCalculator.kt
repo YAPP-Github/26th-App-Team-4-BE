@@ -36,9 +36,15 @@ object RunningMetricsCalculator {
         runningPoint: RunningPoint,
     ): Double {
         val distance = calculateDistance(preRunningPoint, runningPoint)
-        val time = runningPoint.timeStamp.toEpochSecond() - preRunningPoint.timeStamp.toEpochSecond()
-        if (distance == 0.0 || time == 0L) return 0.0
-        return (distance / time).roundTo()
+        val preMs = preRunningPoint.timeStamp.toInstant().toEpochMilli()
+        val curMs = runningPoint.timeStamp.toInstant().toEpochMilli()
+        val deltaMs = curMs - preMs
+
+        if (distance == 0.0 || deltaMs <= 0) return 0.0
+
+        val timeSeconds = deltaMs / 1000.0
+
+        return (distance / timeSeconds).roundTo()
     }
 
     fun Double.roundTo(decimals: Int = 3): Double {

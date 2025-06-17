@@ -1,14 +1,20 @@
 package com.yapp.yapp.running
 
 import java.time.Duration
-import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class Pace(
     val pacePerKm: Duration,
 ) {
     constructor(pacePerKm: Long) : this(Duration.ofSeconds(pacePerKm))
     constructor(distance: Double, duration: Duration) :
-        this(pacePerKm = Duration.ofSeconds((duration.seconds / distance).roundToInt().toLong()))
+        this(
+            if (distance == 0.0) {
+                Duration.ZERO
+            } else {
+                Duration.ofSeconds((duration.toMillis() / distance).roundToLong())
+            },
+        )
 
     override fun toString(): String {
         val minutes = pacePerKm.toMinutes()

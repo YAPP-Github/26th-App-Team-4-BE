@@ -35,7 +35,7 @@ class RunningPoint(
     var distance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
-    val pace: Pace = Pace(0),
+    var pace: Pace = Pace(0),
     @Column(nullable = false)
     val heartRate: Int = 0,
     @Column(nullable = false)
@@ -43,7 +43,41 @@ class RunningPoint(
     @Column(nullable = false)
     val totalRunningTime: Duration = Duration.ZERO,
     @Column(nullable = false)
+    var totalRunningDistance: Double = 0.0,
+    @Column(nullable = false)
     val timeStamp: OffsetDateTime = TimeProvider.now(),
     @Column(nullable = false)
     val isDeleted: Boolean = false,
-)
+) {
+    fun copy(
+        id: Long = this.id,
+        runningRecord: RunningRecord = this.runningRecord,
+        ord: Long = this.ord,
+        lat: Double = this.lat,
+        lon: Double = this.lon,
+        speed: Double = this.speed,
+        distance: Double = this.distance,
+        pace: Pace = this.pace,
+        heartRate: Int = this.heartRate,
+        calories: Int = this.calories,
+        totalRunningTime: Duration = this.totalRunningTime,
+        totalRunningDistance: Double = this.totalRunningDistance,
+        timeStamp: OffsetDateTime = this.timeStamp,
+        isDeleted: Boolean = this.isDeleted,
+    ) = RunningPoint(
+        id = id,
+        runningRecord = runningRecord,
+        ord = ord,
+        lat = lat,
+        lon = lon,
+        speed = speed,
+        distance = distance,
+        pace = pace,
+        heartRate = heartRate,
+        calories = calories,
+        totalRunningTime = totalRunningTime,
+        totalRunningDistance = totalRunningDistance,
+        timeStamp = timeStamp,
+        isDeleted = isDeleted,
+    )
+}
