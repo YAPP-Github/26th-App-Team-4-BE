@@ -2,6 +2,7 @@ package com.yapp.yapp.support.fixture
 
 import io.jsonwebtoken.Jwts
 import java.math.BigInteger
+import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.interfaces.RSAPublicKey
 import java.time.Instant
@@ -10,12 +11,15 @@ import java.util.Date
 import java.util.UUID
 
 object IdTokenFixture {
-    private val keyPair =
-        KeyPairGenerator.getInstance("RSA").apply {
-            initialize(2048)
-        }.generateKeyPair()
-
-    private val kid = UUID.randomUUID().toString()
+    private val keyPairs: List<Pair<String, KeyPair>> =
+        (1..5).map {
+            val keyPair =
+                KeyPairGenerator.getInstance("RSA").apply {
+                    initialize(2048)
+                }.generateKeyPair()
+            val kid = UUID.randomUUID().toString()
+            kid to keyPair
+        }
 
     fun createValidIdToken(
         issuer: String = "https://provider.example.com",
@@ -26,6 +30,7 @@ object IdTokenFixture {
         expiresInSeconds: Long = 3600,
     ): String {
         val now = Instant.now()
+        val (kid, keyPair) = keyPairs.random()
         val jwtBuilder =
             Jwts.builder()
                 .header()
@@ -47,9 +52,12 @@ object IdTokenFixture {
     }
 
     fun createPublicKeyResponse(): JwksResponse {
-        val publicKey = keyPair.public as RSAPublicKey
-        val jwk = publicKey.toJwk(kid)
-        return JwksResponse(keys = listOf(jwk))
+        val jwks =
+            keyPairs.map { (kid, keyPair) ->
+                val publicKey = keyPair.public as RSAPublicKey
+                publicKey.toJwk(kid)
+            }
+        return JwksResponse(keys = jwks)
     }
 
     private fun RSAPublicKey.toJwk(kid: String): Jwk {
