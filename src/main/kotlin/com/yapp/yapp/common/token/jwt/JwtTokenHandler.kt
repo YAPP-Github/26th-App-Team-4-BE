@@ -25,9 +25,24 @@ class JwtTokenHandler(
             Decoders.BASE64.decode(jwtProperties.refreshSecret),
         )
 
+    private val parser =
+        Jwts.parser()
+            .requireIssuer(jwtProperties.issuer)
+            .keyLocator { header ->
+                val tokenType =
+                    header[JwtProperties.TOKEN_TYPE_CLAIM]
+                        ?: throw JwtException("Missing 'token_type' in JWT header")
+
+                when (tokenType) {
+                    TokenType.ACCESS.name.lowercase() -> accessKey
+                    TokenType.REFRESH.name.lowercase() -> refreshKey
+                    else -> throw JwtException("Unknown token_type: $tokenType")
+                }
+            }.build()
+
     fun getUserId(token: String): Long {
         try {
-            val claims = validate(token)
+            val claims = getValidClaims(token)
             return (claims.subject as String).toLong()
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
@@ -36,23 +51,8 @@ class JwtTokenHandler(
         }
     }
 
-    fun validate(token: String): Claims {
+    private fun getValidClaims(token: String): Claims {
         validateBlacklist(token)
-        val parser =
-            Jwts.parser()
-                .requireIssuer(jwtProperties.issuer)
-                .keyLocator { header ->
-                    val tokenType =
-                        header[JwtProperties.TOKEN_TYPE_CLIAM]
-                            ?: throw JwtException("Missing 'token_type' in JWT header")
-
-                    when (tokenType) {
-                        TokenType.ACCESS.name.lowercase() -> accessKey
-                        TokenType.REFRESH.name.lowercase() -> refreshKey
-                        else -> throw JwtException("Unknown token_type: $tokenType")
-                    }
-                }.build()
-
         return parser.parseSignedClaims(token).payload
     }
 

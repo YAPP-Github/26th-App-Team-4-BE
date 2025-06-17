@@ -6,40 +6,41 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.JwkSet
 import io.jsonwebtoken.security.Jwks
 
 class OidcTokenHandler(
     private val oidcProperties: OidcProperties,
 ) {
+    val jwks =
+        Jwks.setParser()
+            .build()
+            .parse(oidcProperties.keySet)
+
+    val parser =
+        Jwts.parser()
+            .requireIssuer(oidcProperties.issuer)
+            .requireAudience(oidcProperties.clientId)
+            .keyLocator { header ->
+                val kid = header["kid"] ?: throw JwtException("Missing 'kid' in JWT header")
+                val key =
+                    jwks.find { it.id == kid }
+                        ?: throw JwtException("Unknown 'kid' = $kid")
+                key.toKey()
+            }.build()
+
     fun parseEmail(token: String): String {
         try {
-            val claims = validate(token)
+            val claims = getValidClaims(token)
             return claims["email"] as? String ?: throw JwtException("Missing 'email' in Claims")
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
-            println(e.message)
-            e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
     }
 
     // https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
-    private fun validate(token: String): Claims {
-        val jwks = getJwkSet(oidcProperties.keySet)
-        val parser =
-            Jwts.parser()
-                .requireIssuer(oidcProperties.issuer)
-                .requireAudience(oidcProperties.clientId)
-                .keyLocator { header ->
-                    val kid = header["kid"] ?: throw JwtException("Missing 'kid' in JWT header")
-                    val key =
-                        jwks.find { it.id == kid }
-                            ?: throw JwtException("Unknown 'kid' = $kid")
-                    key.toKey()
-                }.build()
-
+    private fun getValidClaims(token: String): Claims {
         val claims = parser.parseSignedClaims(token).payload
 
         oidcProperties.nonce?.let { expectedNonce ->
@@ -51,11 +52,5 @@ class OidcTokenHandler(
         }
 
         return claims
-    }
-
-    private fun getJwkSet(keys: String): JwkSet {
-        return Jwks.setParser()
-            .build()
-            .parse(keys)
     }
 }
