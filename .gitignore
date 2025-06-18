@@ -45,3 +45,4 @@ build/
 **/application-local.yml
 **/dev-env.yml
 **/openapi3.yaml
+**/fitrun.*
