@@ -1,9 +1,11 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
@@ -58,8 +60,22 @@ class RunningService(
         return RunningStopResponse(runningRecord.id, request.recordId)
     }
 
-    fun resume() {
-        TODO()
+    fun resume(request: RunningResumeRequest): RunningResumeResponse {
+        val runningRecord = runningRecordDao.getById(request.recordId)
+        val preRunningPoint = runningPointDao.getPrePointByRecordRecord(runningRecord)
+        val newRunningPoint =
+            RunningPoint(
+                runningRecord = runningRecord,
+                lat = request.lat,
+                lon = request.lon,
+                ord = preRunningPoint.ord + 1,
+                heartRate = request.heartRate,
+                timeStamp = TimeProvider.parse(request.timeStamp),
+                totalRunningTime = Duration.parse(request.totalRunningTime),
+            )
+        runningRecord.resumeRunning()
+        val saveRunningPoint = runningPointDao.save(newRunningPoint)
+        return RunningResumeResponse(saveRunningPoint)
     }
 
     fun done() {

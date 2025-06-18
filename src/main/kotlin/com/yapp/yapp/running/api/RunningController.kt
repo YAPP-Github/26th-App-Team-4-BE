@@ -2,9 +2,11 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.running.RunningService
+import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
@@ -38,5 +40,12 @@ class RunningController(
         @RequestBody request: RunningStopRequest,
     ): ApiResponse<RunningStopResponse> {
         return ApiResponse.success(runningService.stop(request))
+    }
+
+    @PostMapping("/resume")
+    fun resume(
+        @RequestBody request: RunningResumeRequest,
+    ): ApiResponse<RunningResumeResponse> {
+        return ApiResponse.success(runningService.resume(request))
     }
 }
