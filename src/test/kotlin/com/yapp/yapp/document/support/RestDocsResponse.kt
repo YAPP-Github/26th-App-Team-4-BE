@@ -5,6 +5,7 @@ import com.epages.restdocs.apispec.Schema
 import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders
 import org.springframework.restdocs.payload.FieldDescriptor
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.snippet.Snippet
 import java.util.LinkedList
@@ -13,6 +14,12 @@ import java.util.List
 class RestDocsResponse(
     private val resourceBuilder: ResourceSnippetParametersBuilder,
     private val snippets: MutableList<Snippet?> = LinkedList<Snippet?>(),
+    private val baseFields: MutableList<FieldDescriptor> =
+        mutableListOf(
+            fieldWithPath("code").description("응답 코드"),
+            fieldWithPath("result").description("응답 객체 (에러가 발생한 경우 result는 없습니다)").optional(),
+            fieldWithPath("timeStamp").description("응답 시간"),
+        ),
 ) {
     fun setSchema(name: String): RestDocsResponse {
         resourceBuilder.responseSchema(Schema.schema(name))
@@ -26,8 +33,8 @@ class RestDocsResponse(
     }
 
     fun responseBodyField(vararg descriptors: FieldDescriptor): RestDocsResponse {
-        resourceBuilder.responseFields(*descriptors)
-        snippets.add(responseFields(*descriptors))
+        resourceBuilder.responseFields(*descriptors, *baseFields.toTypedArray())
+        snippets.add(responseFields(*descriptors, *baseFields.toTypedArray()))
         return this
     }
 
