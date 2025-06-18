@@ -1,17 +1,17 @@
 package com.yapp.yapp.common
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ApiResponse<T>(
     val code: String,
     val result: T? = null,
-    val timeStamp: LocalDateTime? = null,
+    val timeStamp: OffsetDateTime? = null,
     val message: String? = null,
 ) {
     companion object {
-        fun <T> success(result: T): ApiResponse<T> = ApiResponse(code = "SUCCESS", result = result)
+        fun <T> success(result: T): ApiResponse<T> = ApiResponse(code = "SUCCESS", result = result, timeStamp = TimeProvider.now())
 
         fun error(
             code: String,
@@ -19,7 +19,7 @@ data class ApiResponse<T>(
         ): ApiResponse<Unit> =
             ApiResponse(
                 code = code,
-                timeStamp = LocalDateTime.now(),
+                timeStamp = TimeProvider.now(),
                 message = message,
             )
     }
