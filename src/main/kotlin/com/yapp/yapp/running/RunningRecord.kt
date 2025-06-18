@@ -5,6 +5,8 @@ import com.yapp.yapp.running.converter.DurationConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -29,6 +31,25 @@ class RunningRecord(
     val startAt: OffsetDateTime = TimeProvider.now(),
     @Column(nullable = false)
     var averageSpeed: Double = 0.0,
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var runningStatus: RunningStatus = RunningStatus.READY,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
-)
+) {
+    fun startRunning() {
+        this.runningStatus = RunningStatus.IN_PROGRESS
+    }
+
+    fun stopRunning() {
+        this.runningStatus = RunningStatus.STOPPED
+    }
+
+    fun resumeRunning() {
+        this.runningStatus = RunningStatus.IN_PROGRESS
+    }
+
+    fun finishRunning() {
+        this.runningStatus = RunningStatus.DONE
+    }
+}

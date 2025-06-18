@@ -5,6 +5,7 @@ import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.running.RunningService
 import com.yapp.yapp.running.api.request.RunningStartRequest
+import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
@@ -33,7 +34,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyField(
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
+                    fieldWithPath("result.recordId").description("러닝 기록 ID"),
                 )
         val filter =
             filter("러닝 API", "러닝 시작")
@@ -57,7 +58,7 @@ class RunningDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 업데이트 API`() {
         // given
-        val startResponse = runningService.start(RunningStartRequest(0L, 0.0, 0.0, OffsetDateTime.now().toString()))
+        val startResponse = runningService.start(RunningStartRequest(0L, 37.5665, 126.9780, OffsetDateTime.now().toString()))
 
         val request =
             RunningUpdateRequest(
@@ -83,18 +84,18 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyField(
-                    fieldWithPath("id").description("러닝 포인트 ID"),
-                    fieldWithPath("userId").description("유저 ID"),
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
-                    fieldWithPath("ord").description("러닝 포인트 순서"),
-                    fieldWithPath("lat").description("위도"),
-                    fieldWithPath("lon").description("경도"),
-                    fieldWithPath("speed").description("현재 속도 (m/s)"),
-                    fieldWithPath("distance").description("현재 총 거리 (m)"),
-                    fieldWithPath("pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
-                    fieldWithPath("heartRate").description("현재 심박수"),
-                    fieldWithPath("calories").description("총 소모 칼로리"),
-                    fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
+                    fieldWithPath("result.id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.userId").description("유저 ID"),
+                    fieldWithPath("result.recordId").description("러닝 기록 ID"),
+                    fieldWithPath("result.ord").description("러닝 포인트 순서"),
+                    fieldWithPath("result.lat").description("위도"),
+                    fieldWithPath("result.lon").description("경도"),
+                    fieldWithPath("result.speed").description("현재 속도 (m/s)"),
+                    fieldWithPath("result.distance").description("현재 총 거리 (m)"),
+                    fieldWithPath("result.pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
+                    fieldWithPath("result.heartRate").description("현재 심박수"),
+                    fieldWithPath("result.calories").description("총 소모 칼로리"),
+                    fieldWithPath("result.timeStamp").description("데이터를 기록한 시간"),
                 )
         val filter =
             filter("러닝 API", "러닝 업데이트")
@@ -111,6 +112,67 @@ class RunningDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/update")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 중단 API`() {
+        // given
+        val userId = 0L
+        val startResponse = runningService.start(RunningStartRequest(userId, 37.5665, 126.9780, OffsetDateTime.now().toString()))
+        runningService.update(
+            RunningUpdateRequest(
+                userId,
+                startResponse.recordId,
+                37.5665,
+                126.9780,
+                142,
+                "PT0S",
+                "2025-06-17T16:12:00+09:00",
+            ),
+        )
+        runningService.update(
+            RunningUpdateRequest(
+                userId,
+                startResponse.recordId,
+                37.5675,
+                126.9790,
+                140,
+                "PT1S",
+                "2025-06-17T16:12:01+09:00",
+            ),
+        )
+
+        val request = RunningStopRequest(userId, startResponse.recordId)
+        val restDocsRequest =
+            request()
+                .requestBodyField(
+                    fieldWithPath("userId").description("유저 ID"),
+                    fieldWithPath("recordId").description("러닝 기록 ID"),
+                )
+        val restDocsResponse =
+            response()
+                .responseBodyField(
+                    fieldWithPath("result.userId").description("유저 ID"),
+                    fieldWithPath("result.recordId").description("러닝 기록 ID"),
+                )
+
+        val filter =
+            filter("러닝 API", "러닝 중단")
+                .tag(Tag.RUNNING_API)
+                .summary("러닝 중단")
+                .description("러닝 기록을 중단하는 API입니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .body(request)
+            .`when`().patch("/api/v1/running/stop")
             .then().log().all()
             .statusCode(200)
     }

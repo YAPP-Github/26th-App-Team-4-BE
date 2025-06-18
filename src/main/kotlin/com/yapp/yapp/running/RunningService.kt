@@ -2,8 +2,10 @@ package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.api.request.RunningStartRequest
+import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningStartResponse
+import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -16,6 +18,7 @@ class RunningService(
     fun start(request: RunningStartRequest): RunningStartResponse {
         // TODO 유저 정보 조회
         val runningRecord = runningRecordDao.save(RunningRecord(startAt = TimeProvider.parse(request.timeStamp)))
+        runningRecord.startRunning()
         val runningPoint =
             runningPointDao.save(
                 RunningPoint(
@@ -47,5 +50,19 @@ class RunningService(
         newRunningPoint.pace = Pace(distance = newRunningPoint.totalRunningDistance, duration = Duration.parse(request.totalRunningTime))
         val saveRunningPoint = runningPointDao.save(newRunningPoint)
         return RunningUpdateResponse(saveRunningPoint)
+    }
+
+    fun stop(request: RunningStopRequest): RunningStopResponse {
+        val runningRecord = runningRecordDao.getById(request.recordId)
+        runningRecord.stopRunning()
+        return RunningStopResponse(runningRecord.id, request.recordId)
+    }
+
+    fun resume() {
+        TODO()
+    }
+
+    fun done() {
+        TODO()
     }
 }
