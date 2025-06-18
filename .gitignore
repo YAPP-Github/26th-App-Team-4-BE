@@ -43,3 +43,5 @@ build/
 
 ### Custom ###
 **/application-local.yml
+**/dev-env.yml
+**/openapi3.yaml
