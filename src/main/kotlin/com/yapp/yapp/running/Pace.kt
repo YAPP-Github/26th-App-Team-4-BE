@@ -6,7 +6,18 @@ import kotlin.math.roundToLong
 class Pace(
     val pacePerKm: Duration,
 ) {
+    companion object {
+        fun List<Pace>.averagePace(): Pace {
+            if (isEmpty()) return Pace(Duration.ZERO)
+
+            val totalMillis = sumOf { it.pacePerKm.toMillis() }
+            val avgMillis = totalMillis / size
+            return Pace(Duration.ofMillis(avgMillis))
+        }
+    }
+
     constructor(pacePerKm: Long) : this(Duration.ofSeconds(pacePerKm))
+
     constructor(distance: Double, duration: Duration) :
         this(
             if (distance == 0.0) {
