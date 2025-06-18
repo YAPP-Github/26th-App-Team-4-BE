@@ -13,6 +13,8 @@ data class ApiResponse<T>(
     companion object {
         fun <T> success(result: T): ApiResponse<T> = ApiResponse(code = "SUCCESS", result = result, timeStamp = TimeProvider.now())
 
+        fun success(): ApiResponse<Unit> = ApiResponse(code = "SUCCESS", timeStamp = TimeProvider.now())
+
         fun error(
             code: String,
             message: String,

@@ -17,7 +17,7 @@ class RestDocsResponse(
     private val baseFields: MutableList<FieldDescriptor> =
         mutableListOf(
             fieldWithPath("code").description("응답 코드"),
-            fieldWithPath("result").description("응답 객체 (에러가 발생한 경우 result는 없습니다)").optional(),
+            fieldWithPath("result").description("응답 객체 (응답 값이 없는 경우 result는 없습니다)").optional(),
             fieldWithPath("timeStamp").description("응답 시간"),
         ),
 ) {

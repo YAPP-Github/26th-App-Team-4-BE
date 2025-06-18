@@ -1,6 +1,7 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
@@ -10,9 +11,11 @@ import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 
 @Service
+@Transactional
 class RunningService(
     private val runningRecordDao: RunningRecordDao,
     private val runningPointDao: RunningPointDao,
@@ -78,7 +81,8 @@ class RunningService(
         return RunningResumeResponse(saveRunningPoint)
     }
 
-    fun done() {
-        TODO()
+    fun done(request: RunningDoneRequest) {
+        val runningRecord = runningRecordDao.getById(request.recordId)
+        runningRecord.finishRunning()
     }
 }

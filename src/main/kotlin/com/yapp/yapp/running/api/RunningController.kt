@@ -2,6 +2,7 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.running.RunningService
+import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
@@ -47,5 +48,13 @@ class RunningController(
         @RequestBody request: RunningResumeRequest,
     ): ApiResponse<RunningResumeResponse> {
         return ApiResponse.success(runningService.resume(request))
+    }
+
+    @PostMapping("/done")
+    fun done(
+        @RequestBody request: RunningDoneRequest,
+    ): ApiResponse<Unit> {
+        runningService.done(request)
+        return ApiResponse.success()
     }
 }
