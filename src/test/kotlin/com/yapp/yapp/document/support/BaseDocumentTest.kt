@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.restassured.RestAssuredRestDocumentation
 
 @ExtendWith(RestDocumentationExtension::class)
@@ -39,7 +40,13 @@ abstract class BaseDocumentTest {
 
     protected fun request(): RestDocsRequest = RestDocsRequest(resourceBuilder)
 
-    protected fun response(): RestDocsResponse = RestDocsResponse(resourceBuilder)
+    protected fun response(): RestDocsResponse =
+        RestDocsResponse(resourceBuilder)
+            .responseBodyField(
+                fieldWithPath("code").description("응답 코드"),
+                fieldWithPath("result").description("응답 객체 (에러가 발생한 경우 result는 없습니다)").optional(),
+                fieldWithPath("timeStamp").description("응답 시간"),
+            )
 
     protected fun filter(
         identifierPrefix: String,
