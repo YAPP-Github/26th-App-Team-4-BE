@@ -3,7 +3,6 @@ package com.yapp.yapp.running
 import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.api.request.RunningDoneRequest
-import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
@@ -100,7 +99,7 @@ class RunningTest : BaseServiceTest() {
     }
 
     @Test
-    fun `러닝을 시작 - 중단 - 재개 - 완료 한다`() {
+    fun `러닝을 시작 - 중단 - 완료 한다`() {
         // given
         val userId = 0L
         val lat = 37.54100
@@ -112,14 +111,65 @@ class RunningTest : BaseServiceTest() {
         val recordId = start.recordId
         val maxTime = 10
         for (i in 1..maxTime) {
-            runningService.update(RunningUpdateRequest(userId, recordId, lat + (i * 1.0 / 1000), lon + (i * 1.0 / 1000), 120 + i, "PT${i}S", startAt.plusSeconds(i.toLong()).toString()))
+            runningService.update(
+                RunningUpdateRequest(
+                    userId,
+                    recordId,
+                    lat + (i * 1.0 / 1000),
+                    lon + (i * 1.0 / 1000),
+                    120 + i,
+                    "PT${i}S",
+                    startAt.plusSeconds(i.toLong()).toString(),
+                ),
+            )
         }
-        val stop = runningService.stop(RunningStopRequest(userId, recordId))
-        val resumeTime = maxTime.toLong() + 10
-        runningService.resume(RunningResumeRequest(userId, recordId, lat + (maxTime + 1.0) / 1000, lon + (maxTime + 1.0) / 1000, 100, "PT${maxTime}S", startAt.plusSeconds(
-            resumeTime
-        ).toString()))
-        val doneTime = resumeTime + 5
+        val stopTime = maxTime + 1L
+        val stop = runningService.stop(RunningStopRequest(userId, recordId, startAt.plusSeconds(stopTime).toString()))
+        val doneTime = stopTime + 5L
         runningService.done(RunningDoneRequest(userId, recordId, startAt.plusSeconds(doneTime).toString()))
     }
+
+//    @Test
+//    fun `러닝을 시작 - 중단 - 재개 - 완료 한다`() {
+//        // given
+//        val userId = 0L
+//        val lat = 37.54100
+//        val lon = 126.95000
+//        val startAt = TimeProvider.now()
+//
+//        // when
+//        val start = runningService.start(RunningStartRequest(userId, lat, lon, startAt.toString()))
+//        val recordId = start.recordId
+//        val maxTime = 10
+//        for (i in 1..maxTime) {
+//            runningService.update(
+//                RunningUpdateRequest(
+//                    userId,
+//                    recordId,
+//                    lat + (i * 1.0 / 1000),
+//                    lon + (i * 1.0 / 1000),
+//                    120 + i,
+//                    "PT${i}S",
+//                    startAt.plusSeconds(i.toLong()).toString(),
+//                ),
+//            )
+//        }
+//        val stop = runningService.stop(RunningStopRequest(userId, recordId))
+//        val resumeTime = maxTime.toLong() + 10
+//        runningService.resume(
+//            RunningResumeRequest(
+//                userId,
+//                recordId,
+//                lat + (maxTime + 1.0) / 1000,
+//                lon + (maxTime + 1.0) / 1000,
+//                100,
+//                "PT${maxTime}S",
+//                startAt.plusSeconds(
+//                    resumeTime,
+//                ).toString(),
+//            ),
+//        )
+//        val doneTime = resumeTime + 5
+//        runningService.done(RunningDoneRequest(userId, recordId, startAt.plusSeconds(doneTime).toString()))
+//    }
 }

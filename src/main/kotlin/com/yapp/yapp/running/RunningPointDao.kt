@@ -17,8 +17,12 @@ class RunningPointDao(
             .orElseThrow { throw CustomException(ErrorCode.RUNNING_POINT_NOT_FOUND) }
     }
 
-    fun getPrePointByRecordRecord(runningRecord: RunningRecord): RunningPoint {
+    fun getPrePointByRunningRecord(runningRecord: RunningRecord): RunningPoint {
         return runningPointRepository.findTopByRunningRecordAndIsDeletedFalseOrderByOrdDesc(runningRecord)
             ?: throw CustomException(ErrorCode.RUNNING_POINT_NOT_FOUND)
+    }
+
+    fun getAllPointByRunningRecord(runningRecord: RunningRecord): List<RunningPoint> {
+        return runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrdAsc(runningRecord)
     }
 }

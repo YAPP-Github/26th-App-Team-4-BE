@@ -7,6 +7,7 @@ import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
@@ -53,8 +54,7 @@ class RunningController(
     @PostMapping("/done")
     fun done(
         @RequestBody request: RunningDoneRequest,
-    ): ApiResponse<Unit> {
-        runningService.done(request)
-        return ApiResponse.success()
+    ): ApiResponse<RunningDoneResponse> {
+        return ApiResponse.success(runningService.done(request))
     }
 }

@@ -1,11 +1,14 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.running.Pace.Companion.averagePace
+import com.yapp.yapp.running.RunningMetricsCalculator.roundTo
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
@@ -38,7 +41,7 @@ class RunningService(
 
     fun update(request: RunningUpdateRequest): RunningUpdateResponse {
         val runningRecord = runningRecordDao.getById(request.recordId)
-        val preRunningPoint = runningPointDao.getPrePointByRecordRecord(runningRecord)
+        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
         val newRunningPoint =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -65,7 +68,7 @@ class RunningService(
 
     fun resume(request: RunningResumeRequest): RunningResumeResponse {
         val runningRecord = runningRecordDao.getById(request.recordId)
-        val preRunningPoint = runningPointDao.getPrePointByRecordRecord(runningRecord)
+        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
         val newRunningPoint =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -81,8 +84,19 @@ class RunningService(
         return RunningResumeResponse(saveRunningPoint)
     }
 
-    fun done(request: RunningDoneRequest) {
+    fun done(request: RunningDoneRequest): RunningDoneResponse {
         val runningRecord = runningRecordDao.getById(request.recordId)
         runningRecord.finishRunning()
+        val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
+        runningRecord.totalRunningTime = runningPoints.last().totalRunningTime
+        runningRecord.totalRunningDistance = runningPoints.last().totalRunningDistance
+        runningRecord.totalCalories = runningPoints.sumOf { it.calories }
+        runningRecord.averageSpeed = (runningPoints.sumOf { it.speed } / runningPoints.size).roundTo()
+        runningRecord.averagePace = runningPoints.map { it.pace }.averagePace()
+        return RunningDoneResponse(runningRecord)
+    }
+
+    fun getRunningRecord(runningId: Long) {
+        val runningRecord = runningRecordDao.getById(runningId)
     }
 }

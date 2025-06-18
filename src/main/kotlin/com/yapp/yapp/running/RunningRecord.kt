@@ -2,6 +2,7 @@ package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.converter.DurationConverter
+import com.yapp.yapp.running.converter.PaceConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -21,7 +22,7 @@ class RunningRecord(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @Column(nullable = false)
-    var totalDistance: Double = 0.0,
+    var totalRunningDistance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = DurationConverter::class)
     var totalRunningTime: Duration = Duration.ZERO,
@@ -31,6 +32,9 @@ class RunningRecord(
     val startAt: OffsetDateTime = TimeProvider.now(),
     @Column(nullable = false)
     var averageSpeed: Double = 0.0,
+    @Column(nullable = false)
+    @Convert(converter = PaceConverter::class)
+    var averagePace: Pace = Pace(0),
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var runningStatus: RunningStatus = RunningStatus.READY,

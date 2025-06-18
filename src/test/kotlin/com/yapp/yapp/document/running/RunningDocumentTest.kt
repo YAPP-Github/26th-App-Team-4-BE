@@ -152,12 +152,13 @@ class RunningDocumentTest : BaseDocumentTest() {
             ),
         )
 
-        val request = RunningStopRequest(userId, startResponse.recordId)
+        val request = RunningStopRequest(userId, startResponse.recordId, "2025-06-17T16:12:02+09:00")
         val restDocsRequest =
             request()
                 .requestBodyField(
                     fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("recordId").description("러닝 기록 ID"),
+                    fieldWithPath("timeStamp").description("러닝 중단 시간"),
                 )
         val restDocsResponse =
             response()
@@ -215,7 +216,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        runningService.stop(RunningStopRequest(userId, startResponse.recordId))
+        runningService.stop(RunningStopRequest(userId, startResponse.recordId, "2025-06-17T16:12:02+09:00"))
 
         val request =
             RunningResumeRequest(
@@ -313,7 +314,16 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("timeStamp").description("러닝 중단 시간"),
                 )
-        val restDocsResponse = response().responseBodyField()
+        val restDocsResponse =
+            response().responseBodyFieldWithResult(
+                fieldWithPath("result.recordId").description("러닝 기록 ID"),
+                fieldWithPath("result.totalRunningDistance").description("총 러닝 거리 (m)"),
+                fieldWithPath("result.totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
+                fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
+                fieldWithPath("result.startAt").description("러닝 시작 시간"),
+                fieldWithPath("result.averageSpeed").description("평균 속도 (m/s)"),
+                fieldWithPath("result.averagePace").description("평균 페이스 (1km 이동하는데 걸리는 시간), 초 단위까지 제공"),
+            )
 
         val filter =
             filter("러닝 API", "러닝 완료")
