@@ -38,6 +38,12 @@ class RestDocsResponse(
         return this
     }
 
+    fun responseBodyFieldInError(vararg descriptors: FieldDescriptor): RestDocsResponse {
+        resourceBuilder.responseFields(*descriptors)
+        snippets.add(responseFields(*descriptors))
+        return this
+    }
+
     fun getSnippets(): MutableList<Snippet?> {
         return List.copyOf<Snippet?>(snippets)
     }
