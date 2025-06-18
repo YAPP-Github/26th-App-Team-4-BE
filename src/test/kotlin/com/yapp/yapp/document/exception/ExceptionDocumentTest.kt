@@ -14,7 +14,7 @@ class ExceptionDocumentTest : BaseDocumentTest() {
         // given
         val restDocsResponse =
             response()
-                .responseBodyFieldInError(
+                .responseBodyFieldWithError(
                     fieldWithPath("code").description("에러 코드"),
                     fieldWithPath("message").description("에러 메시지").optional(),
                     fieldWithPath("timeStamp").description("응답 시간"),

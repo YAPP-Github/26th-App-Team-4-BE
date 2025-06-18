@@ -24,7 +24,7 @@ class SampleDocumentTest : BaseDocumentTest() {
 
         val restDocsResponse =
             response()
-                .responseBodyField(
+                .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("유저 ID"),
                     fieldWithPath("result.name").description("유저 이름"),
                     fieldWithPath("result.email").description("유저 이메일"),

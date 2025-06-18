@@ -14,12 +14,6 @@ import java.util.List
 class RestDocsResponse(
     private val resourceBuilder: ResourceSnippetParametersBuilder,
     private val snippets: MutableList<Snippet?> = LinkedList<Snippet?>(),
-    private val baseFields: MutableList<FieldDescriptor> =
-        mutableListOf(
-            fieldWithPath("code").description("응답 코드"),
-            fieldWithPath("result").description("응답 객체 (응답 값이 없는 경우 result는 없습니다)").optional(),
-            fieldWithPath("timeStamp").description("응답 시간"),
-        ),
 ) {
     fun setSchema(name: String): RestDocsResponse {
         resourceBuilder.responseSchema(Schema.schema(name))
@@ -33,12 +27,20 @@ class RestDocsResponse(
     }
 
     fun responseBodyField(vararg descriptors: FieldDescriptor): RestDocsResponse {
+        val baseFields = getBaseFiled()
         resourceBuilder.responseFields(*descriptors, *baseFields.toTypedArray())
         snippets.add(responseFields(*descriptors, *baseFields.toTypedArray()))
         return this
     }
 
-    fun responseBodyFieldInError(vararg descriptors: FieldDescriptor): RestDocsResponse {
+    fun responseBodyFieldWithResult(vararg descriptors: FieldDescriptor): RestDocsResponse {
+        val baseFields = getBaseFieldWithResult()
+        resourceBuilder.responseFields(*descriptors, *baseFields.toTypedArray())
+        snippets.add(responseFields(*descriptors, *baseFields.toTypedArray()))
+        return this
+    }
+
+    fun responseBodyFieldWithError(vararg descriptors: FieldDescriptor): RestDocsResponse {
         resourceBuilder.responseFields(*descriptors)
         snippets.add(responseFields(*descriptors))
         return this
@@ -50,5 +52,20 @@ class RestDocsResponse(
 
     fun toSnippets(): Array<Snippet> {
         return snippets.filterNotNull().toTypedArray()
+    }
+
+    private fun getBaseFiled(): MutableList<FieldDescriptor> {
+        return mutableListOf(
+            fieldWithPath("code").description("응답 코드"),
+            fieldWithPath("timeStamp").description("응답 시간"),
+        )
+    }
+
+    private fun getBaseFieldWithResult(): MutableList<FieldDescriptor> {
+        return mutableListOf(
+            fieldWithPath("code").description("응답 코드"),
+            fieldWithPath("timeStamp").description("응답 시간"),
+            fieldWithPath("result").description("응답 객체 (응답 값이 없는 경우 result는 없습니다)").optional(),
+        )
     }
 }
