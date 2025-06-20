@@ -1,8 +1,6 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.running.Pace.Companion.averagePace
-import com.yapp.yapp.running.RunningMetricsCalculator.roundTo
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -20,8 +18,6 @@ import java.time.Duration
 @Service
 @Transactional
 class RunningService(
-    private val runningRecordDao: RunningRecordDao,
-    private val runningPointDao: RunningPointDao,
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
 ) {
@@ -67,14 +63,9 @@ class RunningService(
     }
 
     fun done(request: RunningDoneRequest): RunningDoneResponse {
-        val runningRecord = runningRecordDao.getById(request.recordId)
-        runningRecord.finishRunning()
-        val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
-        runningRecord.totalRunningTime = runningPoints.last().totalRunningTime
-        runningRecord.totalRunningDistance = runningPoints.last().totalRunningDistance
-        runningRecord.totalCalories = runningPoints.sumOf { it.calories }
-        runningRecord.averageSpeed = (runningPoints.sumOf { it.speed } / runningPoints.size).roundTo()
-        runningRecord.averagePace = runningPoints.map { it.pace }.averagePace()
-        return RunningDoneResponse(runningRecord)
+        val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
+        val runningPoints = runningPointManger.getRunningPoints(runningRecord)
+        val finishRunningRecord = runningRecordManager.finishRunningRecord(request.recordId, runningPoints)
+        return RunningDoneResponse(finishRunningRecord)
     }
 }

@@ -24,10 +24,6 @@ class RunningPointManger(
         runningPointDao.save(runningPoint)
     }
 
-    fun getLastRunningPoint(runningRecord: RunningRecord): RunningPoint {
-        return runningPointDao.getPrePointByRunningRecord(runningRecord)
-    }
-
     fun saveNewRunningPoints(
         runningRecord: RunningRecord,
         lat: Double,
@@ -52,5 +48,9 @@ class RunningPointManger(
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
         newRunningPoint.pace = Pace(distance = newRunningPoint.totalRunningDistance, duration = totalRunningTime)
         return runningPointDao.save(newRunningPoint)
+    }
+
+    fun getRunningPoints(runningRecord: RunningRecord): List<RunningPoint> {
+        return runningPointDao.getAllPointByRunningRecord(runningRecord)
     }
 }

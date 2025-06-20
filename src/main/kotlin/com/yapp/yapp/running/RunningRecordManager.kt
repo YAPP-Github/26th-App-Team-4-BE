@@ -1,5 +1,7 @@
 package com.yapp.yapp.running
 
+import com.yapp.yapp.running.Pace.Companion.averagePace
+import com.yapp.yapp.running.RunningMetricsCalculator.roundTo
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
@@ -24,6 +26,20 @@ class RunningRecordManager(
     fun resumeRunningRecord(id: Long): RunningRecord {
         val runningRecord = runningRecordDao.getById(id)
         runningRecord.resumeRunning()
+        return runningRecord
+    }
+
+    fun finishRunningRecord(
+        id: Long,
+        runningPoints: List<RunningPoint>,
+    ): RunningRecord {
+        val runningRecord = runningRecordDao.getById(id)
+        runningRecord.finishRunning()
+        runningRecord.totalRunningTime = runningPoints.last().totalRunningTime
+        runningRecord.totalRunningDistance = runningPoints.last().totalRunningDistance
+        runningRecord.totalCalories = runningPoints.sumOf { it.calories }
+        runningRecord.averageSpeed = (runningPoints.sumOf { it.speed } / runningPoints.size).roundTo()
+        runningRecord.averagePace = runningPoints.map { it.pace }.averagePace()
         return runningRecord
     }
 }
