@@ -14,6 +14,6 @@ class RunningRecordDao(
 
     fun getById(id: Long): RunningRecord {
         return runningRecordRepository.findById(id)
-            .orElseThrow { throw CustomException(ErrorCode.RUNNING_RECORD_NOT_FOUND) }
+            .orElseThrow { throw CustomException(ErrorCode.RECORD_NOT_FOUND) }
     }
 }
