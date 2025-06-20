@@ -7,11 +7,17 @@ import java.time.OffsetDateTime
 class RunningRecordManager(
     private val runningRecordDao: RunningRecordDao,
 ) {
-    fun start(startAt: OffsetDateTime): RunningRecord {
+    fun startRunningRecord(startAt: OffsetDateTime): RunningRecord {
         val runningRecord = RunningRecord(startAt = startAt)
         runningRecord.startRunning()
         return runningRecordDao.save(runningRecord)
     }
 
     fun getRunningRecord(id: Long): RunningRecord = runningRecordDao.getById(id)
+
+    fun stopRunningRecord(id: Long): RunningRecord {
+        val runningRecord = runningRecordDao.getById(id)
+        runningRecord.finishRunning()
+        return runningRecord
+    }
 }
