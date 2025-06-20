@@ -20,4 +20,10 @@ class RunningRecordManager(
         runningRecord.finishRunning()
         return runningRecord
     }
+
+    fun resumeRunningRecord(id: Long): RunningRecord {
+        val runningRecord = runningRecordDao.getById(id)
+        runningRecord.resumeRunning()
+        return runningRecord
+    }
 }

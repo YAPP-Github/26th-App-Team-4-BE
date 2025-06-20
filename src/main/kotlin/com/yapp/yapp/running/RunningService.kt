@@ -53,21 +53,17 @@ class RunningService(
     }
 
     fun resume(request: RunningResumeRequest): RunningResumeResponse {
-        val runningRecord = runningRecordDao.getById(request.recordId)
-        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
-        val newRunningPoint =
-            RunningPoint(
+        val runningRecord = runningRecordManager.resumeRunningRecord(request.recordId)
+        val newRunningPoints =
+            runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
                 lat = request.lat,
                 lon = request.lon,
-                ord = preRunningPoint.ord + 1,
                 heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
                 totalRunningTime = Duration.parse(request.totalRunningTime),
             )
-        runningRecord.resumeRunning()
-        val saveRunningPoint = runningPointDao.save(newRunningPoint)
-        return RunningResumeResponse(saveRunningPoint)
+        return RunningResumeResponse(newRunningPoints)
     }
 
     fun done(request: RunningDoneRequest): RunningDoneResponse {
@@ -80,9 +76,5 @@ class RunningService(
         runningRecord.averageSpeed = (runningPoints.sumOf { it.speed } / runningPoints.size).roundTo()
         runningRecord.averagePace = runningPoints.map { it.pace }.averagePace()
         return RunningDoneResponse(runningRecord)
-    }
-
-    fun getRunningRecord(runningId: Long) {
-        val runningRecord = runningRecordDao.getById(runningId)
     }
 }
