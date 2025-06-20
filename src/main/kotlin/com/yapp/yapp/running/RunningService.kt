@@ -22,20 +22,14 @@ import java.time.Duration
 class RunningService(
     private val runningRecordDao: RunningRecordDao,
     private val runningPointDao: RunningPointDao,
+    private val runningRecordManager: RunningRecordManager,
+    private val runningPointManger: RunningPointManger,
 ) {
     fun start(request: RunningStartRequest): RunningStartResponse {
         // TODO 유저 정보 조회
-        val runningRecord = runningRecordDao.save(RunningRecord(startAt = TimeProvider.parse(request.timeStamp)))
-        runningRecord.startRunning()
-        val runningPoint =
-            runningPointDao.save(
-                RunningPoint(
-                    runningRecord = runningRecord,
-                    lat = request.lat,
-                    lon = request.lon,
-                    timeStamp = TimeProvider.parse(request.timeStamp),
-                ),
-            )
+        val startAt = TimeProvider.parse(request.timeStamp)
+        val runningRecord = runningRecordManager.start(startAt)
+        runningPointManger.saveRunningPoints(runningRecord, request.lat, request.lon, startAt)
         return RunningStartResponse(runningRecord.id)
     }
 
