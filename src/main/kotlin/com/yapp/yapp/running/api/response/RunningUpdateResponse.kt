@@ -14,7 +14,7 @@ data class RunningUpdateResponse(
     var speed: Double,
     val distance: Double,
     val pace: Duration,
-    val heartRate: Int = 0,
+    val heartRate: Int? = 0,
     val calories: Int,
     val timeStamp: OffsetDateTime,
 ) {

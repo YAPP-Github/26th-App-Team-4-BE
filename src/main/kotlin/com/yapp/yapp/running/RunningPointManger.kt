@@ -1,6 +1,7 @@
 package com.yapp.yapp.running
 
 import org.springframework.stereotype.Component
+import java.time.Duration
 import java.time.OffsetDateTime
 
 @Component
@@ -21,5 +22,35 @@ class RunningPointManger(
                 timeStamp = timeStamp,
             )
         runningPointDao.save(runningPoint)
+    }
+
+    fun getLastRunningPoint(runningRecord: RunningRecord): RunningPoint {
+        return runningPointDao.getPrePointByRunningRecord(runningRecord)
+    }
+
+    fun saveNewRunningPoints(
+        runningRecord: RunningRecord,
+        lat: Double,
+        lon: Double,
+        heartRate: Int?,
+        timeStamp: OffsetDateTime,
+        totalRunningTime: Duration,
+    ): RunningPoint {
+        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
+        val newRunningPoint =
+            RunningPoint(
+                runningRecord = runningRecord,
+                lat = lat,
+                lon = lon,
+                ord = preRunningPoint.ord + 1,
+                heartRate = heartRate,
+                timeStamp = timeStamp,
+                totalRunningTime = totalRunningTime,
+            )
+        newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
+        newRunningPoint.speed = RunningMetricsCalculator.calculateSpeed(preRunningPoint, newRunningPoint)
+        newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
+        newRunningPoint.pace = Pace(distance = newRunningPoint.totalRunningDistance, duration = totalRunningTime)
+        return runningPointDao.save(newRunningPoint)
     }
 }

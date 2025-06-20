@@ -82,7 +82,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
-                    fieldWithPath("heartRate").description("심박수"),
+                    fieldWithPath("heartRate").description("심박수").optional(),
                     fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
                     fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
                 )
@@ -98,7 +98,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.speed").description("현재 속도 (m/s)"),
                     fieldWithPath("result.distance").description("현재 총 거리 (m)"),
                     fieldWithPath("result.pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
-                    fieldWithPath("result.heartRate").description("현재 심박수"),
+                    fieldWithPath("result.heartRate").description("현재 심박수").optional(),
                     fieldWithPath("result.calories").description("총 소모 칼로리"),
                     fieldWithPath("result.timeStamp").description("데이터를 기록한 시간"),
                 )
@@ -235,7 +235,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
-                    fieldWithPath("heartRate").description("심박수"),
+                    fieldWithPath("heartRate").description("심박수").optional(),
                     fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
                     fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
                 )
@@ -251,7 +251,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.speed").description("현재 속도 (m/s)"),
                     fieldWithPath("result.distance").description("현재 총 거리 (m)"),
                     fieldWithPath("result.pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
-                    fieldWithPath("result.heartRate").description("현재 심박수"),
+                    fieldWithPath("result.heartRate").description("현재 심박수").optional(),
                     fieldWithPath("result.calories").description("총 소모 칼로리"),
                     fieldWithPath("result.timeStamp").description("데이터를 기록한 시간"),
                 )

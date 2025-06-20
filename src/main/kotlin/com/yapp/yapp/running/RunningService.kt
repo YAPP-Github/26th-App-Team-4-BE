@@ -34,24 +34,17 @@ class RunningService(
     }
 
     fun update(request: RunningUpdateRequest): RunningUpdateResponse {
-        val runningRecord = runningRecordDao.getById(request.recordId)
-        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
+        val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
         val newRunningPoint =
-            RunningPoint(
+            runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
                 lat = request.lat,
                 lon = request.lon,
-                ord = preRunningPoint.ord + 1,
                 heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
                 totalRunningTime = Duration.parse(request.totalRunningTime),
             )
-        newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
-        newRunningPoint.speed = RunningMetricsCalculator.calculateSpeed(preRunningPoint, newRunningPoint)
-        newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
-        newRunningPoint.pace = Pace(distance = newRunningPoint.totalRunningDistance, duration = Duration.parse(request.totalRunningTime))
-        val saveRunningPoint = runningPointDao.save(newRunningPoint)
-        return RunningUpdateResponse(saveRunningPoint)
+        return RunningUpdateResponse(newRunningPoint)
     }
 
     fun stop(request: RunningStopRequest): RunningStopResponse {
