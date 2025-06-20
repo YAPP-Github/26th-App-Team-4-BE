@@ -5,6 +5,7 @@ import com.epages.restdocs.apispec.Schema
 import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders
 import org.springframework.restdocs.payload.FieldDescriptor
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.snippet.Snippet
 import java.util.LinkedList
@@ -26,6 +27,20 @@ class RestDocsResponse(
     }
 
     fun responseBodyField(vararg descriptors: FieldDescriptor): RestDocsResponse {
+        val baseFields = getBaseFiled()
+        resourceBuilder.responseFields(*descriptors, *baseFields.toTypedArray())
+        snippets.add(responseFields(*descriptors, *baseFields.toTypedArray()))
+        return this
+    }
+
+    fun responseBodyFieldWithResult(vararg descriptors: FieldDescriptor): RestDocsResponse {
+        val baseFields = getBaseFieldWithResult()
+        resourceBuilder.responseFields(*descriptors, *baseFields.toTypedArray())
+        snippets.add(responseFields(*descriptors, *baseFields.toTypedArray()))
+        return this
+    }
+
+    fun responseBodyFieldWithError(vararg descriptors: FieldDescriptor): RestDocsResponse {
         resourceBuilder.responseFields(*descriptors)
         snippets.add(responseFields(*descriptors))
         return this
@@ -37,5 +52,20 @@ class RestDocsResponse(
 
     fun toSnippets(): Array<Snippet> {
         return snippets.filterNotNull().toTypedArray()
+    }
+
+    private fun getBaseFiled(): MutableList<FieldDescriptor> {
+        return mutableListOf(
+            fieldWithPath("code").description("응답 코드"),
+            fieldWithPath("timeStamp").description("응답 시간"),
+        )
+    }
+
+    private fun getBaseFieldWithResult(): MutableList<FieldDescriptor> {
+        return mutableListOf(
+            fieldWithPath("code").description("응답 코드"),
+            fieldWithPath("timeStamp").description("응답 시간"),
+            fieldWithPath("result").description("응답 객체 (응답 값이 없는 경우 result는 없습니다)").optional(),
+        )
     }
 }

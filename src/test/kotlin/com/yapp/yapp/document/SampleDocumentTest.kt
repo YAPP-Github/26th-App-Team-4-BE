@@ -6,6 +6,7 @@ import com.yapp.yapp.user.api.request.UserCreateRequest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 
 class SampleDocumentTest : BaseDocumentTest() {
@@ -23,9 +24,7 @@ class SampleDocumentTest : BaseDocumentTest() {
 
         val restDocsResponse =
             response()
-                .responseBodyField(
-                    fieldWithPath("code").description("응답 코드"),
-                    fieldWithPath("result").description("유저 정보"),
+                .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("유저 ID"),
                     fieldWithPath("result.name").description("유저 이름"),
                     fieldWithPath("result.email").description("유저 이메일"),
@@ -43,7 +42,7 @@ class SampleDocumentTest : BaseDocumentTest() {
 
         RestAssured.given(spec).log().all()
             .filter(restDocsFilter)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/users")
             .then().log().all()
