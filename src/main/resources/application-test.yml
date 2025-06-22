@@ -20,7 +20,7 @@ spring:
     redis:
       client-name: fitrun
       host: localhost
-      port: 6739
+      port: 6379
 
 jwt:
   issuer: test
