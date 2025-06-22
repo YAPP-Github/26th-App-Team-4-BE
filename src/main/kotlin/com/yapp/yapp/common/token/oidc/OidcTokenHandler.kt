@@ -28,10 +28,10 @@ class OidcTokenHandler(
                 key.toKey()
             }.build()
 
-    fun parseEmail(token: String): String {
+    fun parseClaims(token: String): Map<String, Any?> {
         try {
             val claims = getValidClaims(token)
-            return claims["email"] as? String ?: throw JwtException("Missing 'email' in Claims")
+            return claims.entries.associate { it.key to it.value }
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {

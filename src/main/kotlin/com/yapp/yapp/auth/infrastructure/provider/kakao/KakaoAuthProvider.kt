@@ -4,6 +4,8 @@ import com.yapp.yapp.auth.domain.AuthProvider
 import com.yapp.yapp.auth.domain.AuthUserInfo
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.cache.CacheNames
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.oidc.OidcProperties
 import com.yapp.yapp.common.token.oidc.OidcTokenHandler
 import org.springframework.beans.factory.annotation.Value
@@ -18,6 +20,12 @@ class KakaoAuthProvider(
     private val clientId: String,
     private val kakaoFeignClient: KakaoFeignClient,
 ) : AuthProvider {
+    companion object {
+        private const val EMAIL_CLAIM = "email"
+        private const val NICKNAME_CLAIM = "nickname"
+        private const val PROFILE_CLAIM = "profile"
+    }
+
     override fun authenticate(
         token: String,
         nonce: String?,
@@ -26,9 +34,13 @@ class KakaoAuthProvider(
         properties.nonce = nonce
 
         val handler = OidcTokenHandler(properties)
-        val email = handler.parseEmail(token)
+        val claims = handler.parseClaims(token)
+        val email =
+            claims[EMAIL_CLAIM] as String? ?: throw CustomException(ErrorCode.TOKEN_CLAIM_MISSING)
+        val nickname = claims[NICKNAME_CLAIM] as String?
+        val profile = claims[PROFILE_CLAIM] as String?
 
-        return KakaoAuthUserInfo(email)
+        return KakaoAuthUserInfo(email, nickname, profile)
     }
 
     override fun supports(providerType: ProviderType): Boolean {

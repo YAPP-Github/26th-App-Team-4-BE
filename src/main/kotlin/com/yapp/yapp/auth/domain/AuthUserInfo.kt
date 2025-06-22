@@ -3,5 +3,7 @@ package com.yapp.yapp.auth.domain
 interface AuthUserInfo {
     fun getEmail(): String
 
-    fun getUserId(): Long
+    fun getProfile(): String?
+
+    fun getName(): String?
 }
