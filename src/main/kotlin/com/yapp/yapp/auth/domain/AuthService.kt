@@ -1,39 +1,38 @@
 package com.yapp.yapp.auth.domain
 
+import com.yapp.yapp.auth.api.request.LoginRequest
+import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.token.jwt.JwtTokenGenerator
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
-import com.yapp.yapp.user.domain.User
-import com.yapp.yapp.user.domain.UserRepository
+import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
-import java.util.UUID
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class AuthService(
     private val authManager: AuthManager,
     private val jwtTokenGenerator: JwtTokenGenerator,
     private val jwtTokenHandler: JwtTokenHandler,
-    private val userRepository: UserRepository,
+    private val userManager: UserManager,
 ) {
     fun login(
         providerType: ProviderType,
-        token: String,
-        nonce: String?,
-    ): TokenResponse {
-        val authUserInfo = authManager.authenticate(providerType, token, nonce)
+        loginRequest: LoginRequest,
+    ): LoginResponse {
+        val authUserInfo =
+            authManager.authenticate(providerType, loginRequest.idToken, loginRequest.nonce)
 
         val email = authUserInfo.getEmail()
-        val user =
-            userRepository.findByEmail(email) ?: userRepository.save(
-                User(
-                    email = email,
-                    name = UUID.randomUUID().toString(),
-                ),
-            )
+        val name = authUserInfo.getName()
+        val profile = authUserInfo.getProfile()
+        val user = userManager.getUserInfo(email, name, profile)
 
         val tokenInfo = jwtTokenGenerator.generateTokens(user.id)
-        return TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
+        val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
+        return LoginResponse(tokenResponse, user.isNew)
     }
 
     fun logout(refreshToken: String) {
