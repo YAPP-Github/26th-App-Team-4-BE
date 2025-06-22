@@ -42,4 +42,4 @@ oidc:
 
 user:
   default:
-    profile: "test-profile"
+    profile: test-profile
