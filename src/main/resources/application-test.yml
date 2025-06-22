@@ -21,3 +21,25 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+jwt:
+  issuer: http://test.com
+  access-secret: Z1RqM2ZQamRia0hoV01UdVgwYWQ5V0RYdVZlTzdlSFk=
+  access-expiration-millis: 3600000
+  refresh-secret: a2JqeG1IemZYZVRIYlpqM2hHN2xLVGFxVDR0b0RHc2s=
+  refresh-expiration-millis: 604800000
+
+oidc:
+  response-millis: 3600000
+  apple:
+    api:
+      url: https://appleid.apple.com
+      clientId: test-client-id
+  kakao:
+    api:
+      url: https://kauth.kakao.com
+      clientId: test-client-id
+
+user:
+  default:
+    profile: "test-profile"
