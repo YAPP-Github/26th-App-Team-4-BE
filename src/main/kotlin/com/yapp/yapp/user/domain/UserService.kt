@@ -1,14 +1,12 @@
 package com.yapp.yapp.user.domain
 
-import com.yapp.yapp.common.exception.CustomException
-import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.user.api.request.UserCreateRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userRepository: UserRepository,
+    private val userManager: UserManager,
 ) {
     @Transactional
     fun create(request: UserCreateRequest) =
@@ -20,8 +18,7 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun getUserById(id: Long): User {
-        return userRepository.findByIdAndIsDeletedFalse(id)
-            ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
+        return userManager.getActiveUser(id)
     }
 
     @Transactional
