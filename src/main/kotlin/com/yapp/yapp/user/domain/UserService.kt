@@ -11,7 +11,12 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
     @Transactional
-    fun create(request: UserCreateRequest) = userRepository.save(User(email = request.email, name = request.name))
+    fun create(request: UserCreateRequest) =
+        userManager.save(
+            email = request.email,
+            name = request.name,
+            profile = request.profile,
+        )
 
     @Transactional(readOnly = true)
     fun getUserById(id: Long): User {
@@ -24,6 +29,7 @@ class UserService(
         val findUser = getUserById(user.id)
         findUser.name = user.name
         findUser.email = user.email
+        findUser.profile = user.profile
     }
 
     @Transactional

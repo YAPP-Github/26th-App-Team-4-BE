@@ -13,13 +13,14 @@ class SampleDocumentTest : BaseDocumentTest() {
     @Test
     fun `유저 생성 API 문서화 예시`() {
         val user = UserFixture.create()
-        val request = UserCreateRequest(user.name, user.email)
+        val request = UserCreateRequest(user.name, user.email, user.profile)
 
         val restDocsRequest =
             request()
                 .requestBodyField(
                     fieldWithPath("name").description("유저 이름"),
                     fieldWithPath("email").description("유저 이메일"),
+                    fieldWithPath("profile").description("유저 프로필"),
                 )
 
         val restDocsResponse =
@@ -28,6 +29,7 @@ class SampleDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.id").description("유저 ID"),
                     fieldWithPath("result.name").description("유저 이름"),
                     fieldWithPath("result.email").description("유저 이메일"),
+                    fieldWithPath("result.profile").description("유저 프로필"),
                     fieldWithPath("result.isDeleted").description("유저 삭제 여부"),
                 )
 

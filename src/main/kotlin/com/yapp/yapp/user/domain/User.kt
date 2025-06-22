@@ -14,6 +14,7 @@ class User(
     val id: Long = 0L,
     var name: String,
     var email: String,
+    var profile: String,
     var isDeleted: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {

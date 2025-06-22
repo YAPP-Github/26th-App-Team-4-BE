@@ -17,7 +17,7 @@ class UserControllerTest : BaseControllerTest() {
     fun `유저를 생성한다`() {
         // given
         val user = UserFixture.create()
-        val request = UserCreateRequest(user.name, user.email)
+        val request = UserCreateRequest(user.name, user.email, user.profile)
 
         // when
         val result =
@@ -35,6 +35,7 @@ class UserControllerTest : BaseControllerTest() {
         assertAll(
             { Assertions.assertThat(resultUser.name).isEqualTo(user.name) },
             { Assertions.assertThat(resultUser.email).isEqualTo(user.email) },
+            { Assertions.assertThat(resultUser.profile).isEqualTo(user.profile) },
         )
     }
 
