@@ -69,6 +69,11 @@ dependencies {
 
     // Spring Data Redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // Testcontainer
+    implementation("org.testcontainers:testcontainers-bom:1.20.2")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers")
 }
 
 dependencyManagement {
