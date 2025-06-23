@@ -6,6 +6,7 @@ import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.token.jwt.JwtTokenGenerator
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
+import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,13 +27,14 @@ class AuthService(
             authManager.authenticate(providerType, loginRequest.idToken, loginRequest.nonce)
 
         val email = authUserInfo.getEmail()
-        val name = authUserInfo.getName()
+        val name = loginRequest.name ?: authUserInfo.getName()
         val profile = authUserInfo.getProfile()
         val user = userManager.getUserInfo(email, name, profile)
 
         val tokenInfo = jwtTokenGenerator.generateTokens(user.id)
         val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
-        return LoginResponse(tokenResponse, user.isNew)
+        val userResponse = UserResponse(user.id, user.name, user.email, user.profile)
+        return LoginResponse(tokenResponse, userResponse, user.isNew)
     }
 
     fun logout(refreshToken: String) {
