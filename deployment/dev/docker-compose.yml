@@ -50,7 +50,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
-      - ./nginx/log:/var/log/nginx
+      - ./logs/nginx:/var/log/nginx
       - /etc/localtime:/etc/localtime
       - ./docs:/usr/share/nginx/html/docs
     ports:
