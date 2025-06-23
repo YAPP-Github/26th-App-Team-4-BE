@@ -17,6 +17,7 @@ RUN ./gradlew dependencies
 # 이후 전체 소스 복사
 COPY . .
 
+RUN ./gradlew test --build-cache || (cat build/reports/tests/test/*.txt && exit 1)
 RUN ./gradlew bootJar --build-cache
 RUN mkdir -p build/extracted && \
     java -Djarmode=layertools \
