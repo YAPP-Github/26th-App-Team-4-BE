@@ -1,13 +1,12 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.running.Pace.Companion.averagePace
-import com.yapp.yapp.support.BaseEntityTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Test
 import java.time.Duration
 
-class PaceTest : BaseEntityTest() {
+class PaceTest {
     @Test
     fun `페이스를 계산한다`() {
         // given

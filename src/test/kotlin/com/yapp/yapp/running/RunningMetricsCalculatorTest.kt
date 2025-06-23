@@ -1,11 +1,10 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.support.BaseEntityTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
-class RunningMetricsCalculatorTest : BaseEntityTest() {
+class RunningMetricsCalculatorTest {
     @Test
     fun `거리를 계산한다`() {
         // given
