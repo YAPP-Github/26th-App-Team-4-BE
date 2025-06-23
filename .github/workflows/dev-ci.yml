@@ -54,5 +54,5 @@ jobs:
           proxy_port: 22
 
           timeout: 120s
-          source: "src/main/resources/static/dist/"
-          target: "/home/yapp/fitrun/docs/"
+          source: "src/main/resources/static/docs/"
+          target: "/home/yapp/docs/"
