@@ -18,10 +18,10 @@ scrape_configs:
 
   - job_name: nginx-access
     static_configs:
-        - targets: ["localhost"]
-          labels:
-            job: nginx-access
-            __path__: /var/log/fitrun/nginx/access.log
+      - targets: ["localhost"]
+        labels:
+          job: nginx-access
+          __path__: /var/log/fitrun/nginx/access.log
 
   - job_name: nginx-error
     static_configs:
