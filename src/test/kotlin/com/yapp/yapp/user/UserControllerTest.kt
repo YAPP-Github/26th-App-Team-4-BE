@@ -41,7 +41,7 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.id).isEqualTo(loginResponse.user.id) },
             { Assertions.assertThat(response.email).isEqualTo(loginResponse.user.email) },
             { Assertions.assertThat(response.name).isEqualTo(loginResponse.user.name) },
-            { Assertions.assertThat(response.profile).isEqualTo(loginResponse.user.profile) },
+            { Assertions.assertThat(response.profileImage).isEqualTo(loginResponse.user.profileImage) },
         )
     }
 

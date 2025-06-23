@@ -34,7 +34,7 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.id").description("사용자 ID"),
                     fieldWithPath("result.email").description("사용자 이메일"),
                     fieldWithPath("result.name").description("사용자 이름"),
-                    fieldWithPath("result.profile").description("사용자 프로필"),
+                    fieldWithPath("result.profileImage").description("사용자 프로필"),
                 )
 
         val restDocsFilter =

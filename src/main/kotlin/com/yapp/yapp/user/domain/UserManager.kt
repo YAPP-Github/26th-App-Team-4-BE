@@ -7,22 +7,22 @@ import org.springframework.stereotype.Component
 class UserManager(
     private val userDao: UserDao,
     @Value("\${user.default.profile}")
-    private val defaultProfile: String,
+    private val defaultProfileImage: String,
 ) {
     fun getUserInfo(
         email: String,
         name: String?,
-        profile: String?,
+        profileImage: String?,
     ): UserInfo {
         var isNew = false
         val user =
             userDao.findByEmail(email) ?: run {
                 val username = name ?: UsernameGenerator.generate(email)
-                val userProfile = profile ?: defaultProfile
+                val userProfile = profileImage ?: defaultProfileImage
                 isNew = true
                 userDao.save(email, username, userProfile)
             }
-        return UserInfo(user.id, user.email, user.name, user.profile, isNew)
+        return UserInfo(user.id, user.email, user.name, user.profileImage, isNew)
     }
 
     fun getActiveUser(id: Long): User {

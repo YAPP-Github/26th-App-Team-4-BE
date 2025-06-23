@@ -11,9 +11,9 @@ class UserDao(
     fun save(
         email: String,
         name: String,
-        profile: String,
+        profileImage: String,
     ): User {
-        return userRepository.save(User(email = email, name = name, profile = profile))
+        return userRepository.save(User(email = email, name = name, profileImage = profileImage))
     }
 
     fun findByEmail(email: String): User? {

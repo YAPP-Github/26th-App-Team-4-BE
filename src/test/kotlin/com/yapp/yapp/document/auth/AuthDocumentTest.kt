@@ -43,7 +43,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.user.id").description("사용자 ID"),
                     fieldWithPath("result.user.email").description("사용자 이메일"),
                     fieldWithPath("result.user.name").description("사용자 이름"),
-                    fieldWithPath("result.user.profile").description("사용자 프로필"),
+                    fieldWithPath("result.user.profileImage").description("사용자 프로필 사진 링크"),
                     fieldWithPath("result.isNew").description("신규 가입 여부"),
                 )
 

@@ -15,7 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
 class TokenArgumentResolver(
-    tokenHandler: JwtTokenHandler,
+    private val tokenHandler: JwtTokenHandler,
 ) : HandlerMethodArgumentResolver {
     companion object {
         private const val TOKEN_TYPE = "Bearer "
@@ -38,6 +38,8 @@ class TokenArgumentResolver(
         if (authorization == null || !authorization.startsWith(TOKEN_TYPE)) {
             throw CustomException(ErrorCode.INVALID_REQUEST)
         }
-        return authorization.substring(TOKEN_TYPE.length)
+        val token = authorization.substring(TOKEN_TYPE.length)
+        tokenHandler.getUserId(token)
+        return token
     }
 }
