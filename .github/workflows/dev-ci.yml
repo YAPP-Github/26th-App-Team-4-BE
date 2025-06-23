@@ -1,0 +1,58 @@
+name: Dev CI
+
+on:
+  pull_request:
+    branches: [ dev ]
+  workflow_dispatch:
+
+jobs:
+  test-and-generate-docs:
+    name: Run tests and generate API docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.REPO_TOKEN }}
+
+      - name: Start Redis container
+        run: docker run -d --name redis -p 6379:6379 redis:7.2-alpine
+
+      - name: Wait for Redis to be ready
+        run: |
+          echo "Waiting for Redis..."
+          for i in {1..10}; do
+            if docker exec redis redis-cli ping | grep -q "PONG"; then
+              echo "Redis is up!"
+              exit 0
+            fi
+            echo "Still waiting... ($i)"
+            sleep 3
+          done
+          echo "Redis did not start in time"
+          exit 1
+
+      - name: Run tests and generate API Docs
+        run: ./gradlew clean test makeDocument
+
+      - name: Verify docs generated
+        run: ls -R src/main/resources/static/dist
+
+      - name: Upload docs to WAS VM via Bastion
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.DEV_BASTION_KEY }}
+          port: 22
+
+          proxy_host: ${{ secrets.DEV_BASTION_IP }}
+          proxy_username: ${{ secrets.DEV_BASTION_USERNAME }}
+          proxy_key: ${{ secrets.DEV_BASTION_KEY }}
+          proxy_port: 22
+
+          timeout: 120s
+          source: "src/main/resources/static/dist/"
+          target: "/home/yapp/fitrun/docs/"
