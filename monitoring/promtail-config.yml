@@ -13,5 +13,5 @@ scrape_configs:
     static_configs:
       - targets: ["localhost"]
         labels:
-          job: fitrun
-          __path__: /var/log/fitrun/*.log
+          job: fitrun-app
+          __path__: /var/log/fitrun/app/*.log
