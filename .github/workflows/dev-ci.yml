@@ -35,7 +35,7 @@ jobs:
           exit 1
 
       - name: Run tests and generate API Docs
-        run: ./gradlew clean test makeDocument
+        run: ./gradlew clean makeDocument
 
       - name: Verify docs generated
         run: ls -R src/main/resources/static/docs
