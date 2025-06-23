@@ -21,6 +21,7 @@ spring:
       client-name: ${secret.redis.client-name}
       host: ${secret.redis.host}
       port: ${secret.redis.port}
+      password: ${secret.redis.password}
 
 
 jwt:

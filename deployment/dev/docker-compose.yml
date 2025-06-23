@@ -52,6 +52,7 @@ services:
       - ./data/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
       - ./nginx/log:/var/log/nginx
       - /etc/localtime:/etc/localtime
+      - ./docs:/usr/share/nginx/html/docs
     ports:
       - "80:80"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"

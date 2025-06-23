@@ -89,7 +89,7 @@ kotlin {
 }
 
 openapi3 {
-    this.setServer("https://localhost:8080")
+    this.setServer("http://fitrun.p-e.kr")
     title = "FitRun API"
     description = "FitRun API 명세서"
     version = "0.1.0"
@@ -101,9 +101,10 @@ openapi3 {
 tasks.register<Copy>("makeDocument") {
     group = "documentation"
     description = "Generate API Docs and copy to static folder."
+    dependsOn("test")
     dependsOn("ktlintFormat")
     dependsOn("openapi3") // openapi3 Task가 먼저 실행되도록 설정
-    delete("src/main/resources/static/docs/")
+    delete("src/main/resources/static/docs/openapi3.yaml")
     copy {
         from("build/docs/") // 복제할 OAS 파일 지정
         into("src/main/resources/static/docs/") // 타겟 디렉터리로 파일 복제
@@ -116,6 +117,10 @@ tasks.withType<Test> {
 
 tasks.named<ProcessResources>("processResources") {
     dependsOn("initSetting")
+}
+
+tasks.named("bootJar") {
+    dependsOn("makeDocument")
 }
 
 tasks.register("initSetting") {
