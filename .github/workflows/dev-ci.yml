@@ -56,3 +56,7 @@ jobs:
           timeout: 120s
           source: "build/docs/openapi3.yaml"
           target: "/home/yapp/docs/"
+
+          script: |
+            mv ~/docs/build/docs/* ~/docs
+            rm -rf ~/docs/build
