@@ -14,15 +14,29 @@ class UserManager(
         name: String?,
         profileImage: String?,
     ): UserInfo {
-        var isNew = false
-        val user =
-            userDao.findByEmail(email) ?: run {
-                val username = name ?: UsernameGenerator.generate(email)
-                val userProfile = profileImage ?: defaultProfileImage
-                isNew = true
-                userDao.save(email, username, userProfile)
-            }
-        return UserInfo(user.id, user.email, user.name, user.profileImage, isNew)
+        val user = userDao.findByEmail(email)
+        val userInfo = user?.toUserInfo() ?: save(email, name, profileImage)
+        return userInfo
+    }
+
+    fun User.toUserInfo(): UserInfo {
+        return UserInfo(
+            id = this.id,
+            email = this.email,
+            name = this.name,
+            profileImage = this.profileImage,
+        )
+    }
+
+    fun save(
+        email: String,
+        name: String?,
+        profileImage: String?,
+    ): UserInfo {
+        val tempName = name ?: UsernameGenerator.generate(email)
+        val userProfile = profileImage ?: defaultProfileImage
+        val user = userDao.save(email, tempName, userProfile)
+        return UserInfo(user.id, user.email, user.name, user.profileImage, true)
     }
 
     fun getActiveUser(id: Long): User {
