@@ -84,7 +84,7 @@ kotlin {
 }
 
 openapi3 {
-    this.setServer("https://localhost:8080")
+    this.setServer("http://fitrun.p-e.kr")
     title = "FitRun API"
     description = "FitRun API 명세서"
     version = "0.1.0"
