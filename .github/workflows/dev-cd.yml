@@ -2,7 +2,7 @@ name: Dev CD
 
 on:
   workflow_dispatch:
-  push:
+  pull_request: #TODO
     branches: [ dev ]
 
 jobs:
