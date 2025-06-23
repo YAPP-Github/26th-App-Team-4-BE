@@ -25,14 +25,6 @@ class UserManager(
         return UserInfo(user.id, user.email, user.name, user.profile, isNew)
     }
 
-    fun save(
-        email: String,
-        name: String,
-        profile: String,
-    ): User {
-        return userDao.save(email, name, profile)
-    }
-
     fun getActiveUser(id: Long): User {
         return userDao.getByIdAndIsDeletedFalse(id)
     }

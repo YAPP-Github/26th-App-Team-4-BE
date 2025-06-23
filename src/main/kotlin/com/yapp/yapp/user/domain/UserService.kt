@@ -1,6 +1,6 @@
 package com.yapp.yapp.user.domain
 
-import com.yapp.yapp.user.api.request.UserCreateRequest
+import com.yapp.yapp.user.api.response.UserResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -8,30 +8,15 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userManager: UserManager,
 ) {
-    @Transactional
-    fun create(request: UserCreateRequest) =
-        userManager.save(
-            email = request.email,
-            name = request.name,
-            profile = request.profile,
-        )
-
     @Transactional(readOnly = true)
-    fun getUserById(id: Long): User {
-        return userManager.getActiveUser(id)
+    fun getUserById(id: Long): UserResponse {
+        val user = userManager.getActiveUser(id)
+        return UserResponse(user.id, user.name, user.email, user.profile)
     }
 
     @Transactional
-    fun update(user: User) {
-        val findUser = getUserById(user.id)
-        findUser.name = user.name
-        findUser.email = user.email
-        findUser.profile = user.profile
-    }
-
-    @Transactional
-    fun delete(user: User) {
-        val findUser = getUserById(user.id)
+    fun delete(id: Long) {
+        val findUser = userManager.getActiveUser(id)
         findUser.isDeleted = true
     }
 }
