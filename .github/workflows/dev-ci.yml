@@ -54,5 +54,5 @@ jobs:
           proxy_port: 22
 
           timeout: 120s
-          source: "src/main/resources/static/docs/"
+          source: "src/main/resources/static/docs/openapi3.yaml"
           target: "/home/yapp/docs/"
