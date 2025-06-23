@@ -22,23 +22,6 @@ spring:
       host: localhost
       port: 6379
 
-jwt:
-  issuer: test
-  access-secret: 3x+mpl3+S3cr3t+K3y+W1th+M0r3+Ch+r+ct3rs+For+Access!
-  access-expiration-millis: 3600000
-  refresh-secret: 4n0th3r+S3cur3+K3y+That+Is+L0ng+En0ugh+F0r+Refresh!
-  refresh-expiration-millis: 3600000
-
-oidc:
-  apple:
-    api:
-      url: https://appleid.apple.com
-      clientId: test-client-id
-  kakao:
-    api:
-      url: https://kauth.kakao.com
-      clientId: test-client-id
-
 logging:
   level:
     org.hibernate.SQL: debug
