@@ -38,7 +38,7 @@ jobs:
         run: ./gradlew clean test makeDocument
 
       - name: Verify docs generated
-        run: ls -R src/main/resources/static/dist
+        run: ls -R src/main/resources/static/docs
 
       - name: Upload docs to WAS VM via Bastion
         uses: appleboy/scp-action@v0.1.4
