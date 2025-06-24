@@ -51,7 +51,6 @@ jobs:
           source: "./deployment/dev/"
           target: /home/yapp/
 
-
   deploy:
     needs: build
     name: Deploy
@@ -75,3 +74,20 @@ jobs:
             mv ~/deployment/dev/* ~/
             rm -rf ~/deployment
             bash ./deploy.sh
+
+      - name: Change document file
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.DEV_BASTION_KEY }}
+          port: 22
+
+          proxy_host: ${{ secrets.DEV_BASTION_IP }}
+          proxy_username: ${{ secrets.DEV_BASTION_USERNAME }}
+          proxy_key: ${{ secrets.DEV_BASTION_KEY }}
+          proxy_port: 22
+
+          script: |
+            mv ~/docs/build/docs/openapi3.yaml ~/docs/swagger-ui
+            rm -rf ~/docs/build
