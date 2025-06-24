@@ -75,7 +75,7 @@ jobs:
             rm -rf ~/deployment
             bash ./deploy.sh
 
-      - name: Change document file
+      - name: Switch document file
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_HOST }}
