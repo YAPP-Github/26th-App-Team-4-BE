@@ -1,6 +1,5 @@
 package com.yapp.yapp.document.running
 
-import com.deepromeet.atcha.support.fixture.UserFixture
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
@@ -104,7 +103,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userRepository.save(UserFixture.create())
+        val user = getSavedUser()
         val startResponse =
             runningService.start(
                 user.id,
@@ -159,7 +158,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = UserFixture.create()
+        val user = getSavedUser()
         val startResponse =
             runningService.start(
                 user.id,
@@ -243,7 +242,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = UserFixture.create()
+        val user = getSavedUser()
         val startResponse =
             runningService.start(
                 user.id,
@@ -326,7 +325,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = UserFixture.create()
+        val user = getSavedUser()
         val startResponse =
             runningService.start(
                 user.id,

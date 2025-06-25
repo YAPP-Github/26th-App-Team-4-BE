@@ -37,7 +37,7 @@ class RunningService(
         userId: Long,
         request: RunningUpdateRequest,
     ): RunningUpdateResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(userId, request.recordId)
+        val runningRecord = runningRecordManager.getRunningRecord(request.recordId, userId = userId)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -54,12 +54,15 @@ class RunningService(
         userId: Long,
         request: RunningStopRequest,
     ): RunningStopResponse {
-        val runningRecord = runningRecordManager.stop(request.recordId)
+        val runningRecord = runningRecordManager.stop(request.recordId, userId = userId)
         return RunningStopResponse(userId, runningRecord.id)
     }
 
-    fun resume(request: RunningResumeRequest): RunningResumeResponse {
-        val runningRecord = runningRecordManager.resume(request.recordId)
+    fun resume(
+        userId: Long,
+        request: RunningResumeRequest,
+    ): RunningResumeResponse {
+        val runningRecord = runningRecordManager.resume(request.recordId, userId = userId)
         val newRunningPoints =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -76,9 +79,9 @@ class RunningService(
         userId: Long,
         request: RunningDoneRequest,
     ): RunningDoneResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(userId, request.recordId)
+        val runningRecord = runningRecordManager.getRunningRecord(request.recordId, userId = userId)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
-        val finishRunningRecord = runningRecordManager.finish(request.recordId, runningPoints)
+        val finishRunningRecord = runningRecordManager.finish(request.recordId, userId, runningPoints)
         return RunningDoneResponse(finishRunningRecord)
     }
 }

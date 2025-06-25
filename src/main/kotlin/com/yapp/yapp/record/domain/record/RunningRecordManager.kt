@@ -22,8 +22,8 @@ class RunningRecordManager(
     }
 
     fun getRunningRecord(
-        userId: Long,
         id: Long,
+        userId: Long,
     ): RunningRecord {
         val runningRecord = runningRecordDao.getById(id)
         if (runningRecord.userId != userId) {
@@ -32,23 +32,30 @@ class RunningRecordManager(
         return runningRecord
     }
 
-    fun stop(id: Long): RunningRecord {
-        val record = runningRecordDao.getById(id)
-        record.finish()
-        return record
+    fun stop(
+        id: Long,
+        userId: Long,
+    ): RunningRecord {
+        val runningRecord = getRunningRecord(id, userId)
+        runningRecord.finish()
+        return runningRecord
     }
 
-    fun resume(id: Long): RunningRecord {
-        val record = runningRecordDao.getById(id)
-        record.resume()
-        return record
+    fun resume(
+        id: Long,
+        userId: Long,
+    ): RunningRecord {
+        val runningRecord = getRunningRecord(id, userId)
+        runningRecord.resume()
+        return runningRecord
     }
 
     fun finish(
         id: Long,
+        userId: Long,
         runningPoints: List<RunningPoint>,
     ): RunningRecord {
-        val record = runningRecordDao.getById(id)
+        val record = getRunningRecord(id, userId)
         record.finish()
         record.totalTime = runningPoints.last().totalRunningTime
         record.totalDistance = runningPoints.last().totalRunningDistance

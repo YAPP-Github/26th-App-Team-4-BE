@@ -53,7 +53,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningResumeRequest,
     ): ApiResponse<RunningResumeResponse> {
-        return ApiResponse.success(runningService.resume(request))
+        return ApiResponse.success(runningService.resume(userId, request))
     }
 
     @PostMapping("/done")

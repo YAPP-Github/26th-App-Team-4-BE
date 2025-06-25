@@ -1,11 +1,14 @@
 package com.yapp.yapp.document.support
 
+import com.deepromeet.atcha.support.DatabaseCleanerExtension
+import com.deepromeet.atcha.support.fixture.UserFixture
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.support.fixture.IdTokenFixture
+import com.yapp.yapp.user.domain.User
 import com.yapp.yapp.user.domain.UserRepository
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
@@ -27,7 +30,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 
-@ExtendWith(RestDocumentationExtension::class)
+@ExtendWith(RestDocumentationExtension::class, DatabaseCleanerExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 abstract class BaseDocumentTest {
     companion object {
@@ -86,6 +89,10 @@ abstract class BaseDocumentTest {
     protected fun getAccessToken(email: String = "test@test.com"): String {
         val tokenResponse = loginUser(email)
         return "Bearer ${tokenResponse.accessToken}"
+    }
+
+    protected fun getSavedUser(user: User = UserFixture.create()): User {
+        return userRepository.save(user)
     }
 
     private fun loginUser(email: String): TokenResponse {
