@@ -1,31 +1,31 @@
-package com.yapp.yapp.record
+package com.yapp.yapp.record.domain.record
 
+import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.running.Pace.Companion.averagePace
 import com.yapp.yapp.running.RunningMetricsCalculator.roundTo
-import com.yapp.yapp.running.RunningPoint
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
 @Component
-class RecordManager(
-    private val recordDao: RecordDao,
+class RunningRecordManager(
+    private val runningRecordDao: RunningRecordDao,
 ) {
-    fun startRecord(startAt: OffsetDateTime): Record {
-        val record = Record(startAt = startAt)
-        record.start()
-        return recordDao.save(record)
+    fun startRecord(startAt: OffsetDateTime): RunningRecord {
+        val runningRecord = RunningRecord(startAt = startAt)
+        runningRecord.start()
+        return runningRecordDao.save(runningRecord)
     }
 
-    fun getRecord(id: Long): Record = recordDao.getById(id)
+    fun getRecord(id: Long): RunningRecord = runningRecordDao.getById(id)
 
-    fun stopRecord(id: Long): Record {
-        val record = recordDao.getById(id)
+    fun stopRecord(id: Long): RunningRecord {
+        val record = runningRecordDao.getById(id)
         record.finish()
         return record
     }
 
-    fun resumeRecord(id: Long): Record {
-        val record = recordDao.getById(id)
+    fun resumeRecord(id: Long): RunningRecord {
+        val record = runningRecordDao.getById(id)
         record.resume()
         return record
     }
@@ -33,8 +33,8 @@ class RecordManager(
     fun finishRecord(
         id: Long,
         runningPoints: List<RunningPoint>,
-    ): Record {
-        val record = recordDao.getById(id)
+    ): RunningRecord {
+        val record = runningRecordDao.getById(id)
         record.finish()
         record.totalTime = runningPoints.last().totalRunningTime
         record.totalDistance = runningPoints.last().totalRunningDistance

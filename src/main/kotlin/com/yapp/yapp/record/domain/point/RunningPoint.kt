@@ -1,6 +1,8 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.record.RunningRecord
+import com.yapp.yapp.running.Pace
 import com.yapp.yapp.running.converter.PaceConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert

@@ -1,4 +1,4 @@
-package com.yapp.yapp.record
+package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.Pace
@@ -18,8 +18,8 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 @Entity
-@Table(name = "RECORDS")
-class Record(
+@Table(name = "RUNNING_RECORDS")
+class RunningRecord(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,

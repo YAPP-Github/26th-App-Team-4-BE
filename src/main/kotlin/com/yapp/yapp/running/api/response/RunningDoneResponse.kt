@@ -1,6 +1,6 @@
 package com.yapp.yapp.running.api.response
 
-import com.yapp.yapp.running.RunningRecord
+import com.yapp.yapp.record.domain.record.RunningRecord
 import java.time.Duration
 import java.time.OffsetDateTime
 
@@ -13,13 +13,13 @@ data class RunningDoneResponse(
     val averageSpeed: Double,
     val averagePace: Duration,
 ) {
-    constructor(record: RunningRecord) : this(
-        record.id,
-        record.totalRunningDistance,
-        record.totalRunningTime,
-        record.totalCalories,
-        record.startAt,
-        record.averageSpeed,
-        record.averagePace.pacePerKm,
+    constructor(runningRecord: RunningRecord) : this(
+        runningRecord.id,
+        runningRecord.totalDistance,
+        runningRecord.totalTime,
+        runningRecord.totalCalories,
+        runningRecord.startAt,
+        runningRecord.averageSpeed,
+        runningRecord.averagePace.pacePerKm,
     )
 }

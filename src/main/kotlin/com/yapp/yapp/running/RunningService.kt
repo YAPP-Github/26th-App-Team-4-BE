@@ -1,6 +1,8 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.point.RunningPointManger
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -21,7 +23,10 @@ class RunningService(
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
 ) {
-    fun start(request: RunningStartRequest): RunningStartResponse {
+    fun start(
+        userId: Long,
+        request: RunningStartRequest,
+    ): RunningStartResponse {
         // TODO 유저 정보 조회
         val startAt = TimeProvider.parse(request.timeStamp)
         val runningRecord = runningRecordManager.startRunningRecord(startAt)

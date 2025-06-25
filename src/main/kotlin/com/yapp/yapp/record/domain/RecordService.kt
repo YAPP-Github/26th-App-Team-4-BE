@@ -1,16 +1,16 @@
 package com.yapp.yapp.record.domain
 
-import com.yapp.yapp.record.RecordManager
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import org.springframework.stereotype.Service
 
 @Service
 class RecordService(
-    private val recordManager: RecordManager,
+    private val runningRecordManager: RunningRecordManager,
 ) {
     fun getRecord(
         userId: Long,
         recordId: Long,
     ) {
-        val runningRecord = recordManager.getRunningRecord(recordId)
+        TODO()
     }
 }

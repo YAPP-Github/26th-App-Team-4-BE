@@ -1,6 +1,8 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.point.RunningPoint
+import com.yapp.yapp.record.domain.record.RunningRecord
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
