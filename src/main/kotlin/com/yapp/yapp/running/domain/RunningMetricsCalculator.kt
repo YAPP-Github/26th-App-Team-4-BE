@@ -1,6 +1,6 @@
 package com.yapp.yapp.running.domain
 
-import com.yapp.yapp.record.domain.point.RunningPoint
+import com.yapp.yapp.running.domain.point.RunningPoint
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow

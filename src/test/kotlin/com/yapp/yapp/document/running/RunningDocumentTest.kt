@@ -3,12 +3,12 @@ package com.yapp.yapp.document.running
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
-import com.yapp.yapp.record.domain.RecordService
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.domain.RunningService
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime
 
 class RunningDocumentTest : BaseDocumentTest() {
     @Autowired
-    lateinit var recordService: RecordService
+    lateinit var runningService: RunningService
 
     @Test
     fun `러닝 시작 API`() {
@@ -105,7 +105,7 @@ class RunningDocumentTest : BaseDocumentTest() {
 
         val user = getSavedUser()
         val startResponse =
-            recordService.start(
+            runningService.start(
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
@@ -160,11 +160,11 @@ class RunningDocumentTest : BaseDocumentTest() {
 
         val user = getSavedUser()
         val startResponse =
-            recordService.start(
+            runningService.start(
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -175,7 +175,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:00+09:00",
             ),
         )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -244,11 +244,11 @@ class RunningDocumentTest : BaseDocumentTest() {
 
         val user = getSavedUser()
         val startResponse =
-            recordService.start(
+            runningService.start(
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -259,7 +259,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:00+09:00",
             ),
         )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -270,7 +270,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        recordService.stop(user.id, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
+        runningService.stop(user.id, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
 
         val request =
             RunningResumeRequest(
@@ -327,11 +327,11 @@ class RunningDocumentTest : BaseDocumentTest() {
 
         val user = getSavedUser()
         val startResponse =
-            recordService.start(
+            runningService.start(
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -342,7 +342,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:00+09:00",
             ),
         )
-        recordService.update(
+        runningService.update(
             user.id,
             RunningUpdateRequest(
                 startResponse.recordId,

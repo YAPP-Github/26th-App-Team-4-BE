@@ -1,6 +1,6 @@
 package com.yapp.yapp.running.api.response
 
-import com.yapp.yapp.record.domain.point.RunningPoint
+import com.yapp.yapp.running.domain.point.RunningPoint
 import java.time.Duration
 import java.time.OffsetDateTime
 

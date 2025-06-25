@@ -1,4 +1,4 @@
-package com.yapp.yapp.record.domain
+package com.yapp.yapp.running.domain
 
 enum class RecordStatus {
     READY,

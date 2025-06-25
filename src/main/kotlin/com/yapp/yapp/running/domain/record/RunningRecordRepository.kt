@@ -1,4 +1,4 @@
-package com.yapp.yapp.record.domain.record
+package com.yapp.yapp.running.domain.record
 
 import org.springframework.data.repository.CrudRepository
 

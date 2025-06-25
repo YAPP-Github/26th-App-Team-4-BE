@@ -1,4 +1,4 @@
-package com.yapp.yapp.record.domain.converter
+package com.yapp.yapp.running.domain.converter
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
