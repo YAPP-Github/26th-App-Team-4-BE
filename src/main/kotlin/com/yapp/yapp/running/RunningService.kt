@@ -29,7 +29,7 @@ class RunningService(
     ): RunningStartResponse {
         // TODO 유저 정보 조회
         val startAt = TimeProvider.parse(request.timeStamp)
-        val runningRecord = runningRecordManager.startRunningRecord(startAt)
+        val runningRecord = runningRecordManager.start(startAt)
         runningPointManger.saveRunningPoints(runningRecord, request.lat, request.lon, startAt)
         return RunningStartResponse(runningRecord.id)
     }
@@ -49,12 +49,12 @@ class RunningService(
     }
 
     fun stop(request: RunningStopRequest): RunningStopResponse {
-        val runningRecord = runningRecordManager.stopRunningRecord(request.recordId)
+        val runningRecord = runningRecordManager.stop(request.recordId)
         return RunningStopResponse(request.userId, runningRecord.id)
     }
 
     fun resume(request: RunningResumeRequest): RunningResumeResponse {
-        val runningRecord = runningRecordManager.resumeRunningRecord(request.recordId)
+        val runningRecord = runningRecordManager.resume(request.recordId)
         val newRunningPoints =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -70,7 +70,7 @@ class RunningService(
     fun done(request: RunningDoneRequest): RunningDoneResponse {
         val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
-        val finishRunningRecord = runningRecordManager.finishRunningRecord(request.recordId, runningPoints)
+        val finishRunningRecord = runningRecordManager.finish(request.recordId, runningPoints)
         return RunningDoneResponse(finishRunningRecord)
     }
 }

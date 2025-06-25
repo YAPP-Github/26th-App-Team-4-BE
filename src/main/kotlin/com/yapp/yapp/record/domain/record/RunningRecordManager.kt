@@ -10,27 +10,27 @@ import java.time.OffsetDateTime
 class RunningRecordManager(
     private val runningRecordDao: RunningRecordDao,
 ) {
-    fun startRecord(startAt: OffsetDateTime): RunningRecord {
+    fun start(startAt: OffsetDateTime): RunningRecord {
         val runningRecord = RunningRecord(startAt = startAt)
         runningRecord.start()
         return runningRecordDao.save(runningRecord)
     }
 
-    fun getRecord(id: Long): RunningRecord = runningRecordDao.getById(id)
+    fun getRunningRecord(id: Long): RunningRecord = runningRecordDao.getById(id)
 
-    fun stopRecord(id: Long): RunningRecord {
+    fun stop(id: Long): RunningRecord {
         val record = runningRecordDao.getById(id)
         record.finish()
         return record
     }
 
-    fun resumeRecord(id: Long): RunningRecord {
+    fun resume(id: Long): RunningRecord {
         val record = runningRecordDao.getById(id)
         record.resume()
         return record
     }
 
-    fun finishRecord(
+    fun finish(
         id: Long,
         runningPoints: List<RunningPoint>,
     ): RunningRecord {

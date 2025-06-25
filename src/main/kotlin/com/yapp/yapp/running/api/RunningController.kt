@@ -1,6 +1,7 @@
 package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.running.RunningService
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
@@ -25,13 +26,15 @@ class RunningController(
 ) {
     @PostMapping("/start")
     fun start(
+        @CurrentUser userId: Long,
         @RequestBody request: RunningStartRequest,
     ): ApiResponse<RunningStartResponse> {
-        return ApiResponse.success(runningService.start(request))
+        return ApiResponse.success(runningService.start(userId, request))
     }
 
     @PostMapping("/update")
     fun update(
+        @CurrentUser userId: Long,
         @RequestBody request: RunningUpdateRequest,
     ): ApiResponse<RunningUpdateResponse> {
         return ApiResponse.success(runningService.update(request))
@@ -39,6 +42,7 @@ class RunningController(
 
     @PatchMapping("/stop")
     fun stop(
+        @CurrentUser userId: Long,
         @RequestBody request: RunningStopRequest,
     ): ApiResponse<RunningStopResponse> {
         return ApiResponse.success(runningService.stop(request))
@@ -46,6 +50,7 @@ class RunningController(
 
     @PostMapping("/resume")
     fun resume(
+        @CurrentUser userId: Long,
         @RequestBody request: RunningResumeRequest,
     ): ApiResponse<RunningResumeResponse> {
         return ApiResponse.success(runningService.resume(request))
@@ -53,6 +58,7 @@ class RunningController(
 
     @PostMapping("/done")
     fun done(
+        @CurrentUser userId: Long,
         @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningDoneResponse> {
         return ApiResponse.success(runningService.done(request))
