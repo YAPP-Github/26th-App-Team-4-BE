@@ -1,6 +1,7 @@
 package com.yapp.yapp.record.domain
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.api.response.RecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
@@ -23,6 +24,14 @@ class RecordService(
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
 ) {
+    fun getRecord(
+        userId: Long,
+        recordId: Long,
+    ): RecordResponse {
+        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId)
+        return RecordResponse(runningRecord)
+    }
+
     fun start(
         userId: Long,
         request: RunningStartRequest,

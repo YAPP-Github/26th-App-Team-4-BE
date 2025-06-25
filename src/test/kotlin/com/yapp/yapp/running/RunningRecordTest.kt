@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Duration
 
-class RunningTest : BaseServiceTest() {
+class RunningRecordTest : BaseServiceTest() {
     @Autowired
     lateinit var recordService: RecordService
 
@@ -46,7 +46,7 @@ class RunningTest : BaseServiceTest() {
         // when
         val response = recordService.update(userId, request)
         // then
-        Assertions.assertThat(response.id).isNotNull
+        Assertions.assertThat(response.runningPointId).isNotNull
     }
 
     @Test
@@ -127,6 +127,10 @@ class RunningTest : BaseServiceTest() {
         val stopTime = maxTime + 1L
         val stop = recordService.stop(userId, RunningStopRequest(recordId, startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        recordService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
+        val done = recordService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
+
+        // then
+        val record = recordService.getRecord(userId, recordId)
+        Assertions.assertThat(record.totalDistance).isEqualTo(done.totalRunningDistance)
     }
 }
