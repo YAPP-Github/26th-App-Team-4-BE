@@ -1,5 +1,7 @@
 package com.yapp.yapp.record.domain.record
 
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import com.yapp.yapp.running.domain.RunningMetricsCalculator.roundTo
@@ -19,7 +21,16 @@ class RunningRecordManager(
         return runningRecordDao.save(runningRecord)
     }
 
-    fun getRunningRecord(id: Long): RunningRecord = runningRecordDao.getById(id)
+    fun getRunningRecord(
+        userId: Long,
+        id: Long,
+    ): RunningRecord {
+        val runningRecord = runningRecordDao.getById(id)
+        if (runningRecord.userId != userId) {
+            throw CustomException(ErrorCode.RECORD_NOT_MATCHED)
+        }
+        return runningRecord
+    }
 
     fun stop(id: Long): RunningRecord {
         val record = runningRecordDao.getById(id)

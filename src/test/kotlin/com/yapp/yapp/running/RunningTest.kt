@@ -31,7 +31,8 @@ class RunningTest : BaseServiceTest() {
     @Test
     fun `러닝 기록을 업데이트 한다`() {
         // given
-        val startResponse = runningService.start(0L, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
+        val userId = 0L
+        val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -43,7 +44,7 @@ class RunningTest : BaseServiceTest() {
             )
 
         // when
-        val response = runningService.update(request)
+        val response = runningService.update(userId, request)
         // then
         Assertions.assertThat(response.id).isNotNull
     }
@@ -57,7 +58,8 @@ class RunningTest : BaseServiceTest() {
                 lon = 126.95000,
                 timeStamp = "2025-06-17T17:00:00+09:00",
             )
-        val recordId = runningService.start(userId = 0L, startRequest).recordId
+        val userId = 0L
+        val recordId = runningService.start(userId = userId, startRequest).recordId
 
         // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
         val updates =
@@ -78,7 +80,7 @@ class RunningTest : BaseServiceTest() {
 
         // when & then
         updates.forEach { req ->
-            val resp = runningService.update(req)
+            val resp = runningService.update(userId, req)
 
             // ord 가 1 이면 거리 계산 스킵
             if (resp.ord == 1L) return@forEach
@@ -111,6 +113,7 @@ class RunningTest : BaseServiceTest() {
         val maxTime = 10
         for (i in 1..maxTime) {
             runningService.update(
+                userId,
                 RunningUpdateRequest(
                     recordId,
                     lat + (i * 1.0 / 1000),
@@ -124,6 +127,6 @@ class RunningTest : BaseServiceTest() {
         val stopTime = maxTime + 1L
         val stop = runningService.stop(userId, RunningStopRequest(recordId, startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        runningService.done(RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
+        runningService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
     }
 }

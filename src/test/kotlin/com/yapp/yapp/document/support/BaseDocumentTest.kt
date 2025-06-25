@@ -6,6 +6,7 @@ import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.support.fixture.IdTokenFixture
+import com.yapp.yapp.user.domain.UserRepository
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.specification.RequestSpecification
@@ -55,6 +56,9 @@ abstract class BaseDocumentTest {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
+    @Autowired
+    lateinit var userRepository: UserRepository
+
     @MockitoBean
     private lateinit var feignClient: AppleFeignClient
 
@@ -79,12 +83,13 @@ abstract class BaseDocumentTest {
         identifier: String,
     ): RestDocsFilterBuilder = RestDocsFilterBuilder(resourceBuilder, identifierPrefix, identifier)
 
-    protected fun getAccessToken(tokenResponse: TokenResponse = loginUser()): String {
+    protected fun getAccessToken(email: String = "test@test.com"): String {
+        val tokenResponse = loginUser(email)
         return "Bearer ${tokenResponse.accessToken}"
     }
 
-    private fun loginUser(): TokenResponse {
-        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+    private fun loginUser(email: String): TokenResponse {
+        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com", email = email)
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
 
         Mockito.`when`(feignClient.fetchJwks())

@@ -37,7 +37,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningUpdateRequest,
     ): ApiResponse<RunningUpdateResponse> {
-        return ApiResponse.success(runningService.update(request))
+        return ApiResponse.success(runningService.update(userId, request))
     }
 
     @PatchMapping("/stop")
@@ -61,6 +61,6 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningDoneResponse> {
-        return ApiResponse.success(runningService.done(request))
+        return ApiResponse.success(runningService.done(userId, request))
     }
 }

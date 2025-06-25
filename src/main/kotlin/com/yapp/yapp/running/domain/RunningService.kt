@@ -33,9 +33,11 @@ class RunningService(
         return RunningStartResponse(runningRecord.id)
     }
 
-    fun update(request: RunningUpdateRequest): RunningUpdateResponse {
-        // TODO 유저 정보 조회
-        val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
+    fun update(
+        userId: Long,
+        request: RunningUpdateRequest,
+    ): RunningUpdateResponse {
+        val runningRecord = runningRecordManager.getRunningRecord(userId, request.recordId)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -70,8 +72,11 @@ class RunningService(
         return RunningResumeResponse(newRunningPoints)
     }
 
-    fun done(request: RunningDoneRequest): RunningDoneResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
+    fun done(
+        userId: Long,
+        request: RunningDoneRequest,
+    ): RunningDoneResponse {
+        val runningRecord = runningRecordManager.getRunningRecord(userId, request.recordId)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
         val finishRunningRecord = runningRecordManager.finish(request.recordId, runningPoints)
         return RunningDoneResponse(finishRunningRecord)

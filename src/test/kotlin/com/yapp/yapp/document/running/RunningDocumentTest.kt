@@ -1,5 +1,6 @@
 package com.yapp.yapp.document.running
 
+import com.deepromeet.atcha.support.fixture.UserFixture
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
@@ -25,7 +26,6 @@ class RunningDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 시작 API`() {
         // given
-        val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
         val restDocsRequest =
             request()
                 .requestBodyField(
@@ -50,6 +50,8 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
+        val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
+
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
@@ -64,21 +66,6 @@ class RunningDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 업데이트 API`() {
         // given
-        val startResponse =
-            runningService.start(
-                0L,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
-            )
-
-        val request =
-            RunningUpdateRequest(
-                startResponse.recordId,
-                37.5665,
-                126.9780,
-                142,
-                "PT1M2.12S",
-                "2025-06-17T16:12:00+09:00",
-            )
         val restDocsRequest =
             request()
                 .requestBodyField(
@@ -117,10 +104,26 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
+        val user = userRepository.save(UserFixture.create())
+        val startResponse =
+            runningService.start(
+                user.id,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+            )
+        val request =
+            RunningUpdateRequest(
+                startResponse.recordId,
+                37.5665,
+                126.9780,
+                142,
+                "PT1M2.12S",
+                "2025-06-17T16:12:00+09:00",
+            )
+
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/update")
@@ -131,34 +134,6 @@ class RunningDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 중단 API`() {
         // given
-        val userId = 0L
-        val startResponse =
-            runningService.start(
-                userId,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
-            )
-        runningService.update(
-            RunningUpdateRequest(
-                startResponse.recordId,
-                37.5665,
-                126.9780,
-                142,
-                "PT0S",
-                "2025-06-17T16:12:00+09:00",
-            ),
-        )
-        runningService.update(
-            RunningUpdateRequest(
-                startResponse.recordId,
-                37.5675,
-                126.9790,
-                140,
-                "PT1S",
-                "2025-06-17T16:12:01+09:00",
-            ),
-        )
-
-        val request = RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
         val restDocsRequest =
             request()
                 .requestBodyField(
@@ -184,27 +159,14 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        // when & then
-        RestAssured.given(spec).log().all()
-            .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
-            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            .body(request)
-            .`when`().patch("/api/v1/running/stop")
-            .then().log().all()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `러닝 재개 API`() {
-        // given
-        val userId = 0L
+        val user = UserFixture.create()
         val startResponse =
             runningService.start(
-                userId,
+                user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
         runningService.update(
+            user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
                 37.5665,
@@ -215,6 +177,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             ),
         )
         runningService.update(
+            user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
                 37.5675,
@@ -224,17 +187,23 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        runningService.stop(userId, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
 
-        val request =
-            RunningResumeRequest(
-                startResponse.recordId,
-                37.505793,
-                127.109205,
-                80,
-                "PT1S",
-                "2025-06-17T16:15:00+09:00",
-            )
+        val request = RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .body(request)
+            .`when`().patch("/api/v1/running/stop")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 재개 API`() {
+        // given
         val restDocsRequest =
             request()
                 .requestBodyField(
@@ -274,27 +243,14 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        // when & then
-        RestAssured.given(spec).log().all()
-            .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
-            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            .body(request)
-            .`when`().post("/api/v1/running/resume")
-            .then().log().all()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `러닝 완료 API`() {
-        // given
-        val userId = 0L
+        val user = UserFixture.create()
         val startResponse =
             runningService.start(
-                userId,
+                user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
         runningService.update(
+            user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
                 37.5665,
@@ -305,6 +261,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             ),
         )
         runningService.update(
+            user.id,
             RunningUpdateRequest(
                 startResponse.recordId,
                 37.5675,
@@ -314,8 +271,32 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
+        runningService.stop(user.id, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
 
-        val request = RunningDoneRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
+        val request =
+            RunningResumeRequest(
+                startResponse.recordId,
+                37.505793,
+                127.109205,
+                80,
+                "PT1S",
+                "2025-06-17T16:15:00+09:00",
+            )
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .body(request)
+            .`when`().post("/api/v1/running/resume")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 완료 API`() {
+        // given
         val restDocsRequest =
             request()
                 .requestBodyField(
@@ -345,10 +326,41 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
+        val user = UserFixture.create()
+        val startResponse =
+            runningService.start(
+                user.id,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+            )
+        runningService.update(
+            user.id,
+            RunningUpdateRequest(
+                startResponse.recordId,
+                37.5665,
+                126.9780,
+                142,
+                "PT0S",
+                "2025-06-17T16:12:00+09:00",
+            ),
+        )
+        runningService.update(
+            user.id,
+            RunningUpdateRequest(
+                startResponse.recordId,
+                37.5675,
+                126.9790,
+                140,
+                "PT1S",
+                "2025-06-17T16:12:01+09:00",
+            ),
+        )
+
+        val request = RunningDoneRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
+
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/done")
