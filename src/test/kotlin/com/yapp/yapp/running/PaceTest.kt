@@ -1,6 +1,7 @@
 package com.yapp.yapp.running
 
-import com.yapp.yapp.running.Pace.Companion.averagePace
+import com.yapp.yapp.running.domain.Pace
+import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Test

@@ -1,6 +1,6 @@
-package com.yapp.yapp.running.converter
+package com.yapp.yapp.running.domain.converter
 
-import com.yapp.yapp.running.Pace
+import com.yapp.yapp.running.domain.Pace
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 import java.time.Duration

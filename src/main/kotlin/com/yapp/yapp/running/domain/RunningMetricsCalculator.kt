@@ -1,9 +1,10 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.record.domain.point.RunningPoint
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow
+import kotlin.math.round
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -50,6 +51,6 @@ object RunningMetricsCalculator {
 
     fun Double.roundTo(decimals: Int = 3): Double {
         val factor = 10.0.pow(decimals)
-        return kotlin.math.round(this * factor) / factor
+        return round(this * factor) / factor
     }
 }

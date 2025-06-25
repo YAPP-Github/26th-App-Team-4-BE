@@ -2,7 +2,6 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
-import com.yapp.yapp.running.RunningService
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -13,6 +12,7 @@ import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
+import com.yapp.yapp.running.domain.RunningService
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

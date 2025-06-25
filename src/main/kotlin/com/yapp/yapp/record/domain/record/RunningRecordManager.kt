@@ -1,8 +1,8 @@
 package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.record.domain.point.RunningPoint
-import com.yapp.yapp.running.Pace.Companion.averagePace
-import com.yapp.yapp.running.RunningMetricsCalculator.roundTo
+import com.yapp.yapp.running.domain.Pace.Companion.averagePace
+import com.yapp.yapp.running.domain.RunningMetricsCalculator.roundTo
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 

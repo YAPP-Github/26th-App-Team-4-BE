@@ -1,4 +1,4 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.point.RunningPointManger
