@@ -2,17 +2,24 @@ package com.yapp.yapp.document.support
 
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yapp.yapp.auth.api.response.TokenResponse
+import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
+import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.support.fixture.IdTokenFixture
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.specification.RequestSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.restassured.RestAssuredRestDocumentation
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
@@ -48,6 +55,9 @@ abstract class BaseDocumentTest {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
+    @MockitoBean
+    private lateinit var feignClient: AppleFeignClient
+
     @BeforeEach
     fun setEnvironment(restDocumentation: RestDocumentationContextProvider?) {
         RestAssured.port = port
@@ -68,4 +78,28 @@ abstract class BaseDocumentTest {
         identifierPrefix: String,
         identifier: String,
     ): RestDocsFilterBuilder = RestDocsFilterBuilder(resourceBuilder, identifierPrefix, identifier)
+
+    protected fun getAccessToken(tokenResponse: TokenResponse = loginUser()): String {
+        return "Bearer ${tokenResponse.accessToken}"
+    }
+
+    private fun loginUser(): TokenResponse {
+        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+        val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+
+        Mockito.`when`(feignClient.fetchJwks())
+            .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+        val result =
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .param("idToken", idToken)
+                .`when`().get("/api/v1/auth/login/apple")
+                .then().log().all()
+                .statusCode(200)
+                .extract().`as`(ApiResponse::class.java)
+                .result
+
+        return objectMapper.convertValue(result, TokenResponse::class.java)
+    }
 }

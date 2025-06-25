@@ -10,8 +10,11 @@ import java.time.OffsetDateTime
 class RunningRecordManager(
     private val runningRecordDao: RunningRecordDao,
 ) {
-    fun start(startAt: OffsetDateTime): RunningRecord {
-        val runningRecord = RunningRecord(startAt = startAt)
+    fun start(
+        userId: Long,
+        startAt: OffsetDateTime,
+    ): RunningRecord {
+        val runningRecord = RunningRecord(userId = userId, startAt = startAt)
         runningRecord.start()
         return runningRecordDao.save(runningRecord)
     }

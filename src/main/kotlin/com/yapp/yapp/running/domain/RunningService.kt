@@ -27,14 +27,14 @@ class RunningService(
         userId: Long,
         request: RunningStartRequest,
     ): RunningStartResponse {
-        // TODO 유저 정보 조회
         val startAt = TimeProvider.parse(request.timeStamp)
-        val runningRecord = runningRecordManager.start(startAt)
+        val runningRecord = runningRecordManager.start(userId, startAt)
         runningPointManger.saveRunningPoints(runningRecord, request.lat, request.lon, startAt)
         return RunningStartResponse(runningRecord.id)
     }
 
     fun update(request: RunningUpdateRequest): RunningUpdateResponse {
+        // TODO 유저 정보 조회
         val runningRecord = runningRecordManager.getRunningRecord(request.recordId)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
@@ -48,9 +48,12 @@ class RunningService(
         return RunningUpdateResponse(newRunningPoint)
     }
 
-    fun stop(request: RunningStopRequest): RunningStopResponse {
+    fun stop(
+        userId: Long,
+        request: RunningStopRequest,
+    ): RunningStopResponse {
         val runningRecord = runningRecordManager.stop(request.recordId)
-        return RunningStopResponse(request.userId, runningRecord.id)
+        return RunningStopResponse(userId, runningRecord.id)
     }
 
     fun resume(request: RunningResumeRequest): RunningResumeResponse {

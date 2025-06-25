@@ -24,6 +24,8 @@ class RunningRecord(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @Column(nullable = false)
+    val userId: Long = 0L,
+    @Column(nullable = false)
     var totalDistance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = DurationConverter::class)

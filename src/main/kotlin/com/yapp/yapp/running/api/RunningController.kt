@@ -45,7 +45,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningStopRequest,
     ): ApiResponse<RunningStopResponse> {
-        return ApiResponse.success(runningService.stop(request))
+        return ApiResponse.success(runningService.stop(userId, request))
     }
 
     @PostMapping("/resume")

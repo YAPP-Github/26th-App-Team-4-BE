@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import java.time.OffsetDateTime
 
@@ -24,14 +25,16 @@ class RunningDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 시작 API`() {
         // given
-        val request = RunningStartRequest(0L, 0.0, 0.0, TimeProvider.now().toString())
+        val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
         val restDocsRequest =
             request()
                 .requestBodyField(
-                    fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("timeStamp").description("시간"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val restDocsResponse =
             response()
@@ -50,6 +53,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/start")
@@ -62,12 +66,12 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val startResponse =
             runningService.start(
-                RunningStartRequest(0L, 37.5665, 126.9780, OffsetDateTime.now().toString()),
+                0L,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
 
         val request =
             RunningUpdateRequest(
-                0L,
                 startResponse.recordId,
                 37.5665,
                 126.9780,
@@ -78,13 +82,15 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsRequest =
             request()
                 .requestBodyField(
-                    fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수").optional(),
                     fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
                     fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val restDocsResponse =
             response()
@@ -114,6 +120,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/update")
@@ -127,11 +134,11 @@ class RunningDocumentTest : BaseDocumentTest() {
         val userId = 0L
         val startResponse =
             runningService.start(
-                RunningStartRequest(userId, 37.5665, 126.9780, OffsetDateTime.now().toString()),
+                userId,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5665,
                 126.9780,
@@ -142,7 +149,6 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5675,
                 126.9790,
@@ -152,13 +158,15 @@ class RunningDocumentTest : BaseDocumentTest() {
             ),
         )
 
-        val request = RunningStopRequest(userId, startResponse.recordId, "2025-06-17T16:12:02+09:00")
+        val request = RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
         val restDocsRequest =
             request()
                 .requestBodyField(
-                    fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("timeStamp").description("러닝 중단 시간"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val restDocsResponse =
             response()
@@ -179,6 +187,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().patch("/api/v1/running/stop")
@@ -192,11 +201,11 @@ class RunningDocumentTest : BaseDocumentTest() {
         val userId = 0L
         val startResponse =
             runningService.start(
-                RunningStartRequest(userId, 37.5665, 126.9780, OffsetDateTime.now().toString()),
+                userId,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5665,
                 126.9780,
@@ -207,7 +216,6 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5675,
                 126.9790,
@@ -216,11 +224,10 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        runningService.stop(RunningStopRequest(userId, startResponse.recordId, "2025-06-17T16:12:02+09:00"))
+        runningService.stop(userId, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
 
         val request =
             RunningResumeRequest(
-                userId,
                 startResponse.recordId,
                 37.505793,
                 127.109205,
@@ -231,13 +238,15 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsRequest =
             request()
                 .requestBodyField(
-                    fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수").optional(),
                     fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
                     fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val restDocsResponse =
             response()
@@ -268,6 +277,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/resume")
@@ -281,11 +291,11 @@ class RunningDocumentTest : BaseDocumentTest() {
         val userId = 0L
         val startResponse =
             runningService.start(
-                RunningStartRequest(userId, 37.5665, 126.9780, OffsetDateTime.now().toString()),
+                userId,
+                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5665,
                 126.9780,
@@ -296,7 +306,6 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             RunningUpdateRequest(
-                userId,
                 startResponse.recordId,
                 37.5675,
                 126.9790,
@@ -306,13 +315,15 @@ class RunningDocumentTest : BaseDocumentTest() {
             ),
         )
 
-        val request = RunningDoneRequest(userId, startResponse.recordId, "2025-06-17T16:12:02+09:00")
+        val request = RunningDoneRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
         val restDocsRequest =
             request()
                 .requestBodyField(
-                    fieldWithPath("userId").description("유저 ID"),
                     fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("timeStamp").description("러닝 중단 시간"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val restDocsResponse =
             response().responseBodyFieldWithResult(
@@ -337,6 +348,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
             .`when`().post("/api/v1/running/done")
