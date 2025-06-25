@@ -44,9 +44,10 @@ class RunningService(
 
     fun update(
         userId: Long,
+        recordId: Long,
         request: RunningUpdateRequest,
     ): RunningUpdateResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(request.recordId, userId = userId)
+        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId = userId)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -61,17 +62,19 @@ class RunningService(
 
     fun stop(
         userId: Long,
+        recordId: Long,
         request: RunningStopRequest,
     ): RunningStopResponse {
-        val runningRecord = runningRecordManager.stop(request.recordId, userId = userId)
+        val runningRecord = runningRecordManager.stop(recordId, userId = userId)
         return RunningStopResponse(userId, runningRecord.id)
     }
 
     fun resume(
         userId: Long,
+        recordId: Long,
         request: RunningResumeRequest,
     ): RunningResumeResponse {
-        val runningRecord = runningRecordManager.resume(request.recordId, userId = userId)
+        val runningRecord = runningRecordManager.resume(recordId, userId = userId)
         val newRunningPoints =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -86,11 +89,12 @@ class RunningService(
 
     fun done(
         userId: Long,
+        recordId: Long,
         request: RunningDoneRequest,
     ): RunningDoneResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(request.recordId, userId = userId)
+        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId = userId)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
-        val finishRunningRecord = runningRecordManager.finish(request.recordId, userId, runningPoints)
+        val finishRunningRecord = runningRecordManager.finish(recordId, userId, runningPoints)
         return RunningDoneResponse(finishRunningRecord)
     }
 }

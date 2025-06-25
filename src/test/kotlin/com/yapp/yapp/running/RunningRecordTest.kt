@@ -35,7 +35,6 @@ class RunningRecordTest : BaseServiceTest() {
         val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
             RunningUpdateRequest(
-                startResponse.recordId,
                 0.01,
                 0.01,
                 120,
@@ -44,7 +43,7 @@ class RunningRecordTest : BaseServiceTest() {
             )
 
         // when
-        val response = runningService.update(userId, request)
+        val response = runningService.update(userId, startResponse.recordId, request)
         // then
         Assertions.assertThat(response.runningPointId).isNotNull
     }
@@ -65,22 +64,22 @@ class RunningRecordTest : BaseServiceTest() {
         val updates =
             listOf(
                 // 0초
-                RunningUpdateRequest(recordId, 37.54100, 126.95000, 120, "PT0S", "2025-06-17T17:00:00.000+09:00"),
+                RunningUpdateRequest(37.54100, 126.95000, 120, "PT0S", "2025-06-17T17:00:00.000+09:00"),
                 // 9.444초
-                RunningUpdateRequest(recordId, 37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
+                RunningUpdateRequest(37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
                 // 18.887초
-                RunningUpdateRequest(recordId, 37.54120, 126.95040, 127, "PT18.887S", "2025-06-17T17:00:18.887+09:00"),
+                RunningUpdateRequest(37.54120, 126.95040, 127, "PT18.887S", "2025-06-17T17:00:18.887+09:00"),
                 // 28.331초
-                RunningUpdateRequest(recordId, 37.54130, 126.95060, 130, "PT28.331S", "2025-06-17T17:00:28.331+09:00"),
+                RunningUpdateRequest(37.54130, 126.95060, 130, "PT28.331S", "2025-06-17T17:00:28.331+09:00"),
                 // 37.775초
-                RunningUpdateRequest(recordId, 37.54140, 126.95080, 132, "PT37.775S", "2025-06-17T17:00:37.775+09:00"),
+                RunningUpdateRequest(37.54140, 126.95080, 132, "PT37.775S", "2025-06-17T17:00:37.775+09:00"),
                 // 47.218초
-                RunningUpdateRequest(recordId, 37.54150, 126.95100, 135, "PT47.218S", "2025-06-17T17:00:47.218+09:00"),
+                RunningUpdateRequest(37.54150, 126.95100, 135, "PT47.218S", "2025-06-17T17:00:47.218+09:00"),
             )
 
         // when & then
         updates.forEach { req ->
-            val resp = runningService.update(userId, req)
+            val resp = runningService.update(userId, recordId, req)
 
             // ord 가 1 이면 거리 계산 스킵
             if (resp.ord == 1L) return@forEach
@@ -114,8 +113,8 @@ class RunningRecordTest : BaseServiceTest() {
         for (i in 1..maxTime) {
             runningService.update(
                 userId,
+                recordId,
                 RunningUpdateRequest(
-                    recordId,
                     lat + (i * 1.0 / 1000),
                     lon + (i * 1.0 / 1000),
                     120 + i,
@@ -125,9 +124,9 @@ class RunningRecordTest : BaseServiceTest() {
             )
         }
         val stopTime = maxTime + 1L
-        val stop = runningService.stop(userId, RunningStopRequest(recordId, startAt.plusSeconds(stopTime).toString()))
+        val stop = runningService.stop(userId, recordId, RunningStopRequest(startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        val done = runningService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
+        val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
 
         // then
         val record = runningService.getRecord(userId, recordId)

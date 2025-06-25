@@ -9,6 +9,7 @@ import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
+import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import java.time.OffsetDateTime
 
 class RunningDocumentTest : BaseDocumentTest() {
@@ -67,8 +69,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .pathParameter(parameterWithName("recordId").description("러닝 기록 ID"))
                 .requestBodyField(
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수").optional(),
@@ -81,7 +83,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("러닝 기록 ID"),
                     fieldWithPath("result.ord").description("러닝 포인트 순서"),
@@ -109,23 +111,17 @@ class RunningDocumentTest : BaseDocumentTest() {
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
-        val request =
-            RunningUpdateRequest(
-                startResponse.recordId,
-                37.5665,
-                126.9780,
-                142,
-                "PT1M2.12S",
-                "2025-06-17T16:12:00+09:00",
-            )
+        val request = RequestFixture.runningUpdateRequest()
+        val recordId = startResponse.recordId
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .pathParam("recordId", recordId)
             .body(request)
-            .`when`().post("/api/v1/running/update")
+            .`when`().post("/api/v1/running/{recordId}/update")
             .then().log().all()
             .statusCode(200)
     }
@@ -135,8 +131,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .pathParameter(parameterWithName("recordId").description("러닝 기록 ID"))
                 .requestBodyField(
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("timeStamp").description("러닝 중단 시간"),
                 )
                 .requestHeader(
@@ -166,8 +162,8 @@ class RunningDocumentTest : BaseDocumentTest() {
             )
         runningService.update(
             user.id,
+            startResponse.recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5665,
                 126.9780,
                 142,
@@ -177,8 +173,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             user.id,
+            startResponse.recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5675,
                 126.9790,
                 140,
@@ -186,16 +182,17 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-
-        val request = RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
+        val request = RunningStopRequest("2025-06-17T16:12:02+09:00")
+        val recordId = startResponse.recordId
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .pathParam("recordId", recordId)
             .body(request)
-            .`when`().patch("/api/v1/running/stop")
+            .`when`().patch("/api/v1/running/{recordId}/stop")
             .then().log().all()
             .statusCode(200)
     }
@@ -205,8 +202,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .pathParameter(parameterWithName("recordId").description("러닝 기록 ID"))
                 .requestBodyField(
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수").optional(),
@@ -219,7 +216,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("러닝 기록 ID"),
                     fieldWithPath("result.ord").description("러닝 포인트 순서"),
@@ -248,10 +245,11 @@ class RunningDocumentTest : BaseDocumentTest() {
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
             )
+        val recordId = startResponse.recordId
         runningService.update(
             user.id,
+            recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5665,
                 126.9780,
                 142,
@@ -261,8 +259,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             user.id,
+            recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5675,
                 126.9790,
                 140,
@@ -270,11 +268,15 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        runningService.stop(user.id, RunningStopRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00"))
+
+        runningService.stop(
+            userId = user.id,
+            recordId = recordId,
+            request = RunningStopRequest("2025-06-17T16:12:02+09:00"),
+        )
 
         val request =
             RunningResumeRequest(
-                startResponse.recordId,
                 37.505793,
                 127.109205,
                 80,
@@ -287,8 +289,9 @@ class RunningDocumentTest : BaseDocumentTest() {
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .pathParam("recordId", recordId)
             .body(request)
-            .`when`().post("/api/v1/running/resume")
+            .`when`().post("/api/v1/running/{recordId}/resume")
             .then().log().all()
             .statusCode(200)
     }
@@ -298,8 +301,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .pathParameter(parameterWithName("recordId").description("러닝 기록 ID"))
                 .requestBodyField(
-                    fieldWithPath("recordId").description("러닝 기록 ID"),
                     fieldWithPath("timeStamp").description("러닝 중단 시간"),
                 )
                 .requestHeader(
@@ -333,8 +336,8 @@ class RunningDocumentTest : BaseDocumentTest() {
             )
         runningService.update(
             user.id,
+            startResponse.recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5665,
                 126.9780,
                 142,
@@ -344,8 +347,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         )
         runningService.update(
             user.id,
+            startResponse.recordId,
             RunningUpdateRequest(
-                startResponse.recordId,
                 37.5675,
                 126.9790,
                 140,
@@ -353,16 +356,17 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-
-        val request = RunningDoneRequest(startResponse.recordId, "2025-06-17T16:12:02+09:00")
+        val request = RunningDoneRequest("2025-06-17T16:12:02+09:00")
+        val recordId = startResponse.recordId
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .pathParam("recordId", recordId)
             .body(request)
-            .`when`().post("/api/v1/running/done")
+            .`when`().post("/api/v1/running/{recordId}/done")
             .then().log().all()
             .statusCode(200)
     }
