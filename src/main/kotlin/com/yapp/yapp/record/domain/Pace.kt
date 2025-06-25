@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.domain
+package com.yapp.yapp.record.domain
 
 import java.time.Duration
 import kotlin.math.roundToLong

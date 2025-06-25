@@ -2,6 +2,7 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
+import com.yapp.yapp.record.domain.RecordService
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -12,7 +13,6 @@ import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
-import com.yapp.yapp.running.domain.RunningService
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/running")
 class RunningController(
-    private val runningService: RunningService,
+    private val recordService: RecordService,
 ) {
     @PostMapping("/start")
     fun start(
         @CurrentUser userId: Long,
         @RequestBody request: RunningStartRequest,
     ): ApiResponse<RunningStartResponse> {
-        return ApiResponse.success(runningService.start(userId, request))
+        return ApiResponse.success(recordService.start(userId, request))
     }
 
     @PostMapping("/update")
@@ -37,7 +37,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningUpdateRequest,
     ): ApiResponse<RunningUpdateResponse> {
-        return ApiResponse.success(runningService.update(userId, request))
+        return ApiResponse.success(recordService.update(userId, request))
     }
 
     @PatchMapping("/stop")
@@ -45,7 +45,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningStopRequest,
     ): ApiResponse<RunningStopResponse> {
-        return ApiResponse.success(runningService.stop(userId, request))
+        return ApiResponse.success(recordService.stop(userId, request))
     }
 
     @PostMapping("/resume")
@@ -53,7 +53,7 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningResumeRequest,
     ): ApiResponse<RunningResumeResponse> {
-        return ApiResponse.success(runningService.resume(userId, request))
+        return ApiResponse.success(recordService.resume(userId, request))
     }
 
     @PostMapping("/done")
@@ -61,6 +61,6 @@ class RunningController(
         @CurrentUser userId: Long,
         @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningDoneResponse> {
-        return ApiResponse.success(runningService.done(userId, request))
+        return ApiResponse.success(recordService.done(userId, request))
     }
 }

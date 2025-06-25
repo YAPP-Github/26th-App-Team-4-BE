@@ -1,4 +1,4 @@
-package com.yapp.yapp.record
+package com.yapp.yapp.record.api
 
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import org.springframework.web.bind.annotation.GetMapping

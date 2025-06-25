@@ -2,11 +2,11 @@ package com.yapp.yapp.running
 
 import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.RecordService
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
-import com.yapp.yapp.running.domain.RunningService
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import java.time.Duration
 
 class RunningTest : BaseServiceTest() {
     @Autowired
-    lateinit var runningService: RunningService
+    lateinit var recordService: RecordService
 
     @Test
     fun `러닝을 시작한다`() {
@@ -22,7 +22,7 @@ class RunningTest : BaseServiceTest() {
         val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
 
         // when
-        val response = runningService.start(0L, request)
+        val response = recordService.start(0L, request)
 
         // then
         Assertions.assertThat(response.recordId).isNotNull
@@ -32,7 +32,7 @@ class RunningTest : BaseServiceTest() {
     fun `러닝 기록을 업데이트 한다`() {
         // given
         val userId = 0L
-        val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
+        val startResponse = recordService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
             RunningUpdateRequest(
                 startResponse.recordId,
@@ -44,7 +44,7 @@ class RunningTest : BaseServiceTest() {
             )
 
         // when
-        val response = runningService.update(userId, request)
+        val response = recordService.update(userId, request)
         // then
         Assertions.assertThat(response.id).isNotNull
     }
@@ -59,7 +59,7 @@ class RunningTest : BaseServiceTest() {
                 timeStamp = "2025-06-17T17:00:00+09:00",
             )
         val userId = 0L
-        val recordId = runningService.start(userId = userId, startRequest).recordId
+        val recordId = recordService.start(userId = userId, startRequest).recordId
 
         // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
         val updates =
@@ -80,7 +80,7 @@ class RunningTest : BaseServiceTest() {
 
         // when & then
         updates.forEach { req ->
-            val resp = runningService.update(userId, req)
+            val resp = recordService.update(userId, req)
 
             // ord 가 1 이면 거리 계산 스킵
             if (resp.ord == 1L) return@forEach
@@ -108,11 +108,11 @@ class RunningTest : BaseServiceTest() {
         val startAt = TimeProvider.now()
 
         // when
-        val start = runningService.start(userId, RunningStartRequest(lat, lon, startAt.toString()))
+        val start = recordService.start(userId, RunningStartRequest(lat, lon, startAt.toString()))
         val recordId = start.recordId
         val maxTime = 10
         for (i in 1..maxTime) {
-            runningService.update(
+            recordService.update(
                 userId,
                 RunningUpdateRequest(
                     recordId,
@@ -125,8 +125,8 @@ class RunningTest : BaseServiceTest() {
             )
         }
         val stopTime = maxTime + 1L
-        val stop = runningService.stop(userId, RunningStopRequest(recordId, startAt.plusSeconds(stopTime).toString()))
+        val stop = recordService.stop(userId, RunningStopRequest(recordId, startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        runningService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
+        recordService.done(userId, RunningDoneRequest(recordId, startAt.plusSeconds(doneTime).toString()))
     }
 }

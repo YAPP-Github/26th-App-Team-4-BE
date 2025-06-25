@@ -1,10 +1,10 @@
 package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.running.domain.Pace
-import com.yapp.yapp.running.domain.RecordStatus
-import com.yapp.yapp.running.domain.converter.DurationConverter
-import com.yapp.yapp.running.domain.converter.PaceConverter
+import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.RecordStatus
+import com.yapp.yapp.record.domain.converter.DurationConverter
+import com.yapp.yapp.record.domain.converter.PaceConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
