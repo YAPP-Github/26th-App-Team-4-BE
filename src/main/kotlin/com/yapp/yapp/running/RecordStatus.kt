@@ -1,6 +1,6 @@
 package com.yapp.yapp.running
 
-enum class RunningStatus {
+enum class RecordStatus {
     READY,
     IN_PROGRESS,
     STOPPED,

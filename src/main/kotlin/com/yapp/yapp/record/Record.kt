@@ -1,6 +1,8 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.record
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.running.Pace
+import com.yapp.yapp.running.RecordStatus
 import com.yapp.yapp.running.converter.DurationConverter
 import com.yapp.yapp.running.converter.PaceConverter
 import jakarta.persistence.Column
@@ -16,16 +18,16 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 @Entity
-@Table(name = "RUNNING_RECORD")
-class RunningRecord(
+@Table(name = "RECORDS")
+class Record(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @Column(nullable = false)
-    var totalRunningDistance: Double = 0.0,
+    var totalDistance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = DurationConverter::class)
-    var totalRunningTime: Duration = Duration.ZERO,
+    var totalTime: Duration = Duration.ZERO,
     @Column(nullable = false)
     var totalCalories: Int = 0,
     @Column(nullable = false)
@@ -37,23 +39,23 @@ class RunningRecord(
     var averagePace: Pace = Pace(0),
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var runningStatus: RunningStatus = RunningStatus.READY,
+    var recordStatus: RecordStatus = RecordStatus.READY,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
-    fun startRunning() {
-        this.runningStatus = RunningStatus.IN_PROGRESS
+    fun start() {
+        this.recordStatus = RecordStatus.IN_PROGRESS
     }
 
-    fun stopRunning() {
-        this.runningStatus = RunningStatus.STOPPED
+    fun stop() {
+        this.recordStatus = RecordStatus.STOPPED
     }
 
-    fun resumeRunning() {
-        this.runningStatus = RunningStatus.IN_PROGRESS
+    fun resume() {
+        this.recordStatus = RecordStatus.IN_PROGRESS
     }
 
-    fun finishRunning() {
-        this.runningStatus = RunningStatus.DONE
+    fun finish() {
+        this.recordStatus = RecordStatus.DONE
     }
 }
