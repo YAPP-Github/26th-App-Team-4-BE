@@ -1,8 +1,8 @@
-package com.yapp.yapp.running.domain.point
+package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
-import com.yapp.yapp.running.domain.record.RunningRecord
+import com.yapp.yapp.record.domain.record.RunningRecord
 import org.springframework.stereotype.Component
 
 @Component

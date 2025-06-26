@@ -2,6 +2,8 @@ package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.api.response.RecordResponse
+import com.yapp.yapp.record.domain.point.RunningPointManger
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningResumeRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -12,8 +14,6 @@ import com.yapp.yapp.running.api.response.RunningResumeResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
-import com.yapp.yapp.running.domain.point.RunningPointManger
-import com.yapp.yapp.running.domain.record.RunningRecordManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration

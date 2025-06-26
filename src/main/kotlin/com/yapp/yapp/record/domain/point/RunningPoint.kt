@@ -1,9 +1,9 @@
-package com.yapp.yapp.running.domain.point
+package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.running.domain.Pace
 import com.yapp.yapp.running.domain.converter.PaceConverter
-import com.yapp.yapp.running.domain.record.RunningRecord
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity

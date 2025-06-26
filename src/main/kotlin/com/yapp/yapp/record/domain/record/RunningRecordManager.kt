@@ -1,11 +1,11 @@
-package com.yapp.yapp.running.domain.record
+package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.RecordsSearchType
+import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import com.yapp.yapp.running.domain.RunningMetricsCalculator.roundTo
-import com.yapp.yapp.running.domain.point.RunningPoint
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime

@@ -3,7 +3,7 @@ package com.yapp.yapp.document.record
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
-import com.yapp.yapp.running.domain.record.RunningRecordRepository
+import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.support.fixture.RunningFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test

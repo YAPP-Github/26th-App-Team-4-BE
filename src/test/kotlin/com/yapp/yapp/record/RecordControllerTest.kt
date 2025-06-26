@@ -5,7 +5,7 @@ import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
-import com.yapp.yapp.running.domain.record.RunningRecordRepository
+import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.support.fixture.RunningFixture
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions

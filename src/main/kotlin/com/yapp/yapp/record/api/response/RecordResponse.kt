@@ -1,7 +1,7 @@
 package com.yapp.yapp.record.api.response
 
+import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.running.domain.Pace
-import com.yapp.yapp.running.domain.record.RunningRecord
 import java.time.Duration
 import java.time.OffsetDateTime
 

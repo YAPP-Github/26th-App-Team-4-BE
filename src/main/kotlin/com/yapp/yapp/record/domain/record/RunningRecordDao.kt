@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.domain.record
+package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
@@ -6,6 +6,7 @@ import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.RecordsSearchType
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
+import java.time.DayOfWeek
 import java.time.OffsetDateTime
 
 @Component
@@ -37,7 +38,7 @@ class RunningRecordDao(
         type: RecordsSearchType,
     ): OffsetDateTime =
         when (type) {
-            RecordsSearchType.WEEKLY -> targetDate.with(java.time.DayOfWeek.MONDAY)
+            RecordsSearchType.WEEKLY -> targetDate.with(DayOfWeek.MONDAY)
             RecordsSearchType.MONTHLY -> targetDate.withDayOfMonth(1)
             RecordsSearchType.DAILY -> TimeProvider.from(targetDate.toLocalDate().atStartOfDay())
             RecordsSearchType.YEARLY -> targetDate.withDayOfYear(1)
@@ -49,7 +50,7 @@ class RunningRecordDao(
         type: RecordsSearchType,
     ): OffsetDateTime =
         when (type) {
-            RecordsSearchType.WEEKLY -> targetDate.with(java.time.DayOfWeek.SUNDAY)
+            RecordsSearchType.WEEKLY -> targetDate.with(DayOfWeek.SUNDAY)
             RecordsSearchType.MONTHLY -> targetDate.withDayOfMonth(targetDate.toLocalDate().lengthOfMonth())
             RecordsSearchType.DAILY -> targetDate.withHour(0).plusDays(1).minusSeconds(1)
             RecordsSearchType.YEARLY -> targetDate.withDayOfYear(targetDate.toLocalDate().lengthOfYear())

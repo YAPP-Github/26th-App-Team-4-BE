@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.domain.record
+package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.running.domain.Pace
