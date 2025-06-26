@@ -3,6 +3,13 @@ package com.yapp.yapp.record.api.response
 import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import java.time.Duration
 
+fun List<Duration>.average(): Duration =
+    if (isEmpty()) {
+        Duration.ZERO
+    } else {
+        fold(Duration.ZERO) { acc, duration -> acc.plus(duration) }.dividedBy(size.toLong())
+    }
+
 data class RecordListResponse(
     val userId: Long,
     val records: List<RecordResponse>,
@@ -21,6 +28,6 @@ data class RecordListResponse(
         totalTime = records.fold(Duration.ZERO) { acc, record -> acc.plus(record.totalTime) },
         totalCalories = records.sumOf { it.totalCalories },
         averageSpeed = if (records.isEmpty()) 0.0 else records.map { it.averageSpeed }.average(),
-        averagePace = if (records.isEmpty()) Duration.ZERO else records.map { it.averagePace }.averagePace().pacePerKm,
+        averagePace = records.map { it.averagePace }.average(),
     )
 }

@@ -1,5 +1,6 @@
 package com.deepromeet.atcha.support
 
+import com.yapp.yapp.support.BaseSupportMethod
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -7,4 +8,4 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-abstract class BaseServiceTest
+abstract class BaseServiceTest : BaseSupportMethod()

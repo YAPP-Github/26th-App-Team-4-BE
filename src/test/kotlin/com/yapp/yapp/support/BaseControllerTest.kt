@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.support.BaseSupportMethod
 import com.yapp.yapp.support.fixture.IdTokenFixture
 import com.yapp.yapp.user.domain.User
 import com.yapp.yapp.user.domain.UserRepository
@@ -54,11 +55,6 @@ abstract class BaseControllerTest {
     @MockitoBean
     private lateinit var feignClient: AppleFeignClient
 
-    protected val objectMapper =
-        jacksonObjectMapper()
-            .registerModule(JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-
     @LocalServerPort
     private val port: Int = 0
 
@@ -95,9 +91,4 @@ abstract class BaseControllerTest {
 
         return objectMapper.convertValue(result, TokenResponse::class.java)
     }
-
-    protected fun <T> convert(
-        result: Any?,
-        classType: Class<T>,
-    ): T = objectMapper.convertValue(result, classType)
 }

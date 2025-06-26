@@ -1,7 +1,6 @@
 package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.record.api.response.RecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
@@ -19,19 +18,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 
 @Service
-@Transactional
 class RunningService(
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
 ) {
-    fun getRecord(
-        userId: Long,
-        recordId: Long,
-    ): RecordResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId)
-        return RecordResponse(runningRecord)
-    }
-
+    @Transactional
     fun start(
         userId: Long,
         request: RunningStartRequest,
@@ -42,6 +33,7 @@ class RunningService(
         return RunningStartResponse(runningRecord.id)
     }
 
+    @Transactional
     fun update(
         userId: Long,
         recordId: Long,
@@ -60,6 +52,7 @@ class RunningService(
         return RunningUpdateResponse(newRunningPoint)
     }
 
+    @Transactional
     fun stop(
         userId: Long,
         recordId: Long,
@@ -69,6 +62,7 @@ class RunningService(
         return RunningStopResponse(userId, runningRecord.id)
     }
 
+    @Transactional
     fun resume(
         userId: Long,
         recordId: Long,
@@ -87,6 +81,7 @@ class RunningService(
         return RunningResumeResponse(newRunningPoints)
     }
 
+    @Transactional
     fun done(
         userId: Long,
         recordId: Long,

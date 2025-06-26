@@ -2,6 +2,7 @@ package com.yapp.yapp.running
 
 import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningStopRequest
@@ -15,6 +16,9 @@ import java.time.Duration
 class RunningTest : BaseServiceTest() {
     @Autowired
     lateinit var runningService: RunningService
+
+    @Autowired
+    lateinit var runningRecordManager: RunningRecordManager
 
     @Test
     fun `러닝을 시작한다`() {
@@ -57,7 +61,7 @@ class RunningTest : BaseServiceTest() {
                 lon = 126.95000,
                 timeStamp = "2025-06-17T17:00:00+09:00",
             )
-        val userId = 0L
+        val userId = getSavedUser().id
         val recordId = runningService.start(userId = userId, startRequest).recordId
 
         // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
@@ -101,7 +105,7 @@ class RunningTest : BaseServiceTest() {
     @Test
     fun `러닝을 시작 - 중단 - 완료 한다`() {
         // given
-        val userId = 0L
+        val userId = getSavedUser().id
         val lat = 37.54100
         val lon = 126.95000
         val startAt = TimeProvider.now()
@@ -129,7 +133,7 @@ class RunningTest : BaseServiceTest() {
         val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
 
         // then
-        val record = runningService.getRecord(userId, recordId)
+        val record = runningRecordManager.getRunningRecord(userId, recordId)
         Assertions.assertThat(record.totalDistance).isEqualTo(done.totalRunningDistance)
     }
 }

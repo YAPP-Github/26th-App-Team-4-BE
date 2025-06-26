@@ -20,7 +20,6 @@ class RecordDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 기록 리스트 조회 API`() {
         // given
-        val now = TimeProvider.now()
         val restDocsRequest =
             request()
                 .requestHeader(
@@ -71,14 +70,17 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        runningRecordRepository.save(RunningFixture.create(startAt = now))
-        runningRecordRepository.save(RunningFixture.create(startAt = now.plusDays(1)))
-        runningRecordRepository.save(RunningFixture.create(startAt = now.plusDays(2)))
+        val now = TimeProvider.now()
+        val user = getSavedUser()
+
+        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
+        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(1)))
+        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(2)))
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .param("type", "ALL")
             .param("targetDate", now.toString())
             .param("page", 0)
@@ -92,7 +94,6 @@ class RecordDocumentTest : BaseDocumentTest() {
     @Test
     fun `러닝 기록 단건 조회 API`() {
         // given
-        val recordId = 123L
         val restDocsRequest =
             request()
                 .requestHeader(
@@ -105,11 +106,14 @@ class RecordDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    // RecordResponse 구조에 맞춰 필요한 필드를 추가/수정하세요
-                    fieldWithPath("result.recordId").description("러닝 기록 ID"),
-                    fieldWithPath("result.startTime").description("시작 시간"),
-                    fieldWithPath("result.endTime").description("종료 시간"),
-                    fieldWithPath("result.distance").description("이동 거리 (미터)"),
+                    fieldWithPath("result.userId").description("유저 ID"),
+                    fieldWithPath("result.recordId").description("기록 ID"),
+                    fieldWithPath("result.totalDistance").description("총 이동 거리"),
+                    fieldWithPath("result.totalTime").description("총 이동 시간"),
+                    fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
+                    fieldWithPath("result.startAt").description("시작 시간"),
+                    fieldWithPath("result.averageSpeed").description("평균 속도"),
+                    fieldWithPath("result.averagePace").description("평균 페이스"),
                 )
 
         val filter =
@@ -121,12 +125,14 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        RunningFixture.create()
+        val user = getSavedUser()
+        val runningRecord = runningRecordRepository.save(RunningFixture.create(userId = user.id))
+        val recordId = runningRecord.id
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .`when`().get("/api/v1/records/{recordId}", recordId)
             .then().log().all()
             .statusCode(200)
