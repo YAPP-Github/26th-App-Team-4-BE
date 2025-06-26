@@ -33,7 +33,7 @@ class RunningController(
         return ApiResponse.success(runningService.start(userId, request))
     }
 
-    @PostMapping("/{recordId}/update")
+    @PostMapping("/{recordId}")
     fun update(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,

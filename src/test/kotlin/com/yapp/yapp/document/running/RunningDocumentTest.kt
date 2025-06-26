@@ -120,7 +120,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .pathParam("recordId", recordId)
             .body(request)
-            .`when`().post("/api/v1/running/{recordId}/update")
+            .`when`().post("/api/v1/running/{recordId}")
             .then().log().all()
             .statusCode(200)
     }
