@@ -20,21 +20,28 @@ class AuthService(
     private val userManager: UserManager,
 ) {
     fun login(
-        providerType: ProviderType,
+        provider: ProviderType,
         loginRequest: LoginRequest,
     ): LoginResponse {
         val authUserInfo =
-            authManager.authenticate(providerType, loginRequest.idToken, loginRequest.nonce)
+            authManager.authenticate(provider, loginRequest.idToken, loginRequest.nonce)
 
         val email = authUserInfo.getEmail()
         val name = loginRequest.name ?: authUserInfo.getName()
         val profile = authUserInfo.getProfile()
-        val user = userManager.getUserInfo(email, name, profile)
+        val userInfo = userManager.getUserInfo(email, name, profile, provider)
 
-        val tokenInfo = jwtTokenGenerator.generateTokens(user.id)
+        val tokenInfo = jwtTokenGenerator.generateTokens(userInfo.id)
         val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
-        val userResponse = UserResponse(user.id, user.name, user.email, user.profileImage)
-        return LoginResponse(tokenResponse, userResponse, user.isNew)
+        val userResponse =
+            UserResponse(
+                userInfo.id,
+                userInfo.name,
+                userInfo.email,
+                userInfo.profileImage,
+                userInfo.provider,
+            )
+        return LoginResponse(tokenResponse, userResponse, userInfo.isNew)
     }
 
     fun logout(tokenId: String) {

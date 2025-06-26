@@ -9,6 +9,7 @@ enum class ErrorCode(
     val logLevel: LogLevel,
 ) {
     USER_NOT_FOUND(400, "USR_001", "유저가 존재하지 않습니다.", LogLevel.WARN),
+    USER_ALREADY_EXISTS(400, "USR_002", "이미 존재하는 사용자입니다.", LogLevel.WARN),
 
     UNSUPPORTED_PROVIDER_TYPE(400, "PRV_001", "지원 하지 않는 유형 입니다.", LogLevel.WARN),
     TOKEN_EXPIRED(401, "TKN_001", "만료된 토큰 입니다.", LogLevel.WARN),

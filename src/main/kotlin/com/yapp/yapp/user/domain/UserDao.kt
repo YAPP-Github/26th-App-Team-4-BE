@@ -1,5 +1,6 @@
 package com.yapp.yapp.user.domain
 
+import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import org.springframework.stereotype.Component
@@ -12,8 +13,23 @@ class UserDao(
         email: String,
         name: String,
         profileImage: String,
+        provider: ProviderType,
     ): User {
-        return userRepository.save(User(email = email, name = name, profileImage = profileImage))
+        return userRepository.save(
+            User(
+                email = email,
+                name = name,
+                provider = provider,
+                profileImage = profileImage,
+            ),
+        )
+    }
+
+    fun findByEmailAndProvider(
+        email: String,
+        provider: ProviderType,
+    ): User? {
+        return userRepository.findByEmailAndProvider(email, provider)
     }
 
     fun findByEmail(email: String): User? {

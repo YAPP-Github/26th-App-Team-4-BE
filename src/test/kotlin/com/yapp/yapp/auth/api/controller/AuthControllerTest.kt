@@ -221,6 +221,52 @@ class AuthControllerTest : BaseControllerTest() {
         }
 
         @Test
+        fun `같은 이메일로 서로 다른 소셜 로그인을 시도 한다`() {
+            // given
+            val appleIdToken =
+                IdTokenFixture.createValidIdToken(
+                    email = "dup@dup.com",
+                    issuer = "https://appleid.apple.com",
+                )
+            val appleLoginRequest = LoginRequest(appleIdToken, null, null)
+
+            val kakaoIdToken =
+                IdTokenFixture.createValidIdToken(
+                    email = "dup@dup.com",
+                    issuer = "https://kauth.kakao.com",
+                )
+            val kakaoLoginRequest = LoginRequest(kakaoIdToken, null, null)
+
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+
+            // when
+            Mockito.`when`(appleFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            Mockito.`when`(kakaoFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(appleLoginRequest)
+                .`when`().post("/api/v1/auth/login/apple")
+                .then().log().all()
+                .statusCode(200)
+
+            val message =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(kakaoLoginRequest)
+                    .`when`().post("/api/v1/auth/login/kakao")
+                    .then().log().all()
+                    .statusCode(400)
+                    .extract().`as`(ApiResponse::class.java)
+                    .message
+
+            Assertions.assertThat(message).isEqualTo("이미 존재하는 사용자입니다.")
+        }
+
+        @Test
         fun `랜덤 이름으로 회원가입 한다`() {
             // given
             val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
