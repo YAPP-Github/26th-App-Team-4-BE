@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 class RunningController(
     private val runningService: RunningService,
 ) {
-    @PostMapping("/start")
+    @PostMapping
     fun start(
         @CurrentUser userId: Long,
         @RequestBody request: RunningStartRequest,

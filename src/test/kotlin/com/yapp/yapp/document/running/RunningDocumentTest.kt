@@ -58,7 +58,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .body(request)
-            .`when`().post("/api/v1/running/start")
+            .`when`().post("/api/v1/running")
             .then().log().all()
             .statusCode(200)
     }
