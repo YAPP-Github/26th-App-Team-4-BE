@@ -28,4 +28,6 @@ object TimeProvider {
     fun from(localDateTime: LocalDateTime): OffsetDateTime {
         return localDateTime.atZone(zone).toOffsetDateTime()
     }
+
+    fun OffsetDateTime.toStartOfDay(): OffsetDateTime = this.withHour(0).withMinute(0).withSecond(0).withNano(0)
 }

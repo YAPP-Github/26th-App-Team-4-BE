@@ -3,6 +3,7 @@ package com.yapp.yapp.record
 import com.deepromeet.atcha.support.BaseControllerTest
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.common.TimeProvider.toStartOfDay
 import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
@@ -20,7 +21,7 @@ class RecordControllerTest : BaseControllerTest() {
     @Test
     fun `유저의 러닝 기록들을 조회한다`() {
         // given
-        val now = TimeProvider.now()
+        val now = TimeProvider.now().toStartOfDay()
         val user = getSavedUser()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
@@ -50,7 +51,7 @@ class RecordControllerTest : BaseControllerTest() {
     @Test
     fun `유저의 주간 러닝 기록들을 조회한다`() {
         // given
-        val now = TimeProvider.now()
+        val now = TimeProvider.now().toStartOfDay()
         val user = getSavedUser()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
@@ -80,7 +81,7 @@ class RecordControllerTest : BaseControllerTest() {
     @Test
     fun `유저의 연간 러닝 기록들을 조회한다`() {
         // given
-        val now = TimeProvider.now()
+        val now = TimeProvider.now().toStartOfDay()
         val user = getSavedUser()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
@@ -110,7 +111,7 @@ class RecordControllerTest : BaseControllerTest() {
     @Test
     fun `유저의 일간 러닝 기록들을 조회한다`() {
         // given
-        val now = TimeProvider.now().withHour(0)
+        val now = TimeProvider.now().toStartOfDay().withHour(0)
         val user = getSavedUser()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
