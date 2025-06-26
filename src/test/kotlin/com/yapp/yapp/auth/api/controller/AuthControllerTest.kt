@@ -311,6 +311,24 @@ class AuthControllerTest : BaseControllerTest() {
         )
     }
 
+    @Test
+    fun `로그아웃 후 사용자 정보를 조회한다`() {
+        val tokenResponse = loginUser()
+
+        RestAssured.given().log().all()
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${tokenResponse.refreshToken}")
+            .`when`().post("/api/v1/auth/logout")
+            .then().log().all()
+            .statusCode(204)
+
+        RestAssured.given().log().all()
+            .header("Authorization", "Bearer ${tokenResponse.accessToken}")
+            .`when`().get("/api/v1/users")
+            .then().log().all()
+            .statusCode(401)
+    }
+
     private fun loginUser(): TokenResponse {
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()

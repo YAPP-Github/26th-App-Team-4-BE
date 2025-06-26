@@ -11,11 +11,11 @@ class SpringCacheBlacklist(
 ) : TokenBlacklist {
     private val cache = cacheManager.getCache(CacheNames.TOKEN_BLACKLIST)!!
 
-    override fun add(token: String) {
-        cache.put(token, true)
+    override fun add(tokenId: String) {
+        cache.put(tokenId, true)
     }
 
-    override fun contains(token: String): Boolean {
-        return (cache.get(token)?.get() as? Boolean) == true
+    override fun contains(tokenId: String): Boolean {
+        return (cache.get(tokenId)?.get() as? Boolean) == true
     }
 }

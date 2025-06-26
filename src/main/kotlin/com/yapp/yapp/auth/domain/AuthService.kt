@@ -37,13 +37,15 @@ class AuthService(
         return LoginResponse(tokenResponse, userResponse, user.isNew)
     }
 
-    fun logout(refreshToken: String) {
-        jwtTokenHandler.expire(refreshToken)
+    fun logout(tokenId: String) {
+        jwtTokenHandler.expire(tokenId)
     }
 
-    fun refresh(refreshToken: String): TokenResponse {
-        val userId = jwtTokenHandler.getUserId(refreshToken)
-        jwtTokenHandler.expire(refreshToken)
+    fun refresh(
+        tokenId: String,
+        userId: Long,
+    ): TokenResponse {
+        jwtTokenHandler.expire(tokenId)
         val tokenInfo = jwtTokenGenerator.generateTokens(userId)
         return TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
     }

@@ -3,7 +3,7 @@ package com.yapp.yapp.common.token.jwt.resolver
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
-import com.yapp.yapp.common.token.jwt.annotation.Token
+import com.yapp.yapp.common.token.jwt.annotation.TokenId
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpHeaders
@@ -22,7 +22,7 @@ class TokenArgumentResolver(
     }
 
     override fun supportsParameter(parameter: MethodParameter): Boolean =
-        parameter.hasParameterAnnotation(Token::class.java) &&
+        parameter.hasParameterAnnotation(TokenId::class.java) &&
             parameter.parameterType == String::class.java
 
     override fun resolveArgument(
@@ -39,7 +39,6 @@ class TokenArgumentResolver(
             throw CustomException(ErrorCode.INVALID_REQUEST)
         }
         val token = authorization.substring(TOKEN_TYPE.length)
-        tokenHandler.getUserId(token)
-        return token
+        return tokenHandler.getTokenId(token)
     }
 }

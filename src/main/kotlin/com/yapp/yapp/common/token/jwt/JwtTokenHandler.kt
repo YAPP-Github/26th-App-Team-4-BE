@@ -40,6 +40,17 @@ class JwtTokenHandler(
                 }
             }.build()
 
+    fun getTokenId(token: String): String {
+        try {
+            val claims = getValidClaims(token)
+            return claims.id
+        } catch (e: ExpiredJwtException) {
+            throw CustomException(ErrorCode.TOKEN_EXPIRED)
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.TOKEN_INVALID)
+        }
+    }
+
     fun getUserId(token: String): Long {
         try {
             val claims = getValidClaims(token)
@@ -52,17 +63,18 @@ class JwtTokenHandler(
     }
 
     private fun getValidClaims(token: String): Claims {
-        validateBlacklist(token)
-        return parser.parseSignedClaims(token).payload
+        val claims = parser.parseSignedClaims(token).payload
+        validateBlacklist(claims.id)
+        return claims
     }
 
-    private fun validateBlacklist(token: String) {
-        if (tokenBlacklist.contains(token)) {
+    private fun validateBlacklist(tokenId: String) {
+        if (tokenBlacklist.contains(tokenId)) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         }
     }
 
-    fun expire(token: String) {
-        tokenBlacklist.add(token)
+    fun expire(tokenId: String) {
+        tokenBlacklist.add(tokenId)
     }
 }
