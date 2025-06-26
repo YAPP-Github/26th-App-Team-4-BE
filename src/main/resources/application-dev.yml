@@ -49,7 +49,7 @@ logging:
   level:
     root: info
   pattern:
-    file: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+    file: "[%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}][%-5level][%logger.%method:line%line] - %msg%n"
   file:
     name: ${secret.logging.file.name}
   logback:
