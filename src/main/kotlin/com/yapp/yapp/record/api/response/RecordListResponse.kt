@@ -1,6 +1,5 @@
 package com.yapp.yapp.record.api.response
 
-import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import java.time.Duration
 
 fun List<Duration>.average(): Duration =

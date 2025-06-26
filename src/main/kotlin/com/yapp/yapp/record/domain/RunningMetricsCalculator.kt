@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.domain
+package com.yapp.yapp.record.domain
 
 import com.yapp.yapp.record.domain.point.RunningPoint
 import kotlin.math.atan2

@@ -1,8 +1,8 @@
 package com.yapp.yapp.support.fixture
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.record.RunningRecord
-import com.yapp.yapp.running.domain.Pace
 import java.time.Duration
 import java.time.OffsetDateTime
 
