@@ -7,6 +7,7 @@ enum class Tag(
     ERROR_API("Error API"),
     RUNNING_API("Running API"),
     AUTH_API("Auth API"),
+    RECORD_API("Record API"),
     ;
 
     fun getDisplayName(): String {

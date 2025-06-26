@@ -2,9 +2,11 @@ package com.yapp.yapp.running.domain.record
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
+import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.running.domain.Pace.Companion.averagePace
 import com.yapp.yapp.running.domain.RunningMetricsCalculator.roundTo
 import com.yapp.yapp.running.domain.point.RunningPoint
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
@@ -12,6 +14,31 @@ import java.time.OffsetDateTime
 class RunningRecordManager(
     private val runningRecordDao: RunningRecordDao,
 ) {
+    fun getRunningRecord(
+        id: Long,
+        userId: Long,
+    ): RunningRecord {
+        val runningRecord = runningRecordDao.getById(id)
+        if (runningRecord.userId != userId) {
+            throw CustomException(ErrorCode.RECORD_NO_MATCHED)
+        }
+        return runningRecord
+    }
+
+    fun getRunningRecords(
+        userId: Long,
+        type: RecordsSearchType,
+        targetDate: OffsetDateTime,
+        pageable: Pageable,
+    ): List<RunningRecord> {
+        return runningRecordDao.getRunningRecord(
+            userId = userId,
+            targetDate = targetDate,
+            type = type,
+            pageable = pageable,
+        )
+    }
+
     fun start(
         userId: Long,
         startAt: OffsetDateTime,
@@ -19,17 +46,6 @@ class RunningRecordManager(
         val runningRecord = RunningRecord(userId = userId, startAt = startAt)
         runningRecord.start()
         return runningRecordDao.save(runningRecord)
-    }
-
-    fun getRunningRecord(
-        id: Long,
-        userId: Long,
-    ): RunningRecord {
-        val runningRecord = runningRecordDao.getById(id)
-        if (runningRecord.userId != userId) {
-            throw CustomException(ErrorCode.RECORD_NOT_MATCHED)
-        }
-        return runningRecord
     }
 
     fun stop(

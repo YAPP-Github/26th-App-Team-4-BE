@@ -18,7 +18,6 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
-import java.time.OffsetDateTime
 
 class RunningDocumentTest : BaseDocumentTest() {
     @Autowired
@@ -109,7 +108,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val startResponse =
             runningService.start(
                 user.id,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+                RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
         val request = RequestFixture.runningUpdateRequest()
         val recordId = startResponse.recordId
@@ -158,7 +157,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val startResponse =
             runningService.start(
                 user.id,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+                RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
         runningService.update(
             user.id,
@@ -243,7 +242,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val startResponse =
             runningService.start(
                 user.id,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+                RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
         val recordId = startResponse.recordId
         runningService.update(
@@ -332,7 +331,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val startResponse =
             runningService.start(
                 user.id,
-                RunningStartRequest(37.5665, 126.9780, OffsetDateTime.now().toString()),
+                RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
         runningService.update(
             user.id,
