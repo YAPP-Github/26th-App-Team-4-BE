@@ -53,16 +53,7 @@ class RunningRecordManager(
         userId: Long,
     ): RunningRecord {
         val runningRecord = getRunningRecord(id, userId)
-        runningRecord.stop()
-        return runningRecord
-    }
-
-    fun resume(
-        id: Long,
-        userId: Long,
-    ): RunningRecord {
-        val runningRecord = getRunningRecord(id, userId)
-        runningRecord.resume()
+        runningRecord.pause()
         return runningRecord
     }
 

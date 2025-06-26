@@ -4,8 +4,8 @@ import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
+import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import org.assertj.core.api.Assertions
@@ -128,7 +128,7 @@ class RunningTest : BaseServiceTest() {
             )
         }
         val stopTime = maxTime + 1L
-        val stop = runningService.stop(userId, recordId, RunningStopRequest(startAt.plusSeconds(stopTime).toString()))
+        val stop = runningService.pause(userId, recordId, RunningPauseRequest(startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
         val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
 

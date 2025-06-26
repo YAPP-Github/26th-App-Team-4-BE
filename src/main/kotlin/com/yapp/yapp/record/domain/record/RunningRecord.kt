@@ -49,12 +49,8 @@ class RunningRecord(
         this.recordStatus = RecordStatus.IN_PROGRESS
     }
 
-    fun stop() {
-        this.recordStatus = RecordStatus.STOPPED
-    }
-
-    fun resume() {
-        this.recordStatus = RecordStatus.IN_PROGRESS
+    fun pause() {
+        this.recordStatus = RecordStatus.PAUSE
     }
 
     fun finish() {

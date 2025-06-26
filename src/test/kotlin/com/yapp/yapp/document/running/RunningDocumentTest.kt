@@ -4,9 +4,8 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.running.api.request.RunningDoneRequest
-import com.yapp.yapp.running.api.request.RunningResumeRequest
+import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.fixture.RequestFixture
@@ -181,7 +180,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:01+09:00",
             ),
         )
-        val request = RunningStopRequest("2025-06-17T16:12:02+09:00")
+        val request = RunningPauseRequest("2025-06-17T16:12:02+09:00")
         val recordId = startResponse.recordId
 
         // when & then
@@ -191,7 +190,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .pathParam("recordId", recordId)
             .body(request)
-            .`when`().patch("/api/v1/running/{recordId}/stop")
+            .`when`().patch("/api/v1/running/{recordId}")
             .then().log().all()
             .statusCode(200)
     }

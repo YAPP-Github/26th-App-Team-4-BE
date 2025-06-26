@@ -4,14 +4,12 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
-import com.yapp.yapp.running.api.request.RunningResumeRequest
+import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
-import com.yapp.yapp.running.api.response.RunningResumeResponse
+import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
-import com.yapp.yapp.running.api.response.RunningStopResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -53,32 +51,13 @@ class RunningService(
     }
 
     @Transactional
-    fun stop(
+    fun pause(
         userId: Long,
         recordId: Long,
-        request: RunningStopRequest,
-    ): RunningStopResponse {
+        request: RunningPauseRequest,
+    ): RunningPauseResponse {
         val runningRecord = runningRecordManager.stop(recordId, userId = userId)
-        return RunningStopResponse(userId, runningRecord.id)
-    }
-
-    @Transactional
-    fun resume(
-        userId: Long,
-        recordId: Long,
-        request: RunningResumeRequest,
-    ): RunningResumeResponse {
-        val runningRecord = runningRecordManager.resume(recordId, userId = userId)
-        val newRunningPoints =
-            runningPointManger.saveNewRunningPoints(
-                runningRecord = runningRecord,
-                lat = request.lat,
-                lon = request.lon,
-                heartRate = request.heartRate,
-                timeStamp = TimeProvider.parse(request.timeStamp),
-                totalRunningTime = Duration.parse(request.totalRunningTime),
-            )
-        return RunningResumeResponse(newRunningPoints)
+        return RunningPauseResponse(userId, runningRecord.id)
     }
 
     @Transactional
