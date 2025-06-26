@@ -51,15 +51,6 @@ class RunningController(
         return ApiResponse.success(runningService.stop(userId, recordId, request))
     }
 
-    @PostMapping("/{recordId}/resume")
-    fun resume(
-        @CurrentUser userId: Long,
-        @PathVariable recordId: Long,
-        @RequestBody request: RunningResumeRequest,
-    ): ApiResponse<RunningResumeResponse> {
-        return ApiResponse.success(runningService.resume(userId, recordId, request))
-    }
-
     @PostMapping("/{recordId}/done")
     fun done(
         @CurrentUser userId: Long,
