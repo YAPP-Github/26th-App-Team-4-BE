@@ -11,6 +11,16 @@ object TimeProvider {
         return OffsetDateTime.now(zone)
     }
 
+    fun year(year: Int): OffsetDateTime = now().withYear(year)
+
+    fun month(month: Int): OffsetDateTime = now().withMonth(month)
+
+    fun day(day: Int): OffsetDateTime = now().withDayOfMonth(day)
+
+    fun hour(hour: Int): OffsetDateTime = now().withHour(hour)
+
+    fun minute(minute: Int): OffsetDateTime = now().withMinute(minute)
+
     fun parse(timeStamp: String): OffsetDateTime {
         return OffsetDateTime.parse(timeStamp)
     }

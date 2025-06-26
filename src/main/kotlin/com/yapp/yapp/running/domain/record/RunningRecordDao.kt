@@ -51,7 +51,7 @@ class RunningRecordDao(
         when (type) {
             RecordsSearchType.WEEKLY -> targetDate.with(java.time.DayOfWeek.SUNDAY)
             RecordsSearchType.MONTHLY -> targetDate.withDayOfMonth(targetDate.toLocalDate().lengthOfMonth())
-            RecordsSearchType.DAILY -> targetDate
+            RecordsSearchType.DAILY -> targetDate.withHour(0).plusDays(1).minusSeconds(1)
             RecordsSearchType.YEARLY -> targetDate.withDayOfYear(targetDate.toLocalDate().lengthOfYear())
             RecordsSearchType.ALL -> targetDate.plusYears(20L)
         }
