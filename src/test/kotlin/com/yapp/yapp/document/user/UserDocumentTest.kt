@@ -35,6 +35,7 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.email").description("사용자 이메일"),
                     fieldWithPath("result.name").description("사용자 이름"),
                     fieldWithPath("result.profileImage").description("사용자 프로필"),
+                    fieldWithPath("result.provider").description("소셜 로그인 유형"),
                 )
 
         val restDocsFilter =
@@ -71,7 +72,7 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
 
         val restDocsFilter =
-            filter("사용자 API", "회원탈퇴")
+            filter("사용자 API", "회원 탈퇴")
                 .tag(Tag.USER_API)
                 .summary("사용자 회원 탈퇴 API")
                 .description("액세스 토큰을 통해 회원 탈퇴 합니다.")
