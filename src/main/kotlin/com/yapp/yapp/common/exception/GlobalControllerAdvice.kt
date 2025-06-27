@@ -18,9 +18,7 @@ class GlobalControllerAdvice {
     @ExceptionHandler(CustomException::class)
     fun handleException(exception: CustomException): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = exception.errorCode
-        logging(errorCode)
-        return ResponseEntity.status(errorCode.status)
-            .body(ApiResponse.error(errorCode.errorCode, errorCode.message))
+        return handleError(errorCode)
     }
 
     @ExceptionHandler(
@@ -28,8 +26,19 @@ class GlobalControllerAdvice {
         NoResourceFoundException::class,
         NoHandlerFoundException::class,
     )
-    fun handleNoResourceFoundException(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
+    fun handleInvalidRequestException(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = ErrorCode.INVALID_REQUEST
+        return handleError(errorCode)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleInternalServerException(): ResponseEntity<ApiResponse<Unit>> {
+        val errorCode = ErrorCode.INTERNAL_SERVER_
+        return handleError(errorCode)
+    }
+
+    private fun handleError(errorCode: ErrorCode): ResponseEntity<ApiResponse<Unit>> {
+        logging(errorCode)
         return ResponseEntity.status(errorCode.status)
             .body(ApiResponse.error(errorCode.errorCode, errorCode.message))
     }
