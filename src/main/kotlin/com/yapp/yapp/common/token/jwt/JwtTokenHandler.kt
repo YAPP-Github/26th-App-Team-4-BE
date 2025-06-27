@@ -40,32 +40,43 @@ class JwtTokenHandler(
                 }
             }.build()
 
-    fun getTokenId(token: String): String {
+    fun getTokenId(
+        token: String,
+        tokenType: TokenType,
+    ): String {
+        val claims = getValidClaims(token, tokenType)
+        return claims.id
+    }
+
+    fun getUserId(
+        token: String,
+        tokenType: TokenType,
+    ): Long {
+        val claims = getValidClaims(token, tokenType)
+        return claims.subject.toLong()
+    }
+
+    private fun getValidClaims(
+        token: String,
+        tokenType: TokenType,
+    ): Claims {
         try {
-            val claims = getValidClaims(token)
-            return claims.id
+            val validToken = parser.parseSignedClaims(token)
+            val rawTokenType = validToken.header[JwtProperties.TOKEN_TYPE_CLAIM] as? String
+            val actualTokenType = TokenType.from(rawTokenType)
+            if (actualTokenType != tokenType) {
+                throw CustomException(ErrorCode.TOKEN_TYPE_MISMATCH)
+            }
+            val claims = validToken.payload
+            validateBlacklist(claims.id)
+            return claims
+        } catch (e: CustomException) {
+            throw e
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
-    }
-
-    fun getUserId(token: String): Long {
-        try {
-            val claims = getValidClaims(token)
-            return (claims.subject as String).toLong()
-        } catch (e: ExpiredJwtException) {
-            throw CustomException(ErrorCode.TOKEN_EXPIRED)
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.TOKEN_INVALID)
-        }
-    }
-
-    private fun getValidClaims(token: String): Claims {
-        val claims = parser.parseSignedClaims(token).payload
-        validateBlacklist(claims.id)
-        return claims
     }
 
     private fun validateBlacklist(tokenId: String) {

@@ -3,7 +3,9 @@ package com.yapp.yapp.common.token.jwt.resolver
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
-import com.yapp.yapp.common.token.jwt.annotation.TokenId
+import com.yapp.yapp.common.token.jwt.RefreshPrincipal
+import com.yapp.yapp.common.token.jwt.TokenType
+import com.yapp.yapp.common.token.jwt.annotation.Principal
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpHeaders
@@ -14,7 +16,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
-class TokenArgumentResolver(
+class PrincipalArgumentResolver(
     private val tokenHandler: JwtTokenHandler,
 ) : HandlerMethodArgumentResolver {
     companion object {
@@ -22,8 +24,8 @@ class TokenArgumentResolver(
     }
 
     override fun supportsParameter(parameter: MethodParameter): Boolean =
-        parameter.hasParameterAnnotation(TokenId::class.java) &&
-            parameter.parameterType == String::class.java
+        parameter.hasParameterAnnotation(Principal::class.java) &&
+            parameter.parameterType == RefreshPrincipal::class.java
 
     override fun resolveArgument(
         parameter: MethodParameter,
@@ -39,6 +41,8 @@ class TokenArgumentResolver(
             throw CustomException(ErrorCode.INVALID_REQUEST)
         }
         val token = authorization.substring(TOKEN_TYPE.length)
-        return tokenHandler.getTokenId(token)
+        val id = tokenHandler.getTokenId(token, TokenType.REFRESH)
+        val userId = tokenHandler.getUserId(token, TokenType.REFRESH)
+        return RefreshPrincipal(id, userId)
     }
 }

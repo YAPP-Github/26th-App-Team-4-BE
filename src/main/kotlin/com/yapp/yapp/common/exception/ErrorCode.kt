@@ -16,6 +16,7 @@ enum class ErrorCode(
     TOKEN_EXPIRED(401, "TKN_001", "만료된 토큰 입니다.", LogLevel.WARN),
     TOKEN_INVALID(401, "TKN_002", "유효 하지 않은 토큰 입니다.", LogLevel.WARN),
     TOKEN_CLAIM_MISSING(400, "TKN_003", "토큰에 필수 클레임이 누락되었습니다", LogLevel.WARN),
+    TOKEN_TYPE_MISMATCH(403, "TKN_004", "토큰 타입이 올바르지 않습니다.", LogLevel.WARN),
 
     EXTERNAL_API_CLIENT(400, "EXT_001", "외부 API 요청이 잘못 되었습니다.", LogLevel.WARN),
     EXTERNAL_API_UNAUTHORIZED(401, "EXT_002", "외부 API에 인증을 실패 했습니다.", LogLevel.WARN),

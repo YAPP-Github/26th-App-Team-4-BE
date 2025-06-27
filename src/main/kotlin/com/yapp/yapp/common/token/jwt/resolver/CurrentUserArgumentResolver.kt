@@ -3,6 +3,7 @@ package com.yapp.yapp.common.token.jwt.resolver
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
+import com.yapp.yapp.common.token.jwt.TokenType
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
@@ -39,6 +40,6 @@ class CurrentUserArgumentResolver(
             throw CustomException(ErrorCode.INVALID_REQUEST)
         }
         val token = authorization.substring(TOKEN_TYPE.length)
-        return tokenHandler.getUserId(token)
+        return tokenHandler.getUserId(token, TokenType.ACCESS)
     }
 }
