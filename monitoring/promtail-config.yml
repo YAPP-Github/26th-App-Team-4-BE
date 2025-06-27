@@ -15,6 +15,11 @@ scrape_configs:
         labels:
           job: fitrun-app
           __path__: /var/log/fitrun/app/*.log
+    pipeline_stages:
+      - regex:
+          expression: '\{"type":"(?P<type>REQUEST\s*|RESPONSE)",.*\}'
+      - labels:
+          type:
 
   - job_name: nginx-access
     static_configs:

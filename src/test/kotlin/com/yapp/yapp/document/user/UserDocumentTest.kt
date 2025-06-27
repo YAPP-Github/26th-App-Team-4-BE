@@ -25,7 +25,7 @@ class UserDocumentTest : BaseDocumentTest() {
         val restDocsRequest =
             request()
                 .requestHeader(
-                    headerWithName("Authorization").description("리프레시 토큰 (Bearer)"),
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
 
         val restDocsResponse =
@@ -65,7 +65,7 @@ class UserDocumentTest : BaseDocumentTest() {
         val restDocsRequest =
             request()
                 .requestHeader(
-                    headerWithName("Authorization").description("리프레시 토큰 (Bearer)"),
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
 
         val restDocsResponse =
