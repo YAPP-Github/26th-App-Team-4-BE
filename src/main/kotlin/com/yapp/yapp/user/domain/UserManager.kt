@@ -1,8 +1,6 @@
 package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
-import com.yapp.yapp.common.exception.CustomException
-import com.yapp.yapp.common.exception.ErrorCode
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -39,9 +37,6 @@ class UserManager(
         profileImage: String?,
         provider: ProviderType,
     ): UserInfo {
-        userDao.findByEmail(email)?.let {
-            throw CustomException(ErrorCode.USER_ALREADY_EXISTS)
-        }
         val tempName = name ?: UsernameGenerator.generate(email)
         val userProfile = profileImage ?: defaultProfileImage
         val user = userDao.save(email, tempName, userProfile, provider)

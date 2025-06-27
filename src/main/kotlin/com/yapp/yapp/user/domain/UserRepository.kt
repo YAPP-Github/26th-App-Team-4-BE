@@ -10,6 +10,4 @@ interface UserRepository : JpaRepository<User, Long> {
         email: String,
         provider: ProviderType,
     ): User?
-
-    fun findByEmail(email: String): User?
 }

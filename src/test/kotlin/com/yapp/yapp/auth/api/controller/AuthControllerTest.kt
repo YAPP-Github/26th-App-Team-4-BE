@@ -246,24 +246,47 @@ class AuthControllerTest : BaseControllerTest() {
             Mockito.`when`(kakaoFeignClient.fetchJwks())
                 .thenReturn(objectMapper.writeValueAsString(jwksResponse))
 
-            RestAssured.given().log().all()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .body(appleLoginRequest)
-                .`when`().post("/api/v1/auth/login/apple")
-                .then().log().all()
-                .statusCode(200)
+            val appleResult =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(appleLoginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
+                    .then().log().all()
+                    .statusCode(200)
+                    .extract().`as`(ApiResponse::class.java)
+                    .result
+            val appleResponse = objectMapper.convertValue(appleResult, LoginResponse::class.java)
 
-            val message =
+            val kakaoResult =
                 RestAssured.given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
                     .body(kakaoLoginRequest)
                     .`when`().post("/api/v1/auth/login/kakao")
                     .then().log().all()
-                    .statusCode(400)
+                    .statusCode(200)
                     .extract().`as`(ApiResponse::class.java)
-                    .message
+                    .result
+            val kakaoResponse = objectMapper.convertValue(kakaoResult, LoginResponse::class.java)
 
-            Assertions.assertThat(message).isEqualTo("이미 존재하는 사용자입니다.")
+            assertAll(
+                { Assertions.assertThat(appleResponse.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(appleResponse.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(appleResponse.user.id).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.email).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.profileImage).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.name).isNotNull() },
+                { Assertions.assertThat(appleResponse.isNew).isTrue() },
+            )
+
+            assertAll(
+                { Assertions.assertThat(kakaoResponse.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(kakaoResponse.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(kakaoResponse.user.id).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.email).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.profileImage).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.name).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.isNew).isTrue() },
+            )
         }
 
         @Test
