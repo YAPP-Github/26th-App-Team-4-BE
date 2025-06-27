@@ -1,6 +1,8 @@
 package com.yapp.yapp.auth.api.controller
 
 import com.deepromeet.atcha.support.BaseControllerTest
+import com.yapp.yapp.auth.api.request.LoginRequest
+import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.auth.infrastructure.provider.kakao.KakaoFeignClient
@@ -32,6 +34,7 @@ class AuthControllerTest : BaseControllerTest() {
             // given
             val idToken = IdTokenFixture.createValidIdToken(issuer = "https://kauth.kakao.com")
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, null, "kakao-initial-test-user")
 
             // when
             Mockito.`when`(kakaoFeignClient.fetchJwks())
@@ -40,19 +43,24 @@ class AuthControllerTest : BaseControllerTest() {
             val result =
                 RestAssured.given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .param("idToken", idToken)
-                    .`when`().get("/api/v1/auth/login/kakao")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/kakao")
                     .then().log().all()
                     .statusCode(200)
                     .extract().`as`(ApiResponse::class.java)
                     .result
 
-            val resultToken = objectMapper.convertValue(result, TokenResponse::class.java)
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
 
             // then
             assertAll(
-                { Assertions.assertThat(resultToken).isNotNull },
-                { Assertions.assertThat(resultToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isEqualTo(loginRequest.name) },
+                { Assertions.assertThat(response.isNew).isTrue() },
             )
         }
 
@@ -61,6 +69,7 @@ class AuthControllerTest : BaseControllerTest() {
             // given
             val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, null, "apple-initial-test-user")
 
             // when
             Mockito.`when`(appleFeignClient.fetchJwks())
@@ -69,19 +78,24 @@ class AuthControllerTest : BaseControllerTest() {
             val result =
                 RestAssured.given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .param("idToken", idToken)
-                    .`when`().get("/api/v1/auth/login/apple")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
                     .then().log().all()
                     .statusCode(200)
                     .extract().`as`(ApiResponse::class.java)
                     .result
 
-            val resultToken = objectMapper.convertValue(result, TokenResponse::class.java)
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
 
             // then
             assertAll(
-                { Assertions.assertThat(resultToken).isNotNull },
-                { Assertions.assertThat(resultToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isEqualTo(loginRequest.name) },
+                { Assertions.assertThat(response.isNew).isTrue() },
             )
         }
 
@@ -92,6 +106,7 @@ class AuthControllerTest : BaseControllerTest() {
             val idToken =
                 IdTokenFixture.createValidIdToken(issuer = "https://kauth.kakao.com", nonce = nonce)
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, nonce, "kakao-initial-test-user-with-nonce")
 
             // when
             Mockito.`when`(kakaoFeignClient.fetchJwks())
@@ -100,20 +115,24 @@ class AuthControllerTest : BaseControllerTest() {
             val result =
                 RestAssured.given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .param("idToken", idToken)
-                    .param("nonce", nonce)
-                    .`when`().get("/api/v1/auth/login/kakao")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/kakao")
                     .then().log().all()
                     .statusCode(200)
                     .extract().`as`(ApiResponse::class.java)
                     .result
 
-            val resultToken = objectMapper.convertValue(result, TokenResponse::class.java)
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
 
             // then
             assertAll(
-                { Assertions.assertThat(resultToken).isNotNull },
-                { Assertions.assertThat(resultToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isEqualTo(loginRequest.name) },
+                { Assertions.assertThat(response.isNew).isTrue() },
             )
         }
 
@@ -127,6 +146,7 @@ class AuthControllerTest : BaseControllerTest() {
                     nonce = nonce,
                 )
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, nonce, "apple-initial-test-user-with-nonce")
 
             // when
             Mockito.`when`(appleFeignClient.fetchJwks())
@@ -135,20 +155,171 @@ class AuthControllerTest : BaseControllerTest() {
             val result =
                 RestAssured.given().log().all()
                     .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                    .param("idToken", idToken)
-                    .param("nonce", nonce)
-                    .`when`().get("/api/v1/auth/login/apple")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
                     .then().log().all()
                     .statusCode(200)
                     .extract().`as`(ApiResponse::class.java)
                     .result
 
-            val resultToken = objectMapper.convertValue(result, TokenResponse::class.java)
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
 
             // then
             assertAll(
-                { Assertions.assertThat(resultToken).isNotNull },
-                { Assertions.assertThat(resultToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isEqualTo(loginRequest.name) },
+                { Assertions.assertThat(response.isNew).isTrue() },
+            )
+        }
+
+        @Test
+        fun `회원가입 후 로그인`() {
+            // given
+            val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, null, null)
+
+            // when
+            Mockito.`when`(appleFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest)
+                .`when`().post("/api/v1/auth/login/apple")
+                .then().log().all()
+                .statusCode(200)
+                .extract().`as`(ApiResponse::class.java)
+                .result
+
+            val result =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
+                    .then().log().all()
+                    .statusCode(200)
+                    .extract().`as`(ApiResponse::class.java)
+                    .result
+
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
+
+            // then
+            assertAll(
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isNotNull() },
+                { Assertions.assertThat(response.isNew).isFalse() },
+            )
+        }
+
+        @Test
+        fun `같은 이메일로 서로 다른 소셜 로그인을 시도 한다`() {
+            // given
+            val appleIdToken =
+                IdTokenFixture.createValidIdToken(
+                    email = "dup@dup.com",
+                    issuer = "https://appleid.apple.com",
+                )
+            val appleLoginRequest = LoginRequest(appleIdToken, null, null)
+
+            val kakaoIdToken =
+                IdTokenFixture.createValidIdToken(
+                    email = "dup@dup.com",
+                    issuer = "https://kauth.kakao.com",
+                )
+            val kakaoLoginRequest = LoginRequest(kakaoIdToken, null, null)
+
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+
+            // when
+            Mockito.`when`(appleFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            Mockito.`when`(kakaoFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            val appleResult =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(appleLoginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
+                    .then().log().all()
+                    .statusCode(200)
+                    .extract().`as`(ApiResponse::class.java)
+                    .result
+            val appleResponse = objectMapper.convertValue(appleResult, LoginResponse::class.java)
+
+            val kakaoResult =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(kakaoLoginRequest)
+                    .`when`().post("/api/v1/auth/login/kakao")
+                    .then().log().all()
+                    .statusCode(200)
+                    .extract().`as`(ApiResponse::class.java)
+                    .result
+            val kakaoResponse = objectMapper.convertValue(kakaoResult, LoginResponse::class.java)
+
+            assertAll(
+                { Assertions.assertThat(appleResponse.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(appleResponse.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(appleResponse.user.id).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.email).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.profileImage).isNotNull() },
+                { Assertions.assertThat(appleResponse.user.name).isNotNull() },
+                { Assertions.assertThat(appleResponse.isNew).isTrue() },
+            )
+
+            assertAll(
+                { Assertions.assertThat(kakaoResponse.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(kakaoResponse.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(kakaoResponse.user.id).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.email).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.profileImage).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.user.name).isNotNull() },
+                { Assertions.assertThat(kakaoResponse.isNew).isTrue() },
+            )
+        }
+
+        @Test
+        fun `랜덤 이름으로 회원가입 한다`() {
+            // given
+            val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest = LoginRequest(idToken, null, null)
+
+            // when
+            Mockito.`when`(appleFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            val result =
+                RestAssured.given().log().all()
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                    .body(loginRequest)
+                    .`when`().post("/api/v1/auth/login/apple")
+                    .then().log().all()
+                    .statusCode(200)
+                    .extract().`as`(ApiResponse::class.java)
+                    .result
+            val response = objectMapper.convertValue(result, LoginResponse::class.java)
+
+            // then
+            assertAll(
+                { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
+                { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
+                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.email).isNotNull() },
+                { Assertions.assertThat(response.user.profileImage).isNotNull() },
+                { Assertions.assertThat(response.user.name).isNotNull() },
+                { Assertions.assertThat(response.isNew).isTrue() },
             )
         }
     }
@@ -200,18 +371,37 @@ class AuthControllerTest : BaseControllerTest() {
                 .extract().`as`(ApiResponse::class.java)
                 .result
 
-        val resultToken = objectMapper.convertValue(result, TokenResponse::class.java)
+        val response = objectMapper.convertValue(result, TokenResponse::class.java)
 
         // then
         assertAll(
-            { Assertions.assertThat(resultToken).isNotNull },
-            { Assertions.assertThat(resultToken).isNotNull },
+            { Assertions.assertThat(response.accessToken).isNotNull },
+            { Assertions.assertThat(response.refreshToken).isNotNull },
         )
+    }
+
+    @Test
+    fun `로그아웃 후 사용자 정보를 조회한다`() {
+        val tokenResponse = loginUser()
+
+        RestAssured.given().log().all()
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${tokenResponse.refreshToken}")
+            .`when`().post("/api/v1/auth/logout")
+            .then().log().all()
+            .statusCode(204)
+
+        RestAssured.given().log().all()
+            .header("Authorization", "Bearer ${tokenResponse.accessToken}")
+            .`when`().get("/api/v1/users")
+            .then().log().all()
+            .statusCode(401)
     }
 
     private fun loginUser(): TokenResponse {
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+        val loginRequest = LoginRequest(idToken, null, null)
 
         Mockito.`when`(appleFeignClient.fetchJwks())
             .thenReturn(objectMapper.writeValueAsString(jwksResponse))
@@ -219,13 +409,14 @@ class AuthControllerTest : BaseControllerTest() {
         val result =
             RestAssured.given().log().all()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .param("idToken", idToken)
-                .`when`().get("/api/v1/auth/login/apple")
+                .body(loginRequest)
+                .`when`().post("/api/v1/auth/login/apple")
                 .then().log().all()
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
 
-        return objectMapper.convertValue(result, TokenResponse::class.java)
+        val loginResponse = objectMapper.convertValue(result, LoginResponse::class.java)
+        return loginResponse.tokenResponse
     }
 }

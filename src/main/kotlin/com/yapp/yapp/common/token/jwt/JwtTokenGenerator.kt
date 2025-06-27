@@ -22,19 +22,23 @@ class JwtTokenGenerator(
         )
 
     fun generateTokens(userId: Long): TokenInfo {
-        val accessToken = generateAccessToken(userId)
-        val refreshToken = generateRefreshToken(userId)
+        val id = UUID.randomUUID().toString()
+        val accessToken = generateAccessToken(userId, id)
+        val refreshToken = generateRefreshToken(userId, id)
         return TokenInfo(accessToken, refreshToken)
     }
 
-    private fun generateAccessToken(userId: Long): String {
+    private fun generateAccessToken(
+        userId: Long,
+        id: String,
+    ): String {
         val now = Date()
         return Jwts.builder()
             .header()
             .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.ACCESS.name.lowercase())
             .and()
             .subject(userId.toString())
-            .id(UUID.randomUUID().toString())
+            .id(id)
             .issuer(jwtProperties.issuer)
             .issuedAt(now)
             .expiration(Date(now.time + jwtProperties.accessExpirationMillis))
@@ -42,14 +46,17 @@ class JwtTokenGenerator(
             .compact()
     }
 
-    private fun generateRefreshToken(userId: Long): String {
+    private fun generateRefreshToken(
+        userId: Long,
+        id: String,
+    ): String {
         val now = Date()
         return Jwts.builder()
             .header()
             .add(JwtProperties.TOKEN_TYPE_CLAIM, TokenType.REFRESH.name.lowercase())
             .and()
             .subject(userId.toString())
-            .id(UUID.randomUUID().toString())
+            .id(id)
             .issuer(jwtProperties.issuer)
             .issuedAt(now)
             .expiration(Date(now.time + jwtProperties.refreshExpirationMillis))

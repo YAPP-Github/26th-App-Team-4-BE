@@ -22,14 +22,20 @@ spring:
       host: localhost
       port: 6379
 
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
 jwt:
-  issuer: test
-  access-secret: 3x+mpl3+S3cr3t+K3y+W1th+M0r3+Ch+r+ct3rs+For+Access!
+  issuer: http://test.com
+  access-secret: Z1RqM2ZQamRia0hoV01UdVgwYWQ5V0RYdVZlTzdlSFk=
   access-expiration-millis: 3600000
-  refresh-secret: 4n0th3r+S3cur3+K3y+That+Is+L0ng+En0ugh+F0r+Refresh!
-  refresh-expiration-millis: 3600000
+  refresh-secret: a2JqeG1IemZYZVRIYlpqM2hHN2xLVGFxVDR0b0RHc2s=
+  refresh-expiration-millis: 604800000
 
 oidc:
+  response-millis: 3600000
   apple:
     api:
       url: https://appleid.apple.com
@@ -39,7 +45,6 @@ oidc:
       url: https://kauth.kakao.com
       clientId: test-client-id
 
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+user:
+  default:
+    profile: test-profile

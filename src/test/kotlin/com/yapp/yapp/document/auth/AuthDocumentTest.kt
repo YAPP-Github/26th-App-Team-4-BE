@@ -1,5 +1,7 @@
 package com.yapp.yapp.document.auth
 
+import com.yapp.yapp.auth.api.request.LoginRequest
+import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.auth.infrastructure.provider.kakao.KakaoFeignClient
@@ -13,7 +15,6 @@ import org.mockito.Mockito
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 class AuthDocumentTest : BaseDocumentTest() {
@@ -28,32 +29,37 @@ class AuthDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
-                .pathParameter(
-                    parameterWithName("provider").description("소셜 로그인 제공자 (KAKAO, APPLE)"),
-                )
-                .queryParameter(
-                    parameterWithName("idToken").description("소셜 로그인 ID 토큰"),
-                    parameterWithName("nonce").description("소셜 로그인용 nonce 값").optional(),
+                .requestBodyField(
+                    fieldWithPath("idToken").description("소셜 로그인 ID 토큰"),
+                    fieldWithPath("nonce").description("소셜 로그인용 nonce 값").optional(),
+                    fieldWithPath("name").description("사용자 이름").optional(),
                 )
 
         val restDocsResponse =
             response()
                 .responseBodyField(
-                    fieldWithPath("result.accessToken").description("액세스 토큰"),
-                    fieldWithPath("result.refreshToken").description("리프레시 토큰"),
+                    fieldWithPath("result.tokenResponse.accessToken").description("액세스 토큰"),
+                    fieldWithPath("result.tokenResponse.refreshToken").description("리프레시 토큰"),
+                    fieldWithPath("result.user.id").description("사용자 ID"),
+                    fieldWithPath("result.user.email").description("사용자 이메일"),
+                    fieldWithPath("result.user.name").description("사용자 이름"),
+                    fieldWithPath("result.user.profileImage").description("사용자 프로필 사진 링크"),
+                    fieldWithPath("result.user.provider").description("소셜 로그인 유형"),
+                    fieldWithPath("result.isNew").description("신규 가입 여부"),
                 )
 
         val restDocsFilter =
             filter("인증 API", "소셜 로그인")
                 .tag(Tag.AUTH_API)
                 .summary("소셜 로그인 API")
-                .description("소셜 로그인을 통해 액세스 토큰과 리프레시 토큰을 발급받습니다")
+                .description("소셜 로그인을 통해 토큰 정보(액세스, 리프레시)와 사용자 정보를 받습니다")
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
 
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+        val loginRequest = LoginRequest(idToken, null, null)
 
         // when
         Mockito.`when`(appleFeignClient.fetchJwks())
@@ -62,11 +68,11 @@ class AuthDocumentTest : BaseDocumentTest() {
         // when & then
         RestAssured.given(spec)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .param("idToken", idToken)
+            .body(loginRequest)
             .pathParam("provider", "apple")
             .filter(restDocsFilter)
             .`when`()
-            .get("/api/v1/auth/login/{provider}")
+            .post("/api/v1/auth/login/{provider}")
             .then()
             .statusCode(200)
     }
@@ -140,6 +146,7 @@ class AuthDocumentTest : BaseDocumentTest() {
     private fun loginUser(): TokenResponse {
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+        val loginRequest = LoginRequest(idToken, null, null)
 
         Mockito.`when`(appleFeignClient.fetchJwks())
             .thenReturn(objectMapper.writeValueAsString(jwksResponse))
@@ -147,13 +154,13 @@ class AuthDocumentTest : BaseDocumentTest() {
         val result =
             RestAssured.given().log().all()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .param("idToken", idToken)
-                .`when`().get("/api/v1/auth/login/apple")
+                .body(loginRequest)
+                .`when`().post("/api/v1/auth/login/apple")
                 .then().log().all()
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
 
-        return objectMapper.convertValue(result, TokenResponse::class.java)
+        return objectMapper.convertValue(result, LoginResponse::class.java).tokenResponse
     }
 }

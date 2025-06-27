@@ -13,10 +13,33 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.restassured.RestAssuredRestDocumentation
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.junit.jupiter.Container
 
 @ExtendWith(RestDocumentationExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 abstract class BaseDocumentTest {
+    companion object {
+        @Container
+        @JvmStatic
+        val redisContainer =
+            GenericContainer("redis:latest").apply {
+                withExposedPorts(6379)
+                waitingFor(Wait.forListeningPort())
+                start()
+            }
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun redisProps(registry: DynamicPropertyRegistry) {
+            registry.add("spring.data.redis.host") { redisContainer.host }
+            registry.add("spring.data.redis.port") { redisContainer.getMappedPort(6379) }
+        }
+    }
+
     @LocalServerPort
     private var port: Int = 0
     protected var spec: RequestSpecification? = null

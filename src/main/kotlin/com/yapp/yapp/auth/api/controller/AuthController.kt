@@ -1,16 +1,18 @@
 package com.yapp.yapp.auth.api.controller
 
+import com.yapp.yapp.auth.api.request.LoginRequest
+import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.domain.AuthService
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.ApiResponse
-import com.yapp.yapp.common.token.jwt.annotation.Token
+import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
+import com.yapp.yapp.common.token.jwt.annotation.TokenId
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,28 +21,28 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authService: AuthService,
 ) {
-    @GetMapping("/login/{provider}")
+    @PostMapping("/login/{provider}")
     fun login(
         @PathVariable(name = "provider") providerType: ProviderType,
-        @RequestParam(name = "idToken") token: String,
-        @RequestParam(name = "nonce", required = false) nonce: String?,
-    ): ApiResponse<TokenResponse> {
-        val tokenResponse = authService.login(providerType, token, nonce)
+        @RequestBody loginRequest: LoginRequest,
+    ): ApiResponse<LoginResponse> {
+        val tokenResponse = authService.login(providerType, loginRequest)
         return ApiResponse.success(tokenResponse)
     }
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun logout(
-        @Token refreshToken: String,
+        @TokenId tokenId: String,
     ) {
-        ApiResponse.success(authService.logout(refreshToken))
+        ApiResponse.success(authService.logout(tokenId))
     }
 
     @PostMapping("/refresh")
     fun reissueToken(
-        @Token refreshToken: String,
+        @TokenId tokenId: String,
+        @CurrentUser userId: Long,
     ): ApiResponse<TokenResponse> {
-        return ApiResponse.success(authService.refresh(refreshToken))
+        return ApiResponse.success(authService.refresh(tokenId, userId))
     }
 }

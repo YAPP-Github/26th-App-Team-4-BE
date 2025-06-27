@@ -1,6 +1,7 @@
 package com.yapp.yapp.common.cache.config
 
 import com.yapp.yapp.common.cache.CacheNames
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
@@ -14,6 +15,12 @@ import java.time.Duration
 @EnableCaching
 @Configuration
 class RedisCacheConfig {
+    @Value("\${jwt.refresh-expiration-millis}")
+    private val tokenBlacklistMillisecondClockSource: Long = 604800000
+
+    @Value("\${oidc.response-millis}")
+    private val apiResponseMillisecondClockSource: Long = 3600000
+
     @Bean
     fun redisCacheConfiguration(): RedisCacheConfiguration =
         RedisCacheConfiguration.defaultCacheConfig()
@@ -38,7 +45,7 @@ class RedisCacheConfig {
                     CacheNames.TOKEN_BLACKLIST,
                     RedisCacheConfiguration.defaultCacheConfig()
                         .computePrefixWith { cacheName -> "$cacheName::" }
-                        .entryTtl(Duration.ofDays(7))
+                        .entryTtl(Duration.ofMillis(tokenBlacklistMillisecondClockSource))
                         .disableCachingNullValues()
                         .serializeKeysWith(
                             RedisSerializationContext.SerializationPair.fromSerializer(
@@ -55,7 +62,7 @@ class RedisCacheConfig {
                     CacheNames.API_RESPONSE,
                     RedisCacheConfiguration.defaultCacheConfig()
                         .computePrefixWith { cacheName -> "$cacheName::" }
-                        .entryTtl(Duration.ofHours(6))
+                        .entryTtl(Duration.ofMillis(apiResponseMillisecondClockSource))
                         .disableCachingNullValues()
                         .serializeKeysWith(
                             RedisSerializationContext.SerializationPair.fromSerializer(
