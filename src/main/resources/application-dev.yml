@@ -1,12 +1,6 @@
 spring:
   config:
     import: dev-env.yml
-
-  datasource:
-    url: jdbc:mysql://${secret.database.host}:${secret.database.port}/${secret.database.name}?useSSL=false&allowPublicKeyRetrieval=true
-    username: ${secret.database.user}
-    password: ${secret.database.password}
-
   jpa:
     hibernate:
       ddl-auto: update
