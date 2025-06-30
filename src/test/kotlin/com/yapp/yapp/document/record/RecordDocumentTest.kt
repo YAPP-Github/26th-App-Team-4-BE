@@ -4,7 +4,6 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
-import com.yapp.yapp.support.fixture.RunningFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,9 +72,9 @@ class RecordDocumentTest : BaseDocumentTest() {
         val now = TimeProvider.now()
         val user = userFixture.create()
 
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(1)))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(2)))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2))
 
         // when & then
         RestAssured.given(spec).log().all()
@@ -126,7 +125,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .build()
 
         val user = userFixture.create()
-        val runningRecord = runningRecordRepository.save(RunningFixture.create(userId = user.id))
+        val runningRecord = runningFixture.createRunningRecord(userId = user.id)
         val recordId = runningRecord.id
 
         // when & then

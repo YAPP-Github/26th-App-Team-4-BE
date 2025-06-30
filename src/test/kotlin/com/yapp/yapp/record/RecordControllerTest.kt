@@ -7,7 +7,6 @@ import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.support.BaseControllerTest
-import com.yapp.yapp.support.fixture.RunningFixture
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -24,9 +23,9 @@ class RecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.create()
 
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = 999L, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(1)))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now)
+        runningFixture.createRunningRecord(userId = 999L, startAt = now)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1))
 
         // when
         val result =
@@ -54,9 +53,9 @@ class RecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.create()
 
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(2)))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.minusDays(8)))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusDays(8))
 
         // when
         val result =
@@ -84,9 +83,9 @@ class RecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.create()
 
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusMonths(2)))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.minusYears(1)))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusMonths(2))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusYears(1))
 
         // when
         val result =
@@ -114,9 +113,9 @@ class RecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay().withHour(0)
         val user = userFixture.create()
 
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusHours(2)))
-        runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.minusHours(2)))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusHours(2))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusHours(2))
 
         // when
         val result =
