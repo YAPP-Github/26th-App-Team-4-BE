@@ -8,7 +8,7 @@ object UserFixture {
         name: String = "test name",
         email: String = "test email",
         profileImage: String = "test profile",
-        provider: ProviderType = ProviderType.KAKAO,
+        provider: ProviderType = ProviderType.APPLE,
     ): User =
         User(
             name = name,
