@@ -26,7 +26,7 @@ class RunningPoint(
     @JoinColumn(name = "running_record_id")
     val runningRecord: RunningRecord,
     @Column(nullable = false)
-    val ord: Long = 0,
+    val orderNo: Long = 0,
     @Column(nullable = false)
     val lat: Double,
     @Column(nullable = false)

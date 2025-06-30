@@ -84,7 +84,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.runningPointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("러닝 기록 ID"),
-                    fieldWithPath("result.ord").description("러닝 포인트 순서"),
+                    fieldWithPath("result.orderNo").description("러닝 포인트 순서"),
                     fieldWithPath("result.lat").description("위도"),
                     fieldWithPath("result.lon").description("경도"),
                     fieldWithPath("result.speed").description("현재 속도 (m/s)"),

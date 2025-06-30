@@ -86,7 +86,7 @@ class RunningTest : BaseServiceTest() {
             val resp = runningService.update(userId, recordId, req)
 
             // ord 가 1 이면 거리 계산 스킵
-            if (resp.ord == 1L) return@forEach
+            if (resp.orderNo == 1L) return@forEach
 
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)

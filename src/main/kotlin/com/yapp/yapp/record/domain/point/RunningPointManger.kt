@@ -41,7 +41,7 @@ class RunningPointManger(
                 runningRecord = runningRecord,
                 lat = lat,
                 lon = lon,
-                ord = preRunningPoint.ord + 1,
+                orderNo = preRunningPoint.orderNo + 1,
                 heartRate = heartRate,
                 timeStamp = timeStamp,
                 totalRunningTime = totalRunningTime,
