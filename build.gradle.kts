@@ -83,6 +83,10 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:testcontainers")
 
+    // Google Cloud Platform
+    implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:6.2.2"))
+
+
     // xml
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api")
@@ -158,7 +162,7 @@ tasks.register("copyHooks") {
 
 tasks.register<Copy>("copySecret") {
     from("./Yapp-26th-env")
-    include("*.yml")
+    include("*")
     into("src/main/resources")
     println("Secret files이 성공적으로 복사되었습니다.")
 }
