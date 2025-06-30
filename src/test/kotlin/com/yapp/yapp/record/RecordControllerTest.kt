@@ -1,12 +1,12 @@
 package com.yapp.yapp.record
 
-import com.deepromeet.atcha.support.BaseControllerTest
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.TimeProvider.toStartOfDay
 import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
+import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.support.fixture.RunningFixture
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
@@ -22,7 +22,7 @@ class RecordControllerTest : BaseControllerTest() {
     fun `유저의 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = getSavedUser()
+        val user = userFixture.create()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
         runningRecordRepository.save(RunningFixture.create(userId = 999L, startAt = now))
@@ -52,7 +52,7 @@ class RecordControllerTest : BaseControllerTest() {
     fun `유저의 주간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = getSavedUser()
+        val user = userFixture.create()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(2)))
@@ -82,7 +82,7 @@ class RecordControllerTest : BaseControllerTest() {
     fun `유저의 연간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = getSavedUser()
+        val user = userFixture.create()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusMonths(2)))
@@ -112,7 +112,7 @@ class RecordControllerTest : BaseControllerTest() {
     fun `유저의 일간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay().withHour(0)
-        val user = getSavedUser()
+        val user = userFixture.create()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusHours(2)))

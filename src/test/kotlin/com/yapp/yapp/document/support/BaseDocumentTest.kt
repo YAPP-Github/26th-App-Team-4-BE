@@ -1,6 +1,5 @@
 package com.yapp.yapp.document.support
 
-import com.deepromeet.atcha.support.DatabaseCleanerExtension
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.yapp.yapp.auth.api.request.LoginRequest
 import com.yapp.yapp.auth.api.response.LoginResponse
@@ -8,13 +7,16 @@ import com.yapp.yapp.auth.api.response.accessToken
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.support.BaseSupportMethod
+import com.yapp.yapp.support.DatabaseCleanerExtension
 import com.yapp.yapp.support.fixture.IdTokenFixture
+import com.yapp.yapp.support.fixture.UserFixture
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.specification.RequestSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
@@ -48,6 +50,9 @@ abstract class BaseDocumentTest : BaseSupportMethod() {
             registry.add("spring.data.redis.port") { redisContainer.getMappedPort(6379) }
         }
     }
+
+    @Autowired
+    lateinit var userFixture: UserFixture
 
     @LocalServerPort
     private var port: Int = 0

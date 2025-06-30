@@ -103,7 +103,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = getSavedUser()
+        val user = userFixture.create()
         val startResponse =
             runningService.start(
                 user.id,
@@ -152,7 +152,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = getSavedUser()
+        val user = userFixture.create()
         val startResponse =
             runningService.start(
                 user.id,
@@ -227,7 +227,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = getSavedUser()
+        val user = userFixture.create()
         val startResponse =
             runningService.start(
                 user.id,

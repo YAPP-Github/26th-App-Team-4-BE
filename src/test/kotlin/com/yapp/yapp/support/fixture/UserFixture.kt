@@ -1,19 +1,26 @@
-package com.deepromeet.atcha.support.fixture
+package com.yapp.yapp.support.fixture
 
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.user.domain.User
+import com.yapp.yapp.user.domain.UserRepository
+import org.springframework.stereotype.Component
 
-object UserFixture {
+@Component
+class UserFixture(
+    private val userRepository: UserRepository,
+) {
     fun create(
         name: String = "test name",
         email: String = "test email",
         profileImage: String = "test profile",
         provider: ProviderType = ProviderType.APPLE,
     ): User =
-        User(
-            name = name,
-            email = email,
-            profileImage = profileImage,
-            provider = provider,
+        userRepository.save(
+            User(
+                name = name,
+                email = email,
+                profileImage = profileImage,
+                provider = provider,
+            ),
         )
 }

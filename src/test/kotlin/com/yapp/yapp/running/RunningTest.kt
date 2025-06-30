@@ -1,6 +1,5 @@
 package com.yapp.yapp.running
 
-import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
@@ -8,6 +7,7 @@ import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
+import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,7 +61,7 @@ class RunningTest : BaseServiceTest() {
                 lon = 126.95000,
                 timeStamp = "2025-06-17T17:00:00+09:00",
             )
-        val userId = getSavedUser().id
+        val userId = userFixture.create().id
         val recordId = runningService.start(userId = userId, startRequest).recordId
 
         // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
@@ -105,7 +105,7 @@ class RunningTest : BaseServiceTest() {
     @Test
     fun `러닝을 시작 - 중단 - 완료 한다`() {
         // given
-        val userId = getSavedUser().id
+        val userId = userFixture.create().id
         val lat = 37.54100
         val lon = 126.95000
         val startAt = TimeProvider.now()

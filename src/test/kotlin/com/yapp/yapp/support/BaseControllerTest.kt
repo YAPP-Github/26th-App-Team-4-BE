@@ -1,16 +1,17 @@
-package com.deepromeet.atcha.support
+package com.yapp.yapp.support
 
 import com.yapp.yapp.auth.api.request.LoginRequest
 import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.accessToken
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.common.ApiResponse
-import com.yapp.yapp.support.BaseSupportMethod
 import com.yapp.yapp.support.fixture.IdTokenFixture
+import com.yapp.yapp.support.fixture.UserFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
@@ -46,6 +47,9 @@ abstract class BaseControllerTest : BaseSupportMethod() {
 
     @MockitoBean
     private lateinit var feignClient: AppleFeignClient
+
+    @Autowired
+    lateinit var userFixture: UserFixture
 
     @LocalServerPort
     private val port: Int = 0

@@ -1,4 +1,4 @@
-package com.deepromeet.atcha.support
+package com.yapp.yapp.support
 
 import jakarta.persistence.EntityManager
 import org.junit.jupiter.api.extension.BeforeEachCallback

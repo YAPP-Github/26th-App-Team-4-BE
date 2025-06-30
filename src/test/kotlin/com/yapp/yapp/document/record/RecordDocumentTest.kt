@@ -71,7 +71,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .build()
 
         val now = TimeProvider.now()
-        val user = getSavedUser()
+        val user = userFixture.create()
 
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now))
         runningRecordRepository.save(RunningFixture.create(userId = user.id, startAt = now.plusDays(1)))
@@ -125,7 +125,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = getSavedUser()
+        val user = userFixture.create()
         val runningRecord = runningRecordRepository.save(RunningFixture.create(userId = user.id))
         val recordId = runningRecord.id
 
