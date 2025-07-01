@@ -15,10 +15,8 @@ data class RunningUpdateXmlResponse(
     val recordId: Long,
     @JacksonXmlProperty(localName = "orderNo")
     val orderNo: Long,
-    @JacksonXmlProperty(localName = "lat")
-    val lat: Double,
-    @JacksonXmlProperty(localName = "lon")
-    val lon: Double,
+    @JacksonXmlProperty(localName = "waypoint")
+    val waypoint: WaypointResponse,
     @JacksonXmlProperty(localName = "speed")
     val speed: Double,
     @JacksonXmlProperty(localName = "distance")
@@ -31,4 +29,11 @@ data class RunningUpdateXmlResponse(
     val calories: Int,
     @JacksonXmlProperty(localName = "timeStamp")
     val timeStamp: OffsetDateTime,
+)
+
+data class WaypointResponse(
+    @JacksonXmlProperty(localName = "lat", isAttribute = true)
+    val lat: Double,
+    @JacksonXmlProperty(localName = "lon", isAttribute = true)
+    val lon: Double,
 )

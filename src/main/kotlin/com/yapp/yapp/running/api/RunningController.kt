@@ -12,6 +12,7 @@ import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
 import com.yapp.yapp.running.api.response.RunningUpdateXmlResponse
+import com.yapp.yapp.running.api.response.WaypointResponse
 import com.yapp.yapp.running.domain.RunningService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -72,8 +73,10 @@ class RunningController(
                 userId = 1L,
                 recordId = 1L,
                 orderNo = 1L,
-                lat = 37.5665,
-                lon = 126.9780,
+                WaypointResponse(
+                    lat = 37.5665,
+                    lon = 126.9780,
+                ),
                 speed = 10.0,
                 distance = 1000.0,
                 pace = Duration.ofMinutes(5),
