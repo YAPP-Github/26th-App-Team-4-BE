@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "2.0.10"
-    id("org.springframework.boot") version "3.4.5"
+    id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
 
     // ktlint
@@ -28,7 +28,8 @@ repositories {
     maven { url = uri("https://jitpack.io") }
 }
 
-extra["springCloudVersion"] = "2024.0.0"
+extra["springCloudVersion"] = "2025.0.0"
+extra["googleCloudVersion"] = "4.16.0"
 
 dependencyManagement {
     imports {
@@ -84,6 +85,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
 
     // Google Cloud Platform
+    implementation("com.google.cloud:spring-cloud-gcp-starter-storage:6.2.2")
     implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:6.2.2"))
 
 
