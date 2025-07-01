@@ -16,7 +16,7 @@ class AudioService(
     private val storage: Storage,
     @Value("\${audio.bucket}") private val bucketName: String,
 ) {
-    fun loadBlob(filename: String): Pair<Blob, Resource>? {
+    fun loadBlob(filename: String): Pair<Blob, Resource> {
         validatePath(filename)
         val blobId = BlobId.of(bucketName, filename)
         val blob =
