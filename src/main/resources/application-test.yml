@@ -30,7 +30,7 @@ spring:
         location: ${secret.gcp.location}
 
 audio:
-  bucket: ${secret.gcp.bucket-name}
+  bucket: test-bucket-running
 
 logging:
   level:

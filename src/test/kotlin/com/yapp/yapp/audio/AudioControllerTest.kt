@@ -8,7 +8,7 @@ class AudioControllerTest : BaseControllerTest() {
     @Test
     fun `오디오 요청에 대해 정상 응답한다`() {
         // given
-        val path = "test/openai-fm-coral-friendly.wav"
+        val path = "test/sample.wav"
 
         // when
         // then
