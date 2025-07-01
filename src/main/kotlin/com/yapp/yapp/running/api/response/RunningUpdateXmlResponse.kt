@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import java.time.Duration
 import java.time.OffsetDateTime
 
-@JacksonXmlRootElement(localName = "runningUpdate") // or 원하는 엘리먼트 이름
+@JacksonXmlRootElement(localName = "runningUpdate")
 data class RunningUpdateXmlResponse(
     @JacksonXmlProperty(localName = "runningPointId")
     val runningPointId: Long,
@@ -16,7 +16,7 @@ data class RunningUpdateXmlResponse(
     @JacksonXmlProperty(localName = "orderNo")
     val orderNo: Long,
     @JacksonXmlProperty(localName = "waypoint")
-    val waypoint: WaypointResponse,
+    val runningPoints: RunningPointResponse,
     @JacksonXmlProperty(localName = "speed")
     val speed: Double,
     @JacksonXmlProperty(localName = "distance")
@@ -31,7 +31,7 @@ data class RunningUpdateXmlResponse(
     val timeStamp: OffsetDateTime,
 )
 
-data class WaypointResponse(
+data class RunningPointResponse(
     @JacksonXmlProperty(localName = "lat", isAttribute = true)
     val lat: Double,
     @JacksonXmlProperty(localName = "lon", isAttribute = true)

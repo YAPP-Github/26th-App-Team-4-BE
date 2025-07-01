@@ -1,13 +1,7 @@
 package com.yapp.yapp.record.api.response
 
+import com.yapp.yapp.common.TimeProvider.average
 import java.time.Duration
-
-fun List<Duration>.average(): Duration =
-    if (isEmpty()) {
-        Duration.ZERO
-    } else {
-        fold(Duration.ZERO) { acc, duration -> acc.plus(duration) }.dividedBy(size.toLong())
-    }
 
 data class RunningRecordListResponse(
     val userId: Long,
