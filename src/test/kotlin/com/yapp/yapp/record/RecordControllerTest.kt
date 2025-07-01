@@ -3,7 +3,7 @@ package com.yapp.yapp.record
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.TimeProvider.toStartOfDay
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.record.api.response.RecordListResponse
+import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.support.BaseControllerTest
@@ -42,7 +42,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -72,7 +72,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -102,7 +102,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -132,7 +132,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)

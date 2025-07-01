@@ -3,8 +3,8 @@ package com.yapp.yapp.record.api
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.record.api.response.RecordListResponse
-import com.yapp.yapp.record.api.response.RecordResponse
+import com.yapp.yapp.record.api.response.RunningRecordListResponse
+import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.RecordService
 import com.yapp.yapp.record.domain.RecordsSearchType
 import org.springframework.data.domain.Pageable
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/records")
-class RecordController(
+class RunningRecordController(
     private val recordService: RecordService,
 ) {
     @GetMapping
@@ -28,7 +28,7 @@ class RecordController(
         @RequestParam("targetDate") targetDate: String = TimeProvider.now().toString(),
         @PageableDefault(size = 10, sort = ["startAt"], direction = Sort.Direction.DESC)
         pageable: Pageable,
-    ): ApiResponse<RecordListResponse> {
+    ): ApiResponse<RunningRecordListResponse> {
         return ApiResponse.success(recordService.getRecords(userId, type, TimeProvider.parse(targetDate), pageable))
     }
 
@@ -36,7 +36,7 @@ class RecordController(
     fun getRunningRecord(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-    ): ApiResponse<RecordResponse> {
+    ): ApiResponse<RunningRecordResponse> {
         return ApiResponse.success(recordService.getRecord(userId, recordId))
     }
 }

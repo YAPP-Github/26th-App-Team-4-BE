@@ -50,6 +50,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.records[].startAt").description("시작 시간"),
                     fieldWithPath("result.records[].averageSpeed").description("평균 속도"),
                     fieldWithPath("result.records[].averagePace").description("평균 페이스"),
+                    fieldWithPath("result.records[].runningPoints").description("러닝 포인트 리스트"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.records").description("러닝 기록 리스트"),
                     fieldWithPath("result.recordCount").description("러닝 기록 개수"),
@@ -107,6 +108,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
+                    fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),
                     fieldWithPath("result.totalDistance").description("총 이동 거리"),
                     fieldWithPath("result.totalTime").description("총 이동 시간"),
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),

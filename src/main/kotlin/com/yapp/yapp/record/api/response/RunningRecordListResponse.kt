@@ -9,9 +9,9 @@ fun List<Duration>.average(): Duration =
         fold(Duration.ZERO) { acc, duration -> acc.plus(duration) }.dividedBy(size.toLong())
     }
 
-data class RecordListResponse(
+data class RunningRecordListResponse(
     val userId: Long,
-    val records: List<RecordResponse>,
+    val records: List<RunningRecordResponse>,
     val recordCount: Int,
     val totalDistance: Double,
     val totalTime: Duration,
@@ -19,7 +19,7 @@ data class RecordListResponse(
     val averageSpeed: Double,
     val averagePace: Duration,
 ) {
-    constructor(userId: Long, records: List<RecordResponse>) : this(
+    constructor(userId: Long, records: List<RunningRecordResponse>) : this(
         userId = userId,
         records = records,
         recordCount = records.size,
