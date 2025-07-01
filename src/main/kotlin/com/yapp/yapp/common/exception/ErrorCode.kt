@@ -31,6 +31,7 @@ enum class ErrorCode(
     EXTERNAL_API_SERVER(500, "EXT_004", "외부 API 서버에 알 수 없는 에러가 발생했습니다.", LogLevel.ERROR),
 
     INVALID_REQUEST(401, "REQ_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
+    NOT_FOUND_REQUEST(404, "REQ_002", "존재하지 않는 요청 입니다.", LogLevel.WARN),
 
     RECORD_NOT_FOUND(400, "REC_001", "러닝 기록이 존재하지 않습니다.", LogLevel.WARN),
     RECORD_NO_MATCHED(400, "REC_002", "러닝 기록이 유저 정보와 일치하지 않습니다.", LogLevel.WARN),

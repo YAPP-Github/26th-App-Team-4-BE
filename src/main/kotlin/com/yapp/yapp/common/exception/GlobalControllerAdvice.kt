@@ -40,7 +40,7 @@ class GlobalControllerAdvice {
         HttpMessageNotReadableException::class,
     )
     fun handleInvalidRequestException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        val errorCode = ErrorCode.INVALID_REQUEST
+        val errorCode = ErrorCode.NOT_FOUND_REQUEST
         logger.warn { exception.message }
         return handleError(errorCode, exception)
     }
