@@ -20,7 +20,7 @@ object AudioRequestHandler {
     fun parseFilename(request: HttpServletRequest): String {
         val rawPath = request.requestURI
         return URLDecoder.decode(
-            rawPath.removePrefix("/api/audios/"),
+            rawPath.removePrefix("/api/v1/audios/"),
             StandardCharsets.UTF_8,
         )
     }

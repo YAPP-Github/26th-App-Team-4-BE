@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: dev-env.yml
   datasource:
     url: jdbc:h2:mem:yapp;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -21,6 +23,14 @@ spring:
       client-name: fitrun
       host: localhost
       port: 6379
+  cloud:
+    gcp:
+      project-id: ${secret.gcp.project-id}
+      credentials:
+        location: ${secret.gcp.location}
+
+audio:
+  bucket: ${secret.gcp.bucket-name}
 
 logging:
   level:
