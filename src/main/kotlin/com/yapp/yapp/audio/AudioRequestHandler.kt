@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.audio
+package com.yapp.yapp.audio
 
 import com.google.cloud.storage.Blob
 import com.yapp.yapp.common.exception.CustomException

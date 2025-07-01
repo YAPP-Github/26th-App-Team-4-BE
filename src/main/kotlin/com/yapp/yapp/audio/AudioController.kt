@@ -1,4 +1,4 @@
-package com.yapp.yapp.running.audio
+package com.yapp.yapp.audio
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.io.Resource
