@@ -1,6 +1,6 @@
 package com.yapp.yapp.common.exception
 
-import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.web.ApiResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel

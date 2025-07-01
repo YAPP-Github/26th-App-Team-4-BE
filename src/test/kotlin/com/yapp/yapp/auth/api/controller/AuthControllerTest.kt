@@ -5,7 +5,7 @@ import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
 import com.yapp.yapp.auth.infrastructure.provider.kakao.KakaoFeignClient
-import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.support.fixture.IdTokenFixture
 import io.restassured.RestAssured

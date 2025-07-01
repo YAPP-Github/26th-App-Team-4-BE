@@ -1,8 +1,8 @@
 package com.yapp.yapp.record
 
-import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.TimeProvider.toStartOfDay
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository

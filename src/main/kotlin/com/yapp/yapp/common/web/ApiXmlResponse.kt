@@ -1,4 +1,4 @@
-package com.yapp.yapp.common
+package com.yapp.yapp.common.web
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement

@@ -5,7 +5,7 @@ import com.yapp.yapp.auth.api.request.LoginRequest
 import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.accessToken
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
-import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.BaseSupportMethod
 import com.yapp.yapp.support.DatabaseCleanerExtension
 import com.yapp.yapp.support.fixture.IdTokenFixture

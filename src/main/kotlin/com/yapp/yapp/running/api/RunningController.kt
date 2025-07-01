@@ -1,8 +1,8 @@
 package com.yapp.yapp.running.api
 
-import com.yapp.yapp.common.ApiResponse
-import com.yapp.yapp.common.ApiXmlResponse
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
+import com.yapp.yapp.common.web.ApiResponse
+import com.yapp.yapp.common.web.ApiXmlResponse
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest

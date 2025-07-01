@@ -1,8 +1,8 @@
 package com.yapp.yapp.record.api
 
-import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.record.api.response.RecordListResponse
 import com.yapp.yapp.record.api.response.RecordResponse
 import com.yapp.yapp.record.domain.RecordService
