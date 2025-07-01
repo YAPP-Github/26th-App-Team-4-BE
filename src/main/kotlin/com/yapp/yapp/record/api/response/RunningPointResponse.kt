@@ -10,6 +10,8 @@ import java.time.OffsetDateTime
 
 data class RunningPointResponse(
     val runningPointId: Long,
+    val userId: Long,
+    val recordId: Long,
     val orderNo: Long,
     val lat: Double,
     val lon: Double,
@@ -25,6 +27,8 @@ data class RunningPointResponse(
 ) {
     constructor(runningPoint: RunningPoint) : this(
         runningPointId = runningPoint.id,
+        userId = runningPoint.runningRecord.userId,
+        recordId = runningPoint.runningRecord.id,
         orderNo = runningPoint.orderNo,
         lat = runningPoint.lat,
         lon = runningPoint.lon,
