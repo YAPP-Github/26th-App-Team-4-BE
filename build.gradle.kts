@@ -28,6 +28,12 @@ repositories {
 
 extra["springCloudVersion"] = "2024.0.0"
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -74,12 +80,12 @@ dependencies {
     implementation("org.testcontainers:testcontainers-bom:1.20.2")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:testcontainers")
-}
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
+    // xml
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api")
+    implementation("com.sun.xml.bind:jaxb-impl")
 }
 
 kotlin {
