@@ -1,5 +1,5 @@
 package com.yapp.yapp.running.api.request
 
-data class RunningDoneRequest(
+data class RunningPauseRequest(
     val timeStamp: String,
 )

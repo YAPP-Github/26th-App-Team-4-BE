@@ -1,11 +1,13 @@
 package com.yapp.yapp.running
 
-import com.deepromeet.atcha.support.BaseServiceTest
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
+import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningStopRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.domain.RunningService
+import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,13 +17,16 @@ class RunningTest : BaseServiceTest() {
     @Autowired
     lateinit var runningService: RunningService
 
+    @Autowired
+    lateinit var runningRecordManager: RunningRecordManager
+
     @Test
     fun `러닝을 시작한다`() {
         // given
-        val request = RunningStartRequest(0L, 0.0, 0.0, TimeProvider.now().toString())
+        val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
 
         // when
-        val response = runningService.start(request)
+        val response = runningService.start(0L, request)
 
         // then
         Assertions.assertThat(response.recordId).isNotNull
@@ -30,11 +35,10 @@ class RunningTest : BaseServiceTest() {
     @Test
     fun `러닝 기록을 업데이트 한다`() {
         // given
-        val startResponse = runningService.start(RunningStartRequest(0L, 0.0, 0.0, TimeProvider.now().toString()))
+        val userId = 0L
+        val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
             RunningUpdateRequest(
-                0L,
-                startResponse.recordId,
                 0.01,
                 0.01,
                 120,
@@ -43,9 +47,9 @@ class RunningTest : BaseServiceTest() {
             )
 
         // when
-        val response = runningService.update(request)
+        val response = runningService.update(userId, startResponse.recordId, request)
         // then
-        Assertions.assertThat(response.id).isNotNull
+        Assertions.assertThat(response.runningPointId).isNotNull
     }
 
     @Test
@@ -53,36 +57,36 @@ class RunningTest : BaseServiceTest() {
         // given
         val startRequest =
             RunningStartRequest(
-                userId = 0L,
                 lat = 37.54100,
                 lon = 126.95000,
                 timeStamp = "2025-06-17T17:00:00+09:00",
             )
-        val recordId = runningService.start(startRequest).recordId
+        val userId = userFixture.create().id
+        val recordId = runningService.start(userId = userId, startRequest).recordId
 
         // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
         val updates =
             listOf(
                 // 0초
-                RunningUpdateRequest(0L, recordId, 37.54100, 126.95000, 120, "PT0S", "2025-06-17T17:00:00.000+09:00"),
+                RunningUpdateRequest(37.54100, 126.95000, 120, "PT0S", "2025-06-17T17:00:00.000+09:00"),
                 // 9.444초
-                RunningUpdateRequest(0L, recordId, 37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
+                RunningUpdateRequest(37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
                 // 18.887초
-                RunningUpdateRequest(0L, recordId, 37.54120, 126.95040, 127, "PT18.887S", "2025-06-17T17:00:18.887+09:00"),
+                RunningUpdateRequest(37.54120, 126.95040, 127, "PT18.887S", "2025-06-17T17:00:18.887+09:00"),
                 // 28.331초
-                RunningUpdateRequest(0L, recordId, 37.54130, 126.95060, 130, "PT28.331S", "2025-06-17T17:00:28.331+09:00"),
+                RunningUpdateRequest(37.54130, 126.95060, 130, "PT28.331S", "2025-06-17T17:00:28.331+09:00"),
                 // 37.775초
-                RunningUpdateRequest(0L, recordId, 37.54140, 126.95080, 132, "PT37.775S", "2025-06-17T17:00:37.775+09:00"),
+                RunningUpdateRequest(37.54140, 126.95080, 132, "PT37.775S", "2025-06-17T17:00:37.775+09:00"),
                 // 47.218초
-                RunningUpdateRequest(0L, recordId, 37.54150, 126.95100, 135, "PT47.218S", "2025-06-17T17:00:47.218+09:00"),
+                RunningUpdateRequest(37.54150, 126.95100, 135, "PT47.218S", "2025-06-17T17:00:47.218+09:00"),
             )
 
         // when & then
         updates.forEach { req ->
-            val resp = runningService.update(req)
+            val resp = runningService.update(userId, recordId, req)
 
             // ord 가 1 이면 거리 계산 스킵
-            if (resp.ord == 1L) return@forEach
+            if (resp.orderNo == 1L) return@forEach
 
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)
@@ -101,20 +105,20 @@ class RunningTest : BaseServiceTest() {
     @Test
     fun `러닝을 시작 - 중단 - 완료 한다`() {
         // given
-        val userId = 0L
+        val userId = userFixture.create().id
         val lat = 37.54100
         val lon = 126.95000
         val startAt = TimeProvider.now()
 
         // when
-        val start = runningService.start(RunningStartRequest(userId, lat, lon, startAt.toString()))
+        val start = runningService.start(userId, RunningStartRequest(lat, lon, startAt.toString()))
         val recordId = start.recordId
         val maxTime = 10
         for (i in 1..maxTime) {
             runningService.update(
+                userId,
+                recordId,
                 RunningUpdateRequest(
-                    userId,
-                    recordId,
                     lat + (i * 1.0 / 1000),
                     lon + (i * 1.0 / 1000),
                     120 + i,
@@ -124,8 +128,12 @@ class RunningTest : BaseServiceTest() {
             )
         }
         val stopTime = maxTime + 1L
-        val stop = runningService.stop(RunningStopRequest(userId, recordId, startAt.plusSeconds(stopTime).toString()))
+        val stop = runningService.pause(userId, recordId, RunningPauseRequest(startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        runningService.done(RunningDoneRequest(userId, recordId, startAt.plusSeconds(doneTime).toString()))
+        val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
+
+        // then
+        val record = runningRecordManager.getRunningRecord(userId, recordId)
+        Assertions.assertThat(record.totalDistance).isEqualTo(done.totalRunningDistance)
     }
 }

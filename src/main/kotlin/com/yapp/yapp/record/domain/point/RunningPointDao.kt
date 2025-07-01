@@ -1,7 +1,8 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
+import com.yapp.yapp.record.domain.record.RunningRecord
 import org.springframework.stereotype.Component
 
 @Component
@@ -18,11 +19,11 @@ class RunningPointDao(
     }
 
     fun getPrePointByRunningRecord(runningRecord: RunningRecord): RunningPoint {
-        return runningPointRepository.findTopByRunningRecordAndIsDeletedFalseOrderByOrdDesc(runningRecord)
+        return runningPointRepository.findTopByRunningRecordAndIsDeletedFalseOrderByOrderNoDesc(runningRecord)
             ?: throw CustomException(ErrorCode.POINT_NOT_FOUND)
     }
 
     fun getAllPointByRunningRecord(runningRecord: RunningRecord): List<RunningPoint> {
-        return runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrdAsc(runningRecord)
+        return runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord)
     }
 }

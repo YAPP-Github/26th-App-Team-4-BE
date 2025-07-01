@@ -1,8 +1,10 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.running.converter.DurationConverter
-import com.yapp.yapp.running.converter.PaceConverter
+import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.RecordStatus
+import com.yapp.yapp.record.domain.converter.DurationConverter
+import com.yapp.yapp.record.domain.converter.PaceConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -16,16 +18,18 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 @Entity
-@Table(name = "RUNNING_RECORD")
+@Table(name = "RUNNING_RECORDS")
 class RunningRecord(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
     @Column(nullable = false)
-    var totalRunningDistance: Double = 0.0,
+    val userId: Long = 0L,
+    @Column(nullable = false)
+    var totalDistance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = DurationConverter::class)
-    var totalRunningTime: Duration = Duration.ZERO,
+    var totalTime: Duration = Duration.ZERO,
     @Column(nullable = false)
     var totalCalories: Int = 0,
     @Column(nullable = false)
@@ -37,23 +41,19 @@ class RunningRecord(
     var averagePace: Pace = Pace(0),
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var runningStatus: RunningStatus = RunningStatus.READY,
+    var recordStatus: RecordStatus = RecordStatus.READY,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
-    fun startRunning() {
-        this.runningStatus = RunningStatus.IN_PROGRESS
+    fun start() {
+        this.recordStatus = RecordStatus.IN_PROGRESS
     }
 
-    fun stopRunning() {
-        this.runningStatus = RunningStatus.STOPPED
+    fun pause() {
+        this.recordStatus = RecordStatus.PAUSE
     }
 
-    fun resumeRunning() {
-        this.runningStatus = RunningStatus.IN_PROGRESS
-    }
-
-    fun finishRunning() {
-        this.runningStatus = RunningStatus.DONE
+    fun finish() {
+        this.recordStatus = RecordStatus.DONE
     }
 }

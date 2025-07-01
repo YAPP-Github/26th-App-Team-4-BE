@@ -1,7 +1,9 @@
-package com.yapp.yapp.running
+package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.common.TimeProvider
-import com.yapp.yapp.running.converter.PaceConverter
+import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.converter.PaceConverter
+import com.yapp.yapp.record.domain.record.RunningRecord
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -24,7 +26,7 @@ class RunningPoint(
     @JoinColumn(name = "running_record_id")
     val runningRecord: RunningRecord,
     @Column(nullable = false)
-    val ord: Long = 0,
+    val orderNo: Long = 0,
     @Column(nullable = false)
     val lat: Double,
     @Column(nullable = false)
