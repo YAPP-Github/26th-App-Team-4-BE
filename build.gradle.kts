@@ -29,11 +29,12 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2025.0.0"
-extra["googleCloudVersion"] = "4.16.0"
+extra["googleCloudVersion"] = "26.61.0"
 
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("com.google.cloud:libraries-bom:${property("googleCloudVersion")}")
     }
 }
 
@@ -87,7 +88,7 @@ dependencies {
     // Google Cloud Platform
     implementation("com.google.cloud:spring-cloud-gcp-starter-storage:6.2.2")
     implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:6.2.2"))
-
+    implementation("com.google.cloud:google-cloud-texttospeech")
 
     // xml
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
