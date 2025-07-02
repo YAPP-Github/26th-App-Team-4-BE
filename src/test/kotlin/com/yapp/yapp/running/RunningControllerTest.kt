@@ -28,8 +28,30 @@ class RunningControllerTest : BaseControllerTest() {
         RestAssured.given().log().all()
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//            .accept(MediaType.APPLICATION_XML_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .pathParam("recordId", recordId)
+            .`when`().post("/api/v1/running/{recordId}")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `XML 러닝을 업데이트한다`() {
+        // given
+        val user = userFixture.create()
+        val startResponse = runningService.start(user.id, RequestFixture.runningStartRequest())
+        val recordId = startResponse.recordId
+        val request =
+            RequestFixture.runningUpdateRequest(
+                heartRate = 100,
+            )
+
+        // when
+        RestAssured.given().log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_XML_VALUE)
             .body(request)
             .pathParam("recordId", recordId)
             .`when`().post("/api/v1/running/{recordId}")

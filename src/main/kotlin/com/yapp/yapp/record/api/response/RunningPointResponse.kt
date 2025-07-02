@@ -6,7 +6,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 
 data class RunningPointResponse(
-    val runningPointId: Long,
+    val id: Long,
     val userId: Long,
     val recordId: Long,
     val orderNo: Long,
@@ -22,7 +22,7 @@ data class RunningPointResponse(
     val timeStamp: OffsetDateTime = TimeProvider.now(),
 ) {
     constructor(runningPoint: RunningPoint) : this(
-        runningPointId = runningPoint.id,
+        id = runningPoint.id,
         userId = runningPoint.runningRecord.userId,
         recordId = runningPoint.runningRecord.id,
         orderNo = runningPoint.orderNo,

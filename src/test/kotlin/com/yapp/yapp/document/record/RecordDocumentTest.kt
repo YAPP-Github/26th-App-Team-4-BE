@@ -8,6 +8,8 @@ import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.MediaType.APPLICATION_XML_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
@@ -51,7 +53,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.records[].averageSpeed").description("평균 속도(km/h)"),
                     fieldWithPath("result.records[].averagePace").description("평균 페이스(mm:ss)"),
                     fieldWithPath("result.records[].runningPoints").description("러닝 포인트 리스트"),
-                    fieldWithPath("result.records[].runningPoints[].runningPointId").description("러닝 포인트 ID"),
+                    fieldWithPath("result.records[].runningPoints[].id").description("러닝 포인트 ID"),
                     fieldWithPath("result.records[].runningPoints[].userId").description("유저 ID"),
                     fieldWithPath("result.records[].runningPoints[].recordId").description("기록 ID"),
                     fieldWithPath("result.records[].runningPoints[].orderNo").description("러닝 포인트 순서"),
@@ -123,7 +125,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
                     fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),
-                    fieldWithPath("result.runningPoints[].runningPointId").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPoints[].id").description("러닝 포인트 ID"),
                     fieldWithPath("result.runningPoints[].userId").description("유저 ID"),
                     fieldWithPath("result.runningPoints[].recordId").description("기록 ID"),
                     fieldWithPath("result.runningPoints[].orderNo").description("러닝 포인트 순서"),
@@ -195,9 +197,10 @@ class RecordDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
-            .filter(filter)
-            .accept("application/xml")
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .filter(filter)
+            .accept(APPLICATION_XML_VALUE)
             .`when`().get("/api/v1/records/{recordId}", recordId)
             .then().log().all()
             .statusCode(200)

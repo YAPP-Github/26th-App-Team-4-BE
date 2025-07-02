@@ -1,4 +1,5 @@
 plugins {
+    java
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "2.0.10"
@@ -117,7 +118,6 @@ tasks.register<Copy>("makeDocument") {
 tasks.test {
     exclude("**/document/**")
 }
-
 tasks.register<Test>("documentTest") {
     description = "Runs tests from document package"
     filter {
