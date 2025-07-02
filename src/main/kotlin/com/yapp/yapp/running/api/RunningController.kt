@@ -65,7 +65,7 @@ class RunningController(
         return ApiResponse.success(runningService.done(userId, recordId, request))
     }
 
-    @GetMapping(value = arrayOf("/t"), produces = [MediaType.APPLICATION_XML_VALUE])
+    @GetMapping(value = ["/t"], produces = [MediaType.APPLICATION_XML_VALUE])
     fun t(): ApiXmlResponse<RunningUpdateXmlResponse> {
         return ApiXmlResponse.success(
             RunningUpdateXmlResponse(

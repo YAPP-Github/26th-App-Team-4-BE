@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import java.time.DayOfWeek
+import org.springframework.http.MediaType
+import java.time.Duration
 
 class RecordControllerTest : BaseControllerTest() {
     @Autowired
@@ -136,5 +138,29 @@ class RecordControllerTest : BaseControllerTest() {
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
+    }
+
+    @Test
+    fun `유저의 러닝 기록을 XML로 조회한다`() {
+        // given
+        val now = TimeProvider.now().toStartOfDay()
+        val user = userFixture.create()
+        val runningRecord =
+            runningFixture.createRunningRecord(
+                userId = user.id,
+                startAt = now,
+                totalDistance = 100.0,
+                totalTime = Duration.ofSeconds(10),
+            )
+
+        // when
+        RestAssured.given().log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+            .accept(MediaType.APPLICATION_XML_VALUE)
+            .pathParam("recordId", runningRecord.id)
+            .`when`()
+            .get("/api/v1/records/{recordId}")
+            .then().log().all()
+            .statusCode(200)
     }
 }

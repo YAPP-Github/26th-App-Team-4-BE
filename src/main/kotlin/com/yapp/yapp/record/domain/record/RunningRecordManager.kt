@@ -67,7 +67,7 @@ class RunningRecordManager(
         record.totalTime = runningPoints.last().totalRunningTime
         record.totalDistance = runningPoints.last().totalRunningDistance
         record.totalCalories = runningPoints.sumOf { it.calories }
-        record.averageSpeed = (runningPoints.sumOf { it.speed } / runningPoints.size).roundTo()
+        record.averageSpeed = (runningPoints.sumOf { it.speedKmh } / runningPoints.size).roundTo()
         record.averagePace = runningPoints.map { it.pace }.averagePace()
         return record
     }

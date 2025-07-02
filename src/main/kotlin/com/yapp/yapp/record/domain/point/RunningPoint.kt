@@ -32,7 +32,7 @@ class RunningPoint(
     @Column(nullable = false)
     val lon: Double,
     @Column(nullable = false)
-    var speed: Double = 0.0,
+    var speedKmh: Double = 0.0,
     @Column(nullable = false)
     var distance: Double = 0.0,
     @Column(nullable = false)

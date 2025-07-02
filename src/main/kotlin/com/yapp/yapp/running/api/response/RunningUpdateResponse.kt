@@ -26,7 +26,7 @@ data class RunningUpdateResponse(
             orderNo = runningPoint.orderNo,
             lat = runningPoint.lat,
             lon = runningPoint.lon,
-            speed = runningPoint.speed,
+            speed = runningPoint.speedKmh,
             distance = runningPoint.distance,
             pace = runningPoint.pace.pacePerKm,
             heartRate = runningPoint.heartRate,
