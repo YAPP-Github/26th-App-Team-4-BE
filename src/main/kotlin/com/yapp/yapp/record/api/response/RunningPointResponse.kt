@@ -12,13 +12,13 @@ data class RunningPointResponse(
     val orderNo: Long,
     val lat: Double,
     val lon: Double,
-    var speed: Double = 0.0,
-    var distance: Double = 0.0,
-    var pace: Duration = Duration.ZERO,
-    val heartRate: Int? = 0,
+    val speed: Double = 0.0,
+    val distance: Double = 0.0,
+    val pace: Duration = Duration.ZERO,
+    val heartRate: Int? = null,
     val calories: Int = 0,
     val totalRunningTime: Duration = Duration.ZERO,
-    var totalRunningDistance: Double = 0.0,
+    val totalRunningDistance: Double = 0.0,
     val timeStamp: OffsetDateTime = TimeProvider.now(),
 ) {
     constructor(runningPoint: RunningPoint) : this(
