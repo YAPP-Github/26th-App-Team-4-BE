@@ -49,7 +49,8 @@ class RunningFixture(
         // 2) 1초 단위 러닝 포인트 생성 및 저장
         (1..totalSeconds).forEach { second ->
             val elapsed = Duration.ofSeconds(second)
-            val distanceSoFar = speedMetersPerSecond * second
+            // km/h → m로 환산: (km/h) * (초/3600) * 1000
+            val distanceSoFar = averageSpeedKmh * (second / 3600.0) * 1000
             val caloriesSoFar = (caloriesPerSecond * second).toInt()
             val heartRate = heartRateStart + ((heartRateRange * second) / totalSeconds).toInt()
 
@@ -59,7 +60,7 @@ class RunningFixture(
                     orderNo = second,
                     lat = 37.5665 + 0.00001 * second,
                     lon = 126.9780 + 0.00001 * second,
-                    speedKmh = speedMetersPerSecond,
+                    speedKmh = averageSpeedKmh,
                     distance = distanceSoFar,
                     pace = averagePace,
                     heartRate = heartRate,
