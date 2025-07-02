@@ -120,6 +120,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .accept(APPLICATION_JSON_VALUE)
             .pathParam("recordId", recordId)
             .body(request)
             .`when`().post("/api/v1/running/{recordId}")
@@ -139,8 +140,8 @@ class RunningDocumentTest : BaseDocumentTest() {
         val filter =
             filter("러닝 API", "러닝 업데이트 XML")
                 .tag(Tag.RUNNING_API)
-                .summary("러닝 업데이트 XML")
-                .description("XML 형식의 러닝 기록을 업데이트하는 API입니다.")
+                .summary("러닝 업데이트")
+                .description("러닝 기록을 업데이트하는 API입니다.")
                 .request(restDocsRequest)
                 .build()
 

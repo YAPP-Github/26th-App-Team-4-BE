@@ -182,10 +182,10 @@ class RecordDocumentTest : BaseDocumentTest() {
                     parameterWithName("recordId").description("조회할 러닝 기록 ID"),
                 )
         val filter =
-            filter("기록 API", "러닝 기록 단건 조회 XML")
+            filter("기록 API", "러닝 기록 단건 조회")
                 .tag(Tag.RECORD_API)
-                .summary("러닝 기록 단건 조회 XML")
-                .description("XML 형식의 특정 러닝 기록의 상세 정보를 조회하는 API입니다.")
+                .summary("러닝 기록 단건 조회")
+                .description("특정 러닝 기록의 상세 정보를 조회하는 API입니다.")
                 .request(restDocsRequest)
                 .build()
 
