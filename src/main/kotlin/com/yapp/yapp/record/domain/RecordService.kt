@@ -2,7 +2,6 @@ package com.yapp.yapp.record.domain
 
 import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
-import com.yapp.yapp.record.api.response.RunningRecordXmlResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import org.springframework.data.domain.Pageable
@@ -21,15 +20,6 @@ class RecordService(
         val runningRecord = recordManager.getRunningRecord(id = recordId, userId = userId)
         val runningPoints = pointManager.getRunningPoints(runningRecord)
         return RunningRecordResponse(runningRecord, runningPoints)
-    }
-
-    fun getXmlRecord(
-        userId: Long,
-        recordId: Long,
-    ): RunningRecordXmlResponse {
-        val runningRecord = recordManager.getRunningRecord(id = recordId, userId = userId)
-        val runningPoints = pointManager.getRunningPoints(runningRecord)
-        return RunningRecordXmlResponse(runningRecord, runningPoints)
     }
 
     fun getRecords(

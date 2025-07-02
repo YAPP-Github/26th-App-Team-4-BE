@@ -55,4 +55,21 @@ data class RunningPointXmlResponse(
         totalRunningDistance = runningPoint.totalRunningDistance,
         timeStamp = runningPoint.timeStamp,
     )
+
+    constructor(runningPointResponse: RunningPointResponse) : this(
+        runningPointId = runningPointResponse.runningPointId,
+        userId = runningPointResponse.userId,
+        recordId = runningPointResponse.recordId,
+        orderNo = runningPointResponse.orderNo,
+        lat = runningPointResponse.lat,
+        lon = runningPointResponse.lon,
+        speed = runningPointResponse.speed,
+        distance = runningPointResponse.distance,
+        pace = runningPointResponse.pace,
+        heartRate = runningPointResponse.heartRate,
+        calories = runningPointResponse.calories,
+        totalRunningTime = runningPointResponse.totalRunningTime,
+        totalRunningDistance = runningPointResponse.totalRunningDistance,
+        timeStamp = runningPointResponse.timeStamp,
+    )
 }

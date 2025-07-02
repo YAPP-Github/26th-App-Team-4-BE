@@ -31,4 +31,16 @@ data class RunningRecordXmlResponse(
         averageSpeed = runningRecord.averageSpeed,
         averagePace = runningRecord.averagePace.pacePerKm,
     )
+
+    constructor(runningRecordResponse: RunningRecordResponse) : this(
+        recordId = runningRecordResponse.recordId,
+        userId = runningRecordResponse.userId,
+        runningPoints = runningRecordResponse.runningPoints.map { RunningPointXmlResponse(it) },
+        totalDistance = runningRecordResponse.totalDistance,
+        totalTime = runningRecordResponse.totalTime,
+        totalCalories = runningRecordResponse.totalCalories,
+        startAt = runningRecordResponse.startAt,
+        averageSpeed = runningRecordResponse.averageSpeed,
+        averagePace = runningRecordResponse.averagePace,
+    )
 }

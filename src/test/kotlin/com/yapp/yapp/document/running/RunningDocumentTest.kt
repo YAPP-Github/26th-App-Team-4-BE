@@ -7,6 +7,7 @@ import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
+import com.yapp.yapp.running.api.request.RunningUpdateXmlRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.MediaType.APPLICATION_XML_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
@@ -93,6 +95,8 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.heartRate").description("현재 심박수").optional(),
                     fieldWithPath("result.calories").description("총 소모 칼로리"),
                     fieldWithPath("result.timeStamp").description("데이터를 기록한 시간"),
+                    fieldWithPath("result.totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간"),
+                    fieldWithPath("result.totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
                 )
         val filter =
             filter("러닝 API", "러닝 업데이트")
@@ -117,6 +121,44 @@ class RunningDocumentTest : BaseDocumentTest() {
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .pathParam("recordId", recordId)
+            .body(request)
+            .`when`().post("/api/v1/running/{recordId}")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 업데이트 XML API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .pathParameter(parameterWithName("recordId").description("러닝 기록 ID"))
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+        val filter =
+            filter("러닝 API", "러닝 업데이트 XML")
+                .tag(Tag.RUNNING_API)
+                .summary("러닝 업데이트 XML")
+                .description("XML 형식의 러닝 기록을 업데이트하는 API입니다.")
+                .request(restDocsRequest)
+                .build()
+
+        val user = userFixture.create()
+        val startResponse =
+            runningService.start(
+                user.id,
+                RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
+            )
+        val request = RunningUpdateXmlRequest(RequestFixture.runningUpdateRequest())
+        val recordId = startResponse.recordId
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_XML_VALUE)
             .pathParam("recordId", recordId)
             .body(request)
             .`when`().post("/api/v1/running/{recordId}")

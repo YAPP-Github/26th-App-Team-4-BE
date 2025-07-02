@@ -48,6 +48,7 @@ class RunningRecordController(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
     ): ApiXmlResponse<RunningRecordXmlResponse> {
-        return ApiXmlResponse.success(recordService.getXmlRecord(userId, recordId))
+        val recordResponse = recordService.getRecord(userId, recordId)
+        return ApiXmlResponse.success(RunningRecordXmlResponse(recordResponse))
     }
 }
