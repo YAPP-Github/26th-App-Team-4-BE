@@ -7,7 +7,6 @@ import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
-import com.yapp.yapp.running.api.request.RunningUpdateXmlRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
@@ -151,14 +150,15 @@ class RunningDocumentTest : BaseDocumentTest() {
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
-        val request = RunningUpdateXmlRequest(RequestFixture.runningUpdateRequest())
+        val request = RequestFixture.runningUpdateRequest()
         val recordId = startResponse.recordId
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
-            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_XML_VALUE)
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .accept(APPLICATION_XML_VALUE)
             .pathParam("recordId", recordId)
             .body(request)
             .`when`().post("/api/v1/running/{recordId}")

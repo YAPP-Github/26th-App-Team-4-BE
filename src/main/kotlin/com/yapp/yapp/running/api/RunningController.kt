@@ -9,7 +9,6 @@ import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
-import com.yapp.yapp.running.api.request.RunningUpdateXmlRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
@@ -44,13 +43,16 @@ class RunningController(
         return ApiResponse.success(runningService.update(userId, recordId, request))
     }
 
-    @PostMapping(value = ["/{recordId}"], produces = [MediaType.APPLICATION_XML_VALUE])
+    @PostMapping(
+        value = ["/{recordId}"],
+        produces = [MediaType.APPLICATION_XML_VALUE],
+    )
     fun updateXml(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningUpdateXmlRequest,
+        @RequestBody request: RunningUpdateRequest,
     ): ApiXmlResponse<RunningPointXmlResponse> {
-        val pointResponse = runningService.update(userId, recordId, request.toJson())
+        val pointResponse = runningService.update(userId, recordId, request)
         return ApiXmlResponse.success(RunningPointXmlResponse(pointResponse))
     }
 

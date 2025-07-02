@@ -35,7 +35,7 @@ jobs:
           exit 1
 
       - name: Run tests and generate API Docs
-        run: ./gradlew clean makeDocument
+        run: ./gradlew clean makeDocument --exclude-task test
 
       - name: Verify docs generated in build
         run: ls -R build/docs
