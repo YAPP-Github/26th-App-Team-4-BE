@@ -3,11 +3,19 @@ package com.yapp.yapp.running
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.record.domain.point.RunningPoint
+import com.yapp.yapp.record.domain.point.RunningPointDao
 import com.yapp.yapp.record.domain.record.RunningRecord
+import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.within
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import java.time.Duration
 
-class RunningMetricsCalculatorTest {
+class RunningMetricsCalculatorTest : BaseServiceTest() {
+    @Autowired
+    lateinit var runningPointDao: RunningPointDao
+
     @Test
     fun `거리를 계산한다`() {
         // given
@@ -54,9 +62,31 @@ class RunningMetricsCalculatorTest {
             )
 
         // when
-        val speed = RunningMetricsCalculator.calculateSpeed(pointA, pointB)
+        val speed = RunningMetricsCalculator.calculateSpeedKmh(pointA, pointB)
 
         // then
         Assertions.assertThat(speed).isEqualTo(22.411)
+    }
+
+    @Test
+    fun `fixture를 통해 속도와 거리를 계산한다`() {
+        // given
+        val runningRecord = runningFixture.createRunningRecord()
+        val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
+
+        // when
+        var totalDistance = 0.0
+        for (i in 0 until runningPoints.size - 1) {
+            totalDistance += RunningMetricsCalculator.calculateDistance(runningPoints[i], runningPoints[i + 1])
+        }
+
+        val totalTime = Duration.between(runningPoints.first().timeStamp, runningPoints.last().timeStamp)
+        val averageSpeed = totalDistance / totalTime.seconds
+        val averagePace = totalTime.seconds / (totalDistance / 1000.0)
+
+        // then
+        Assertions.assertThat(runningRecord.totalDistance).isCloseTo(totalDistance, within(0.001))
+        Assertions.assertThat(runningRecord.averageSpeed).isCloseTo(averageSpeed, within(0.001))
+//        Assertions.assertThat(runningRecord.averagePace).isCloseTo(averagePace, within(0.001))
     }
 }

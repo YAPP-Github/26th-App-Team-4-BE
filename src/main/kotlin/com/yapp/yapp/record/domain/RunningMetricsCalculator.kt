@@ -33,7 +33,21 @@ object RunningMetricsCalculator {
         return distance.roundTo()
     }
 
-    fun calculateSpeed(
+    fun calculateDistance(
+        speedKmh: Double,
+        seconds: Long,
+    ): Double {
+        return speedKmh * (seconds / 3600.0) * 1000
+    }
+
+    fun calculateSpeedKmh(
+        meterDistance: Double,
+        seconds: Long,
+    ): Double {
+        return (meterDistance / seconds) * 3.6
+    }
+
+    fun calculateSpeedKmh(
         preRunningPoint: RunningPoint,
         runningPoint: RunningPoint,
     ): Double {

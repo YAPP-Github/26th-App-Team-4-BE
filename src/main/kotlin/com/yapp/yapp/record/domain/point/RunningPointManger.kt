@@ -47,9 +47,9 @@ class RunningPointManger(
                 totalRunningTime = totalRunningTime,
             )
         newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
-        newRunningPoint.speedKmh = RunningMetricsCalculator.calculateSpeed(preRunningPoint, newRunningPoint)
+        newRunningPoint.speedKmh = RunningMetricsCalculator.calculateSpeedKmh(preRunningPoint, newRunningPoint)
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
-        newRunningPoint.pace = Pace(distance = newRunningPoint.totalRunningDistance, duration = totalRunningTime)
+        newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, duration = totalRunningTime)
         return runningPointDao.save(newRunningPoint)
     }
 

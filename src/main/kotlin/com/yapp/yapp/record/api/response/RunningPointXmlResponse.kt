@@ -27,7 +27,7 @@ data class RunningPointXmlResponse(
     @JacksonXmlProperty(localName = "distance")
     var distance: Double = 0.0,
     @JacksonXmlProperty(localName = "pace")
-    var pace: Duration = Pace(0).pacePerKm,
+    var pace: Duration = Pace(secondFor1Km = 0).pacePerKm,
     @JacksonXmlProperty(localName = "heartRate")
     val heartRate: Int? = 0,
     @JacksonXmlProperty(localName = "calories")

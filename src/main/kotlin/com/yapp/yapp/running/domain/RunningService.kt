@@ -47,6 +47,7 @@ class RunningService(
                 timeStamp = TimeProvider.parse(request.timeStamp),
                 totalRunningTime = Duration.parse(request.totalRunningTime),
             )
+
         return RunningPointResponse(newRunningPoint)
     }
 

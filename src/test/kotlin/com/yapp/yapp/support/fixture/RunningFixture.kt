@@ -2,6 +2,7 @@ package com.yapp.yapp.support.fixture
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.record.domain.point.RunningPointRepository
 import com.yapp.yapp.record.domain.record.RunningRecord
@@ -17,33 +18,29 @@ class RunningFixture(
 ) {
     fun createRunningRecord(
         userId: Long = 0L,
-        totalDistance: Double = 50.0,
-        averageSpeedKmh: Double = 12.0,
-        totalCalories: Int = 180,
+        totalDistance: Double = RunningMetricsCalculator.calculateDistance(speedKmh = 12.0, seconds = 9),
         totalTime: Duration = Duration.ofSeconds(9),
         startAt: OffsetDateTime = TimeProvider.parse("2025-06-17T17:00:00.000+09:00"),
-        averagePace: Pace = Pace(distance = totalDistance, duration = totalTime),
     ): RunningRecord {
         // 1) 러닝 레코드 저장
+        val averageSpeedKmh =
+            RunningMetricsCalculator.calculateSpeedKmh(
+                meterDistance = totalDistance,
+                seconds = totalTime.seconds,
+            )
         val runningRecord =
             runningRecordRepository.save(
                 RunningRecord(
                     userId = userId,
-                    totalDistance = totalDistance,
-                    averageSpeed = averageSpeedKmh,
-                    totalCalories = totalCalories,
-                    totalTime = totalTime,
                     startAt = startAt,
-                    averagePace = averagePace,
                 ),
             )
 
         // 계산 보조 값
         val totalSeconds = totalTime.seconds
-        val speedMetersPerSecond = averageSpeedKmh * 1000 / 3600
-        val caloriesPerSecond = totalCalories.toDouble() / totalSeconds
-        val heartRateStart = 140
-        val heartRateEnd = 160
+        val caloriesPerSecond = 0.22
+        val heartRateStart = 140.0
+        val heartRateEnd = 160.0
         val heartRateRange = heartRateEnd - heartRateStart
 
         // 2) 1초 단위 러닝 포인트 생성 및 저장
@@ -52,7 +49,7 @@ class RunningFixture(
             // km/h → m로 환산: (km/h) * (초/3600) * 1000
             val distanceSoFar = averageSpeedKmh * (second / 3600.0) * 1000
             val caloriesSoFar = (caloriesPerSecond * second).toInt()
-            val heartRate = heartRateStart + ((heartRateRange * second) / totalSeconds).toInt()
+            val heartRate = heartRateStart.toInt() + ((heartRateRange * second) / totalSeconds).toInt()
 
             val runningPoint =
                 RunningPoint(
@@ -62,7 +59,7 @@ class RunningFixture(
                     lon = 126.9780 + 0.00001 * second,
                     speedKmh = averageSpeedKmh,
                     distance = distanceSoFar,
-                    pace = averagePace,
+                    pace = Pace(distanceMeter = totalDistance, duration = totalTime),
                     heartRate = heartRate,
                     calories = caloriesSoFar,
                     totalRunningTime = elapsed,
@@ -73,6 +70,6 @@ class RunningFixture(
         }
 
         // 3) 저장된 러닝 레코드 반환
-        return runningRecord
+        return runningRecordRepository.findById(runningRecord.id).get()
     }
 }

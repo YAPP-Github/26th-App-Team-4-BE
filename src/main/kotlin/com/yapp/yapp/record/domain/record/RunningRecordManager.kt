@@ -71,4 +71,11 @@ class RunningRecordManager(
         record.averagePace = runningPoints.map { it.pace }.averagePace()
         return record
     }
+
+    fun updateRecord(
+        runningRecord: RunningRecord,
+        runningPoints: List<RunningPoint>,
+    ) {
+        TODO()
+    }
 }
