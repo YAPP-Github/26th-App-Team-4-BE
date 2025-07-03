@@ -39,7 +39,6 @@ class OnboardingControllerTest : BaseControllerTest() {
             RestAssured.given().log().all()
                 .header(HttpHeaders.CONTENT_TYPE, ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
-                .body(request)
                 .`when`().get("/api/v1/users/onboarding")
                 .then().log().all()
                 .statusCode(200)
@@ -48,6 +47,10 @@ class OnboardingControllerTest : BaseControllerTest() {
         val response = convert(result, OnboardingResponse::class.java)
 
         Assertions.assertThat(response.answerList).hasSize(request.answers.size)
+        response.answerList.forEachIndexed { index, answer ->
+            Assertions.assertThat(answer.questionType).isEqualTo(request.answers[index].questionType)
+            Assertions.assertThat(answer.answer).isEqualTo(request.answers[index].answer)
+        }
     }
 
     @Test
