@@ -4,7 +4,7 @@ import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
-import com.yapp.yapp.user.domain.onboarding.AnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 
 object RequestFixture {
@@ -36,15 +36,15 @@ object RequestFixture {
     fun onboardingRequest(
         answers: List<OnboardingAnswerDto> =
             listOf(
-                OnboardingAnswerDto(OnboardingQuestionType.EXPLOSIVE_STRENGTH, AnswerLabel.A),
-                OnboardingAnswerDto(OnboardingQuestionType.AGILITY, AnswerLabel.B),
-                OnboardingAnswerDto(OnboardingQuestionType.COORDINATION, AnswerLabel.C),
-                OnboardingAnswerDto(OnboardingQuestionType.BALANCE, AnswerLabel.A),
-                OnboardingAnswerDto(OnboardingQuestionType.EXERCISE_EXPERIENCE, AnswerLabel.B),
-                OnboardingAnswerDto(OnboardingQuestionType.RUNNING_EXPERIENCE, AnswerLabel.C),
-                OnboardingAnswerDto(OnboardingQuestionType.RUNNING_ENDURANCE, AnswerLabel.A),
-                OnboardingAnswerDto(OnboardingQuestionType.PACE_AWARENESS, AnswerLabel.B),
-                OnboardingAnswerDto(OnboardingQuestionType.GOAL, AnswerLabel.B),
+                OnboardingAnswerDto(OnboardingQuestionType.EXPLOSIVE_STRENGTH, OnboardAnswerLabel.A),
+                OnboardingAnswerDto(OnboardingQuestionType.AGILITY, OnboardAnswerLabel.B),
+                OnboardingAnswerDto(OnboardingQuestionType.COORDINATION, OnboardAnswerLabel.C),
+                OnboardingAnswerDto(OnboardingQuestionType.BALANCE, OnboardAnswerLabel.A),
+                OnboardingAnswerDto(OnboardingQuestionType.EXERCISE_EXPERIENCE, OnboardAnswerLabel.B),
+                OnboardingAnswerDto(OnboardingQuestionType.RUNNING_EXPERIENCE, OnboardAnswerLabel.C),
+                OnboardingAnswerDto(OnboardingQuestionType.RUNNING_ENDURANCE, OnboardAnswerLabel.A),
+                OnboardingAnswerDto(OnboardingQuestionType.PACE_AWARENESS, OnboardAnswerLabel.B),
+                OnboardingAnswerDto(OnboardingQuestionType.GOAL, OnboardAnswerLabel.B),
             ),
     ): OnboardingRequest {
         return OnboardingRequest(answers)

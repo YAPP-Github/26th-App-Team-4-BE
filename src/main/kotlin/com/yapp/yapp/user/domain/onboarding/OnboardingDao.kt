@@ -29,7 +29,7 @@ class OnboardingDao(
     fun updateQuestion(
         user: User,
         questionType: OnboardingQuestionType,
-        answer: AnswerLabel,
+        answer: OnboardAnswerLabel,
     ): Onboarding {
         val onboarding =
             onboardingRepository.findByUserAndQuestionTypeAndIsDeletedFalse(user = user, questionType = questionType)

@@ -23,7 +23,7 @@ class Onboarding(
     val questionType: OnboardingQuestionType,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var answer: AnswerLabel,
+    var answer: OnboardAnswerLabel,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 )
