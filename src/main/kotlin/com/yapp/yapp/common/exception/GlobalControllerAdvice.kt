@@ -5,6 +5,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -25,6 +26,7 @@ class GlobalControllerAdvice {
         HttpRequestMethodNotSupportedException::class,
         NoResourceFoundException::class,
         NoHandlerFoundException::class,
+        HttpMessageNotReadableException::class,
     )
     fun handleInvalidRequestException(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = ErrorCode.INVALID_REQUEST
@@ -32,8 +34,9 @@ class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(Exception::class)
-    fun handleInternalServerException(): ResponseEntity<ApiResponse<Unit>> {
+    fun handleInternalServerException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = ErrorCode.INTERNAL_SERVER_
+        logger.error { exception.message }
         return handleError(errorCode)
     }
 
