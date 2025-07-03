@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
 class AuthService(
     private val authManager: AuthManager,
     private val jwtTokenGenerator: JwtTokenGenerator,
     private val jwtTokenHandler: JwtTokenHandler,
     private val userManager: UserManager,
 ) {
+    @Transactional
     fun login(
         provider: ProviderType,
         loginRequest: LoginRequest,
@@ -47,10 +47,12 @@ class AuthService(
         return LoginResponse(tokenResponse, userResponse, userInfo.isNew)
     }
 
+    @Transactional
     fun logout(tokenId: String) {
         jwtTokenHandler.expire(tokenId)
     }
 
+    @Transactional
     fun refresh(
         tokenId: String,
         userId: Long,
