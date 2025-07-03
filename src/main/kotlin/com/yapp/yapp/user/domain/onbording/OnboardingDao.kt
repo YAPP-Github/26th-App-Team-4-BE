@@ -18,11 +18,23 @@ class OnboardingDao(
         return onboardingRepository.findAllByUserAndIsDeletedFalse(user)
     }
 
-    fun findAnswerByUser(
+    fun getAnswerByUser(
         user: User,
         questionType: OnboardingQuestionType,
     ): Onboarding {
         return onboardingRepository.findByUserAndQuestionTypeAndIsDeletedFalse(user = user, questionType = questionType)
             ?: throw CustomException(ErrorCode.ANSWER_NOT_FOUND)
+    }
+
+    fun updateQuestion(
+        user: User,
+        questionType: OnboardingQuestionType,
+        answer: AnswerLabel,
+    ): Onboarding {
+        val onboarding =
+            onboardingRepository.findByUserAndQuestionTypeAndIsDeletedFalse(user = user, questionType = questionType)
+                ?: onboardingRepository.save(Onboarding(user = user, questionType = questionType, answer = answer))
+        onboarding.answer = answer
+        return onboarding
     }
 }

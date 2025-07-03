@@ -5,6 +5,7 @@ import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.onbording.Onboarding
 import com.yapp.yapp.user.domain.onbording.OnboardingManager
+import com.yapp.yapp.user.domain.onbording.OnboardingQuestionType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -54,10 +55,27 @@ class UserService(
             }
     }
 
+    @Transactional
+    fun updateOnboardings(
+        id: Long,
+        request: OnboardingRequest,
+    ): List<AnswerResponse> {
+        val user = userManager.getActiveUser(id)
+        request.answers.forEach {
+            onboardingManager.updateQuestion(user, it.questionType, it.answer)
+        }
+        return onboardingManager.getAll(user).map { onboarding ->
+            AnswerResponse(
+                questionType = onboarding.questionType,
+                answer = onboarding.answer,
+            )
+        }
+    }
+
     @Transactional(readOnly = true)
     fun getGoal(id: Long): AnswerResponse {
         val user = userManager.getActiveUser(id)
-        val goalAnswer = onboardingManager.getGoal(user)
+        val goalAnswer = onboardingManager.getQuestion(user, OnboardingQuestionType.GOAL)
         return AnswerResponse(
             questionType = goalAnswer.questionType,
             answer = goalAnswer.answer,
