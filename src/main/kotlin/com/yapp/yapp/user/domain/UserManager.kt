@@ -29,7 +29,7 @@ class UserManager(
         email: String,
         provider: ProviderType,
     ): UserInfo {
-        val nickname = UsernameGenerator.generate(email)
+        val nickname = NicknameGenerator.generate(email)
         val user = userDao.save(email, nickname, provider)
         return UserInfo(user.id, user.email, user.nickname, provider, true)
     }

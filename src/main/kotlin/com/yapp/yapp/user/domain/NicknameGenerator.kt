@@ -3,7 +3,7 @@ package com.yapp.yapp.user.domain
 import java.security.MessageDigest
 import java.util.Base64
 
-object UsernameGenerator {
+object NicknameGenerator {
     private const val ALGORITHM = "SHA-256"
 
     private val adjectives =
