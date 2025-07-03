@@ -1,4 +1,4 @@
-package com.yapp.yapp.user.domain.onbording
+package com.yapp.yapp.user.domain.onboarding
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode

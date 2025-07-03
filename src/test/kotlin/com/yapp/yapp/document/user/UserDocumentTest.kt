@@ -9,8 +9,8 @@ import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.support.fixture.IdTokenFixture
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
-import com.yapp.yapp.user.domain.onbording.AnswerLabel
-import com.yapp.yapp.user.domain.onbording.OnboardingQuestionType
+import com.yapp.yapp.user.domain.onboarding.AnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito

@@ -1,4 +1,4 @@
-package com.yapp.yapp.user.domain.onbording
+package com.yapp.yapp.user.domain.onboarding
 
 enum class OnboardingQuestionType {
     /** 순발력 */

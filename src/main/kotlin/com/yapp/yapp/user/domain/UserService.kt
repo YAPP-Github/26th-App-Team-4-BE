@@ -3,9 +3,9 @@ package com.yapp.yapp.user.domain
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserResponse
-import com.yapp.yapp.user.domain.onbording.Onboarding
-import com.yapp.yapp.user.domain.onbording.OnboardingManager
-import com.yapp.yapp.user.domain.onbording.OnboardingQuestionType
+import com.yapp.yapp.user.domain.onboarding.Onboarding
+import com.yapp.yapp.user.domain.onboarding.OnboardingManager
+import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -4,8 +4,8 @@ import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
-import com.yapp.yapp.user.domain.onbording.AnswerLabel
-import com.yapp.yapp.user.domain.onbording.OnboardingQuestionType
+import com.yapp.yapp.user.domain.onboarding.AnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 
 object RequestFixture {
     fun runningStartRequest(

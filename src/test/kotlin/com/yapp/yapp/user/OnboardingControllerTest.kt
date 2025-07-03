@@ -5,9 +5,9 @@ import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.response.OnboardingResponse
-import com.yapp.yapp.user.domain.onbording.AnswerLabel
-import com.yapp.yapp.user.domain.onbording.OnboardingDao
-import com.yapp.yapp.user.domain.onbording.OnboardingQuestionType
+import com.yapp.yapp.user.domain.onboarding.AnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardingDao
+import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions

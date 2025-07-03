@@ -1,4 +1,4 @@
-package com.yapp.yapp.user.domain.onbording
+package com.yapp.yapp.user.domain.onboarding
 
 enum class AnswerLabel {
     A,
