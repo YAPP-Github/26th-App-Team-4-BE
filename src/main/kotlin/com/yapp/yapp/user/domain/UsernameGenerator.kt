@@ -8,14 +8,14 @@ object UsernameGenerator {
 
     private val adjectives =
         listOf(
-            "빠른", "끈질긴", "날렵한", "지치지 않는", "꾸준한",
-            "열정적인", "침착한", "힘찬", "단단한", "가벼운",
+            "빠른", "센", "긴", "짧은", "큰",
+            "작은", "높은", "낮은", "굳은", "강한",
         )
 
     private val nouns =
         listOf(
-            "러너", "스프린터", "조깅러", "트레일러", "챌린저",
-            "페이스 메이커", "도전자", "마라토너", "피니셔", "거리왕",
+            "러너스", "스프린터", "조깅러", "트레일러", "챌린저",
+            "페이스", "도전자", "마라톤", "피니셔", "거리왕",
         )
 
     fun generate(email: String): String {
@@ -28,6 +28,6 @@ object UsernameGenerator {
                 .withoutPadding()
                 .encodeToString(hash.copyOfRange(2, 6))
 
-        return "$adjective-$noun-$hashSuffix"
+        return "$adjective$noun$hashSuffix".take(10)
     }
 }
