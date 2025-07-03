@@ -20,7 +20,7 @@ class Onboarding(
     val user: User,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val QuestionType: OnboardingQuestionType,
+    val questionType: OnboardingQuestionType,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val answer: AnswerLabel,

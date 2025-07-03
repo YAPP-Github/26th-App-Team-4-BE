@@ -44,6 +44,7 @@ object RequestFixture {
                 OnboardingAnswerDto(OnboardingQuestionType.RUNNING_EXPERIENCE, AnswerLabel.C),
                 OnboardingAnswerDto(OnboardingQuestionType.RUNNING_ENDURANCE, AnswerLabel.A),
                 OnboardingAnswerDto(OnboardingQuestionType.PACE_AWARENESS, AnswerLabel.B),
+                OnboardingAnswerDto(OnboardingQuestionType.GOAL, AnswerLabel.B),
             ),
     ): OnboardingRequest {
         return OnboardingRequest(answers)

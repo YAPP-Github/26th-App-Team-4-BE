@@ -4,4 +4,5 @@ enum class AnswerLabel {
     A,
     B,
     C,
+    D,
 }

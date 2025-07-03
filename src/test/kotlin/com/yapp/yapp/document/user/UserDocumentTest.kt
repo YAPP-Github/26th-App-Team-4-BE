@@ -147,7 +147,9 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.answerList").description("온보딩 설문조사 리스트"),
                     fieldWithPath("result.answerList[].questionType").description("질문 타입(Enum)"),
-                    fieldWithPath("result.answerList[].answer").description("응답 타입(Enum) 답변에 따라 A, B, C 중 하나"),
+                    fieldWithPath(
+                        "result.answerList[].answer",
+                    ).description("응답 타입(Enum) 답변에 따라 A, B, C, D 중 하나입니다. 러닝 목표만 선택지가 4개이고 나머진 3개입니다."),
                 )
 
         val restDocsFilter =
@@ -175,6 +177,51 @@ class UserDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
             .`when`().get("/api/v1/users/onboarding")
+            .then()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 목표 조회 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.questionType").description("질문 타입(Enum)"),
+                    fieldWithPath("result.answer").description("응답 타입(Enum) A(다이어트), B(건강 관리), C(체력 증진), D(대회 준비) 중 하나입니다."),
+                )
+
+        val restDocsFilter =
+            filter("사용자 API", "목표 조회")
+                .tag(Tag.USER_API)
+                .summary("목표 조회 API")
+                .description("러닝 목표를 조회하는 API 입니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+        val loginResponse = loginUser()
+        val request = RequestFixture.onboardingRequest()
+        RestAssured.given()
+            .body(request)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .`when`().post("/api/v1/users/onboarding")
+            .then()
+            .statusCode(201)
+        // when
+
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .`when`().get("/api/v1/users/onboarding/goal")
             .then()
             .statusCode(200)
     }

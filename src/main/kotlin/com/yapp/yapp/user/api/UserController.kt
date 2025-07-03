@@ -3,6 +3,7 @@ package com.yapp.yapp.user.api
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.user.api.request.OnboardingRequest
+import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.OnboardingResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.UserService
@@ -39,7 +40,7 @@ class UserController(
 
     @PostMapping("/onboarding")
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveOnboarding(
+    fun saveOnboardings(
         @CurrentUser id: Long,
         @RequestBody request: OnboardingRequest,
     ): ApiResponse<Unit> {
@@ -48,7 +49,7 @@ class UserController(
     }
 
     @GetMapping("/onboarding")
-    fun getOnboarding(
+    fun getOnboardings(
         @CurrentUser id: Long,
     ): ApiResponse<OnboardingResponse> {
         return ApiResponse.success(
@@ -56,6 +57,15 @@ class UserController(
                 userId = id,
                 answerList = userService.getOnboardings(id),
             ),
+        )
+    }
+
+    @GetMapping("/onboarding/goal")
+    fun getGoal(
+        @CurrentUser id: Long,
+    ): ApiResponse<AnswerResponse> {
+        return ApiResponse.success(
+            userService.getGoal(id),
         )
     }
 }

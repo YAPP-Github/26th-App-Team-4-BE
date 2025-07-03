@@ -24,4 +24,7 @@ enum class OnboardingQuestionType {
 
     /** 페이스 인지 */
     PACE_AWARENESS,
+
+    /** 목표 */
+    GOAL,
 }

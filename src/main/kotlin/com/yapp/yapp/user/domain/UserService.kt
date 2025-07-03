@@ -1,7 +1,7 @@
 package com.yapp.yapp.user.domain
 
-import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
+import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.onbording.Onboarding
 import com.yapp.yapp.user.domain.onbording.OnboardingManager
@@ -35,7 +35,7 @@ class UserService(
             request.answers.map {
                 Onboarding(
                     user = user,
-                    QuestionType = it.questionType,
+                    questionType = it.questionType,
                     answer = it.answer,
                 )
             }
@@ -43,14 +43,24 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun getOnboardings(id: Long): List<OnboardingAnswerDto> {
+    fun getOnboardings(id: Long): List<AnswerResponse> {
         val user = userManager.getActiveUser(id)
-        return onboardingManager.onboardingDao.findAllByUser(user)
+        return onboardingManager.getAll(user)
             .map { onboarding ->
-                OnboardingAnswerDto(
-                    questionType = onboarding.QuestionType,
+                AnswerResponse(
+                    questionType = onboarding.questionType,
                     answer = onboarding.answer,
                 )
             }
+    }
+
+    @Transactional(readOnly = true)
+    fun getGoal(id: Long): AnswerResponse {
+        val user = userManager.getActiveUser(id)
+        val goalAnswer = onboardingManager.getGoal(user)
+        return AnswerResponse(
+            questionType = goalAnswer.questionType,
+            answer = goalAnswer.answer,
+        )
     }
 }

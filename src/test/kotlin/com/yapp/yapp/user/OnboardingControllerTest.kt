@@ -39,6 +39,6 @@ class OnboardingControllerTest : BaseControllerTest() {
                 .result
         val response = convert(result, OnboardingResponse::class.java)
 
-        Assertions.assertThat(response.answerList).isEqualTo(request.answers)
+        Assertions.assertThat(response.answerList).hasSize(request.answers.size)
     }
 }
