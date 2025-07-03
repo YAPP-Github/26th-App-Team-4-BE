@@ -11,6 +11,12 @@ enum class ErrorCode(
     INTERNAL_SERVER_(500, "SEV_001", "알 수 없는 서버 에러입니다.", LogLevel.ERROR),
 
     USER_NOT_FOUND(400, "USR_001", "유저가 존재하지 않습니다.", LogLevel.WARN),
+    USER_ALREADY_EXISTS_WITH_ANOTHER_PROVIDER(
+        400,
+        "USR_002",
+        "해당 이메일은 다른 소셜 로그인 계정으로 이미 가입되어 있습니다.",
+        LogLevel.WARN,
+    ),
 
     UNSUPPORTED_PROVIDER_TYPE(400, "PRV_001", "지원 하지 않는 유형 입니다.", LogLevel.WARN),
     TOKEN_EXPIRED(401, "TKN_001", "만료된 토큰 입니다.", LogLevel.WARN),

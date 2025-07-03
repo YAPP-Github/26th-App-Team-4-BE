@@ -31,6 +31,9 @@ class AuthService(
         val email = authUserInfo.getEmail()
         val userInfo = userManager.getUserInfo(email, provider)
 
+        if (userInfo.provider != provider) {
+            throw CustomException(ErrorCode.USER_ALREADY_EXISTS_WITH_ANOTHER_PROVIDER)
+        }
 
         val tokenInfo = jwtTokenGenerator.generateTokens(userInfo.id)
         val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
