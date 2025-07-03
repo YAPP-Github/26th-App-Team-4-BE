@@ -38,6 +38,7 @@ class UserController(
     }
 
     @PostMapping("/onboarding")
+    @ResponseStatus(HttpStatus.CREATED)
     fun saveOnboarding(
         @CurrentUser id: Long,
         @RequestBody request: OnboardingRequest,
@@ -53,7 +54,7 @@ class UserController(
         return ApiResponse.success(
             OnboardingResponse(
                 userId = id,
-                onboardingList = userService.getOnboardings(id),
+                answerList = userService.getOnboardings(id),
             ),
         )
     }

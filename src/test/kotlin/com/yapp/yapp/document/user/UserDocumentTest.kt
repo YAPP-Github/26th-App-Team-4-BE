@@ -7,6 +7,7 @@ import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.support.fixture.IdTokenFixture
+import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -88,6 +89,94 @@ class UserDocumentTest : BaseDocumentTest() {
             .`when`().delete("/api/v1/users")
             .then()
             .statusCode(204)
+    }
+
+    @Test
+    fun `온보딩 저장 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .requestBodyField(
+                    fieldWithPath("answers").description("온보딩 설문조사 리스트"),
+                    fieldWithPath("answers[].questionType").description("질문 타입(Enum)"),
+                    fieldWithPath("answers[].answer").description("응답 타입(Enum) 답변에 따라 A, B, C 중 하나"),
+                )
+
+        val restDocsResponse =
+            response()
+
+        val restDocsFilter =
+            filter("사용자 API", "온보딩 저장")
+                .tag(Tag.USER_API)
+                .summary("온보딩 저장 API")
+                .description("온보딩 설문 조사를 저장하는 API 입니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+        val loginResponse = loginUser()
+
+        // when
+        val request = RequestFixture.onboardingRequest()
+
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .body(request)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .`when`().post("/api/v1/users/onboarding")
+            .then()
+            .statusCode(201)
+    }
+
+    @Test
+    fun `온보딩 조회 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.userId").description("유저 ID"),
+                    fieldWithPath("result.answerList").description("온보딩 설문조사 리스트"),
+                    fieldWithPath("result.answerList[].questionType").description("질문 타입(Enum)"),
+                    fieldWithPath("result.answerList[].answer").description("응답 타입(Enum) 답변에 따라 A, B, C 중 하나"),
+                )
+
+        val restDocsFilter =
+            filter("사용자 API", "온보딩 조회")
+                .tag(Tag.USER_API)
+                .summary("온보딩 조회 API")
+                .description("온보딩 설문 조사를 조회하는 API 입니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+        val loginResponse = loginUser()
+        val request = RequestFixture.onboardingRequest()
+        RestAssured.given()
+            .body(request)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .`when`().post("/api/v1/users/onboarding")
+            .then()
+            .statusCode(201)
+        // when
+
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .`when`().get("/api/v1/users/onboarding")
+            .then()
+            .statusCode(200)
     }
 
     private fun loginUser(): LoginResponse {

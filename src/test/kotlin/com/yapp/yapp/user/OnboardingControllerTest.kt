@@ -1,9 +1,12 @@
-package com.yapp.yapp.onboarding
+package com.yapp.yapp.user
 
+import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.support.fixture.RequestFixture
+import com.yapp.yapp.user.api.response.OnboardingResponse
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
 
@@ -21,15 +24,21 @@ class OnboardingControllerTest : BaseControllerTest() {
             .body(request)
             .`when`().post("/api/v1/users/onboarding")
             .then().log().all()
-            .statusCode(200)
+            .statusCode(201)
 
         // then
-        RestAssured.given().log().all()
-            .header(HttpHeaders.CONTENT_TYPE, ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
-            .body(request)
-            .`when`().get("/api/v1/users/onboarding")
-            .then().log().all()
-            .statusCode(200)
+        val result =
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+                .body(request)
+                .`when`().get("/api/v1/users/onboarding")
+                .then().log().all()
+                .statusCode(200)
+                .extract().`as`(ApiResponse::class.java)
+                .result
+        val response = convert(result, OnboardingResponse::class.java)
+
+        Assertions.assertThat(response.answerList).isEqualTo(request.answers)
     }
 }
