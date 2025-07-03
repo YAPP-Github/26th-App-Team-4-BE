@@ -22,8 +22,6 @@ class KakaoAuthProvider(
 ) : AuthProvider {
     companion object {
         private const val EMAIL_CLAIM = "email"
-        private const val NICKNAME_CLAIM = "nickname"
-        private const val PROFILE_CLAIM = "profile"
     }
 
     override fun authenticate(
@@ -37,10 +35,8 @@ class KakaoAuthProvider(
         val claims = handler.parseClaims(token)
         val email =
             claims[EMAIL_CLAIM] as String? ?: throw CustomException(ErrorCode.TOKEN_CLAIM_MISSING)
-        val nickname = claims[NICKNAME_CLAIM] as String?
-        val profile = claims[PROFILE_CLAIM] as String?
 
-        return KakaoAuthUserInfo(email, nickname, profile)
+        return KakaoAuthUserInfo(email)
     }
 
     override fun supports(providerType: ProviderType): Boolean {

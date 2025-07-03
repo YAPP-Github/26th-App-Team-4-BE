@@ -84,9 +84,10 @@ abstract class BaseDocumentTest : BaseSupportMethod() {
     }
 
     private fun loginUser(email: String): LoginResponse {
-        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com", email = email)
+        val idToken =
+            IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com", email = email)
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
-        val loginRequest = LoginRequest(idToken, null, null)
+        val loginRequest = LoginRequest(idToken, null)
 
         Mockito.`when`(feignClient.fetchJwks())
             .thenReturn(objectMapper.writeValueAsString(jwksResponse))

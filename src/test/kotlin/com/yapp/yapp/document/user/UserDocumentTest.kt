@@ -1,28 +1,18 @@
 package com.yapp.yapp.document.user
 
-import com.yapp.yapp.auth.api.request.LoginRequest
-import com.yapp.yapp.auth.api.response.LoginResponse
-import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
-import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
-import com.yapp.yapp.support.fixture.IdTokenFixture
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 class UserDocumentTest : BaseDocumentTest() {
-    @MockitoBean
-    lateinit var appleFeignClient: AppleFeignClient
-
     @Test
     fun `사용자 조회 API`() {
         // given
@@ -37,8 +27,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("사용자 ID"),
                     fieldWithPath("result.email").description("사용자 이메일"),
-                    fieldWithPath("result.name").description("사용자 이름"),
-                    fieldWithPath("result.profileImage").description("사용자 프로필"),
+                    fieldWithPath("result.nickname").description("사용자 닉네임"),
                     fieldWithPath("result.provider").description("소셜 로그인 유형"),
                 )
 
@@ -51,13 +40,13 @@ class UserDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val loginResponse = loginUser()
+        val accessToken = getAccessToken()
 
         // when
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "$accessToken")
             .`when`().get("/api/v1/users")
             .then()
             .statusCode(200)
@@ -83,12 +72,12 @@ class UserDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
-        val loginResponse = loginUser()
+        val accessToken = getAccessToken()
         // when
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "$accessToken")
             .`when`().delete("/api/v1/users")
             .then()
             .statusCode(204)
@@ -119,7 +108,8 @@ class UserDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
-        val loginResponse = loginUser()
+
+        val accessToken = getAccessToken()
 
         // when
         val request = RequestFixture.onboardingRequest()
@@ -129,7 +119,7 @@ class UserDocumentTest : BaseDocumentTest() {
             .filter(restDocsFilter)
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "${accessToken}")
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -163,12 +153,12 @@ class UserDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
-        val loginResponse = loginUser()
+        val accessToken = getAccessToken()
         val request = RequestFixture.onboardingRequest()
         RestAssured.given()
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "${accessToken}")
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -178,7 +168,7 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "Bearer ${accessToken}")
             .`when`().get("/api/v1/users/onboarding")
             .then()
             .statusCode(200)
@@ -217,12 +207,12 @@ class UserDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
-        val loginResponse = loginUser()
+        val accessToken = getAccessToken()
         val saveRequest = RequestFixture.onboardingRequest()
         RestAssured.given()
             .body(saveRequest)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "${accessToken}")
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -241,7 +231,7 @@ class UserDocumentTest : BaseDocumentTest() {
             .filter(restDocsFilter)
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "Bearer ${accessToken}")
             .`when`().patch("/api/v1/users/onboarding")
             .then()
             .statusCode(200)
@@ -271,12 +261,12 @@ class UserDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
-        val loginResponse = loginUser()
+        val accessToken = getAccessToken()
         val request = RequestFixture.onboardingRequest()
         RestAssured.given()
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "Bearer ${accessToken}")
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -286,31 +276,9 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "Bearer ${loginResponse.tokenResponse.accessToken}")
+            .header("Authorization", "Bearer ${accessToken}")
             .`when`().get("/api/v1/users/onboarding/goal")
             .then()
             .statusCode(200)
-    }
-
-    private fun loginUser(): LoginResponse {
-        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
-        val jwksResponse = IdTokenFixture.createPublicKeyResponse()
-        val loginRequest = LoginRequest(idToken, null, null)
-
-        Mockito.`when`(appleFeignClient.fetchJwks())
-            .thenReturn(objectMapper.writeValueAsString(jwksResponse))
-
-        val result =
-            RestAssured.given().log().all()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .body(loginRequest)
-                .`when`().post("/api/v1/auth/login/apple")
-                .then().log().all()
-                .statusCode(200)
-                .extract().`as`(ApiResponse::class.java)
-                .result
-
-        val loginResponse = objectMapper.convertValue(result, LoginResponse::class.java)
-        return loginResponse
     }
 }

@@ -11,25 +11,20 @@ class UserDao(
 ) {
     fun save(
         email: String,
-        name: String,
-        profileImage: String,
+        nickname: String,
         provider: ProviderType,
     ): User {
         return userRepository.save(
             User(
                 email = email,
-                name = name,
+                nickname = nickname,
                 provider = provider,
-                profileImage = profileImage,
             ),
         )
     }
 
-    fun findByEmailAndProvider(
-        email: String,
-        provider: ProviderType,
-    ): User? {
-        return userRepository.findByEmailAndProvider(email, provider)
+    fun findByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
     }
 
     fun getByIdAndIsDeletedFalse(id: Long): User {
