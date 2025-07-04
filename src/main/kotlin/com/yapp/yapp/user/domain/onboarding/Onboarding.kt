@@ -23,5 +23,5 @@ class Onboarding(
     val questionType: OnboardingQuestionType,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var answer: OnboardAnswerLabel,
+    var answer: OnboardingAnswerLabel,
 )

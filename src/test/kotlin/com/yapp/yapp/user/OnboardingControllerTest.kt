@@ -5,7 +5,7 @@ import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.response.OnboardingResponse
-import com.yapp.yapp.user.domain.onboarding.OnboardAnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingDao
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
@@ -62,7 +62,7 @@ class OnboardingControllerTest : BaseControllerTest() {
             RequestFixture.onboardingRequest(
                 answers =
                     listOf(
-                        OnboardingAnswerDto(questionType, OnboardAnswerLabel.A),
+                        OnboardingAnswerDto(questionType, OnboardingAnswerLabel.A),
                     ),
             )
         RestAssured.given().log().all()
@@ -74,7 +74,7 @@ class OnboardingControllerTest : BaseControllerTest() {
             .statusCode(201)
 
         // when
-        val switchedAnswer = OnboardAnswerLabel.C
+        val switchedAnswer = OnboardingAnswerLabel.C
         val request =
             RequestFixture.onboardingRequest(
                 answers =

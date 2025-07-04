@@ -21,7 +21,7 @@ class OnboardingManager(
     fun updateQuestion(
         user: User,
         questionType: OnboardingQuestionType,
-        answer: OnboardAnswerLabel,
+        answer: OnboardingAnswerLabel,
     ): Onboarding {
         return onboardingDao.updateQuestion(user, questionType, answer)
     }

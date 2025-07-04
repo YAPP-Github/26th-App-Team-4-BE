@@ -1,6 +1,6 @@
 package com.yapp.yapp.user.domain.onboarding
 
-enum class OnboardAnswerLabel {
+enum class OnboardingAnswerLabel {
     A,
     B,
     C,

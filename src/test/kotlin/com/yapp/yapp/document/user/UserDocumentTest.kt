@@ -9,7 +9,7 @@ import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.support.fixture.IdTokenFixture
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
-import com.yapp.yapp.user.domain.onboarding.OnboardAnswerLabel
+import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
@@ -232,7 +232,7 @@ class UserDocumentTest : BaseDocumentTest() {
             RequestFixture.onboardingRequest(
                 answers =
                     listOf(
-                        OnboardingAnswerDto(OnboardingQuestionType.GOAL, OnboardAnswerLabel.D),
+                        OnboardingAnswerDto(OnboardingQuestionType.GOAL, OnboardingAnswerLabel.D),
                     ),
             )
 
