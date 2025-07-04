@@ -32,7 +32,7 @@ class UserDao(
             ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
 
-    fun existsByNickname(email: String): Boolean {
-        return userRepository.existsByNickname(email)
+    fun existsByNickname(nickname: String): Boolean {
+        return userRepository.existsByNickname(nickname)
     }
 }
