@@ -31,4 +31,8 @@ class UserDao(
         return userRepository.findByIdAndIsDeletedFalse(id)
             ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
+
+    fun existsByNickname(email: String): Boolean {
+        return userRepository.existsByNickname(email)
+    }
 }

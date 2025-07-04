@@ -16,13 +16,13 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    @Column
-    var nickname: String,
     @Column(nullable = false, unique = true)
-    var email: String,
+    val nickname: String,
+    @Column(nullable = false, unique = true)
+    val email: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var provider: ProviderType,
+    val provider: ProviderType,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 )

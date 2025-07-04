@@ -29,9 +29,17 @@ class UserManager(
         email: String,
         provider: ProviderType,
     ): UserInfo {
-        val nickname = NicknameGenerator.generate(email)
+        val nickname = getRandomNickname(email)
         val user = userDao.save(email, nickname, provider)
         return UserInfo(user.id, user.email, user.nickname, provider, true)
+    }
+
+    private fun getRandomNickname(email: String): String {
+        var nickname: String
+        do {
+            nickname = NicknameGenerator.generate(email)
+        } while (userDao.existsByNickname(nickname))
+        return nickname
     }
 
     fun getActiveUser(id: Long): User {
