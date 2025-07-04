@@ -60,6 +60,9 @@ class RunningRecord(
     }
 
     fun updateInfoByRunningPoints(runningPoints: List<RunningPoint>) {
+        if (runningPoints.isEmpty()) {
+            return
+        }
         this.totalDistance = runningPoints.sumOf { it.distance }
         this.totalTime = runningPoints.last().totalRunningTime
         this.totalCalories = runningPoints.sumOf { it.calories }
