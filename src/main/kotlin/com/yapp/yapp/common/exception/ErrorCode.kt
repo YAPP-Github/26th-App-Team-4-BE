@@ -34,4 +34,6 @@ enum class ErrorCode(
     RECORD_TYPE_NO_MATCHED(400, "REC_004", "일치하는 기록 타입이 없습니다.", LogLevel.WARN),
 
     POINT_NOT_FOUND(400, "RPO_001", "러닝 포인트가 존재하지 않습니다.", LogLevel.WARN),
+
+    ANSWER_NOT_FOUND(400, "ONB_001", "온보딩 답변이 존재하지 않습니다.", LogLevel.WARN),
 }

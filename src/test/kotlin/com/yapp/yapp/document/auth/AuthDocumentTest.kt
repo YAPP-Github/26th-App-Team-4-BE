@@ -15,6 +15,7 @@ import org.mockito.Mockito
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 class AuthDocumentTest : BaseDocumentTest() {
@@ -33,6 +34,9 @@ class AuthDocumentTest : BaseDocumentTest() {
                     fieldWithPath("idToken").description("소셜 로그인 ID 토큰"),
                     fieldWithPath("nonce").description("소셜 로그인용 nonce 값").optional(),
                     fieldWithPath("name").description("사용자 이름").optional(),
+                )
+                .pathParameter(
+                    parameterWithName("provider").description("로그인 클라이언트 (apple, kakao 중 하나)"),
                 )
 
         val restDocsResponse =
