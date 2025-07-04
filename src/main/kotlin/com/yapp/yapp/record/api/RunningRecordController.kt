@@ -7,8 +7,8 @@ import com.yapp.yapp.common.web.ApiXmlResponse
 import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.api.response.RunningRecordXmlResponse
-import com.yapp.yapp.record.domain.RecordService
 import com.yapp.yapp.record.domain.RecordsSearchType
+import com.yapp.yapp.record.domain.RunningRecordService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/records")
 class RunningRecordController(
-    private val recordService: RecordService,
+    private val runningRecordService: RunningRecordService,
 ) {
     @GetMapping
     fun getRunningRecords(
@@ -32,7 +32,7 @@ class RunningRecordController(
         @PageableDefault(size = 10, sort = ["startAt"], direction = Sort.Direction.DESC)
         pageable: Pageable,
     ): ApiResponse<RunningRecordListResponse> {
-        return ApiResponse.success(recordService.getRecords(userId, type, TimeProvider.parse(targetDate), pageable))
+        return ApiResponse.success(runningRecordService.getRecords(userId, type, TimeProvider.parse(targetDate), pageable))
     }
 
     @GetMapping("/{recordId}")
@@ -40,7 +40,7 @@ class RunningRecordController(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
     ): ApiResponse<RunningRecordResponse> {
-        return ApiResponse.success(recordService.getRecord(userId, recordId))
+        return ApiResponse.success(runningRecordService.getRecord(userId, recordId))
     }
 
     @GetMapping(value = ["/{recordId}"], produces = [MediaType.APPLICATION_XML_VALUE])
@@ -48,7 +48,7 @@ class RunningRecordController(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
     ): ApiXmlResponse<RunningRecordXmlResponse> {
-        val recordResponse = recordService.getRecord(userId, recordId)
+        val recordResponse = runningRecordService.getRecord(userId, recordId)
         return ApiXmlResponse.success(RunningRecordXmlResponse(recordResponse))
     }
 }

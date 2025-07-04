@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 
 @Service
-class RecordService(
+class RunningRecordService(
     private val recordManager: RunningRecordManager,
     private val pointManager: RunningPointManger,
 ) {

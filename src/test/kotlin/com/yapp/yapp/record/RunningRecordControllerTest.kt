@@ -16,7 +16,7 @@ import java.time.DayOfWeek
 import org.springframework.http.MediaType
 import java.time.Duration
 
-class RecordControllerTest : BaseControllerTest() {
+class RunningRecordControllerTest : BaseControllerTest() {
     @Autowired
     lateinit var runningRecordRepository: RunningRecordRepository
 
