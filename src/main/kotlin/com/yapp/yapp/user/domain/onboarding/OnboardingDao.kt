@@ -15,14 +15,14 @@ class OnboardingDao(
     }
 
     fun findAllByUser(user: User): List<Onboarding> {
-        return onboardingRepository.findAllByUserAndIsDeletedFalse(user)
+        return onboardingRepository.findAllByUser(user)
     }
 
     fun getAnswerByUser(
         user: User,
         questionType: OnboardingQuestionType,
     ): Onboarding {
-        return onboardingRepository.findByUserAndQuestionTypeAndIsDeletedFalse(user = user, questionType = questionType)
+        return onboardingRepository.findByUserAndQuestionType(user = user, questionType = questionType)
             ?: throw CustomException(ErrorCode.ANSWER_NOT_FOUND)
     }
 
@@ -32,7 +32,7 @@ class OnboardingDao(
         answer: OnboardAnswerLabel,
     ): Onboarding {
         val onboarding =
-            onboardingRepository.findByUserAndQuestionTypeAndIsDeletedFalse(user = user, questionType = questionType)
+            onboardingRepository.findByUserAndQuestionType(user = user, questionType = questionType)
                 ?: onboardingRepository.save(Onboarding(user = user, questionType = questionType, answer = answer))
         onboarding.answer = answer
         return onboarding
