@@ -2,10 +2,9 @@ package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
-import com.yapp.yapp.record.domain.Pace.Companion.averagePace
 import com.yapp.yapp.record.domain.RecordsSearchType
-import com.yapp.yapp.record.domain.RunningMetricsCalculator.roundTo
 import com.yapp.yapp.record.domain.point.RunningPoint
+import com.yapp.yapp.record.domain.point.RunningPointDao
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
@@ -13,6 +12,7 @@ import java.time.OffsetDateTime
 @Component
 class RunningRecordManager(
     private val runningRecordDao: RunningRecordDao,
+    private val runningPointDao: RunningPointDao,
 ) {
     fun getRunningRecord(
         id: Long,
@@ -64,18 +64,12 @@ class RunningRecordManager(
     ): RunningRecord {
         val record = getRunningRecord(id, userId)
         record.finish()
-        record.totalTime = runningPoints.last().totalRunningTime
-        record.totalDistance = runningPoints.last().totalRunningDistance
-        record.totalCalories = runningPoints.sumOf { it.calories }
-        record.averageSpeed = (runningPoints.sumOf { it.speedKmh } / runningPoints.size).roundTo()
-        record.averagePace = runningPoints.map { it.pace }.averagePace()
+        record.updateInfoByRunningPoints(runningPoints)
         return record
     }
 
-    fun updateRecord(
-        runningRecord: RunningRecord,
-        runningPoints: List<RunningPoint>,
-    ) {
-        TODO()
+    fun updateRecord(runningRecord: RunningRecord) {
+        val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
+        runningRecord.updateInfoByRunningPoints(runningPoints)
     }
 }

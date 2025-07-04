@@ -149,7 +149,6 @@ class RecordControllerTest : BaseControllerTest() {
             runningFixture.createRunningRecord(
                 userId = user.id,
                 startAt = now,
-                totalDistance = 100.0,
                 totalTime = Duration.ofSeconds(10),
             )
 

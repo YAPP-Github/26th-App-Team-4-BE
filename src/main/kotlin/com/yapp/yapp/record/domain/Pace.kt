@@ -6,14 +6,6 @@ class Pace(
     val pacePerKm: Duration,
 ) {
     companion object {
-        fun List<Pace>.averagePace(): Pace {
-            if (isEmpty()) return Pace(Duration.ZERO)
-
-            val totalMillis = sumOf { it.pacePerKm.toMillis() }
-            val avgMillis = totalMillis / size
-            return Pace(Duration.ofMillis(avgMillis))
-        }
-
         fun calculatePace(
             distanceMeter: Double,
             duration: Duration,

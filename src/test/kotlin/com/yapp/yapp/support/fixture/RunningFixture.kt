@@ -18,16 +18,10 @@ class RunningFixture(
 ) {
     fun createRunningRecord(
         userId: Long = 0L,
-        totalDistance: Double = RunningMetricsCalculator.calculateDistance(speedKmh = 12.0, seconds = 9),
         totalTime: Duration = Duration.ofSeconds(9),
         startAt: OffsetDateTime = TimeProvider.parse("2025-06-17T17:00:00.000+09:00"),
     ): RunningRecord {
         // 1) 러닝 레코드 저장
-        val averageSpeedKmh =
-            RunningMetricsCalculator.calculateSpeedKmh(
-                meterDistance = totalDistance,
-                seconds = totalTime.seconds,
-            )
         val runningRecord =
             runningRecordRepository.save(
                 RunningRecord(
@@ -42,34 +36,48 @@ class RunningFixture(
         val heartRateStart = 140.0
         val heartRateEnd = 160.0
         val heartRateRange = heartRateEnd - heartRateStart
+        var totalDistance = 0.0
+
+        val startLat = 37.5665
+        val startLon = 126.9780
+        val perDistance = RunningMetricsCalculator.calculateDistance(startLat, startLon, startLat + 0.00001, startLon + 0.00001)
+        val speedKmh = RunningMetricsCalculator.calculateSpeedKmh(perDistance, 1)
 
         // 2) 1초 단위 러닝 포인트 생성 및 저장
-        (1..totalSeconds).forEach { second ->
-            val elapsed = Duration.ofSeconds(second)
+        (0..totalSeconds).forEach { curSecond ->
+            val elapsed = Duration.ofSeconds(curSecond)
             // km/h → m로 환산: (km/h) * (초/3600) * 1000
-            val distanceSoFar = averageSpeedKmh * (second / 3600.0) * 1000
-            val caloriesSoFar = (caloriesPerSecond * second).toInt()
-            val heartRate = heartRateStart.toInt() + ((heartRateRange * second) / totalSeconds).toInt()
+            val caloriesSoFar = (caloriesPerSecond * curSecond).toInt()
+            val heartRate = heartRateStart.toInt() + ((heartRateRange * curSecond) / totalSeconds).toInt()
+            val toLat = startLat + 0.00001 * curSecond
+            val toLon = startLon + 0.00001 * curSecond
+            val totalDistance =
+                RunningMetricsCalculator.calculateDistance(
+                    fromLat = startLat,
+                    fromLon = startLon,
+                    toLat = toLat,
+                    toLon = toLon,
+                )
 
             val runningPoint =
                 RunningPoint(
                     runningRecord = runningRecord,
-                    orderNo = second,
-                    lat = 37.5665 + 0.00001 * second,
-                    lon = 126.9780 + 0.00001 * second,
-                    speedKmh = averageSpeedKmh,
-                    distance = distanceSoFar,
-                    pace = Pace(distanceMeter = totalDistance, duration = totalTime),
+                    orderNo = curSecond,
+                    lat = toLat,
+                    lon = toLon,
+                    speedKmh = speedKmh,
+                    distance = if (curSecond.toInt() == 0) 0.0 else perDistance,
+                    pace = Pace(distanceMeter = totalDistance, duration = Duration.ofSeconds(curSecond)),
                     heartRate = heartRate,
                     calories = caloriesSoFar,
                     totalRunningTime = elapsed,
-                    totalRunningDistance = distanceSoFar,
-                    timeStamp = startAt.plusSeconds(second),
+                    totalRunningDistance = totalDistance,
+                    timeStamp = startAt.plusSeconds(curSecond),
                 )
             runningPointRepository.save(runningPoint)
         }
-
-        // 3) 저장된 러닝 레코드 반환
-        return runningRecordRepository.findById(runningRecord.id).get()
+        val savedRunningPoints = runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord)
+        runningRecord.updateInfoByRunningPoints(savedRunningPoints)
+        return runningRecordRepository.save(runningRecord)
     }
 }

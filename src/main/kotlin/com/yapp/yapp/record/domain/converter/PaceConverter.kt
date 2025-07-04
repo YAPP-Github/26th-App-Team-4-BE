@@ -8,7 +8,7 @@ import java.time.Duration
 @Converter(autoApply = true)
 class PaceConverter : AttributeConverter<Pace, Long> {
     override fun convertToDatabaseColumn(attribute: Pace?): Long? {
-        return attribute?.pacePerKm?.toMillis()
+        return attribute?.pacePerKm?.toSeconds()
     }
 
     override fun convertToEntityAttribute(dbData: Long?): Pace? {

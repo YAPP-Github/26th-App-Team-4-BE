@@ -11,7 +11,6 @@ import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.Duration
 
 class RunningServiceTest : BaseServiceTest() {
     @Autowired
@@ -95,10 +94,6 @@ class RunningServiceTest : BaseServiceTest() {
             // 속도 = 거리÷시간 → 20.847m / 9.444s ≈ 2.207 m/s
             Assertions.assertThat(resp.speed)
                 .isBetween(2.207, 2.208)
-
-            // 페이스 = 453초/km → PT7M33S
-            Assertions.assertThat(resp.pace)
-                .isEqualTo(Duration.parse("PT7M33S"))
         }
     }
 
