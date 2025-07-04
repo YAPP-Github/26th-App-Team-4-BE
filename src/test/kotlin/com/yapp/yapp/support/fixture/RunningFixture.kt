@@ -36,7 +36,6 @@ class RunningFixture(
         val heartRateStart = 140.0
         val heartRateEnd = 160.0
         val heartRateRange = heartRateEnd - heartRateStart
-        var totalDistance = 0.0
 
         val startLat = 37.5665
         val startLon = 126.9780
