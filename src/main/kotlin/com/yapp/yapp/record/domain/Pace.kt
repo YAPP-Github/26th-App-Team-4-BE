@@ -10,7 +10,7 @@ class Pace(
             distanceMeter: Double,
             duration: Duration,
         ): Duration {
-            if (distanceMeter <= 0.0) {
+            if (distanceMeter <= 0.0 || duration.isZero) {
                 return Duration.ZERO
             }
 
