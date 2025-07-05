@@ -12,17 +12,15 @@ class UserManager(
         provider: ProviderType,
     ): UserInfo {
         val user = userDao.findByEmail(email)
-        val userInfo = user?.toUserInfo() ?: save(email, provider)
-        return userInfo
+        if (user == null) {
+            return save(email, provider)
+        }
+        return UserInfo(user)
     }
 
-    fun User.toUserInfo(): UserInfo {
-        return UserInfo(
-            id = this.id,
-            email = this.email,
-            nickname = this.nickname,
-            provider = this.provider,
-        )
+    fun getUserInfo(id: Long): UserInfo {
+        val user = userDao.getByIdAndIsDeletedFalse(id)
+        return UserInfo(user)
     }
 
     fun save(

@@ -8,4 +8,12 @@ data class UserInfo(
     val nickname: String,
     val provider: ProviderType,
     val isNew: Boolean = false,
-)
+) {
+    constructor(user: User) : this(
+        id = user.id,
+        email = user.email,
+        nickname = user.nickname,
+        provider = user.provider,
+        isNew = false,
+    )
+}
