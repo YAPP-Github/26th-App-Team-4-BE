@@ -44,7 +44,3 @@ oidc:
     api:
       url: https://kauth.kakao.com
       clientId: test-client-id
-
-user:
-  default:
-    profile: test-profile
