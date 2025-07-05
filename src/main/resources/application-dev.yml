@@ -41,10 +41,6 @@ oidc:
     api:
       url: ${secret.oidc.kakao.url}
       clientId: ${secret.oidc.kakao.client-id}
-user:
-  default:
-    profile: ${secret.user.default.profile}
-
 logging:
   level:
     root: info

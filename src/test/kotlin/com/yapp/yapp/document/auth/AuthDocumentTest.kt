@@ -4,7 +4,6 @@ import com.yapp.yapp.auth.api.request.LoginRequest
 import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.infrastructure.provider.apple.AppleFeignClient
-import com.yapp.yapp.auth.infrastructure.provider.kakao.KakaoFeignClient
 import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
@@ -20,9 +19,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 class AuthDocumentTest : BaseDocumentTest() {
     @MockitoBean
-    lateinit var kakaoFeignClient: KakaoFeignClient
-
-    @MockitoBean
     lateinit var appleFeignClient: AppleFeignClient
 
     @Test
@@ -33,7 +29,6 @@ class AuthDocumentTest : BaseDocumentTest() {
                 .requestBodyField(
                     fieldWithPath("idToken").description("소셜 로그인 ID 토큰"),
                     fieldWithPath("nonce").description("소셜 로그인용 nonce 값").optional(),
-                    fieldWithPath("name").description("사용자 이름").optional(),
                 )
                 .pathParameter(
                     parameterWithName("provider").description("로그인 클라이언트 (apple, kakao 중 하나)"),
@@ -46,8 +41,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.tokenResponse.refreshToken").description("리프레시 토큰"),
                     fieldWithPath("result.user.id").description("사용자 ID"),
                     fieldWithPath("result.user.email").description("사용자 이메일"),
-                    fieldWithPath("result.user.name").description("사용자 이름"),
-                    fieldWithPath("result.user.profileImage").description("사용자 프로필 사진 링크"),
+                    fieldWithPath("result.user.nickname").description("사용자 닉네임"),
                     fieldWithPath("result.user.provider").description("소셜 로그인 유형"),
                     fieldWithPath("result.isNew").description("신규 가입 여부"),
                 )
@@ -63,7 +57,7 @@ class AuthDocumentTest : BaseDocumentTest() {
 
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
-        val loginRequest = LoginRequest(idToken, null, null)
+        val loginRequest = LoginRequest(idToken, null)
 
         // when
         Mockito.`when`(appleFeignClient.fetchJwks())
@@ -94,7 +88,7 @@ class AuthDocumentTest : BaseDocumentTest() {
             filter("인증 API", "로그아웃")
                 .tag(Tag.AUTH_API)
                 .summary("로그아웃 API")
-                .description("리프레시 토큰을 무효화하여 로그아웃합니다")
+                .description("발급 받았던 토큰을 무효화하며 로그아웃합니다")
                 .request(restDocsRequest)
                 .build()
 
@@ -150,7 +144,7 @@ class AuthDocumentTest : BaseDocumentTest() {
     private fun loginUser(): TokenResponse {
         val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
-        val loginRequest = LoginRequest(idToken, null, null)
+        val loginRequest = LoginRequest(idToken, null)
 
         Mockito.`when`(appleFeignClient.fetchJwks())
             .thenReturn(objectMapper.writeValueAsString(jwksResponse))

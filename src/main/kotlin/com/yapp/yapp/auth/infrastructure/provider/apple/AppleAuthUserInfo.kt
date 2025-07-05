@@ -8,12 +8,4 @@ class AppleAuthUserInfo(
     override fun getEmail(): String {
         return email
     }
-
-    override fun getProfile(): String? {
-        return null
-    }
-
-    override fun getName(): String? {
-        return null
-    }
 }

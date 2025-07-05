@@ -9,28 +9,20 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import jakarta.persistence.UniqueConstraint
 
 @Entity
-@Table(
-    name = "USERS",
-    uniqueConstraints = [
-        UniqueConstraint(columnNames = ["email", "provider"]),
-    ],
-)
+@Table(name = "USERS")
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
-    @Column
-    var name: String,
-    @Column(nullable = false)
-    var email: String,
+    @Column(nullable = false, unique = true)
+    val nickname: String,
+    @Column(nullable = false, unique = true)
+    val email: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var provider: ProviderType,
-    @Column(nullable = false)
-    var profileImage: String,
+    val provider: ProviderType,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 )

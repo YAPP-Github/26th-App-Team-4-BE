@@ -10,16 +10,14 @@ class UserFixture(
     private val userRepository: UserRepository,
 ) {
     fun create(
-        name: String = "test name",
+        nickname: String = "test nickname",
         email: String = "test email",
-        profileImage: String = "test profile",
         provider: ProviderType = ProviderType.APPLE,
     ): User =
         userRepository.save(
             User(
-                name = name,
+                nickname = nickname,
                 email = email,
-                profileImage = profileImage,
                 provider = provider,
             ),
         )
