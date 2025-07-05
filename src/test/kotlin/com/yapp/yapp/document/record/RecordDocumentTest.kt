@@ -8,6 +8,8 @@ import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.MediaType.APPLICATION_XML_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
@@ -48,16 +50,31 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.records[].totalTime").description("총 이동 시간"),
                     fieldWithPath("result.records[].totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.records[].startAt").description("시작 시간"),
-                    fieldWithPath("result.records[].averageSpeed").description("평균 속도"),
-                    fieldWithPath("result.records[].averagePace").description("평균 페이스"),
+                    fieldWithPath("result.records[].averageSpeed").description("평균 속도(km/h)"),
+                    fieldWithPath("result.records[].averagePace").description("평균 페이스(mm:ss)"),
+                    fieldWithPath("result.records[].runningPoints").description("러닝 포인트 리스트"),
+                    fieldWithPath("result.records[].runningPoints[].id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.records[].runningPoints[].userId").description("유저 ID"),
+                    fieldWithPath("result.records[].runningPoints[].recordId").description("기록 ID"),
+                    fieldWithPath("result.records[].runningPoints[].orderNo").description("러닝 포인트 순서"),
+                    fieldWithPath("result.records[].runningPoints[].lat").description("위도"),
+                    fieldWithPath("result.records[].runningPoints[].lon").description("경도"),
+                    fieldWithPath("result.records[].runningPoints[].speed").description("속도(km/h)"),
+                    fieldWithPath("result.records[].runningPoints[].distance").description("거리(m)"),
+                    fieldWithPath("result.records[].runningPoints[].pace").description("페이스(mm:ss)"),
+                    fieldWithPath("result.records[].runningPoints[].heartRate").description("심박수"),
+                    fieldWithPath("result.records[].runningPoints[].calories").description("칼로리"),
+                    fieldWithPath("result.records[].runningPoints[].totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간"),
+                    fieldWithPath("result.records[].runningPoints[].totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
+                    fieldWithPath("result.records[].runningPoints[].timeStamp").description("러닝 포인트 기록 시간"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.records").description("러닝 기록 리스트"),
                     fieldWithPath("result.recordCount").description("러닝 기록 개수"),
-                    fieldWithPath("result.totalDistance").description("총 이동 거리"),
+                    fieldWithPath("result.totalDistance").description("총 이동 거리(m)"),
                     fieldWithPath("result.totalTime").description("총 이동 시간"),
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
-                    fieldWithPath("result.averageSpeed").description("평균 속도"),
-                    fieldWithPath("result.averagePace").description("평균 페이스"),
+                    fieldWithPath("result.averageSpeed").description("평균 속도(km/h)"),
+                    fieldWithPath("result.averagePace").description("평균 페이스(mm:ss)"),
                 )
 
         val filter =
@@ -107,12 +124,27 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
-                    fieldWithPath("result.totalDistance").description("총 이동 거리"),
+                    fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),
+                    fieldWithPath("result.runningPoints[].id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPoints[].userId").description("유저 ID"),
+                    fieldWithPath("result.runningPoints[].recordId").description("기록 ID"),
+                    fieldWithPath("result.runningPoints[].orderNo").description("러닝 포인트 순서"),
+                    fieldWithPath("result.runningPoints[].lat").description("위도"),
+                    fieldWithPath("result.runningPoints[].lon").description("경도"),
+                    fieldWithPath("result.runningPoints[].speed").description("속도(km/h)"),
+                    fieldWithPath("result.runningPoints[].distance").description("거리(m)"),
+                    fieldWithPath("result.runningPoints[].pace").description("페이스(mm:ss)"),
+                    fieldWithPath("result.runningPoints[].heartRate").description("심박수"),
+                    fieldWithPath("result.runningPoints[].calories").description("칼로리"),
+                    fieldWithPath("result.runningPoints[].totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간"),
+                    fieldWithPath("result.runningPoints[].totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
+                    fieldWithPath("result.runningPoints[].timeStamp").description("러닝 포인트 기록 시간"),
+                    fieldWithPath("result.totalDistance").description("총 이동 거리(m)"),
                     fieldWithPath("result.totalTime").description("총 이동 시간"),
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.startAt").description("시작 시간"),
-                    fieldWithPath("result.averageSpeed").description("평균 속도"),
-                    fieldWithPath("result.averagePace").description("평균 페이스"),
+                    fieldWithPath("result.averageSpeed").description("평균 속도(km/h)"),
+                    fieldWithPath("result.averagePace").description("평균 페이스(mm:ss)"),
                 )
 
         val filter =
@@ -125,13 +157,50 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .build()
 
         val user = userFixture.create()
-        val runningRecord = runningFixture.createRunningRecord(userId = user.id)
+        val runningRecord =
+            runningFixture.createRunningRecord(
+                userId = user.id,
+            )
         val recordId = runningRecord.id
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .`when`().get("/api/v1/records/{recordId}", recordId)
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 기록 단건 조회 XML API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .pathParameter(
+                    parameterWithName("recordId").description("조회할 러닝 기록 ID"),
+                )
+        val filter =
+            filter("기록 API", "러닝 기록 단건 조회")
+                .tag(Tag.RECORD_API)
+                .summary("러닝 기록 단건 조회")
+                .description("특정 러닝 기록의 상세 정보를 조회하는 API입니다.")
+                .request(restDocsRequest)
+                .build()
+
+        val user = userFixture.create()
+        val runningRecord = runningFixture.createRunningRecord(userId = user.id)
+        val recordId = runningRecord.id
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .filter(filter)
+            .accept(APPLICATION_XML_VALUE)
             .`when`().get("/api/v1/records/{recordId}", recordId)
             .then().log().all()
             .statusCode(200)

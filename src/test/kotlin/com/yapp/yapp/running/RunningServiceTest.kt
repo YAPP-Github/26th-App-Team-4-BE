@@ -1,6 +1,7 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
@@ -9,16 +10,19 @@ import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.within
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.Duration
 
-class RunningTest : BaseServiceTest() {
+class RunningServiceTest : BaseServiceTest() {
     @Autowired
     lateinit var runningService: RunningService
 
     @Autowired
     lateinit var runningRecordManager: RunningRecordManager
+
+    @Autowired
+    lateinit var runningPointManger: RunningPointManger
 
     @Test
     fun `러닝을 시작한다`() {
@@ -49,7 +53,7 @@ class RunningTest : BaseServiceTest() {
         // when
         val response = runningService.update(userId, startResponse.recordId, request)
         // then
-        Assertions.assertThat(response.runningPointId).isNotNull
+        Assertions.assertThat(response.id).isNotNull
     }
 
     @Test
@@ -64,11 +68,8 @@ class RunningTest : BaseServiceTest() {
         val userId = userFixture.create().id
         val recordId = runningService.start(userId = userId, startRequest).recordId
 
-        // 1구간당 거리 ≈ 20.847m, 페이스 453초/km → 구간 시간 = 20.847 * 0.453 ≈ 9.444s
         val updates =
             listOf(
-                // 0초
-                RunningUpdateRequest(37.54100, 126.95000, 120, "PT0S", "2025-06-17T17:00:00.000+09:00"),
                 // 9.444초
                 RunningUpdateRequest(37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
                 // 18.887초
@@ -85,20 +86,12 @@ class RunningTest : BaseServiceTest() {
         updates.forEach { req ->
             val resp = runningService.update(userId, recordId, req)
 
-            // ord 가 1 이면 거리 계산 스킵
-            if (resp.orderNo == 1L) return@forEach
-
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)
                 .isEqualTo(20.847)
 
-            // 속도 = 거리÷시간 → 20.847m / 9.444s ≈ 2.207 m/s
             Assertions.assertThat(resp.speed)
                 .isBetween(2.207, 2.208)
-
-            // 페이스 = 453초/km → PT7M33S
-            Assertions.assertThat(resp.pace)
-                .isEqualTo(Duration.parse("PT7M33S"))
         }
     }
 
@@ -135,5 +128,42 @@ class RunningTest : BaseServiceTest() {
         // then
         val record = runningRecordManager.getRunningRecord(userId, recordId)
         Assertions.assertThat(record.totalDistance).isEqualTo(done.totalRunningDistance)
+    }
+
+    @Test
+    fun `러닝 포인트가 추가될 때 마다 기록이 변한다`() {
+        // given
+        val userId = userFixture.create().id
+        val startLat = 37.54100
+        val startLon = 126.95000
+        val startAt = TimeProvider.now()
+
+        val start =
+            runningService.start(
+                userId,
+                RunningStartRequest(startLat, startLon, startAt.toString()),
+            )
+
+        val updates =
+            (1..5).map { second ->
+                RunningUpdateRequest(
+                    lat = startLat + (second * 0.0001),
+                    lon = startLon + (second * 0.0001),
+                    heartRate = 120 + second,
+                    totalRunningTime = "PT${second}S",
+                    timeStamp = startAt.plusSeconds(second.toLong()).toString(),
+                )
+            }
+
+        // when & then
+        var count = 0
+        updates.forEach { request ->
+            val response = runningService.update(userId, start.recordId, request)
+            val record = runningRecordManager.getRunningRecord(userId, start.recordId)
+            count++
+
+            Assertions.assertThat(record.totalDistance).isGreaterThan(14.19 * count)
+            Assertions.assertThat(record.averageSpeed).isCloseTo(51.1, within(0.1))
+        }
     }
 }

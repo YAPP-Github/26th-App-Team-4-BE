@@ -1,4 +1,5 @@
 plugins {
+    java
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "2.0.10"
@@ -27,6 +28,12 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2024.0.0"
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -74,12 +81,11 @@ dependencies {
     implementation("org.testcontainers:testcontainers-bom:1.20.2")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:testcontainers")
-}
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
+    // xml
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api")
+    implementation("com.sun.xml.bind:jaxb-impl")
 }
 
 kotlin {
@@ -101,14 +107,23 @@ openapi3 {
 tasks.register<Copy>("makeDocument") {
     group = "documentation"
     description = "Generate API Docs and copy to static folder."
-    dependsOn("test")
-    dependsOn("ktlintFormat")
+    dependsOn("documentTest")
     dependsOn("openapi3") // openapi3 Task가 먼저 실행되도록 설정
     delete("src/main/resources/static/docs/openapi3.yaml")
     copy {
         from("build/docs/") // 복제할 OAS 파일 지정
         into("src/main/resources/static/docs/") // 타겟 디렉터리로 파일 복제
     }
+}
+tasks.test {
+    exclude("**/document/**")
+}
+tasks.register<Test>("documentTest") {
+    description = "Runs tests from document package"
+    filter {
+        includeTestsMatching("*.document.*")
+    }
+    useJUnitPlatform()
 }
 
 tasks.withType<Test> {
@@ -163,4 +178,8 @@ tasks.register<Exec>("initSubmodule") {
     group = "git"
     description = "Git submodule을 원격 저장소의 최신 버전으로 업데이트합니다."
     commandLine("git", "submodule", "update", "--remote")
+}
+
+tasks.register<Exec>("md") {
+    commandLine("./gradlew", "makeDocument", "--exclude-task", "test")
 }

@@ -1,4 +1,4 @@
-package com.yapp.yapp.common
+package com.yapp.yapp.common.web
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

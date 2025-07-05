@@ -8,7 +8,7 @@ enum class ErrorCode(
     val message: String,
     val logLevel: LogLevel,
 ) {
-    INTERNAL_SERVER_(500, "SEV_001", "알 수 없는 서버 에러입니다.", LogLevel.ERROR),
+    INTERNAL_SERVER(500, "SEV_001", "알 수 없는 서버 에러입니다.", LogLevel.ERROR),
 
     USER_NOT_FOUND(400, "USR_001", "유저가 존재하지 않습니다.", LogLevel.WARN),
     USER_ALREADY_EXISTS_WITH_ANOTHER_PROVIDER(

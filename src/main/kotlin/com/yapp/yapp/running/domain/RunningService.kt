@@ -1,6 +1,7 @@
 package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.api.response.RunningPointResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
@@ -10,7 +11,6 @@ import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
-import com.yapp.yapp.running.api.response.RunningUpdateResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
@@ -36,7 +36,7 @@ class RunningService(
         userId: Long,
         recordId: Long,
         request: RunningUpdateRequest,
-    ): RunningUpdateResponse {
+    ): RunningPointResponse {
         val runningRecord = runningRecordManager.getRunningRecord(recordId, userId = userId)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
@@ -47,7 +47,8 @@ class RunningService(
                 timeStamp = TimeProvider.parse(request.timeStamp),
                 totalRunningTime = Duration.parse(request.totalRunningTime),
             )
-        return RunningUpdateResponse(newRunningPoint)
+        runningRecordManager.updateRecord(runningRecord)
+        return RunningPointResponse(newRunningPoint)
     }
 
     @Transactional

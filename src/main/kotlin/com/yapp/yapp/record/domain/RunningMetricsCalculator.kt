@@ -13,12 +13,33 @@ object RunningMetricsCalculator {
         preRunningPoint: RunningPoint,
         runningPoint: RunningPoint,
     ): Double {
+        return calculateDistance(
+            fromLat = preRunningPoint.lat,
+            fromLon = preRunningPoint.lon,
+            toLat = runningPoint.lat,
+            toLon = runningPoint.lon,
+        )
+    }
+
+    fun calculateDistance(
+        speedKmh: Double,
+        seconds: Long,
+    ): Double {
+        return speedKmh * (seconds / 3600.0) * 1000
+    }
+
+    fun calculateDistance(
+        fromLat: Double,
+        fromLon: Double,
+        toLat: Double,
+        toLon: Double,
+    ): Double {
         val r = 6371000.0
 
-        val lat1Rad = Math.toRadians(preRunningPoint.lat)
-        val lon1Rad = Math.toRadians(preRunningPoint.lon)
-        val lat2Rad = Math.toRadians(runningPoint.lat)
-        val lon2Rad = Math.toRadians(runningPoint.lon)
+        val lat1Rad = Math.toRadians(fromLat)
+        val lon1Rad = Math.toRadians(fromLon)
+        val lat2Rad = Math.toRadians(toLat)
+        val lon2Rad = Math.toRadians(toLon)
 
         val dLat = lat2Rad - lat1Rad
         val dLon = lon2Rad - lon1Rad
@@ -33,7 +54,14 @@ object RunningMetricsCalculator {
         return distance.roundTo()
     }
 
-    fun calculateSpeed(
+    fun calculateSpeedKmh(
+        distanceMeter: Double,
+        seconds: Long,
+    ): Double {
+        return (distanceMeter / seconds) * 3.6
+    }
+
+    fun calculateSpeedKmh(
         preRunningPoint: RunningPoint,
         runningPoint: RunningPoint,
     ): Double {

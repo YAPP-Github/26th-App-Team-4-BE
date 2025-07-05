@@ -1,8 +1,7 @@
 package com.yapp.yapp.common.exception
 
-import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.web.ApiResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -28,14 +27,15 @@ class GlobalControllerAdvice {
         NoHandlerFoundException::class,
         HttpMessageNotReadableException::class,
     )
-    fun handleInvalidRequestException(request: HttpServletRequest): ResponseEntity<ApiResponse<Unit>> {
+    fun handleInvalidRequestException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = ErrorCode.INVALID_REQUEST
+        logger.warn { exception.message }
         return handleError(errorCode)
     }
 
     @ExceptionHandler(Exception::class)
     fun handleInternalServerException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        val errorCode = ErrorCode.INTERNAL_SERVER_
+        val errorCode = ErrorCode.INTERNAL_SERVER
         logger.error { exception.message }
         return handleError(errorCode)
     }

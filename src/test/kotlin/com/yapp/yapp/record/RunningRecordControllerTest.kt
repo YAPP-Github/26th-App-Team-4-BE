@@ -1,9 +1,9 @@
 package com.yapp.yapp.record
 
-import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.TimeProvider.toStartOfDay
-import com.yapp.yapp.record.api.response.RecordListResponse
+import com.yapp.yapp.common.web.ApiResponse
+import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.support.BaseControllerTest
@@ -12,9 +12,11 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import java.time.DayOfWeek
+import java.time.Duration
 
-class RecordControllerTest : BaseControllerTest() {
+class RunningRecordControllerTest : BaseControllerTest() {
     @Autowired
     lateinit var runningRecordRepository: RunningRecordRepository
 
@@ -42,7 +44,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -72,7 +74,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -102,7 +104,7 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
@@ -132,9 +134,32 @@ class RecordControllerTest : BaseControllerTest() {
                 .statusCode(200)
                 .extract().`as`(ApiResponse::class.java)
                 .result
-        val response = convert(result, RecordListResponse::class.java)
+        val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
+    }
+
+    @Test
+    fun `유저의 러닝 기록을 XML로 조회한다`() {
+        // given
+        val now = TimeProvider.now().toStartOfDay()
+        val user = userFixture.create()
+        val runningRecord =
+            runningFixture.createRunningRecord(
+                userId = user.id,
+                startAt = now,
+                totalTime = Duration.ofSeconds(10),
+            )
+
+        // when
+        RestAssured.given().log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+            .accept(MediaType.APPLICATION_XML_VALUE)
+            .pathParam("recordId", runningRecord.id)
+            .`when`()
+            .get("/api/v1/records/{recordId}")
+            .then().log().all()
+            .statusCode(200)
     }
 }

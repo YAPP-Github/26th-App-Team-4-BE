@@ -1,5 +1,5 @@
 ## 📎 관련 이슈
-- closed #
+- Jira: FITRUN 
 
 ## 📄 추가 작업 내용
 -

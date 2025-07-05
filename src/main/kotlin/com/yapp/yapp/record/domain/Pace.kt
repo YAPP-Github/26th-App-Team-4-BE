@@ -1,31 +1,30 @@
 package com.yapp.yapp.record.domain
 
 import java.time.Duration
-import kotlin.math.roundToLong
 
 class Pace(
     val pacePerKm: Duration,
 ) {
     companion object {
-        fun List<Pace>.averagePace(): Pace {
-            if (isEmpty()) return Pace(Duration.ZERO)
+        fun calculatePace(
+            distanceMeter: Double,
+            duration: Duration,
+        ): Duration {
+            if (distanceMeter <= 0.0 || duration.isZero) {
+                return Duration.ZERO
+            }
 
-            val totalMillis = sumOf { it.pacePerKm.toMillis() }
-            val avgMillis = totalMillis / size
-            return Pace(Duration.ofMillis(avgMillis))
+            // 2. 거리를 미터(m)에서 킬로미터(km)로 변환
+            val distanceKm = distanceMeter / 1000.0
+
+            // 3. 1km당 페이스 계산 (총 시간 / 총 거리(km))
+            return Duration.ofSeconds((duration.toSeconds() / distanceKm).toLong())
         }
     }
+    constructor(secondFor1Km: Long) : this(Duration.ofSeconds(secondFor1Km))
 
-    constructor(pacePerKm: Long) : this(Duration.ofSeconds(pacePerKm))
-
-    constructor(distance: Double, duration: Duration) :
-        this(
-            if (distance == 0.0) {
-                Duration.ZERO
-            } else {
-                Duration.ofSeconds((duration.toMillis() / distance).roundToLong())
-            },
-        )
+    constructor(distanceMeter: Double, duration: Duration) :
+        this(calculatePace(distanceMeter, duration))
 
     override fun toString(): String {
         val minutes = pacePerKm.toMinutes()

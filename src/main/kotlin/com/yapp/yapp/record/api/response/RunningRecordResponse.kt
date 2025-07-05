@@ -1,12 +1,14 @@
 package com.yapp.yapp.record.api.response
 
+import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.record.domain.record.RunningRecord
 import java.time.Duration
 import java.time.OffsetDateTime
 
-data class RecordResponse(
+data class RunningRecordResponse(
     val recordId: Long,
     val userId: Long,
+    val runningPoints: List<RunningPointResponse>,
     val totalDistance: Double,
     val totalTime: Duration,
     val totalCalories: Int,
@@ -14,9 +16,10 @@ data class RecordResponse(
     val averageSpeed: Double,
     val averagePace: Duration,
 ) {
-    constructor(runningRecord: RunningRecord) : this(
+    constructor(runningRecord: RunningRecord, runningPoints: List<RunningPoint>) : this(
         recordId = runningRecord.id,
         userId = runningRecord.userId,
+        runningPoints = runningPoints.map { RunningPointResponse(it) },
         totalDistance = runningRecord.totalDistance,
         totalTime = runningRecord.totalTime,
         totalCalories = runningRecord.totalCalories,

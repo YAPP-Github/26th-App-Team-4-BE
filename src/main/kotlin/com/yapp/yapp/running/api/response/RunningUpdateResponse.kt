@@ -1,36 +1,15 @@
 package com.yapp.yapp.running.api.response
 
-import com.yapp.yapp.record.domain.point.RunningPoint
-import java.time.Duration
-import java.time.OffsetDateTime
+import com.yapp.yapp.record.api.response.RunningPointResponse
 
 data class RunningUpdateResponse(
-    val runningPointId: Long,
-    val userId: Long,
     val recordId: Long,
-    val orderNo: Long,
-    val lat: Double,
-    val lon: Double,
-    var speed: Double,
-    val distance: Double,
-    val pace: Duration,
-    val heartRate: Int? = 0,
-    val calories: Int,
-    val timeStamp: OffsetDateTime,
+    val userId: Long,
+    val runningPoint: RunningPointResponse,
 ) {
-    constructor(runningPoint: RunningPoint) :
-        this(
-            runningPointId = runningPoint.id,
-            userId = runningPoint.runningRecord.id,
-            recordId = runningPoint.runningRecord.id,
-            orderNo = runningPoint.orderNo,
-            lat = runningPoint.lat,
-            lon = runningPoint.lon,
-            speed = runningPoint.speed,
-            distance = runningPoint.distance,
-            pace = runningPoint.pace.pacePerKm,
-            heartRate = runningPoint.heartRate,
-            calories = runningPoint.calories,
-            timeStamp = runningPoint.timeStamp,
-        )
+    constructor(runningPointResponse: RunningPointResponse) : this(
+        recordId = runningPointResponse.recordId,
+        userId = runningPointResponse.userId,
+        runningPoint = runningPointResponse,
+    )
 }

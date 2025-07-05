@@ -3,8 +3,10 @@ package com.yapp.yapp.record.domain.record
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.RecordStatus
+import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.record.domain.converter.DurationConverter
 import com.yapp.yapp.record.domain.converter.PaceConverter
+import com.yapp.yapp.record.domain.point.RunningPoint
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -55,5 +57,16 @@ class RunningRecord(
 
     fun finish() {
         this.recordStatus = RecordStatus.DONE
+    }
+
+    fun updateInfoByRunningPoints(runningPoints: List<RunningPoint>) {
+        if (runningPoints.isEmpty()) {
+            return
+        }
+        this.totalDistance = runningPoints.sumOf { it.distance }
+        this.totalTime = runningPoints.last().totalRunningTime
+        this.totalCalories = runningPoints.sumOf { it.calories }
+        this.averageSpeed = RunningMetricsCalculator.calculateSpeedKmh(distanceMeter = this.totalDistance, seconds = this.totalTime.seconds)
+        this.averagePace = Pace(distanceMeter = this.totalDistance, duration = this.totalTime)
     }
 }

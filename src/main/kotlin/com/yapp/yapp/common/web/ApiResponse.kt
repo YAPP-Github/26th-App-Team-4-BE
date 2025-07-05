@@ -1,6 +1,7 @@
-package com.yapp.yapp.common
+package com.yapp.yapp.common.web
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.yapp.yapp.common.TimeProvider
 import java.time.OffsetDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

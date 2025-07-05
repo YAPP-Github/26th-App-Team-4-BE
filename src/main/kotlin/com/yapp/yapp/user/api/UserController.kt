@@ -1,7 +1,7 @@
 package com.yapp.yapp.user.api
 
-import com.yapp.yapp.common.ApiResponse
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.OnboardingResponse

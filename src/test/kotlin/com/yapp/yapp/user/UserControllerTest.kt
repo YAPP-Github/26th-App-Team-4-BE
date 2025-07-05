@@ -1,6 +1,6 @@
 package com.yapp.yapp.user
 
-import com.yapp.yapp.common.ApiResponse
+import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.user.api.response.UserResponse
 import io.restassured.RestAssured
