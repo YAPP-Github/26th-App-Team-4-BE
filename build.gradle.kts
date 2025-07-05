@@ -135,7 +135,6 @@ tasks.named<ProcessResources>("processResources") {
 }
 
 tasks.named<Jar>("bootJar") {
-    dependsOn("makeDocument")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
