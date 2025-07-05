@@ -12,6 +12,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
+import java.time.DayOfWeek
 
 class RecordControllerTest : BaseControllerTest() {
     @Autowired
@@ -50,7 +51,7 @@ class RecordControllerTest : BaseControllerTest() {
     @Test
     fun `유저의 주간 러닝 기록들을 조회한다`() {
         // given
-        val now = TimeProvider.now().toStartOfDay()
+        val now = TimeProvider.now().with(DayOfWeek.MONDAY)
         val user = userFixture.create()
 
         runningFixture.createRunningRecord(userId = user.id, startAt = now)
