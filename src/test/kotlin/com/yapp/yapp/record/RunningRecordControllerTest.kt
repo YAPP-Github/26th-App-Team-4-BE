@@ -12,8 +12,8 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
-import java.time.DayOfWeek
 import org.springframework.http.MediaType
+import java.time.DayOfWeek
 import java.time.Duration
 
 class RunningRecordControllerTest : BaseControllerTest() {

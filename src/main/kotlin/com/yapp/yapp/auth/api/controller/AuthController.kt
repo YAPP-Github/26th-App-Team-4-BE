@@ -5,9 +5,9 @@ import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.domain.AuthService
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
-import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.common.token.jwt.RefreshPrincipal
 import com.yapp.yapp.common.token.jwt.annotation.Principal
+import com.yapp.yapp.common.web.ApiResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
