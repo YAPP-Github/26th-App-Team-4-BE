@@ -66,7 +66,11 @@ class RunningRecord(
         this.totalDistance = runningPoints.sumOf { it.distance }
         this.totalTime = runningPoints.last().totalRunningTime
         this.totalCalories = runningPoints.sumOf { it.calories }
-        this.averageSpeed = RunningMetricsCalculator.calculateSpeedKmh(distanceMeter = this.totalDistance, seconds = this.totalTime.seconds)
+        this.averageSpeed =
+            RunningMetricsCalculator.calculateSpeedKmh(
+                distanceMeter = this.totalDistance,
+                seconds = this.totalTime.seconds,
+            )
         this.averagePace = Pace(distanceMeter = this.totalDistance, duration = this.totalTime)
     }
 }
