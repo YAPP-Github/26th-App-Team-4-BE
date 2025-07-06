@@ -13,10 +13,14 @@ class OnboardingManager(
 
     fun getAll(user: User): List<Onboarding> = onboardingDao.findAllByUser(user)
 
-    fun getQuestion(
+    fun getAnswer(
         user: User,
         questionType: OnboardingQuestionType,
     ): Onboarding = onboardingDao.getAnswerByUser(user, questionType)
+
+    fun getGoalAnswer(user: User): Onboarding {
+        return getAnswer(user, OnboardingQuestionType.GOAL)
+    }
 
     fun updateQuestion(
         user: User,

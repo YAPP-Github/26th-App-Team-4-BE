@@ -5,7 +5,6 @@ import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.onboarding.Onboarding
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
-import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -75,7 +74,7 @@ class UserService(
     @Transactional(readOnly = true)
     fun getGoal(id: Long): AnswerResponse {
         val user = userManager.getActiveUser(id)
-        val goalAnswer = onboardingManager.getQuestion(user, OnboardingQuestionType.GOAL)
+        val goalAnswer = onboardingManager.getGoalAnswer(user)
         return AnswerResponse(
             questionType = goalAnswer.questionType,
             answer = goalAnswer.answer,
