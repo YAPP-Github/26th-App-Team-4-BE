@@ -8,16 +8,12 @@ import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.oidc.OidcProperties
 import com.yapp.yapp.common.token.oidc.OidcTokenHandler
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 
 @Component
 class AppleAuthProvider(
-    @Value("\${oidc.apple.api.url}")
-    private val issuer: String,
-    @Value("\${oidc.apple.api.clientId}")
-    private val clientId: String,
+    private val appleProperties: AppleProperties,
     private val appleFeignClient: AppleFeignClient,
 ) : AuthProvider {
     companion object {
@@ -34,7 +30,8 @@ class AppleAuthProvider(
         val handler = OidcTokenHandler(properties)
         val tokenClaims = handler.parseClaims(token)
         val email =
-            tokenClaims[EMAIL_CLAIM] as String? ?: throw CustomException(ErrorCode.TOKEN_CLAIM_MISSING)
+            tokenClaims[EMAIL_CLAIM] as String?
+                ?: throw CustomException(ErrorCode.TOKEN_CLAIM_MISSING)
 
         return AppleAuthUserInfo(email)
     }
@@ -46,6 +43,10 @@ class AppleAuthProvider(
     @Cacheable(cacheNames = [CacheNames.API_RESPONSE], key = "'applePublicKeyResponse'")
     fun getProperties(): OidcProperties {
         val jwkSet = appleFeignClient.fetchJwks()
-        return OidcProperties(keySet = jwkSet, issuer = issuer, clientId = clientId)
+        return OidcProperties(
+            keySet = jwkSet,
+            issuer = appleProperties.url,
+            clientId = appleProperties.clientId,
+        )
     }
 }
