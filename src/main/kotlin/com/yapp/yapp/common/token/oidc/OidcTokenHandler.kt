@@ -36,6 +36,7 @@ class OidcTokenHandler(
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
+            e.printStackTrace()
             logger.warning { e.message }
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
