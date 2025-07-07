@@ -39,11 +39,15 @@ oidc:
   apple:
     api:
       url: https://appleid.apple.com
-      clientId: test-client-id
+      client-id:
+        - test-app-key-apple
+        - test-rest-key-apple
   kakao:
     api:
       url: https://kauth.kakao.com
-      clientId: test-client-id
+      client-id:
+        - test-app-key-kakao
+        - test-rest-key-kakao
 
 user:
   default:

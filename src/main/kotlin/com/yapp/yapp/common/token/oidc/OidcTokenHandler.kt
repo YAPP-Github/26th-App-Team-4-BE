@@ -21,7 +21,6 @@ class OidcTokenHandler(
     val parser =
         Jwts.parser()
             .requireIssuer(oidcProperties.issuer)
-            .requireAudience(oidcProperties.clientId)
             .keyLocator { header ->
                 val kid = header["kid"] ?: throw JwtException("Missing 'kid' in JWT header")
                 val key =
@@ -37,6 +36,7 @@ class OidcTokenHandler(
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
+            e.printStackTrace()
             logger.warning { e.message }
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
@@ -45,6 +45,20 @@ class OidcTokenHandler(
     // https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
     private fun getValidClaims(token: String): Claims {
         val claims = parser.parseSignedClaims(token).payload
+
+        val audClaim = claims["aud"]
+        val allowedAudiences = oidcProperties.clientId
+
+        val isValidAudience =
+            when (audClaim) {
+                is String -> allowedAudiences.contains(audClaim)
+                is Collection<*> -> audClaim.any { it is String && allowedAudiences.contains(it) }
+                else -> false
+            }
+
+        if (!isValidAudience) {
+            throw JwtException("Invalid audience: $audClaim")
+        }
 
         oidcProperties.nonce?.let { expectedNonce ->
             val actualNonce =

@@ -8,16 +8,12 @@ import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.oidc.OidcProperties
 import com.yapp.yapp.common.token.oidc.OidcTokenHandler
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 
 @Component
 class KakaoAuthProvider(
-    @Value("\${oidc.kakao.api.url}")
-    private val issuer: String,
-    @Value("\${oidc.kakao.api.clientId}")
-    private val clientId: String,
+    private val kakaoProperties: KakaoProperties,
     private val kakaoFeignClient: KakaoFeignClient,
 ) : AuthProvider {
     companion object {
@@ -46,6 +42,10 @@ class KakaoAuthProvider(
     @Cacheable(cacheNames = [CacheNames.API_RESPONSE], key = "'kakaoPublicKeyResponse'")
     fun getProperties(): OidcProperties {
         val jwkSet = kakaoFeignClient.fetchJwks()
-        return OidcProperties(keySet = jwkSet, issuer = issuer, clientId = clientId)
+        return OidcProperties(
+            keySet = jwkSet,
+            issuer = kakaoProperties.url,
+            clientId = kakaoProperties.clientId,
+        )
     }
 }
