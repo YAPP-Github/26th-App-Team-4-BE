@@ -22,11 +22,15 @@ oidc:
   apple:
     api:
       url: ${secret.oidc.apple.url}
-      clientId: ${secret.oidc.apple.client-id}
+      client-id:
+        - ${secret.oidc.apple.client-id[0]}
+        - ${secret.oidc.apple.client-id[1]}
   kakao:
     api:
       url: ${secret.oidc.kakao.url}
-      clientId: ${secret.oidc.kakao.client-id}
+      client-id:
+        - ${secret.oidc.apple.client-id[0]}
+        - ${secret.oidc.apple.client-id[1]}
 
 logging:
   level:
