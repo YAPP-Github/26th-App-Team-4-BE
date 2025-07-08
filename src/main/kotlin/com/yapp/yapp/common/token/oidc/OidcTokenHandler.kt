@@ -44,7 +44,12 @@ class OidcTokenHandler(
     // https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
     private fun getValidClaims(token: String): Claims {
         val claims = parser.parseSignedClaims(token).payload
+        validateAudience(claims)
+        validateNonce(claims)
+        return claims
+    }
 
+    private fun validateAudience(claims: Claims) {
         val audClaim = claims["aud"]
         val allowedAudiences = oidcProperties.clientId
 
@@ -58,7 +63,9 @@ class OidcTokenHandler(
         if (!isValidAudience) {
             throw JwtException("Invalid audience: $audClaim")
         }
+    }
 
+    private fun validateNonce(claims: Claims) {
         oidcProperties.nonce?.let { expectedNonce ->
             val actualNonce =
                 claims["nonce"] as? String ?: throw JwtException("Missing 'nonce' in Claims")
@@ -66,7 +73,5 @@ class OidcTokenHandler(
                 throw CustomException(ErrorCode.TOKEN_INVALID)
             }
         }
-
-        return claims
     }
 }

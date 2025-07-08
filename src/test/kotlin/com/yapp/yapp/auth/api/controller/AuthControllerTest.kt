@@ -223,6 +223,45 @@ class AuthControllerTest : BaseControllerTest() {
                 .then().log().all()
                 .statusCode(200)
         }
+
+        @Test
+        fun `카카오 로그인 다중 키를 지원한다`() {
+            // given
+            val idToken1 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@app.com",
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-app-key-kakao",
+                )
+            val idToken2 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@rest.com",
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-rest-key-kakao",
+                )
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest1 = LoginRequest(idToken1, null)
+            val loginRequest2 = LoginRequest(idToken2, null)
+
+            // when
+            // then
+            Mockito.`when`(kakaoFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest1)
+                .`when`().post("/api/v1/auth/login/kakao")
+                .then().log().all()
+                .statusCode(200)
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest2)
+                .`when`().post("/api/v1/auth/login/kakao")
+                .then().log().all()
+                .statusCode(200)
+        }
     }
 
     @Test
