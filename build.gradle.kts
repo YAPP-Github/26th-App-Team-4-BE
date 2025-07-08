@@ -104,6 +104,10 @@ openapi3 {
     outputDirectory = "build/docs"
 }
 
+ktlint {
+    version.set("1.2.1")
+}
+
 tasks.register<Copy>("makeDocument") {
     group = "documentation"
     description = "Generate API Docs and copy to static folder."

@@ -64,8 +64,12 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.records[].runningPoints[].pace").description("페이스(mm:ss)"),
                     fieldWithPath("result.records[].runningPoints[].heartRate").description("심박수"),
                     fieldWithPath("result.records[].runningPoints[].calories").description("칼로리"),
-                    fieldWithPath("result.records[].runningPoints[].totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간"),
-                    fieldWithPath("result.records[].runningPoints[].totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
+                    fieldWithPath(
+                        "result.records[].runningPoints[].totalRunningTime",
+                    ).description("러닝 포인트 기록 당시 총 러닝 시간"),
+                    fieldWithPath(
+                        "result.records[].runningPoints[].totalRunningDistance",
+                    ).description("러닝 포인트 기록 당시 총 러닝 거리"),
                     fieldWithPath("result.records[].runningPoints[].timeStamp").description("러닝 포인트 기록 시간"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.records").description("러닝 기록 리스트"),

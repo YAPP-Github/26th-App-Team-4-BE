@@ -39,7 +39,13 @@ class RunningFixture(
 
         val startLat = 37.5665
         val startLon = 126.9780
-        val perDistance = RunningMetricsCalculator.calculateDistance(startLat, startLon, startLat + 0.00001, startLon + 0.00001)
+        val perDistance =
+            RunningMetricsCalculator.calculateDistance(
+                startLat,
+                startLon,
+                startLat + 0.00001,
+                startLon + 0.00001,
+            )
         val speedKmh = RunningMetricsCalculator.calculateSpeedKmh(perDistance, 1)
 
         // 2) 1초 단위 러닝 포인트 생성 및 저장
@@ -75,7 +81,10 @@ class RunningFixture(
                 )
             runningPointRepository.save(runningPoint)
         }
-        val savedRunningPoints = runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord)
+        val savedRunningPoints =
+            runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(
+                runningRecord,
+            )
         runningRecord.updateInfoByRunningPoints(savedRunningPoints)
         return runningRecordRepository.save(runningRecord)
     }

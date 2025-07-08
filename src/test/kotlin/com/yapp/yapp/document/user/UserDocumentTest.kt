@@ -250,7 +250,9 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.questionType").description("질문 타입(Enum)"),
-                    fieldWithPath("result.answer").description("응답 타입(Enum) A(다이어트), B(건강 관리), C(체력 증진), D(대회 준비) 중 하나입니다."),
+                    fieldWithPath(
+                        "result.answer",
+                    ).description("응답 타입(Enum) A(다이어트), B(건강 관리), C(체력 증진), D(대회 준비) 중 하나입니다."),
                 )
 
         val restDocsFilter =
