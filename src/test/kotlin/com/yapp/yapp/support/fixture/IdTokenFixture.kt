@@ -24,7 +24,7 @@ object IdTokenFixture {
     fun createValidIdToken(
         issuer: String = "https://provider.example.com",
         subject: String = "user123",
-        audience: String = "test-client-id",
+        audience: String = "test-app-key-apple",
         email: String = "test@test.com",
         nonce: String? = null,
         expiresInSeconds: Long = 3600,

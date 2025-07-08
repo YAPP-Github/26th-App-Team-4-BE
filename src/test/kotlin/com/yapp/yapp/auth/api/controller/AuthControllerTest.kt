@@ -32,7 +32,11 @@ class AuthControllerTest : BaseControllerTest() {
         @Test
         fun `카카오 로그인`() {
             // given
-            val idToken = IdTokenFixture.createValidIdToken(issuer = "https://kauth.kakao.com")
+            val idToken =
+                IdTokenFixture.createValidIdToken(
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-app-key-kakao",
+                )
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
             val loginRequest = LoginRequest(idToken, null)
 
@@ -66,7 +70,11 @@ class AuthControllerTest : BaseControllerTest() {
         @Test
         fun `애플 로그인`() {
             // given
-            val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+            val idToken =
+                IdTokenFixture.createValidIdToken(
+                    issuer = "https://appleid.apple.com",
+                    audience = "test-app-key-apple",
+                )
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
             val loginRequest = LoginRequest(idToken, null)
 
@@ -102,7 +110,11 @@ class AuthControllerTest : BaseControllerTest() {
             // given
             val nonce = UUID.randomUUID().toString()
             val idToken =
-                IdTokenFixture.createValidIdToken(issuer = "https://kauth.kakao.com", nonce = nonce)
+                IdTokenFixture.createValidIdToken(
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-app-key-kakao",
+                    nonce = nonce,
+                )
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
             val loginRequest = LoginRequest(idToken, nonce)
 
@@ -140,6 +152,7 @@ class AuthControllerTest : BaseControllerTest() {
             val idToken =
                 IdTokenFixture.createValidIdToken(
                     issuer = "https://appleid.apple.com",
+                    audience = "test-app-key-apple",
                     nonce = nonce,
                 )
             val jwksResponse = IdTokenFixture.createPublicKeyResponse()
@@ -170,6 +183,84 @@ class AuthControllerTest : BaseControllerTest() {
                 { Assertions.assertThat(response.user.nickname).isNotNull() },
                 { Assertions.assertThat(response.isNew).isTrue() },
             )
+        }
+
+        @Test
+        fun `애플 로그인 다중 키를 지원한다`() {
+            // given
+            val idToken1 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@app.com",
+                    issuer = "https://appleid.apple.com",
+                    audience = "test-app-key-apple",
+                )
+            val idToken2 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@rest.com",
+                    issuer = "https://appleid.apple.com",
+                    audience = "test-rest-key-apple",
+                )
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest1 = LoginRequest(idToken1, null)
+            val loginRequest2 = LoginRequest(idToken2, null)
+
+            // when
+            // then
+            Mockito.`when`(appleFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest1)
+                .`when`().post("/api/v1/auth/login/apple")
+                .then().log().all()
+                .statusCode(200)
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest2)
+                .`when`().post("/api/v1/auth/login/apple")
+                .then().log().all()
+                .statusCode(200)
+        }
+
+        @Test
+        fun `카카오 로그인 다중 키를 지원한다`() {
+            // given
+            val idToken1 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@app.com",
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-app-key-kakao",
+                )
+            val idToken2 =
+                IdTokenFixture.createValidIdToken(
+                    email = "test@rest.com",
+                    issuer = "https://kauth.kakao.com",
+                    audience = "test-rest-key-kakao",
+                )
+            val jwksResponse = IdTokenFixture.createPublicKeyResponse()
+            val loginRequest1 = LoginRequest(idToken1, null)
+            val loginRequest2 = LoginRequest(idToken2, null)
+
+            // when
+            // then
+            Mockito.`when`(kakaoFeignClient.fetchJwks())
+                .thenReturn(objectMapper.writeValueAsString(jwksResponse))
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest1)
+                .`when`().post("/api/v1/auth/login/kakao")
+                .then().log().all()
+                .statusCode(200)
+
+            RestAssured.given().log().all()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .body(loginRequest2)
+                .`when`().post("/api/v1/auth/login/kakao")
+                .then().log().all()
+                .statusCode(200)
         }
     }
 
@@ -230,6 +321,7 @@ class AuthControllerTest : BaseControllerTest() {
             IdTokenFixture.createValidIdToken(
                 email = "dup@dup.com",
                 issuer = "https://kauth.kakao.com",
+                audience = "test-app-key-kakao",
             )
         val kakaoLoginRequest = LoginRequest(kakaoIdToken, null)
 
@@ -345,7 +437,11 @@ class AuthControllerTest : BaseControllerTest() {
     }
 
     private fun loginUser(): TokenResponse {
-        val idToken = IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com")
+        val idToken =
+            IdTokenFixture.createValidIdToken(
+                issuer = "https://appleid.apple.com",
+                audience = "test-app-key-apple",
+            )
         val jwksResponse = IdTokenFixture.createPublicKeyResponse()
         val loginRequest = LoginRequest(idToken, null)
 

@@ -182,6 +182,7 @@ tasks.register<Exec>("initSubmodule") {
     group = "git"
     description = "Git submodule을 원격 저장소의 최신 버전으로 업데이트합니다."
     commandLine("git", "submodule", "update", "--remote")
+    finalizedBy("copySecret")
 }
 
 tasks.register<Exec>("md") {
