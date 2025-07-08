@@ -48,7 +48,3 @@ oidc:
       client-id:
         - test-app-key-kakao
         - test-rest-key-kakao
-
-user:
-  default:
-    profile: test-profile

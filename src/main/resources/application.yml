@@ -1,3 +1,65 @@
 spring:
   profiles:
     active: local
+  data:
+    redis:
+      client-name: ${secret.redis.client-name}
+      host: ${secret.redis.host}
+      port: ${secret.redis.port}
+      password: ${secret.redis.password}
+  mvc:
+    static-path-pattern: /static/**
+
+jwt:
+  issuer: ${secret.jwt.issuer}
+  access-secret: ${secret.jwt.access-secret}
+  access-expiration-millis: ${secret.jwt.access-expiration-ms}
+  refresh-secret: ${secret.jwt.refresh-secret}
+  refresh-expiration-millis: ${secret.jwt.refresh-expiration-ms}
+
+oidc:
+  response-millis: ${secret.oidc.response-millis}
+  apple:
+    api:
+      url: ${secret.oidc.apple.url}
+      client-id:
+        - ${secret.oidc.apple.client-id[0]}
+        - ${secret.oidc.apple.client-id[1]}
+  kakao:
+    api:
+      url: ${secret.oidc.kakao.url}
+      client-id:
+        - ${secret.oidc.apple.client-id[0]}
+        - ${secret.oidc.apple.client-id[1]}
+
+logging:
+  level:
+    root: info
+  pattern:
+    file: "[%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}][%-5level][%logger.%method:line%line] - %msg%n"
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${secret.logging.file.pattern}
+      max-history: 30
+
+management:
+  server:
+    port: ${secret.management.port}
+
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health
+      base-path: ${secret.management.path}
+    jmx:
+      exposure:
+        exclude: "*"
+    access:
+      default: none
+
+  endpoint:
+    prometheus:
+      access: unrestricted
+    health:
+      show-components: never
+      access: unrestricted

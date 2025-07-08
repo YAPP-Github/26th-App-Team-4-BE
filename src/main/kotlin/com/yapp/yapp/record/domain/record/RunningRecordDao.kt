@@ -28,6 +28,11 @@ class RunningRecordDao(
     ): List<RunningRecord> {
         val startDate = type.getStartDate(targetDate)
         val endDate = type.getEndDate(targetDate)
-        return runningRecordRepository.findByUserIdAndStartAtBetweenOrderByStartAtDesc(userId, startDate, endDate, pageable)
+        return runningRecordRepository.findByUserIdAndStartAtBetweenOrderByStartAtDesc(
+            userId,
+            startDate,
+            endDate,
+            pageable,
+        )
     }
 }

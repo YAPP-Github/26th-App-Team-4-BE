@@ -32,7 +32,9 @@ class RunningRecordController(
         @PageableDefault(size = 10, sort = ["startAt"], direction = Sort.Direction.DESC)
         pageable: Pageable,
     ): ApiResponse<RunningRecordListResponse> {
-        return ApiResponse.success(runningRecordService.getRecords(userId, type, TimeProvider.parse(targetDate), pageable))
+        return ApiResponse.success(
+            runningRecordService.getRecords(userId, type, TimeProvider.parse(targetDate), pageable),
+        )
     }
 
     @GetMapping("/{recordId}")

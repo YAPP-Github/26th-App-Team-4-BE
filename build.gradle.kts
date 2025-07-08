@@ -104,6 +104,10 @@ openapi3 {
     outputDirectory = "build/docs"
 }
 
+ktlint {
+    version.set("1.2.1")
+}
+
 tasks.register<Copy>("makeDocument") {
     group = "documentation"
     description = "Generate API Docs and copy to static folder."
@@ -178,6 +182,7 @@ tasks.register<Exec>("initSubmodule") {
     group = "git"
     description = "Git submodule을 원격 저장소의 최신 버전으로 업데이트합니다."
     commandLine("git", "submodule", "update", "--remote")
+    finalizedBy("copySecret")
 }
 
 tasks.register<Exec>("md") {

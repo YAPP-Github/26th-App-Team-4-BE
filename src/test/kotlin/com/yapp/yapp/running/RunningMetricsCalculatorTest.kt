@@ -109,7 +109,11 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
         }
 
         val totalTime = Duration.between(runningPoints.first().timeStamp, runningPoints.last().timeStamp)
-        val averageSpeed = RunningMetricsCalculator.calculateSpeedKmh(distanceMeter = totalDistance, seconds = totalTime.seconds)
+        val averageSpeed =
+            RunningMetricsCalculator.calculateSpeedKmh(
+                distanceMeter = totalDistance,
+                seconds = totalTime.seconds,
+            )
         val averagePace = Pace(distanceMeter = totalDistance, duration = totalTime)
 
         // then

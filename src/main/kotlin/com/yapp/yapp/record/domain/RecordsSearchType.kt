@@ -16,12 +16,18 @@ enum class RecordsSearchType {
     DAILY {
         override fun getStartDate(targetDate: OffsetDateTime): OffsetDateTime = TimeProvider.from(targetDate.toLocalDate().atStartOfDay())
 
-        override fun getEndDate(targetDate: OffsetDateTime): OffsetDateTime = targetDate.withHour(0).plusDays(1).minusSeconds(1)
+        override fun getEndDate(targetDate: OffsetDateTime): OffsetDateTime =
+            targetDate.withHour(
+                0,
+            ).plusDays(1).minusSeconds(1)
     },
     WEEKLY {
         override fun getStartDate(targetDate: OffsetDateTime): OffsetDateTime = targetDate.toStartOfDay().with(DayOfWeek.MONDAY)
 
-        override fun getEndDate(targetDate: OffsetDateTime): OffsetDateTime = targetDate.toStartOfDay().with(DayOfWeek.SUNDAY)
+        override fun getEndDate(targetDate: OffsetDateTime): OffsetDateTime =
+            targetDate.toStartOfDay().with(
+                DayOfWeek.SUNDAY,
+            )
     },
     MONTHLY {
         override fun getStartDate(targetDate: OffsetDateTime): OffsetDateTime = targetDate.toStartOfDay().withDayOfMonth(1)
