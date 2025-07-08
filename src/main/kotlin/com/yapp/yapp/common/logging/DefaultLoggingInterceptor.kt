@@ -68,6 +68,16 @@ class DefaultLoggingInterceptor(
         val statusText = getStatusText(response.status)
         val body = extractResponseBody(response)
 
+        ResponseLogFormat(
+            type = "RESPONSE",
+            requestId = requestId,
+            method = request.method,
+            uri = "$originalUri",
+            status = statusText,
+            statusCode = response.status,
+            body = body.toString(),
+        )
+
         logger.info {
             """{"type":"RESPONSE", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
                 getRequestParameters(

@@ -6,10 +6,13 @@ import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.domain.AuthService
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.RefreshPrincipal
 import com.yapp.yapp.common.token.jwt.annotation.Principal
 import com.yapp.yapp.common.web.ApiResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -49,20 +52,20 @@ class AuthController(
     ): ApiResponse<TokenResponse> {
         return ApiResponse.success(authService.refresh(principal.id, principal.userId))
     }
-//
-//    @PostMapping("/test")
-//    fun test(
-//        @RequestBody testRequest: TestResponse,
-//        request: HttpServletRequest,
-//    ): ApiResponse<String> {
+
+    @PostMapping("/test")
+    fun test(
+        @RequestBody testRequest: TestResponse,
+        request: HttpServletRequest,
+    ): ApiResponse<String> {
 //        val wrapper = request as ContentCachingRequestWrapper
 //        val a = testRequest.message
 //        val wrapperData = objectMapper.readTree(wrapper.contentAsByteArray)
 //        log.info { "[Controller - Caching] Data=$wrapperData" }
-//        throw IllegalArgumentException("test")
-//    }
-//
-//    data class TestResponse(
-//        val message: String,
-//    )
+        throw CustomException(ErrorCode.USER_ALREADY_EXISTS_WITH_ANOTHER_PROVIDER)
+    }
+
+    data class TestResponse(
+        val message: String,
+    )
 }

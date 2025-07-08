@@ -20,6 +20,12 @@ class GlobalControllerAdvice {
 
     private val logger = KotlinLogging.logger {}
 
+    @ExceptionHandler(Exception::class)
+    fun handleInternalServerException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
+        val errorCode = ErrorCode.INTERNAL_SERVER
+        return handleError(errorCode, exception)
+    }
+
     @ExceptionHandler(CustomException::class)
     fun handleException(exception: CustomException): ResponseEntity<ApiResponse<Unit>> {
         val errorCode = exception.errorCode
@@ -38,12 +44,6 @@ class GlobalControllerAdvice {
         return handleError(errorCode, exception)
     }
 
-    @ExceptionHandler(Exception::class)
-    fun handleInternalServerException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        val errorCode = ErrorCode.INTERNAL_SERVER
-        return handleError(errorCode, exception)
-    }
-
     private fun handleError(
         errorCode: ErrorCode,
         exception: Exception,
@@ -53,16 +53,16 @@ class GlobalControllerAdvice {
             .body(ApiResponse.error(errorCode.errorCode, errorCode.message))
     }
 
-    fun loggingError(
+    private fun loggingError(
         errorCode: ErrorCode,
         exception: Exception,
     ) {
         val requestId = MDC.get(REQUEST_ID) ?: "N/A"
-        val body = """{"type":"ERROR", "requestId":"$requestId", "errorCode":"$errorCode", "message":"${exception.message}"}"""
+        val logMessage = """{"type":"${errorCode.logLevel}", "requestId":"$requestId", "errorCode":"$errorCode", "message":"${exception.message}"}"""
         when (errorCode.logLevel) {
-            LogLevel.WARN -> logger.warn { body }
-            LogLevel.ERROR -> logger.error { body }
-            else -> logger.info { body }
+            LogLevel.WARN -> logger.warn { logMessage }
+            LogLevel.ERROR -> logger.error { logMessage }
+            else -> logger.info { logMessage }
         }
     }
 }
