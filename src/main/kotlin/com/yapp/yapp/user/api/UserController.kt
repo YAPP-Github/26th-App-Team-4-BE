@@ -3,7 +3,6 @@ package com.yapp.yapp.user.api
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.OnboardingRequest
-import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.OnboardingResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.UserService
@@ -71,15 +70,6 @@ class UserController(
                 userId = id,
                 answerList = userService.updateOnboardings(id, request),
             ),
-        )
-    }
-
-    @GetMapping("/onboarding/goal")
-    fun getGoal(
-        @CurrentUser id: Long,
-    ): ApiResponse<AnswerResponse> {
-        return ApiResponse.success(
-            userService.getGoal(id),
         )
     }
 }

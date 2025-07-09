@@ -237,50 +237,50 @@ class UserDocumentTest : BaseDocumentTest() {
             .statusCode(200)
     }
 
-    @Test
-    fun `러닝 목표 조회 API`() {
-        // given
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.questionType").description("질문 타입(Enum)"),
-                    fieldWithPath(
-                        "result.answer",
-                    ).description("응답 타입(Enum) A(다이어트), B(건강 관리), C(체력 증진), D(대회 준비) 중 하나입니다."),
-                )
-
-        val restDocsFilter =
-            filter("사용자 API", "목표 조회")
-                .tag(Tag.USER_API)
-                .summary("목표 조회 API")
-                .description("러닝 목표를 조회하는 API 입니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-        val accessToken = getAccessToken()
-        val request = RequestFixture.onboardingRequest()
-        RestAssured.given()
-            .body(request)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
-            .`when`().post("/api/v1/users/onboarding")
-            .then()
-            .statusCode(201)
-        // when
-
-        // then
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
-            .`when`().get("/api/v1/users/onboarding/goal")
-            .then()
-            .statusCode(200)
-    }
+//    @Test
+//    fun `러닝 목표 조회 API`() {
+//        // given
+//        val restDocsRequest =
+//            request()
+//                .requestHeader(
+//                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+//                )
+//
+//        val restDocsResponse =
+//            response()
+//                .responseBodyFieldWithResult(
+//                    fieldWithPath("result.questionType").description("질문 타입(Enum)"),
+//                    fieldWithPath(
+//                        "result.answer",
+//                    ).description("응답 타입(Enum) A(다이어트), B(건강 관리), C(체력 증진), D(대회 준비) 중 하나입니다."),
+//                )
+//
+//        val restDocsFilter =
+//            filter("사용자 API", "목표 조회")
+//                .tag(Tag.USER_API)
+//                .summary("목표 조회 API")
+//                .description("러닝 목표를 조회하는 API 입니다.")
+//                .request(restDocsRequest)
+//                .response(restDocsResponse)
+//                .build()
+//        val accessToken = getAccessToken()
+//        val request = RequestFixture.onboardingRequest()
+//        RestAssured.given()
+//            .body(request)
+//            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+//            .header("Authorization", "$accessToken")
+//            .`when`().post("/api/v1/users/onboarding")
+//            .then()
+//            .statusCode(201)
+//        // when
+//
+//        // then
+//        RestAssured.given(spec)
+//            .filter(restDocsFilter)
+//            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+//            .header("Authorization", "$accessToken")
+//            .`when`().get("/api/v1/users/onboarding/goal")
+//            .then()
+//            .statusCode(200)
+//    }
 }

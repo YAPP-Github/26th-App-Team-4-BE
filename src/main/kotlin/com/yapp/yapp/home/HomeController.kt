@@ -20,4 +20,7 @@ class HomeController(
 //        return ApiResponse.success(homeData)
         TODO()
     }
+
+//    @GetMapping("/goals/{goalType}")
+//    fun get
 }

@@ -1,7 +1,11 @@
 package com.yapp.yapp.user.domain
 
+import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.api.request.OnboardingRequest
+import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
+import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
+import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.onboarding.Onboarding
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userManager: UserManager,
     private val onboardingManager: OnboardingManager,
+    private val userGoalManager: UserGoalManager,
 ) {
     @Transactional(readOnly = true)
     fun getUserById(id: Long): UserResponse {
@@ -71,13 +76,29 @@ class UserService(
         }
     }
 
+    @Transactional
+    fun saveGoal(
+        userId: Long,
+        request: WeeklyRunCountGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        val saveWeeklyRunCountGoal = userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
+        return saveWeeklyRunCountGoal
+    }
+
+    @Transactional
+    fun saveGoal(
+        userId: Long,
+        request: PaceGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
+    }
+
     @Transactional(readOnly = true)
-    fun getGoal(id: Long): AnswerResponse {
-        val user = userManager.getActiveUser(id)
-        val goalAnswer = onboardingManager.getGoalAnswer(user)
-        return AnswerResponse(
-            questionType = goalAnswer.questionType,
-            answer = goalAnswer.answer,
-        )
+    fun getGoal(userId: Long): UserGoalResponse {
+        val user = userManager.getActiveUser(userId)
+        val userGoal = userGoalManager.getUserGoal(user)
+        return UserGoalResponse(userGoal)
     }
 }
