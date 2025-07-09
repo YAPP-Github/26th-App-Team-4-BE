@@ -42,13 +42,16 @@ class DefaultLoggingInterceptor(
         val headers = extractHeaders(request)
         val body = extractRequestBody(request)
 
-        logger.info {
-            """{"type":"REQUEST ", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
-                getRequestParameters(
-                    request,
-                )
-            }", "body":$body}"""
-        }
+        val requestLog =
+            RequestLogFormat(
+                requestId = requestId,
+                method = request.method,
+                headers = headers,
+                uri = "${originalUri}${getRequestParameters(request)}",
+                body = body,
+            )
+
+        logger.info { requestLog.toString() }
         return true
     }
 
@@ -70,7 +73,6 @@ class DefaultLoggingInterceptor(
 
         val responseLog =
             ResponseLogFormat(
-                type = "RESPONSE",
                 requestId = requestId,
                 method = request.method,
                 uri = "${originalUri}${getRequestParameters(request)}",

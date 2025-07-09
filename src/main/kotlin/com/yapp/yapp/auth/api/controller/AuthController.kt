@@ -6,8 +6,6 @@ import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
 import com.yapp.yapp.auth.domain.AuthService
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
-import com.yapp.yapp.common.exception.CustomException
-import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.RefreshPrincipal
 import com.yapp.yapp.common.token.jwt.annotation.Principal
 import com.yapp.yapp.common.web.ApiResponse
@@ -60,11 +58,12 @@ class AuthController(
         @RequestBody testRequest: TestResponse,
         request: HttpServletRequest,
     ): ApiResponse<String> {
+        println(test)
 //        val wrapper = request as ContentCachingRequestWrapper
 //        val a = testRequest.message
 //        val wrapperData = objectMapper.readTree(wrapper.contentAsByteArray)
 //        log.info { "[Controller - Caching] Data=$wrapperData" }
-        throw CustomException(ErrorCode.USER_ALREADY_EXISTS_WITH_ANOTHER_PROVIDER)
+        throw IllegalArgumentException("This is Test Exception")
     }
 
     data class TestResponse(

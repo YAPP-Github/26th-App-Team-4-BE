@@ -1,7 +1,7 @@
 package com.yapp.yapp.common.logging
 
 data class ResponseLogFormat(
-    val type: String,
+    val type: String = "RESPONSE",
     val requestId: String,
     val method: String,
     val uri: String,

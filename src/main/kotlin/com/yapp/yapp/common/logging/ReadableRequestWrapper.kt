@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets
 class ReadableRequestWrapper(
     request: HttpServletRequest,
 ) : HttpServletRequestWrapper(request) {
-    private val params: MutableMap<String, Array<String>> = request.parameterMap
     private val encoding: Charset
     private val parts: Collection<Part>?
     val contentAsByteArray: ByteArray
