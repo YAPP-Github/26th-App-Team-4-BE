@@ -7,5 +7,10 @@ data class ResponseLogFormat(
     val uri: String,
     val status: String,
     val statusCode: Int,
+    val duration: Long,
     val body: String,
-)
+) {
+    override fun toString(): String {
+        return """{"type": "$type", "requestId": "$requestId", "method": "$method", "uri": "$uri", "status": "$status", "statusCode": $statusCode, "duration": $duration, "body": $body}"""
+    }
+}
