@@ -1,6 +1,5 @@
 package com.yapp.yapp.auth.api.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.yapp.yapp.auth.api.request.LoginRequest
 import com.yapp.yapp.auth.api.response.LoginResponse
 import com.yapp.yapp.auth.api.response.TokenResponse
@@ -10,13 +9,11 @@ import com.yapp.yapp.common.token.jwt.RefreshPrincipal
 import com.yapp.yapp.common.token.jwt.annotation.Principal
 import com.yapp.yapp.common.web.ApiResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/auth")
 class AuthController(
     private val authService: AuthService,
-    private val objectMapper: ObjectMapper,
 ) {
     val log = KotlinLogging.logger {}
 
@@ -51,22 +47,4 @@ class AuthController(
     ): ApiResponse<TokenResponse> {
         return ApiResponse.success(authService.refresh(principal.id, principal.userId))
     }
-
-    @PostMapping("/test")
-    fun test(
-        @RequestParam("test") test: String,
-        @RequestBody testRequest: TestResponse,
-        request: HttpServletRequest,
-    ): ApiResponse<String> {
-        println(test)
-//        val wrapper = request as ContentCachingRequestWrapper
-//        val a = testRequest.message
-//        val wrapperData = objectMapper.readTree(wrapper.contentAsByteArray)
-//        log.info { "[Controller - Caching] Data=$wrapperData" }
-        throw IllegalArgumentException("This is Test Exception")
-    }
-
-    data class TestResponse(
-        val message: String,
-    )
 }
