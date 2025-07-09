@@ -9,6 +9,7 @@ data class RequestLogFormat(
     val body: Any?,
 ) {
     override fun toString(): String {
-        return """{"type": "$type", "requestId": "$requestId", "method": "$method", "uri": "$uri", "authorization": "${headers["authorization"]}" "body": $body}"""
+        return """{"type": "$type", "requestId": "$requestId", "method": "$method", "uri": "$uri", """" +
+            """authorization": "${headers["authorization"]}" "body": $body}"""
     }
 }
