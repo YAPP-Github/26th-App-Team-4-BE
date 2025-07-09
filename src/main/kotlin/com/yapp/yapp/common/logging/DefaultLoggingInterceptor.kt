@@ -19,7 +19,6 @@ class DefaultLoggingInterceptor(
     private val logger = KotlinLogging.logger {}
 
     companion object {
-        const val IGNORE_URI = "/health"
         const val REQUEST_ID = "requestId"
         const val REQUEST_TIME = "requestTime"
         val ignoreUrls = listOf<String>("/health", "/static", "/error")
