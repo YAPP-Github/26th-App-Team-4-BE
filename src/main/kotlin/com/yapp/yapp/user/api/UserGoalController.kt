@@ -21,15 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 class UserGoalController(
     private val userService: UserService,
 ) {
-    @GetMapping
-    fun getGoals(
-        @CurrentUser id: Long,
-    ): ApiResponse<UserGoalResponse> {
-        return ApiResponse.success(
-            userService.getGoal(id),
-        )
-    }
-
     @PostMapping("/weekly-run-count")
     @ResponseStatus(HttpStatus.CREATED)
     fun saveWeeklyRunCountGoal(
@@ -71,6 +62,15 @@ class UserGoalController(
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+        )
+    }
+
+    @GetMapping
+    fun getGoals(
+        @CurrentUser id: Long,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            userService.getGoal(id),
         )
     }
 }

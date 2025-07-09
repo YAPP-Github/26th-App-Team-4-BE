@@ -200,4 +200,47 @@ class UserGoalDocumentTest : BaseDocumentTest() {
             .then()
             .statusCode(201)
     }
+
+    @Test
+    fun `목표 조회 API`() {
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                )
+
+        val restDocsFilter =
+            filter("목표 API", "목표 조회")
+                .tag(Tag.GOAL_API)
+                .summary("목표 조회 API")
+                .description("목표를 조회합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+        userGoalFixture.create(user)
+
+        // when
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", getAccessToken(email = user.email))
+            .`when`().get("/api/v1/users/goals")
+            .then()
+            .statusCode(200)
+    }
 }
