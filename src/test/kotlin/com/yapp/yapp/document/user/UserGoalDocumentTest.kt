@@ -4,6 +4,7 @@ import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
 import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
+import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
@@ -30,9 +31,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningGoal").description("달리기 목표"),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(mm:ss)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(mm:ss)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
                 )
 
         val restDocsFilter =
@@ -76,10 +77,10 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningGoal").description("달리기 목표"),
-                    fieldWithPath("result.weeklyRunCount").description("페이스"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(mm:ss)"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(mm:ss)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
                 )
 
         val restDocsFilter =
@@ -123,10 +124,10 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningGoal").description("달리기 목표"),
-                    fieldWithPath("result.weeklyRunCount").description("거리"),
-                    fieldWithPath("result.paceGoal").description("거리 목표(mm:ss)"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(mm:ss)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
                 )
 
         val restDocsFilter =
@@ -149,6 +150,53 @@ class UserGoalDocumentTest : BaseDocumentTest() {
             .header("Authorization", getAccessToken(email = user.email))
             .body(request)
             .`when`().post("/api/v1/users/goals/distance")
+            .then()
+            .statusCode(201)
+    }
+
+    @Test
+    fun `시간 목표 설정 API`() {
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .requestBodyField(
+                    fieldWithPath("time").description("목표 시간(ISO 8601 형식)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                )
+
+        val restDocsFilter =
+            filter("목표 API", "시간")
+                .tag(Tag.GOAL_API)
+                .summary("시간 목표 설정 API")
+                .description("시간 목표를 설정합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+
+        // when
+        // then
+        val request = TimeGoalSaveRequest(time = "PT40M30S")
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", getAccessToken(email = user.email))
+            .body(request)
+            .`when`().post("/api/v1/users/goals/time")
             .then()
             .statusCode(201)
     }

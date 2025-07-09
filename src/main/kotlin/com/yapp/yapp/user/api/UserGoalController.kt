@@ -4,6 +4,7 @@ import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
 import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
+import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.domain.UserService
@@ -56,6 +57,17 @@ class UserGoalController(
     fun saveDistanceGoal(
         @CurrentUser id: Long,
         @RequestBody request: DistanceGoalSaveRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+        )
+    }
+
+    @PostMapping("/time")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun saveTimeGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: TimeGoalSaveRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),

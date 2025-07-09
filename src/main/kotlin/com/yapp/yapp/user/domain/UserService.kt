@@ -4,6 +4,7 @@ import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
+import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
@@ -12,6 +13,7 @@ import com.yapp.yapp.user.domain.onboarding.Onboarding
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 @Service
 class UserService(
@@ -103,6 +105,15 @@ class UserService(
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
+    }
+
+    @Transactional
+    fun saveGoal(
+        userId: Long,
+        request: TimeGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
     }
 
     @Transactional(readOnly = true)
