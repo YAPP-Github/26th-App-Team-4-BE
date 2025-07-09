@@ -10,6 +10,6 @@ data class RequestLogFormat(
 ) {
     override fun toString(): String {
         return """{"type": "$type", "requestId": "$requestId", "method": "$method", "uri": "$uri", """" +
-            """authorization": "${headers["authorization"]}" "body": $body}"""
+            """authorization": "${headers["authorization"]}", "body": $body}"""
     }
 }
