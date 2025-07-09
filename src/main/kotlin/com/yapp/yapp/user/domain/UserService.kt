@@ -1,6 +1,7 @@
 package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
@@ -93,6 +94,15 @@ class UserService(
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
+    }
+
+    @Transactional
+    fun saveGoal(
+        userId: Long,
+        request: DistanceGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
     }
 
     @Transactional(readOnly = true)
