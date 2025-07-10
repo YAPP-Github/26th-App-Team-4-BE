@@ -27,7 +27,7 @@ class UserGoalManager(
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)
-                ?: UserGoal(user = user)
+                ?: userGoalDao.save(UserGoal(user = user))
         userGoal.updatePaceGoal(pace)
         return userGoal
     }
@@ -38,7 +38,7 @@ class UserGoalManager(
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)
-                ?: UserGoal(user = user)
+                ?: userGoalDao.save(UserGoal(user = user))
         userGoal.updateDistanceMeterGoal(distanceMeter)
         return userGoal
     }
@@ -49,7 +49,7 @@ class UserGoalManager(
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)
-                ?: UserGoal(user = user)
+                ?: userGoalDao.save(UserGoal(user = user))
         userGoal.updateTimeGoal(time)
         return userGoal
     }
@@ -60,7 +60,7 @@ class UserGoalManager(
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)
-                ?: UserGoal(user = user)
+                ?: userGoalDao.save(UserGoal(user = user))
         userGoal.updateRunningPurpose(runningPurpose.name)
         return userGoal
     }
