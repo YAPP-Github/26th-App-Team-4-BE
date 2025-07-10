@@ -8,7 +8,6 @@ import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import com.yapp.yapp.common.token.jwt.RefreshPrincipal
 import com.yapp.yapp.common.token.jwt.annotation.Principal
 import com.yapp.yapp.common.web.ApiResponse
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authService: AuthService,
 ) {
-    val log = KotlinLogging.logger {}
-
     @PostMapping("/login/{provider}")
     fun login(
         @PathVariable(name = "provider") providerType: ProviderType,
