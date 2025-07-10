@@ -1,4 +1,4 @@
-package com.yapp.yapp.common.logging
+package com.yapp.yapp.common.logging.format
 
 data class RequestLogFormat(
     val type: String = "REQUEST",

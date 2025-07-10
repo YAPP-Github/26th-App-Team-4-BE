@@ -1,5 +1,6 @@
 package com.yapp.yapp.common.exception
 
+import com.yapp.yapp.common.logging.format.ErrorLogFormat
 import com.yapp.yapp.common.web.ApiResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.slf4j.MDC
@@ -57,12 +58,17 @@ class GlobalControllerAdvice {
         errorCode: ErrorCode,
         exception: Exception,
     ) {
-        val requestId = MDC.get(REQUEST_ID) ?: "N/A"
-        val logMessage = """{"type":"${errorCode.logLevel}", "requestId":"$requestId", "errorCode":"$errorCode", "message":"${exception.message}"}"""
+        val errorLog =
+            ErrorLogFormat(
+                logLevel = errorCode.logLevel,
+                requestId = MDC.get(REQUEST_ID) ?: "N/A",
+                errorCode = errorCode,
+                message = exception.message ?: "N/A",
+            )
         when (errorCode.logLevel) {
-            LogLevel.WARN -> logger.warn { logMessage }
-            LogLevel.ERROR -> logger.error { logMessage }
-            else -> logger.info { logMessage }
+            LogLevel.WARN -> logger.warn { errorLog.toString() }
+            LogLevel.ERROR -> logger.error { errorLog.toString() }
+            else -> logger.info { errorLog.toString() }
         }
     }
 }
