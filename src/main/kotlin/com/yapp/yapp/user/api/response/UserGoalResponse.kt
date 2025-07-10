@@ -15,7 +15,7 @@ data class UserGoalResponse(
     constructor(userGoal: UserGoal) : this(
         id = userGoal.id,
         userId = userGoal.user.id,
-        runningGoal = userGoal.runningGoal,
+        runningGoal = userGoal.runningPurpose,
         weeklyRunCount = userGoal.weeklyRunCount,
         paceGoal = userGoal.paceGoal?.pacePerKm,
         distanceMeterGoal = userGoal.distanceMeterGoal,

@@ -1,11 +1,12 @@
 package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.record.domain.Pace
-import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
+import com.yapp.yapp.user.api.request.DistanceGoalRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
-import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
-import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
-import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
+import com.yapp.yapp.user.api.request.PaceGoalRequest
+import com.yapp.yapp.user.api.request.RunningPurposeRequest
+import com.yapp.yapp.user.api.request.TimeGoalRequest
+import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
@@ -82,7 +83,7 @@ class UserService(
     @Transactional
     fun saveGoal(
         userId: Long,
-        request: WeeklyRunCountGoalSaveRequest,
+        request: WeeklyRunCountGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         val saveWeeklyRunCountGoal = userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
@@ -92,7 +93,7 @@ class UserService(
     @Transactional
     fun saveGoal(
         userId: Long,
-        request: PaceGoalSaveRequest,
+        request: PaceGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
@@ -101,7 +102,7 @@ class UserService(
     @Transactional
     fun saveGoal(
         userId: Long,
-        request: DistanceGoalSaveRequest,
+        request: DistanceGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
@@ -110,10 +111,19 @@ class UserService(
     @Transactional
     fun saveGoal(
         userId: Long,
-        request: TimeGoalSaveRequest,
+        request: TimeGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
+    }
+
+    @Transactional
+    fun saveGoal(
+        userId: Long,
+        request: RunningPurposeRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveRunningPurpose(user, request.runningPurpose)
     }
 
     @Transactional(readOnly = true)
@@ -126,7 +136,7 @@ class UserService(
     @Transactional
     fun updateGoal(
         userId: Long,
-        request: WeeklyRunCountGoalSaveRequest,
+        request: WeeklyRunCountGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
@@ -135,7 +145,7 @@ class UserService(
     @Transactional
     fun updateGoal(
         userId: Long,
-        request: PaceGoalSaveRequest,
+        request: PaceGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
@@ -144,7 +154,7 @@ class UserService(
     @Transactional
     fun updateGoal(
         userId: Long,
-        request: DistanceGoalSaveRequest,
+        request: DistanceGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
@@ -153,9 +163,18 @@ class UserService(
     @Transactional
     fun updateGoal(
         userId: Long,
-        request: TimeGoalSaveRequest,
+        request: TimeGoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
+    }
+
+    @Transactional
+    fun updateGoal(
+        userId: Long,
+        request: RunningPurposeRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveRunningPurpose(user, request.runningPurpose)
     }
 }

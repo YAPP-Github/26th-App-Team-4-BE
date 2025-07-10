@@ -1,5 +1,5 @@
 package com.yapp.yapp.user.api.request
 
-data class DistanceGoalSaveRequest(
+data class DistanceGoalRequest(
     val distanceMeter: Double,
 )

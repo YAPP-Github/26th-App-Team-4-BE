@@ -1,5 +1,5 @@
 package com.yapp.yapp.user.api.request
 
-data class PaceGoalSaveRequest(
+data class PaceGoalRequest(
     val pace: String,
 )

@@ -2,10 +2,11 @@ package com.yapp.yapp.user.api
 
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
-import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
-import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
-import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
+import com.yapp.yapp.user.api.request.DistanceGoalRequest
+import com.yapp.yapp.user.api.request.PaceGoalRequest
+import com.yapp.yapp.user.api.request.RunningPurposeRequest
+import com.yapp.yapp.user.api.request.TimeGoalRequest
+import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
@@ -26,7 +27,7 @@ class UserGoalController(
     @ResponseStatus(HttpStatus.CREATED)
     fun saveWeeklyRunCountGoal(
         @CurrentUser id: Long,
-        @RequestBody request: WeeklyRunCountGoalSaveRequest,
+        @RequestBody request: WeeklyRunCountGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),
@@ -37,7 +38,7 @@ class UserGoalController(
     @ResponseStatus(HttpStatus.CREATED)
     fun savePaceGoal(
         @CurrentUser id: Long,
-        @RequestBody request: PaceGoalSaveRequest,
+        @RequestBody request: PaceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),
@@ -48,7 +49,7 @@ class UserGoalController(
     @ResponseStatus(HttpStatus.CREATED)
     fun saveDistanceGoal(
         @CurrentUser id: Long,
-        @RequestBody request: DistanceGoalSaveRequest,
+        @RequestBody request: DistanceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),
@@ -59,7 +60,18 @@ class UserGoalController(
     @ResponseStatus(HttpStatus.CREATED)
     fun saveTimeGoal(
         @CurrentUser id: Long,
-        @RequestBody request: TimeGoalSaveRequest,
+        @RequestBody request: TimeGoalRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+        )
+    }
+
+    @PostMapping("/purpose")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun saveRunningGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: RunningPurposeRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.saveGoal(userId = id, request = request)),
@@ -78,7 +90,7 @@ class UserGoalController(
     @PatchMapping("/weekly-run-count")
     fun updateWeeklyRunCountGoal(
         @CurrentUser id: Long,
-        @RequestBody request: WeeklyRunCountGoalSaveRequest,
+        @RequestBody request: WeeklyRunCountGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.updateGoal(userId = id, request = request)),
@@ -88,7 +100,7 @@ class UserGoalController(
     @PatchMapping("/pace")
     fun updatePaceGoal(
         @CurrentUser id: Long,
-        @RequestBody request: PaceGoalSaveRequest,
+        @RequestBody request: PaceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.updateGoal(userId = id, request = request)),
@@ -98,7 +110,7 @@ class UserGoalController(
     @PatchMapping("/distance")
     fun updateDistanceGoal(
         @CurrentUser id: Long,
-        @RequestBody request: DistanceGoalSaveRequest,
+        @RequestBody request: DistanceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.updateGoal(userId = id, request = request)),
@@ -108,7 +120,17 @@ class UserGoalController(
     @PatchMapping("/time")
     fun updateTimeGoal(
         @CurrentUser id: Long,
-        @RequestBody request: TimeGoalSaveRequest,
+        @RequestBody request: TimeGoalRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+        )
+    }
+
+    @PatchMapping("/purpose")
+    fun updateRunningGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: RunningPurposeRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.updateGoal(userId = id, request = request)),

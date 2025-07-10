@@ -19,7 +19,7 @@ class UserGoal(
     @ManyToOne
     val user: User,
     @Column(nullable = true)
-    var runningGoal: String? = null,
+    var runningPurpose: String? = null,
     @Column(nullable = true)
     var weeklyRunCount: Int? = null,
     @Convert(converter = PaceConverter::class)
@@ -30,8 +30,8 @@ class UserGoal(
     @Column(nullable = true)
     var timeGoal: Duration? = null,
 ) {
-    fun updateRunningGoal(runningGoal: String) {
-        this.runningGoal = runningGoal
+    fun updateRunningPurpose(runningGoal: String) {
+        this.runningPurpose = runningGoal
     }
 
     fun updateWeeklyRunCount(weeklyRunCount: Int) {

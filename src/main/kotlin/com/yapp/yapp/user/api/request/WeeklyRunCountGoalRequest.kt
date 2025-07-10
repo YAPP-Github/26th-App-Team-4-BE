@@ -1,5 +1,5 @@
 package com.yapp.yapp.user.api.request
 
-data class WeeklyRunCountGoalSaveRequest(
+data class WeeklyRunCountGoalRequest(
     val count: Int,
 )

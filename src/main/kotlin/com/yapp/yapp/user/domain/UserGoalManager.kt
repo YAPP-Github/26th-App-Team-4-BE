@@ -53,6 +53,17 @@ class UserGoalManager(
         return userGoal
     }
 
+    fun saveRunningPurpose(
+        user: User,
+        runningPurpose: RunningPurposeAnswerLabel,
+    ): UserGoal {
+        val userGoal =
+            userGoalDao.findUserGoal(user)
+                ?: UserGoal(user = user)
+        userGoal.updateRunningPurpose(runningPurpose.name)
+        return userGoal
+    }
+
     fun getUserGoal(user: User): UserGoal {
         return userGoalDao.getUserGoal(user)
     }

@@ -2,10 +2,12 @@ package com.yapp.yapp.document.user
 
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
-import com.yapp.yapp.user.api.request.DistanceGoalSaveRequest
-import com.yapp.yapp.user.api.request.PaceGoalSaveRequest
-import com.yapp.yapp.user.api.request.TimeGoalSaveRequest
-import com.yapp.yapp.user.api.request.WeeklyRunCountGoalSaveRequest
+import com.yapp.yapp.user.api.request.DistanceGoalRequest
+import com.yapp.yapp.user.api.request.PaceGoalRequest
+import com.yapp.yapp.user.api.request.RunningPurposeRequest
+import com.yapp.yapp.user.api.request.TimeGoalRequest
+import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
+import com.yapp.yapp.user.domain.RunningPurposeAnswerLabel
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
@@ -49,7 +51,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = WeeklyRunCountGoalSaveRequest(count = 3)
+        val request = WeeklyRunCountGoalRequest(count = 3)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -96,7 +98,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalSaveRequest(pace = "PT6M30S")
+        val request = PaceGoalRequest(pace = "PT6M30S")
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -143,7 +145,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = DistanceGoalSaveRequest(distanceMeter = 5000.0)
+        val request = DistanceGoalRequest(distanceMeter = 5000.0)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -190,13 +192,66 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalSaveRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = "PT40M30S")
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .header("Authorization", getAccessToken(email = user.email))
             .body(request)
             .`when`().post("/api/v1/users/goals/time")
+            .then()
+            .statusCode(201)
+    }
+
+    @Test
+    fun `러닝 목적 설정 API`() {
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .requestBodyField(
+                    fieldWithPath("runningPurpose").description(
+                        "러닝 목적을 문자열로 받습니다. " +
+                            "(다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                )
+
+        val restDocsFilter =
+            filter("목표 API", "러닝 목적 저장")
+                .tag(Tag.GOAL_API)
+                .summary("러닝 목적 설정 API")
+                .description("러닝 목적을 설정합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+
+        // when
+        // then
+        val request = RunningPurposeRequest(runningPurpose = RunningPurposeAnswerLabel.WEIGHT_LOSS_PURPOSE)
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", getAccessToken(email = user.email))
+            .body(request)
+            .`when`().post("/api/v1/users/goals/purpose")
             .then()
             .statusCode(201)
     }
@@ -280,7 +335,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = WeeklyRunCountGoalSaveRequest(count = 3)
+        val request = WeeklyRunCountGoalRequest(count = 3)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -327,7 +382,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalSaveRequest(pace = "PT6M30S")
+        val request = PaceGoalRequest(pace = "PT6M30S")
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -374,7 +429,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = DistanceGoalSaveRequest(distanceMeter = 5000.0)
+        val request = DistanceGoalRequest(distanceMeter = 5000.0)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -421,13 +476,66 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalSaveRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = "PT40M30S")
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .header("Authorization", getAccessToken(email = user.email))
             .body(request)
             .`when`().patch("/api/v1/users/goals/time")
+            .then()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 목적 수정 API`() {
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .requestBodyField(
+                    fieldWithPath("runningPurpose").description(
+                        "러닝 목적을 문자열로 받습니다. " +
+                            "(다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                )
+
+        val restDocsFilter =
+            filter("목표 API", "러닝 목적 저장")
+                .tag(Tag.GOAL_API)
+                .summary("러닝 목적 수정 API")
+                .description("러닝 목적을 수정합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+
+        // when
+        // then
+        val request = RunningPurposeRequest(runningPurpose = RunningPurposeAnswerLabel.WEIGHT_LOSS_PURPOSE)
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", getAccessToken(email = user.email))
+            .body(request)
+            .`when`().patch("/api/v1/users/goals/purpose")
             .then()
             .statusCode(200)
     }
