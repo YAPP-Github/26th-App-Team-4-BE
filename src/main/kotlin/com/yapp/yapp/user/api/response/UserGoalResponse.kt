@@ -6,11 +6,11 @@ import java.time.Duration
 data class UserGoalResponse(
     val id: Long,
     val userId: Long,
-    var runningPurpose: String? = null,
-    var weeklyRunCount: Int? = null,
-    var paceGoal: Duration? = null,
-    var distanceMeterGoal: Double? = null,
-    var timeGoal: Duration? = null,
+    val runningPurpose: String? = null,
+    val weeklyRunCount: Int? = null,
+    val paceGoal: Duration? = null,
+    val distanceMeterGoal: Double? = null,
+    val timeGoal: Duration? = null,
 ) {
     constructor(userGoal: UserGoal) : this(
         id = userGoal.id,
