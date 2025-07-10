@@ -1,6 +1,7 @@
-package com.yapp.yapp.user.domain
+package com.yapp.yapp.user.domain.goal
 
 import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.user.domain.User
 import org.springframework.stereotype.Component
 import java.time.Duration
 

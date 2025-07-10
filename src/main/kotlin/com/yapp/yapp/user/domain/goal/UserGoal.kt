@@ -1,7 +1,8 @@
-package com.yapp.yapp.user.domain
+package com.yapp.yapp.user.domain.goal
 
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.converter.PaceConverter
+import com.yapp.yapp.user.domain.User
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity

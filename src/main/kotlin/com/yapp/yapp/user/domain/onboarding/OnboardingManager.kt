@@ -18,10 +18,6 @@ class OnboardingManager(
         questionType: OnboardingQuestionType,
     ): Onboarding = onboardingDao.getAnswerByUser(user, questionType)
 
-    fun getGoalAnswer(user: User): Onboarding {
-        return getAnswer(user, OnboardingQuestionType.GOAL)
-    }
-
     fun updateQuestion(
         user: User,
         questionType: OnboardingQuestionType,

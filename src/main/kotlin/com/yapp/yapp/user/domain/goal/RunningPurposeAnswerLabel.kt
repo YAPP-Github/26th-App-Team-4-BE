@@ -1,4 +1,4 @@
-package com.yapp.yapp.user.domain
+package com.yapp.yapp.user.domain.goal
 
 enum class RunningPurposeAnswerLabel {
     WEIGHT_LOSS_PURPOSE,

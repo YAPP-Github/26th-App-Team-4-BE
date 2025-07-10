@@ -10,6 +10,8 @@ import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
+import com.yapp.yapp.user.domain.goal.UserGoal
+import com.yapp.yapp.user.domain.goal.UserGoalManager
 import com.yapp.yapp.user.domain.onboarding.Onboarding
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service

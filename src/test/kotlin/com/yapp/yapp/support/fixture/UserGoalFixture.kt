@@ -1,10 +1,10 @@
 package com.yapp.yapp.support.fixture
 
 import com.yapp.yapp.record.domain.Pace
-import com.yapp.yapp.user.domain.RunningPurposeAnswerLabel
 import com.yapp.yapp.user.domain.User
-import com.yapp.yapp.user.domain.UserGoal
-import com.yapp.yapp.user.domain.UserGoalRepository
+import com.yapp.yapp.user.domain.goal.RunningPurposeAnswerLabel
+import com.yapp.yapp.user.domain.goal.UserGoal
+import com.yapp.yapp.user.domain.goal.UserGoalRepository
 import org.springframework.stereotype.Component
 import java.time.Duration
 

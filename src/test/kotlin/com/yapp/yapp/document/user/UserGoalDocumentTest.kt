@@ -7,7 +7,7 @@ import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
-import com.yapp.yapp.user.domain.RunningPurposeAnswerLabel
+import com.yapp.yapp.user.domain.goal.RunningPurposeAnswerLabel
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders

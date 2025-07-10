@@ -1,6 +1,6 @@
 package com.yapp.yapp.user.api.response
 
-import com.yapp.yapp.user.domain.UserGoal
+import com.yapp.yapp.user.domain.goal.UserGoal
 import java.time.Duration
 
 data class UserGoalResponse(

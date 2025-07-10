@@ -11,6 +11,6 @@ class HomeService(
 ) {
     fun getHomeScreenData(id: Long) {
         val user = userManager.getActiveUser(id)
-        val goalAnswer = onboardingManager.getGoalAnswer(user)
+        TODO()
     }
 }

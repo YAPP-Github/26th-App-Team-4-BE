@@ -1,7 +1,8 @@
-package com.yapp.yapp.user.domain
+package com.yapp.yapp.user.domain.goal
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
+import com.yapp.yapp.user.domain.User
 import org.springframework.stereotype.Component
 
 @Component
