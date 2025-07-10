@@ -27,7 +27,6 @@ class Pace(
         this(calculatePace(distanceMeter, duration))
 
     constructor(pacePerKm: String) : this(
-//        Duration.parse("PT${pacePerKm.replace(":", "H").replace(".", "M")}"),
         Duration.parse(pacePerKm),
     )
 
