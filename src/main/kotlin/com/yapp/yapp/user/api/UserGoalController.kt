@@ -10,6 +10,7 @@ import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -71,6 +72,46 @@ class UserGoalController(
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             userService.getGoal(id),
+        )
+    }
+
+    @PatchMapping("/weekly-run-count")
+    fun updateWeeklyRunCountGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: WeeklyRunCountGoalSaveRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+        )
+    }
+
+    @PatchMapping("/pace")
+    fun updatePaceGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: PaceGoalSaveRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+        )
+    }
+
+    @PatchMapping("/distance")
+    fun updateDistanceGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: DistanceGoalSaveRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+        )
+    }
+
+    @PatchMapping("/time")
+    fun updateTimeGoal(
+        @CurrentUser id: Long,
+        @RequestBody request: TimeGoalSaveRequest,
+    ): ApiResponse<UserGoalResponse> {
+        return ApiResponse.success(
+            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
         )
     }
 }

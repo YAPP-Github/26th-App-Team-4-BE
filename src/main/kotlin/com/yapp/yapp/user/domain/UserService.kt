@@ -122,4 +122,40 @@ class UserService(
         val userGoal = userGoalManager.getUserGoal(user)
         return UserGoalResponse(userGoal)
     }
+
+    @Transactional
+    fun updateGoal(
+        userId: Long,
+        request: WeeklyRunCountGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
+    }
+
+    @Transactional
+    fun updateGoal(
+        userId: Long,
+        request: PaceGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
+    }
+
+    @Transactional
+    fun updateGoal(
+        userId: Long,
+        request: DistanceGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
+    }
+
+    @Transactional
+    fun updateGoal(
+        userId: Long,
+        request: TimeGoalSaveRequest,
+    ): UserGoal {
+        val user = userManager.getActiveUser(userId)
+        return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
+    }
 }
