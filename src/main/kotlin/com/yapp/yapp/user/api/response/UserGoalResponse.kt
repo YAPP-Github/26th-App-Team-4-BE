@@ -6,7 +6,7 @@ import java.time.Duration
 data class UserGoalResponse(
     val id: Long,
     val userId: Long,
-    var runningGoal: String? = null,
+    var runningPurpose: String? = null,
     var weeklyRunCount: Int? = null,
     var paceGoal: Duration? = null,
     var distanceMeterGoal: Double? = null,
@@ -15,7 +15,7 @@ data class UserGoalResponse(
     constructor(userGoal: UserGoal) : this(
         id = userGoal.id,
         userId = userGoal.user.id,
-        runningGoal = userGoal.runningPurpose,
+        runningPurpose = userGoal.runningPurpose,
         weeklyRunCount = userGoal.weeklyRunCount,
         paceGoal = userGoal.paceGoal?.pacePerKm,
         distanceMeterGoal = userGoal.distanceMeterGoal,

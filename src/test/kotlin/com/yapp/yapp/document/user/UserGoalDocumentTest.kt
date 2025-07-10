@@ -31,7 +31,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -78,7 +84,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -125,7 +137,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -172,7 +190,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -225,7 +249,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -269,7 +299,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -315,7 +351,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -362,7 +404,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -409,7 +457,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -456,7 +510,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -509,7 +569,13 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.id").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningGoal").description("달리기 목표"),
+                    fieldWithPath("result.runningPurpose").description(
+                        "달리기 목적 (" +
+                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
+                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
+                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
+                            "대회 준비: COMPETITION_PREPARATION",
+                    ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
@@ -517,7 +583,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "러닝 목적 저장")
+            filter("목표 API", "러닝 목적 수정")
                 .tag(Tag.GOAL_API)
                 .summary("러닝 목적 수정 API")
                 .description("러닝 목적을 수정합니다.")
