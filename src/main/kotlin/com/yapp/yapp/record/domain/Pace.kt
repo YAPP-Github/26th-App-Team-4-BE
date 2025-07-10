@@ -28,7 +28,8 @@ class Pace(
 
     constructor(pacePerKm: String) : this(
         Duration.parse(pacePerKm),
-    )
+    ) {
+    }
 
     override fun toString(): String {
         val minutes = pacePerKm.toMinutes()
