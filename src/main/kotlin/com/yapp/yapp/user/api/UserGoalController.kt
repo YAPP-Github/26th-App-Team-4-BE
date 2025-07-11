@@ -30,7 +30,7 @@ class UserGoalController(
         @RequestBody request: WeeklyRunCountGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -41,7 +41,7 @@ class UserGoalController(
         @RequestBody request: PaceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -52,7 +52,7 @@ class UserGoalController(
         @RequestBody request: DistanceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -63,7 +63,7 @@ class UserGoalController(
         @RequestBody request: TimeGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -74,7 +74,7 @@ class UserGoalController(
         @RequestBody request: RunningPurposeRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.saveGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -93,7 +93,7 @@ class UserGoalController(
         @RequestBody request: WeeklyRunCountGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -103,7 +103,7 @@ class UserGoalController(
         @RequestBody request: PaceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -113,7 +113,7 @@ class UserGoalController(
         @RequestBody request: DistanceGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -123,7 +123,7 @@ class UserGoalController(
         @RequestBody request: TimeGoalRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 
@@ -133,7 +133,7 @@ class UserGoalController(
         @RequestBody request: RunningPurposeRequest,
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
-            UserGoalResponse(userService.updateGoal(userId = id, request = request)),
+            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
         )
     }
 }

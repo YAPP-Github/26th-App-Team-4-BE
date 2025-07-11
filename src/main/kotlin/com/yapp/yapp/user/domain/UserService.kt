@@ -2,6 +2,7 @@ package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
+import com.yapp.yapp.user.api.request.GoalRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
@@ -83,49 +84,18 @@ class UserService(
     }
 
     @Transactional
-    fun saveGoal(
+    fun upsertGoal(
         userId: Long,
-        request: WeeklyRunCountGoalRequest,
+        request: GoalRequest,
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
-        val saveWeeklyRunCountGoal = userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
-        return saveWeeklyRunCountGoal
-    }
-
-    @Transactional
-    fun saveGoal(
-        userId: Long,
-        request: PaceGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
-    }
-
-    @Transactional
-    fun saveGoal(
-        userId: Long,
-        request: DistanceGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
-    }
-
-    @Transactional
-    fun saveGoal(
-        userId: Long,
-        request: TimeGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
-    }
-
-    @Transactional
-    fun saveGoal(
-        userId: Long,
-        request: RunningPurposeRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveRunningPurpose(user, request.runningPurpose)
+        return when (request) {
+            is WeeklyRunCountGoalRequest -> userGoalManager.saveWeeklyRunCountGoal(user, request.count)
+            is PaceGoalRequest -> userGoalManager.savePaceGoal(user, Pace(request.pace))
+            is DistanceGoalRequest -> userGoalManager.saveDistanceGoal(user, request.distanceMeter)
+            is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, Duration.parse(request.time))
+            is RunningPurposeRequest -> userGoalManager.saveRunningPurpose(user, request.runningPurpose)
+        }
     }
 
     @Transactional(readOnly = true)
@@ -133,50 +103,5 @@ class UserService(
         val user = userManager.getActiveUser(userId)
         val userGoal = userGoalManager.getUserGoal(user)
         return UserGoalResponse(userGoal)
-    }
-
-    @Transactional
-    fun updateGoal(
-        userId: Long,
-        request: WeeklyRunCountGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count)
-    }
-
-    @Transactional
-    fun updateGoal(
-        userId: Long,
-        request: PaceGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.savePaceGoal(user = user, pace = Pace(request.pace))
-    }
-
-    @Transactional
-    fun updateGoal(
-        userId: Long,
-        request: DistanceGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveDistanceGoal(user = user, distanceMeter = request.distanceMeter)
-    }
-
-    @Transactional
-    fun updateGoal(
-        userId: Long,
-        request: TimeGoalRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveTimeGoal(user = user, time = Duration.parse(request.time))
-    }
-
-    @Transactional
-    fun updateGoal(
-        userId: Long,
-        request: RunningPurposeRequest,
-    ): UserGoal {
-        val user = userManager.getActiveUser(userId)
-        return userGoalManager.saveRunningPurpose(user, request.runningPurpose)
     }
 }
