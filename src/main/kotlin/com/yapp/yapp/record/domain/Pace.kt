@@ -26,6 +26,11 @@ class Pace(
     constructor(distanceMeter: Double, duration: Duration) :
         this(calculatePace(distanceMeter, duration))
 
+    constructor(pacePerKm: String) : this(
+        Duration.parse(pacePerKm),
+    ) {
+    }
+
     override fun toString(): String {
         val minutes = pacePerKm.toMinutes()
         val seconds = pacePerKm.minusMinutes(minutes).seconds

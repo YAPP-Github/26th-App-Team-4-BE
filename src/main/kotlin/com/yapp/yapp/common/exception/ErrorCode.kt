@@ -41,4 +41,6 @@ enum class ErrorCode(
     POINT_NOT_FOUND(400, "RPO_001", "러닝 포인트가 존재하지 않습니다.", LogLevel.WARN),
 
     ANSWER_NOT_FOUND(400, "ONB_001", "온보딩 답변이 존재하지 않습니다.", LogLevel.WARN),
+
+    GOAL_NOT_FOUND(400, "GAL_001", "설정한 목표가 존재하지 않습니다.", LogLevel.WARN),
 }
