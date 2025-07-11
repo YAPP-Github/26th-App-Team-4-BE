@@ -5,7 +5,6 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class RunnerTypeTest {
-
     @Test
     fun `초보 러너 타입을 계산한다`() {
         // given
