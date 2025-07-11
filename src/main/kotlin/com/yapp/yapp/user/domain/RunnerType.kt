@@ -13,10 +13,13 @@ enum class RunnerType(
             noCount: Int,
             yseNoCount: Int,
         ): RunnerType {
+            if (yseNoCount == 0) {
+                return INTERMEDIATE
+            }
             val ratio = noCount.toDouble() / yseNoCount
             return when (ratio) {
-                in 0.0..0.3 -> EXPERT
-                in 0.4..0.6 -> INTERMEDIATE
+                in 0.0..<0.4 -> EXPERT
+                in 0.4..<0.7 -> INTERMEDIATE
                 else -> BEGINNER
             }
         }
