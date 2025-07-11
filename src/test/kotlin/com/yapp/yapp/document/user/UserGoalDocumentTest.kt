@@ -45,7 +45,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "주간 달리기 횟수 저장")
+            filter("goal", "weekly-running-count-save")
                 .tag(Tag.GOAL_API)
                 .summary("주간 달리기 횟수 목표 설정 API")
                 .description("주간 달리기 횟수 목표를 설정합니다.")
@@ -98,7 +98,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "페이스 저장")
+            filter("goal", "pace-save")
                 .tag(Tag.GOAL_API)
                 .summary("페이스 목표 설정 API")
                 .description("페이스 목표를 설정합니다.")
@@ -151,7 +151,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "거리 저장")
+            filter("goal", "distance-save")
                 .tag(Tag.GOAL_API)
                 .summary("거리 목표 설정 API")
                 .description("거리 목표를 설정합니다.")
@@ -204,7 +204,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "시간 저장")
+            filter("goal", "time-save")
                 .tag(Tag.GOAL_API)
                 .summary("시간 목표 설정 API")
                 .description("시간 목표를 설정합니다.")
@@ -263,7 +263,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "러닝 목적 저장")
+            filter("goal", "running-purpose-save")
                 .tag(Tag.GOAL_API)
                 .summary("러닝 목적 설정 API")
                 .description("러닝 목적을 설정합니다.")
@@ -313,7 +313,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "목표 조회")
+            filter("goal", "목표 조회")
                 .tag(Tag.GOAL_API)
                 .summary("목표 조회 API")
                 .description("목표를 조회합니다.")
@@ -365,7 +365,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "주간 달리기 횟수 수정")
+            filter("goal", "weekly-running-count-update")
                 .tag(Tag.GOAL_API)
                 .summary("주간 달리기 횟수 목표 수정 API")
                 .description("주간 달리기 횟수 목표를 수정합니다.")
@@ -418,7 +418,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "페이스 수정")
+            filter("goal", "pace-update")
                 .tag(Tag.GOAL_API)
                 .summary("페이스 목표 수정 API")
                 .description("페이스 목표를 수정합니다.")
@@ -471,7 +471,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "거리 수정")
+            filter("goal", "distance-update")
                 .tag(Tag.GOAL_API)
                 .summary("거리 목표 수정 API")
                 .description("거리 목표를 수정합니다.")
@@ -524,7 +524,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "시간 수정")
+            filter("goal", "time-update")
                 .tag(Tag.GOAL_API)
                 .summary("시간 목표 수정 API")
                 .description("시간 목표를 수정합니다.")
@@ -583,7 +583,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("목표 API", "러닝 목적 수정")
+            filter("goal", "running-purpose-update")
                 .tag(Tag.GOAL_API)
                 .summary("러닝 목적 수정 API")
                 .description("러닝 목적을 수정합니다.")
