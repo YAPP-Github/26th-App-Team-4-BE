@@ -31,13 +31,39 @@ class RunningRecordManager(
         targetDate: OffsetDateTime,
         pageable: Pageable,
     ): List<RunningRecord> {
-        return runningRecordDao.getRunningRecord(
+        return runningRecordDao.getRunningRecordList(
             userId = userId,
             targetDate = targetDate,
             type = type,
             pageable = pageable,
         )
     }
+// TODO 측량 PR이 머지되어야 계산할 수 있을듯. 지금 하면 수정될 부분이 많음
+
+//    fun findRecentRunningRecord(
+//        user: User
+//    ): RunningRecord? {
+//        return runningRecordDao.findRecentRunningRecord(user)
+//    }
+//
+//    fun getTotalRecords(
+//        user: User
+//    ): RunningRecord {
+//        val runningRecordList = runningRecordDao.getAllRunningRecordList(user.id)
+//        val totalRunningRecord = RunningRecord(userId = user.id)
+//        if (runningRecordList.isEmpty()) {
+//            return totalRunningRecord
+//        }
+//        runningRecordList.sumOf { it.totalCalories }
+//
+//        runningRecordList.sumOf { it.totalDistance }
+//        val averageSpeed = if (runningRecordList.isEmpty()) 0.0 else runningRecordList.map { it.averageSpeed }.average(),
+//        val averagePace = runningRecordList.map { it.averagePace.pacePerKm }.average()
+//
+//        totalRunningRecord.update(
+//            totalTime = runningRecordList.sumOf { it.totalTime.toMillis() }
+//        )
+//    }
 
     fun start(
         userId: Long,

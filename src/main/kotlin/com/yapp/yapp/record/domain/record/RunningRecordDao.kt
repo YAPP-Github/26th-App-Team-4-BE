@@ -3,6 +3,7 @@ package com.yapp.yapp.record.domain.record
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.RecordsSearchType
+import com.yapp.yapp.user.domain.User
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
@@ -20,7 +21,7 @@ class RunningRecordDao(
             .orElseThrow { throw CustomException(ErrorCode.RECORD_NOT_FOUND) }
     }
 
-    fun getRunningRecord(
+    fun getRunningRecordList(
         userId: Long,
         targetDate: OffsetDateTime,
         type: RecordsSearchType,
@@ -34,5 +35,13 @@ class RunningRecordDao(
             endDate,
             pageable,
         )
+    }
+
+    fun getAllRunningRecordList(userId: Long): List<RunningRecord> {
+        return runningRecordRepository.findAllByUserIdOrderByStartAtDesc(userId)
+    }
+
+    fun findRecentRunningRecord(user: User): RunningRecord? {
+        return runningRecordRepository.findFirstByUserIdOrderByStartAtDesc(user.id)
     }
 }

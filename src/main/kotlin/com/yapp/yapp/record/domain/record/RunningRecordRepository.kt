@@ -11,4 +11,8 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
         endDate: OffsetDateTime,
         pageable: Pageable,
     ): List<RunningRecord>
+
+    fun findAllByUserIdOrderByStartAtDesc(userId: Long): List<RunningRecord>
+
+    fun findFirstByUserIdOrderByStartAtDesc(userId: Long): RunningRecord?
 }
