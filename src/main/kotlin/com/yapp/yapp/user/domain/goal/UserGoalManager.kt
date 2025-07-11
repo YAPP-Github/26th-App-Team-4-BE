@@ -3,7 +3,6 @@ package com.yapp.yapp.user.domain.goal
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.domain.User
 import org.springframework.stereotype.Component
-import java.time.Duration
 
 @Component
 class UserGoalManager(
@@ -45,7 +44,7 @@ class UserGoalManager(
 
     fun saveTimeGoal(
         user: User,
-        time: Duration,
+        time: Long,
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)

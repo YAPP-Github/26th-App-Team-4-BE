@@ -18,6 +18,6 @@ data class UserGoalResponse(
         weeklyRunCount = userGoal.weeklyRunCount,
         paceGoal = userGoal.paceGoal?.toMills(),
         distanceMeterGoal = userGoal.distanceMeterGoal,
-        timeGoal = userGoal.timeGoal?.toMillis(),
+        timeGoal = userGoal.timeGoal,
     )
 }

@@ -1,12 +1,12 @@
 package com.yapp.yapp.support.fixture
 
+import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.domain.User
 import com.yapp.yapp.user.domain.goal.RunningPurposeAnswerLabel
 import com.yapp.yapp.user.domain.goal.UserGoal
 import com.yapp.yapp.user.domain.goal.UserGoalRepository
 import org.springframework.stereotype.Component
-import java.time.Duration
 
 @Component
 class UserGoalFixture(
@@ -15,9 +15,9 @@ class UserGoalFixture(
     fun create(
         user: User,
         distanceMeterGoal: Double = 5000.0,
-        timeGoal: Duration = Duration.parse("PT40M30S"),
+        timeGoal: Long = TimeProvider.toMills(minute = 40, second = 30),
         weeklyRunCount: Int = 3,
-        paceGoal: Pace = Pace(distanceMeter = 5000.0, duration = Duration.parse("PT40M30S")),
+        paceGoal: Pace = Pace(distanceMeter = 5000.0, durationMills = TimeProvider.toMills(minute = 40, second = 30)),
         runningPurpose: RunningPurposeAnswerLabel = RunningPurposeAnswerLabel.WEIGHT_LOSS_PURPOSE,
     ): UserGoal {
         return userGoalRepository.save(

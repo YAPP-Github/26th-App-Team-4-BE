@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToOne
-import java.time.Duration
 
 @Entity
 class UserGoal(
@@ -29,7 +28,7 @@ class UserGoal(
     @Column(nullable = true)
     var distanceMeterGoal: Double? = null,
     @Column(nullable = true)
-    var timeGoal: Duration? = null,
+    var timeGoal: Long? = null,
 ) {
     fun updateRunningPurpose(runningGoal: String) {
         this.runningPurpose = runningGoal
@@ -47,7 +46,7 @@ class UserGoal(
         this.distanceMeterGoal = distanceMeterGoal
     }
 
-    fun updateTimeGoal(timeGoal: Duration) {
+    fun updateTimeGoal(timeGoal: Long) {
         this.timeGoal = timeGoal
     }
 }
