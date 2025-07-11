@@ -20,7 +20,7 @@ class ExceptionDocumentTest : BaseDocumentTest() {
                     fieldWithPath("timeStamp").description("응답 시간"),
                 )
         val restDocsFilter =
-            filter("에러", "에러 응답")
+            filter("error", "error-response")
                 .tag(Tag.ERROR_API)
                 .summary("에러 응답")
                 .description("에러를 응답 형식에 대해 설명합니다")
