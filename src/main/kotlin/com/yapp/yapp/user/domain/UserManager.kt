@@ -7,6 +7,15 @@ import org.springframework.stereotype.Component
 class UserManager(
     private val userDao: UserDao,
 ) {
+    fun save(
+        email: String,
+        provider: ProviderType,
+    ): UserInfo {
+        val nickname = getRandomNickname(email)
+        val user = userDao.save(email, nickname, provider)
+        return UserInfo(user.id, user.email, user.nickname, provider, true)
+    }
+
     fun getUserInfo(
         email: String,
         provider: ProviderType,
@@ -23,15 +32,6 @@ class UserManager(
         return UserInfo(user)
     }
 
-    fun save(
-        email: String,
-        provider: ProviderType,
-    ): UserInfo {
-        val nickname = getRandomNickname(email)
-        val user = userDao.save(email, nickname, provider)
-        return UserInfo(user.id, user.email, user.nickname, provider, true)
-    }
-
     private fun getRandomNickname(email: String): String {
         var nickname: String
         do {
@@ -42,5 +42,12 @@ class UserManager(
 
     fun getActiveUser(id: Long): User {
         return userDao.getByIdAndIsDeletedFalse(id)
+    }
+
+    fun updateRunnerType(
+        user: User,
+        runnerType: RunnerType,
+    ) {
+        user.runnerType = runnerType
     }
 }

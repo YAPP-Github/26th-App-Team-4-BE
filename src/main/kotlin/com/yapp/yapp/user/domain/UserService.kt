@@ -1,5 +1,7 @@
 package com.yapp.yapp.user.domain
 
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
 import com.yapp.yapp.user.api.request.GoalRequest
@@ -9,11 +11,13 @@ import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.response.AnswerResponse
+import com.yapp.yapp.user.api.response.RunnerTypeResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.goal.UserGoal
 import com.yapp.yapp.user.domain.goal.UserGoalManager
 import com.yapp.yapp.user.domain.onboarding.Onboarding
+import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,18 +29,6 @@ class UserService(
     private val onboardingManager: OnboardingManager,
     private val userGoalManager: UserGoalManager,
 ) {
-    @Transactional(readOnly = true)
-    fun getUserById(id: Long): UserResponse {
-        val user = userManager.getActiveUser(id)
-        return UserResponse(user.id, user.nickname, user.email, user.provider)
-    }
-
-    @Transactional
-    fun delete(id: Long) {
-        val findUser = userManager.getActiveUser(id)
-        findUser.isDeleted = true
-    }
-
     @Transactional
     fun saveOnboarding(
         id: Long,
@@ -51,7 +43,11 @@ class UserService(
                     answer = it.answer,
                 )
             }
+        val noCount = onboardings.count { it.answer == OnboardingAnswerLabel.C }
+        val runnerType = RunnerType.calculateRunnerType(noCount)
+
         onboardingManager.saveAll(onboardings)
+        userManager.updateRunnerType(user = user, runnerType = runnerType)
     }
 
     @Transactional(readOnly = true)
@@ -64,6 +60,28 @@ class UserService(
                     answer = onboarding.answer,
                 )
             }
+    }
+
+    @Transactional(readOnly = true)
+    fun getUserById(id: Long): UserResponse {
+        val user = userManager.getActiveUser(id)
+        return UserResponse(user.id, user.nickname, user.email, user.provider)
+    }
+
+    @Transactional(readOnly = true)
+    fun getGoal(userId: Long): UserGoalResponse {
+        val user = userManager.getActiveUser(userId)
+        val userGoal = userGoalManager.getUserGoal(user)
+        return UserGoalResponse(userGoal)
+    }
+
+    @Transactional(readOnly = true)
+    fun getRunnerType(userId: Long): RunnerTypeResponse {
+        val user = userManager.getActiveUser(userId)
+        if (user.runnerType == null) {
+            throw CustomException(ErrorCode.ANSWER_NOT_FOUND)
+        }
+        return RunnerTypeResponse(userId = user.id, runnerType = user.runnerType!!)
     }
 
     @Transactional
@@ -98,10 +116,9 @@ class UserService(
         }
     }
 
-    @Transactional(readOnly = true)
-    fun getGoal(userId: Long): UserGoalResponse {
-        val user = userManager.getActiveUser(userId)
-        val userGoal = userGoalManager.getUserGoal(user)
-        return UserGoalResponse(userGoal)
+    @Transactional
+    fun delete(id: Long) {
+        val findUser = userManager.getActiveUser(id)
+        findUser.isDeleted = true
     }
 }

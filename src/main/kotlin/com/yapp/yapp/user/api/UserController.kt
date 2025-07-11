@@ -4,6 +4,7 @@ import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.response.OnboardingResponse
+import com.yapp.yapp.user.api.response.RunnerTypeResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
@@ -70,6 +71,15 @@ class UserController(
                 userId = id,
                 answerList = userService.updateOnboardings(id, request),
             ),
+        )
+    }
+
+    @GetMapping("/type")
+    fun getRunnerType(
+        @CurrentUser id: Long,
+    ): ApiResponse<RunnerTypeResponse> {
+        return ApiResponse.success(
+            userService.getRunnerType(id),
         )
     }
 }

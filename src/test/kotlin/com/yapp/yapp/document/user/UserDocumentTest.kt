@@ -236,4 +236,49 @@ class UserDocumentTest : BaseDocumentTest() {
             .then()
             .statusCode(200)
     }
+
+    @Test
+    fun `러너 타입 조회 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.runnerType").description("러너 유형(Enum). BEGINNER: 초보, INTERMEDIATE: 중급, EXPERT: 고급"),
+                )
+
+        val restDocsFilter =
+            filter("사용자 API", "러너 타입 조회")
+                .tag(Tag.USER_API)
+                .summary("러너 타입 조회 API")
+                .description("사용자의 러너 타입을 조회합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val accessToken = getAccessToken()
+        val saveRequest = RequestFixture.onboardingRequest()
+        RestAssured.given()
+            .body(saveRequest)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", "$accessToken")
+            .`when`().post("/api/v1/users/onboarding")
+            .then()
+            .statusCode(201)
+
+        // when
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header("Authorization", "$accessToken")
+            .`when`().get("/api/v1/users/type")
+            .then()
+            .statusCode(200)
+    }
 }
