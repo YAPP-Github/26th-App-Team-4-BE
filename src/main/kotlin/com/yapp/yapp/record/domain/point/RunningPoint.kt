@@ -43,7 +43,7 @@ class RunningPoint(
     @Column(nullable = false)
     val calories: Int = 0,
     @Column(nullable = false)
-    val totalRunningTime: Duration = Duration.ZERO,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
     @Column(nullable = false)
     var totalRunningDistance: Double = 0.0,
     @Column(nullable = false)

@@ -17,7 +17,7 @@ data class RunningPointResponse(
     val pace: Long = Duration.ZERO.toMillis(),
     val heartRate: Int? = null,
     val calories: Int = 0,
-    val totalRunningTime: Duration = Duration.ZERO,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
     val totalRunningDistance: Double = 0.0,
     val timeStamp: OffsetDateTime = TimeProvider.now(),
 ) {

@@ -20,7 +20,7 @@ data class RunningRecordResponse(
         userId = runningRecord.userId,
         runningPoints = runningPoints.map { RunningPointResponse(it) },
         totalDistance = runningRecord.totalDistance,
-        totalTime = runningRecord.totalTime.toMillis(),
+        totalTime = runningRecord.totalTime,
         totalCalories = runningRecord.totalCalories,
         startAt = runningRecord.startAt,
         averageSpeed = runningRecord.averageSpeed,

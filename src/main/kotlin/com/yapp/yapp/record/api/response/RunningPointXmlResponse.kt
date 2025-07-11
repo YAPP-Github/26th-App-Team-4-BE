@@ -33,7 +33,7 @@ data class RunningPointXmlResponse(
     @JacksonXmlProperty(localName = "calories")
     val calories: Int = 0,
     @JacksonXmlProperty(localName = "totalRunningTime")
-    val totalRunningTime: Duration = Duration.ZERO,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
     @JacksonXmlProperty(localName = "totalRunningDistance")
     var totalRunningDistance: Double = 0.0,
     @JacksonXmlProperty(localName = "timeStamp")

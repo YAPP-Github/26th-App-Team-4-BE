@@ -15,7 +15,7 @@ data class RunningDoneResponse(
     constructor(runningRecord: RunningRecord) : this(
         runningRecord.id,
         runningRecord.totalDistance,
-        runningRecord.totalTime.toMillis(),
+        runningRecord.totalTime,
         runningRecord.totalCalories,
         runningRecord.startAt,
         runningRecord.averageSpeed,

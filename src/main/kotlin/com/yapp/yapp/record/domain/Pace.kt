@@ -14,17 +14,30 @@ class Pace(
             if (distanceMeter <= 0.0 || duration.isZero) {
                 return 0L
             }
-            // 2. 거리를 미터(m)에서 킬로미터(km)로 변환
             val distanceKm = distanceMeter / 1000.0
 
-            // 3. 1km당 페이스 계산 (총 시간 / 총 거리(km))
             return (duration.toMillis() / distanceKm).toLong()
+        }
+
+        fun calculatePace(
+            distanceMeter: Double,
+            durationMills: Long,
+        ): Long {
+            if (distanceMeter <= 0.0 || durationMills == 0L) {
+                return 0L
+            }
+            val distanceKm = distanceMeter / 1000.0
+
+            return (durationMills / distanceKm).toLong()
         }
     }
     constructor() : this(0L)
 
     constructor(distanceMeter: Double, duration: Duration) :
         this(calculatePace(distanceMeter, duration))
+
+    constructor(distanceMeter: Double, durationMills: Long) :
+        this(calculatePace(distanceMeter, durationMills))
 
     override fun toString(): String {
         val seconds = TimeProvider.millsToSecond(toMills())

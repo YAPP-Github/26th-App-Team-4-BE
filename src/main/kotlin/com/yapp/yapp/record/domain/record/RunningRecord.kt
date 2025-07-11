@@ -4,7 +4,6 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.RecordStatus
 import com.yapp.yapp.record.domain.RunningMetricsCalculator
-import com.yapp.yapp.record.domain.converter.DurationConverter
 import com.yapp.yapp.record.domain.converter.PaceConverter
 import com.yapp.yapp.record.domain.point.RunningPoint
 import jakarta.persistence.Column
@@ -16,7 +15,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.time.Duration
 import java.time.OffsetDateTime
 
 @Entity
@@ -30,8 +28,7 @@ class RunningRecord(
     @Column(nullable = false)
     var totalDistance: Double = 0.0,
     @Column(nullable = false)
-    @Convert(converter = DurationConverter::class)
-    var totalTime: Duration = Duration.ZERO,
+    var totalTime: Long = 0L,
     @Column(nullable = false)
     var totalCalories: Int = 0,
     @Column(nullable = false)
@@ -69,8 +66,8 @@ class RunningRecord(
         this.averageSpeed =
             RunningMetricsCalculator.calculateSpeedKmh(
                 distanceMeter = this.totalDistance,
-                seconds = this.totalTime.seconds,
+                seconds = TimeProvider.millsToSecond(this.totalTime),
             )
-        this.averagePace = Pace(distanceMeter = this.totalDistance, duration = this.totalTime)
+        this.averagePace = Pace(distanceMeter = this.totalDistance, durationMills = this.totalTime)
     }
 }
