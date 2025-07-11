@@ -313,7 +313,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("goal", "목표 조회")
+            filter("goal", "goal-search")
                 .tag(Tag.GOAL_API)
                 .summary("목표 조회 API")
                 .description("목표를 조회합니다.")
