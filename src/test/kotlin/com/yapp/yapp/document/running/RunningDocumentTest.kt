@@ -42,7 +42,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.recordId").description("러닝 기록 ID"),
                 )
         val filter =
-            filter("러닝 API", "러닝 시작")
+            filter("running", "running-start")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 시작")
                 .description("러닝을 시작하는 API입니다.")
@@ -100,7 +100,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.runningPoint.totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
                 )
         val filter =
-            filter("러닝 API", "러닝 업데이트")
+            filter("running", "running-update")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 업데이트")
                 .description("러닝 기록을 업데이트하는 API입니다.")
@@ -140,7 +140,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
         val filter =
-            filter("러닝 API", "러닝 업데이트 XML")
+            filter("running", "running-update-XML")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 업데이트")
                 .description("러닝 기록을 업데이트하는 API입니다.")
@@ -189,7 +189,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 )
 
         val filter =
-            filter("러닝 API", "러닝 중단")
+            filter("running", "running-stop")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 중단")
                 .description("러닝 기록을 중단하는 API입니다.")
@@ -264,7 +264,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             )
 
         val filter =
-            filter("러닝 API", "러닝 완료")
+            filter("running", "running-done")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 완료")
                 .description("러닝 기록을 완료하는 API입니다.")
