@@ -23,6 +23,8 @@ class User(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val provider: ProviderType,
+    @Enumerated(EnumType.STRING)
+    var runnerType: RunnerType? = null,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 )
