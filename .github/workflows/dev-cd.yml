@@ -6,10 +6,10 @@ on:
     branches: [ dev ]
 
 jobs:
-#  build:
-#    name: Build
-#    runs-on: ubuntu-latest
-#    steps:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
 #      - name: Checkout
 #        uses: actions/checkout@v4
 #        with:
@@ -33,26 +33,26 @@ jobs:
 #      - name: Push Docker Image
 #        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/fitrun-dev:latest
 #
-#      - uses: actions/checkout@v4
-#      - name: Copy deployment files
-#        uses: appleboy/scp-action@v0.1.4
-#        with:
-#          host: ${{ secrets.DEV_HOST }}
-#          username: ${{ secrets.DEV_USERNAME }}
-#          key: ${{ secrets.DEV_BASTION_KEY }}
-#          port: 22
-#
-#          proxy_host: ${{ secrets.DEV_BASTION_IP }}
-#          proxy_username: ${{ secrets.DEV_BASTION_USERNAME }}
-#          proxy_key: ${{ secrets.DEV_BASTION_KEY }}
-#          proxy_port: 22
-#
-#          timeout: 120s
-#          source: "./deployment/dev/"
-#          target: /home/yapp/
+      - uses: actions/checkout@v4
+      - name: Copy deployment files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.DEV_BASTION_KEY }}
+          port: 22
+
+          proxy_host: ${{ secrets.DEV_BASTION_IP }}
+          proxy_username: ${{ secrets.DEV_BASTION_USERNAME }}
+          proxy_key: ${{ secrets.DEV_BASTION_KEY }}
+          proxy_port: 22
+
+          timeout: 120s
+          source: "./deployment/dev/"
+          target: /home/yapp/
 
   deploy:
-#    needs: build
+    needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
