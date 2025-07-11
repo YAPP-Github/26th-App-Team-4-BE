@@ -7,7 +7,6 @@ import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
-import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
 
 @Component
@@ -17,10 +16,7 @@ class LoggingWrappingFilter : Filter {
         response: ServletResponse,
         chain: FilterChain,
     ) {
-        val wrappedRequest =
-            ContentCachingRequestWrapper(request as HttpServletRequest).apply {
-                setCharacterEncoding("UTF-8")
-            }
+        val wrappedRequest = ReadableRequestWrapper(request as HttpServletRequest)
         val wrappedResponse =
             ContentCachingResponseWrapper(response as HttpServletResponse).apply {
                 characterEncoding = "UTF-8"

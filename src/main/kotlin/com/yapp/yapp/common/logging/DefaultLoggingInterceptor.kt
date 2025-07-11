@@ -1,5 +1,8 @@
 package com.yapp.yapp.common.logging
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.yapp.yapp.common.logging.format.RequestLogFormat
+import com.yapp.yapp.common.logging.format.ResponseLogFormat
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.RequestDispatcher
 import jakarta.servlet.http.HttpServletRequest
@@ -7,17 +10,17 @@ import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
-import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
 import java.io.Serializable
 import java.util.UUID
 
 @Component
-class DefaultLoggingInterceptor : HandlerInterceptor {
+class DefaultLoggingInterceptor(
+    private val objectMapper: ObjectMapper,
+) : HandlerInterceptor {
     private val logger = KotlinLogging.logger {}
 
     companion object {
-        const val IGNORE_URI = "/health"
         const val REQUEST_ID = "requestId"
         const val REQUEST_TIME = "requestTime"
         val ignoreUrls = listOf<String>("/health", "/static", "/error")
@@ -40,13 +43,16 @@ class DefaultLoggingInterceptor : HandlerInterceptor {
         val headers = extractHeaders(request)
         val body = extractRequestBody(request)
 
-        logger.info {
-            """{"type":"REQUEST ", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
-                getRequestParameters(
-                    request,
-                )
-            }", "body":$body}"""
-        }
+        val requestLog =
+            RequestLogFormat(
+                requestId = requestId,
+                method = request.method,
+                headers = headers,
+                uri = "${originalUri}${getRequestParameters(request)}",
+                body = body,
+            )
+
+        logger.info { requestLog.toString() }
         return true
     }
 
@@ -66,13 +72,17 @@ class DefaultLoggingInterceptor : HandlerInterceptor {
         val statusText = getStatusText(response.status)
         val body = extractResponseBody(response)
 
-        logger.info {
-            """{"type":"RESPONSE", "requestId":"$requestId", "method":"${request.method}", "uri":"$originalUri${
-                getRequestParameters(
-                    request,
-                )
-            }", "status":"$statusText", "statusCode":${response.status}, "duration":$duration, "body":$body}"""
-        }
+        val responseLog =
+            ResponseLogFormat(
+                requestId = requestId,
+                method = request.method,
+                uri = "${originalUri}${getRequestParameters(request)}",
+                status = statusText,
+                statusCode = response.status,
+                duration = duration,
+                body = body.toString(),
+            )
+        logger.info { responseLog.toString() }
     }
 
     private fun shouldIgnore(request: HttpServletRequest): Boolean {
@@ -99,14 +109,11 @@ class DefaultLoggingInterceptor : HandlerInterceptor {
     }
 
     private fun extractRequestBody(request: HttpServletRequest): Serializable {
-        return if (request is ContentCachingRequestWrapper) {
+        val wrapper = request as ReadableRequestWrapper
+        return if (request is ReadableRequestWrapper) {
             try {
-                val string =
-                    java.lang.String(
-                        request.contentAsByteArray,
-                        request.characterEncoding ?: "UTF-8",
-                    )
-                string.take(300).toString()
+                objectMapper.readTree(wrapper.contentAsByteArray)
+                    .toString()
             } catch (e: Exception) {
                 "[Body 조회를 실패했습니다: ${e.message}]"
             }
