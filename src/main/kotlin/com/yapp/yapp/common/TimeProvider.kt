@@ -38,4 +38,20 @@ object TimeProvider {
         } else {
             fold(Duration.ZERO) { acc, duration -> acc.plus(duration) }.dividedBy(size.toLong())
         }
+
+    fun millsToMinute(mills: Long): Long {
+        return mills / 1000 / 60
+    }
+
+    fun millsToSecond(mills: Long): Long {
+        return mills / 1000
+    }
+
+    fun toMills(
+        minute: Int = 0,
+        second: Int = 0,
+        mills: Long = 0L,
+    ): Long {
+        return (minute * 60 + second) * 1000L + mills
+    }
 }

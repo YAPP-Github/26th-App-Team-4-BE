@@ -45,7 +45,7 @@ class RunningService(
                 lon = request.lon,
                 heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
-                totalRunningTime = Duration.parse(request.totalRunningTime),
+                totalRunningTime = Duration.ofMillis(request.totalRunningTime),
             )
         runningRecordManager.updateRecord(runningRecord)
         return RunningPointResponse(newRunningPoint)

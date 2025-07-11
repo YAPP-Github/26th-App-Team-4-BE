@@ -210,7 +210,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5665,
                 126.9780,
                 142,
-                "PT0S",
+                0L,
                 "2025-06-17T16:12:00+09:00",
             ),
         )
@@ -221,7 +221,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5675,
                 126.9790,
                 140,
-                "PT1S",
+                TimeProvider.toMills(second = 1),
                 "2025-06-17T16:12:01+09:00",
             ),
         )
@@ -285,7 +285,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5665,
                 126.9780,
                 142,
-                "PT0S",
+                0L,
                 "2025-06-17T16:12:00+09:00",
             ),
         )
@@ -296,7 +296,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5675,
                 126.9790,
                 140,
-                "PT1S",
+                TimeProvider.toMills(second = 1),
                 "2025-06-17T16:12:01+09:00",
             ),
         )

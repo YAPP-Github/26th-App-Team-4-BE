@@ -4,6 +4,7 @@ import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
+import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 
@@ -23,7 +24,7 @@ object RequestFixture {
         lat: Double = 37.5665,
         lon: Double = 126.9780,
         heartRate: Int = 142,
-        totalRunningTime: String = "PT1M2.12S",
+        totalRunningTime: Long = (1 * 60 + 2) * 1000 + 12,
         timeStamp: String = "2025-06-17T16:12:00+09:00",
     ) = RunningUpdateRequest(
         lat = lat,
@@ -47,5 +48,9 @@ object RequestFixture {
             ),
     ): OnboardingRequest {
         return OnboardingRequest(answers)
+    }
+
+    fun paceGoalRequest(pace: Long = (7 * 60 + 30) * 1000L): PaceGoalRequest {
+        return PaceGoalRequest(pace)
     }
 }

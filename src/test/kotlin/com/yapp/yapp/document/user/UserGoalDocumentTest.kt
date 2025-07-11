@@ -2,8 +2,8 @@ package com.yapp.yapp.document.user
 
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
+import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
-import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import java.time.Duration
 
 class UserGoalDocumentTest : BaseDocumentTest() {
     @Test
@@ -110,7 +111,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalRequest(pace = "PT6M30S")
+        val request = RequestFixture.paceGoalRequest()
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -216,7 +217,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = Duration.ofSeconds(40 * 60 + 30).toMillis())
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -430,7 +431,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalRequest(pace = "PT6M30S")
+        val request = RequestFixture.paceGoalRequest()
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -536,7 +537,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = Duration.ofSeconds(40 * 60 + 30).toMillis())
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")

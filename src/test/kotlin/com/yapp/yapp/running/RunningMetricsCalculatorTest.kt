@@ -119,6 +119,6 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
         // then
         Assertions.assertThat(runningRecord.totalDistance).isCloseTo(totalDistance, within(0.001))
         Assertions.assertThat(runningRecord.averageSpeed).isCloseTo(averageSpeed, within(0.001))
-        Assertions.assertThat(runningRecord.averagePace.pacePerKm.seconds).isEqualTo(averagePace.pacePerKm.seconds)
+        Assertions.assertThat(runningRecord.averagePace.toMills()).isEqualTo(averagePace.toMills())
     }
 }

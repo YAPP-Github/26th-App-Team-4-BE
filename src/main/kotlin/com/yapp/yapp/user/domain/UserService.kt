@@ -112,7 +112,7 @@ class UserService(
             is WeeklyRunCountGoalRequest -> userGoalManager.saveWeeklyRunCountGoal(user, request.count)
             is PaceGoalRequest -> userGoalManager.savePaceGoal(user, Pace(request.pace))
             is DistanceGoalRequest -> userGoalManager.saveDistanceGoal(user, request.distanceMeter)
-            is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, Duration.parse(request.time))
+            is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, Duration.ofMillis(request.time))
             is RunningPurposeRequest -> userGoalManager.saveRunningPurpose(user, request.runningPurpose)
         }
     }
