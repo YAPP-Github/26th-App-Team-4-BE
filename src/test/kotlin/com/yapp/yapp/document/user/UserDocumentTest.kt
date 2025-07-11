@@ -32,7 +32,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("사용자 API", "조회")
+            filter("user", "search")
                 .tag(Tag.USER_API)
                 .summary("사용자 조회 API")
                 .description("액세스 토큰을 통해 사용자 정보를 조회합니다.")
@@ -65,7 +65,7 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
 
         val restDocsFilter =
-            filter("사용자 API", "회원 탈퇴")
+            filter("user", "withdraw")
                 .tag(Tag.USER_API)
                 .summary("사용자 회원 탈퇴 API")
                 .description("액세스 토큰을 통해 회원 탈퇴 합니다.")
@@ -101,7 +101,7 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
 
         val restDocsFilter =
-            filter("사용자 API", "온보딩 저장")
+            filter("user", "onboarding-save")
                 .tag(Tag.USER_API)
                 .summary("온보딩 저장 API")
                 .description("온보딩 설문 조사를 저장하는 API 입니다.")
@@ -146,7 +146,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("사용자 API", "온보딩 조회")
+            filter("user", "onboarding-search")
                 .tag(Tag.USER_API)
                 .summary("온보딩 조회 API")
                 .description("온보딩 설문 조사를 조회하는 API 입니다.")
@@ -200,7 +200,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("사용자 API", "온보딩 수정")
+            filter("user", "onboarding-update")
                 .tag(Tag.USER_API)
                 .summary("온보딩 수정 API")
                 .description("온보딩 설문 조사를 수정하는 API 입니다.")
@@ -254,7 +254,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("사용자 API", "러너 타입 조회")
+            filter("user", "runner-type-search")
                 .tag(Tag.USER_API)
                 .summary("러너 타입 조회 API")
                 .description("사용자의 러너 타입을 조회합니다.")
