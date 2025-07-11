@@ -250,7 +250,7 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runnerType").description("러너 유형(Enum). BEGINNER: 초보, INTERMEDIATE: 중급, EXPERT: 고급"),
+                    fieldWithPath("result.runnerType").description("러너 유형(Enum). 초보: 워밍업, 중급: 루틴, 고급: 챌린저"),
                 )
 
         val restDocsFilter =

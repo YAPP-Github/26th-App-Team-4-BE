@@ -78,10 +78,10 @@ class UserService(
     @Transactional(readOnly = true)
     fun getRunnerType(userId: Long): RunnerTypeResponse {
         val user = userManager.getActiveUser(userId)
-        if (user.runnerType == null) {
-            throw CustomException(ErrorCode.ANSWER_NOT_FOUND)
-        }
-        return RunnerTypeResponse(userId = user.id, runnerType = user.runnerType!!)
+        val runnerType: RunnerType =
+            user.runnerType
+                ?: throw CustomException(ErrorCode.RUNNER_TYPE_NOT_FOUND)
+        return RunnerTypeResponse(userId = user.id, runnerType = runnerType)
     }
 
     @Transactional

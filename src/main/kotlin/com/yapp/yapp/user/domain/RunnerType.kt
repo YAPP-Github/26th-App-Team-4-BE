@@ -1,9 +1,11 @@
 package com.yapp.yapp.user.domain
 
-enum class RunnerType {
-    BEGINNER,
-    INTERMEDIATE,
-    EXPERT,
+enum class RunnerType(
+    val description: String,
+) {
+    BEGINNER("워밍업"),
+    INTERMEDIATE("루틴"),
+    EXPERT("챌린저"),
     ;
 
     companion object {
