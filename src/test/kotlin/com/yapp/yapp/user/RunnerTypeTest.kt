@@ -2,56 +2,54 @@ package com.yapp.yapp.user
 
 import com.yapp.yapp.user.domain.RunnerType
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.ValueSource
 
 class RunnerTypeTest {
-    @Test
-    fun `초보 러너 타입을 계산한다`() {
+    @ParameterizedTest
+    @ValueSource(ints = [7, 8, 9])
+    fun `초보 러너 타입을 계산한다`(noCount: Int) {
         // given
         val yseNoCount = 9
 
         // then
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 7, yseNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
             .isEqualTo(RunnerType.BEGINNER)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 8, yseNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
             .isEqualTo(RunnerType.BEGINNER)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 9, yseNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
             .isEqualTo(RunnerType.BEGINNER)
     }
 
-    @Test
-    fun `중급 러너 타입을 계산한다`() {
-        // given
-        val yseNoCount = 9
-
-        // then
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 4, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.INTERMEDIATE)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 5, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.INTERMEDIATE)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 6, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.INTERMEDIATE)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 3, yseNoCount = 6))
-            .isEqualTo(RunnerType.INTERMEDIATE)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 0, yseNoCount = 0))
-            .isEqualTo(RunnerType.INTERMEDIATE)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 1, yseNoCount = 2))
+    @ParameterizedTest
+    @CsvSource(
+        "4, 9",
+        "5, 9",
+        "6, 9",
+        "3, 6",
+        "0, 0",
+        "1, 2",
+    )
+    fun `중급 러너 타입을 계산한다`(
+        noCount: Int,
+        yesNoCount: Int,
+    ) {
+        // when & then
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yesNoCount))
             .isEqualTo(RunnerType.INTERMEDIATE)
     }
 
-    @Test
-    fun `고급 러너 타입을 계산한다`() {
+    @ParameterizedTest
+    @ValueSource(ints = [0, 1, 2, 3])
+    fun `고급 러너 타입을 계산한다`(noCount: Int) {
         // given
         val yseNoCount = 9
 
         // then
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 0, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.EXPERT)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 1, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.EXPERT)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 2, yseNoCount = yseNoCount))
-            .isEqualTo(RunnerType.EXPERT)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = 3, yseNoCount = yseNoCount))
+        Assertions.assertThat(
+            RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount),
+        )
             .isEqualTo(RunnerType.EXPERT)
     }
 }

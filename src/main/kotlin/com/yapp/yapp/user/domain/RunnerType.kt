@@ -11,12 +11,12 @@ enum class RunnerType(
     companion object {
         fun calculateRunnerType(
             noCount: Int,
-            yseNoCount: Int,
+            yesNoCount: Int,
         ): RunnerType {
-            if (yseNoCount == 0) {
+            if (yesNoCount == 0) {
                 return INTERMEDIATE
             }
-            val ratio = noCount.toDouble() / yseNoCount
+            val ratio = noCount.toDouble() / yesNoCount
             return when (ratio) {
                 in 0.0..<0.4 -> EXPERT
                 in 0.4..<0.7 -> INTERMEDIATE
