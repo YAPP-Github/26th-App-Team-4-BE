@@ -17,9 +17,8 @@ class HomeController(
     fun getHomeScreenData(
         @CurrentUser id: Long,
     ): ApiResponse<HomeResponse> {
-        TODO()
+        return ApiResponse.success(
+            homeService.getHomeScreenData(id),
+        )
     }
-
-//    @GetMapping("/goals/{goalType}")
-//    fun get
 }

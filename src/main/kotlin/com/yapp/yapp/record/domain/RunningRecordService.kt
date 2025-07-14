@@ -32,7 +32,7 @@ class RunningRecordService(
         val runningRecordResponse =
             recordManager.getRunningRecords(
                 userId = userId,
-                type = searchType,
+                searchType = searchType,
                 targetDate = targetDate,
                 pageable = pageable,
             ).map { RunningRecordResponse(it, pointManager.getRunningPoints(it)) }

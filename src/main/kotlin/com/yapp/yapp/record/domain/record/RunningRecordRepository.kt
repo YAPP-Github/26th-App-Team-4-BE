@@ -9,10 +9,14 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
         userId: Long,
         startDate: OffsetDateTime,
         endDate: OffsetDateTime,
-        pageable: Pageable,
+        pageable: Pageable?,
     ): List<RunningRecord>
 
-    fun findAllByUserIdOrderByStartAtDesc(userId: Long): List<RunningRecord>
-
     fun findFirstByUserIdOrderByStartAtDesc(userId: Long): RunningRecord?
+
+    fun countByUserIdAndStartAtBetween(
+        userId: Long,
+        startDate: OffsetDateTime,
+        endDate: OffsetDateTime,
+    ): Int
 }

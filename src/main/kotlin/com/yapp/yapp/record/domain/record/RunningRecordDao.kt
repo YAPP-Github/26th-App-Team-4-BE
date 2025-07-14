@@ -1,5 +1,6 @@
 package com.yapp.yapp.record.domain.record
 
+import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.RecordsSearchType
@@ -25,7 +26,7 @@ class RunningRecordDao(
         userId: Long,
         targetDate: OffsetDateTime,
         type: RecordsSearchType,
-        pageable: Pageable,
+        pageable: Pageable? = null,
     ): List<RunningRecord> {
         val startDate = type.getStartDate(targetDate)
         val endDate = type.getEndDate(targetDate)
@@ -37,11 +38,14 @@ class RunningRecordDao(
         )
     }
 
-    fun getAllRunningRecordList(userId: Long): List<RunningRecord> {
-        return runningRecordRepository.findAllByUserIdOrderByStartAtDesc(userId)
-    }
-
     fun findRecentRunningRecord(user: User): RunningRecord? {
         return runningRecordRepository.findFirstByUserIdOrderByStartAtDesc(user.id)
+    }
+
+    fun getThisWeekRunningCount(user: User): Int {
+        val targetDate = TimeProvider.now()
+        val startDate = RecordsSearchType.WEEKLY.getStartDate(targetDate)
+        val endDate = RecordsSearchType.WEEKLY.getEndDate(targetDate)
+        return runningRecordRepository.countByUserIdAndStartAtBetween(userId = user.id, startDate = startDate, endDate = endDate)
     }
 }

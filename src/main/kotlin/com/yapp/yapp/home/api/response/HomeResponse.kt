@@ -9,7 +9,7 @@ data class HomeResponse(
     val record: RecordResponse,
     val userGoal: GoalResponse,
 ) {
-    constructor(user: User, userGoal: UserGoal, recentRecord: RunningRecord, totalRecord: RunningRecord, thisWeekRunCount: Int) :
+    constructor(user: User, userGoal: UserGoal, recentRecord: RunningRecord?, totalRecord: RunningRecord, thisWeekRunningCount: Int) :
         this(
             user = UserResponse(userId = user.id, nickname = user.nickname),
             userGoal =
@@ -23,8 +23,8 @@ data class HomeResponse(
             record =
                 RecordResponse(
                     totalDistance = totalRecord.totalDistance,
-                    thisWeekRunCount = thisWeekRunCount,
-                    recentPace = recentRecord.averagePace.toMills(),
+                    thisWeekRunningCount = thisWeekRunningCount,
+                    recentPace = recentRecord?.averagePace!!.toMills(),
                     recentDistanceMeter = recentRecord.totalDistance,
                     recentTime = recentRecord.totalTime,
                 ),
@@ -37,10 +37,10 @@ data class HomeResponse(
 
     data class RecordResponse(
         val totalDistance: Double,
-        val thisWeekRunCount: Int,
-        val recentPace: Long,
-        val recentDistanceMeter: Double,
-        val recentTime: Long,
+        val thisWeekRunningCount: Int,
+        val recentPace: Long? = null,
+        val recentDistanceMeter: Double? = null,
+        val recentTime: Long? = null,
     )
 
     data class GoalResponse(

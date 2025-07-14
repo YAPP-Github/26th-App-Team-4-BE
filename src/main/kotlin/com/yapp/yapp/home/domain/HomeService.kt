@@ -1,6 +1,7 @@
 package com.yapp.yapp.home.domain
 
 import com.yapp.yapp.home.api.response.HomeResponse
+import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.user.domain.UserManager
 import com.yapp.yapp.user.domain.goal.UserGoalManager
@@ -17,9 +18,20 @@ class HomeService(
     fun getHomeScreenData(id: Long): HomeResponse {
         val user = userManager.getActiveUser(id)
         val userGoal = userGoalManager.getUserGoal(user)
-//        val runningRecord = recordManager.findRecentRunningRecord(user)
-//        recordManager
-//            .HomeResponse()
-        TODO()
+        val recentRunningRecord = recordManager.findRecentRunningRecord(user)
+        val totalRecord =
+            recordManager.getTotalRecord(
+                user = user,
+                searchType = RecordsSearchType.ALL,
+            )
+        val thisWeekRunningCount = recordManager.getThisWeekRunningCount(user)
+
+        return HomeResponse(
+            user = user,
+            userGoal = userGoal,
+            totalRecord = totalRecord,
+            recentRecord = recentRunningRecord,
+            thisWeekRunningCount = thisWeekRunningCount,
+        )
     }
 }

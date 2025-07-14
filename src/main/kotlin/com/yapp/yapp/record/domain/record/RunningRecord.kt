@@ -23,7 +23,7 @@ class RunningRecord(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
-    @Column(nullable = false)
+    @Column(nullable = false) // TODO user로 바꾸기
     val userId: Long = 0L,
     @Column(nullable = false)
     var totalDistance: Double = 0.0,
@@ -73,7 +73,7 @@ class RunningRecord(
 
     fun update(
         totalDistance: Double? = null,
-        totalTime: Duration? = null,
+        totalTime: Long? = null,
         totalCalories: Int? = null,
         averageSpeed: Double? = null,
         averagePace: Pace? = null,
