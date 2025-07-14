@@ -38,10 +38,10 @@ jobs:
 
       # GCP Artifact Registry 인증
       - name: Authenticate Docker with GCP Artifact Registry
-        run: gcloud auth configure-docker ${{ env.REGION }}
+        run: gcloud auth configure-docker "${{ env.REGION }}"
 
       - name: Set IMAGE variable
-        run: echo "IMAGE=${{ env.REGION }}/${{ secrets.GCP_STAG_PROJECT_ID }}/${{ env.IMAGE_REGISTRY }}/fitrun-staging" >> $GITHUB_ENV
+        run: echo "IMAGE=${{ env.REGION }}/${{ secrets.GCP_STAG_PROJECT_ID }}/${{ env.IMAGE_REGISTRY }}/fitrun-staging" >> "$GITHUB_ENV"
 
       - name: Build Docker Image
         run: |
@@ -54,7 +54,7 @@ jobs:
       - name: Replace variables using envsubst
         run: |
           CONFIG=./deployment/staging/data/promtail/promtail-config.yml
-          envsubst < $CONFIG > tmp && mv tmp $CONFIG
+          envsubst < "$CONFIG" > tmp && mv tmp $CONFIG
 
       - name: Copy deployment files via IAP
         run: |
