@@ -13,11 +13,6 @@ class OnboardingManager(
 
     fun getAll(user: User): List<Onboarding> = onboardingDao.findAllByUser(user)
 
-    fun getAnswer(
-        user: User,
-        questionType: OnboardingQuestionType,
-    ): Onboarding = onboardingDao.getAnswerByUser(user, questionType)
-
     fun updateQuestion(
         user: User,
         questionType: OnboardingQuestionType,
