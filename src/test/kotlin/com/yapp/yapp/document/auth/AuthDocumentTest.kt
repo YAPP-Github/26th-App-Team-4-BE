@@ -47,7 +47,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("인증 API", "소셜 로그인")
+            filter("auth", "social-login")
                 .tag(Tag.AUTH_API)
                 .summary("소셜 로그인 API")
                 .description("소셜 로그인을 통해 토큰 정보(액세스, 리프레시)와 사용자 정보를 받습니다")
@@ -85,7 +85,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("인증 API", "로그아웃")
+            filter("auth", "logout")
                 .tag(Tag.AUTH_API)
                 .summary("로그아웃 API")
                 .description("발급 받았던 토큰을 무효화하며 로그아웃합니다")
@@ -121,7 +121,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                 )
 
         val restDocsFilter =
-            filter("인증 API", "토큰 재발급")
+            filter("auth", "token-reissue")
                 .tag(Tag.AUTH_API)
                 .summary("토큰 재발급 API")
                 .description("리프레시 토큰을 통해 새로운 액세스 토큰과 리프레시 토큰을 발급받습니다")

@@ -89,5 +89,5 @@ jobs:
           proxy_port: 22
 
           script: |
-            mv ~/docs/build/docs/openapi3.yaml ~/docs/swagger-ui
+            mv ~/docs/build/docs/openapi3.yaml ~/docs/stoplight
             rm -rf ~/docs/build

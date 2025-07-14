@@ -82,7 +82,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 )
 
         val filter =
-            filter("기록 API", "러닝 기록 리스트 조회")
+            filter("record", "record-list-search")
                 .tag(Tag.RECORD_API)
                 .summary("러닝 기록 리스트 조회")
                 .description("사용자의 러닝 기록을 페이징 조회하는 API입니다.")
@@ -152,7 +152,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 )
 
         val filter =
-            filter("기록 API", "러닝 기록 단건 조회")
+            filter("record", "record-detail-search")
                 .tag(Tag.RECORD_API)
                 .summary("러닝 기록 단건 조회")
                 .description("특정 러닝 기록의 상세 정보를 조회하는 API입니다.")
@@ -188,7 +188,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     parameterWithName("recordId").description("조회할 러닝 기록 ID"),
                 )
         val filter =
-            filter("기록 API", "러닝 기록 단건 조회")
+            filter("record", "record-detail-search-XML")
                 .tag(Tag.RECORD_API)
                 .summary("러닝 기록 단건 조회")
                 .description("특정 러닝 기록의 상세 정보를 조회하는 API입니다.")
