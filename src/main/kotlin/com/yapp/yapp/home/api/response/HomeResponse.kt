@@ -15,7 +15,7 @@ data class HomeResponse(
             userGoal =
                 GoalResponse(
                     runningPurpose = userGoal.runningPurpose,
-                    weeklyRunCount = userGoal.weeklyRunCount,
+                    weeklyRunningCount = userGoal.weeklyRunningCount,
                     paceGoal = userGoal.paceGoal?.toMills(),
                     distanceMeterGoal = userGoal.distanceMeterGoal,
                     timeGoal = userGoal.timeGoal,
@@ -45,7 +45,7 @@ data class HomeResponse(
 
     data class GoalResponse(
         var runningPurpose: String? = null,
-        var weeklyRunCount: Int? = null,
+        var weeklyRunningCount: Int? = null,
         var paceGoal: Long? = null,
         var distanceMeterGoal: Double? = null,
         var timeGoal: Long? = null,

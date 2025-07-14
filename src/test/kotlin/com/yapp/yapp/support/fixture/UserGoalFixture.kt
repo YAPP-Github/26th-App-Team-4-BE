@@ -25,7 +25,7 @@ class UserGoalFixture(
                 user = user,
                 distanceMeterGoal = distanceMeterGoal,
                 timeGoal = timeGoal,
-                weeklyRunCount = weeklyRunCount,
+                weeklyRunningCount = weeklyRunCount,
                 paceGoal = paceGoal,
                 runningPurpose = runningPurpose.name,
             ),

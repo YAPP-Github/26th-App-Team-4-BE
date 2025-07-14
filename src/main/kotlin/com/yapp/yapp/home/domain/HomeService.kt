@@ -7,6 +7,7 @@ import com.yapp.yapp.user.domain.UserManager
 import com.yapp.yapp.user.domain.goal.UserGoalManager
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
+import java.time.OffsetDateTime
 
 @Service
 class HomeService(
@@ -15,14 +16,18 @@ class HomeService(
     private val recordManager: RunningRecordManager,
     private val userGoalManager: UserGoalManager,
 ) {
-    fun getHomeScreenData(id: Long): HomeResponse {
-        val user = userManager.getActiveUser(id)
+    fun getHomeScreenData(
+        userId: Long,
+        targetDate: OffsetDateTime,
+    ): HomeResponse {
+        val user = userManager.getActiveUser(userId)
         val userGoal = userGoalManager.getUserGoal(user)
         val recentRunningRecord = recordManager.findRecentRunningRecord(user)
         val totalRecord =
             recordManager.getTotalRecord(
                 user = user,
                 searchType = RecordsSearchType.ALL,
+                targetDate = targetDate,
             )
         val thisWeekRunningCount = recordManager.getThisWeekRunningCount(user)
 

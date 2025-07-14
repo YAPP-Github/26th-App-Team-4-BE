@@ -1,6 +1,5 @@
 package com.yapp.yapp.record.domain.record
 
-import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.Pace
@@ -50,8 +49,9 @@ class RunningRecordManager(
     fun getTotalRecord(
         user: User,
         searchType: RecordsSearchType,
+        targetDate: OffsetDateTime,
     ): RunningRecord {
-        val runningRecordList = runningRecordDao.getRunningRecordList(userId = user.id, targetDate = TimeProvider.now(), type = searchType)
+        val runningRecordList = runningRecordDao.getRunningRecordList(userId = user.id, targetDate = targetDate, type = searchType)
         val totalRunningRecord = RunningRecord(userId = user.id, recordStatus = RecordStatus.DONE)
         if (runningRecordList.isEmpty()) {
             return totalRunningRecord

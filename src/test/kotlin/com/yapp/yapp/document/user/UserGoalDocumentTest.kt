@@ -39,7 +39,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -92,7 +92,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -145,7 +145,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -198,7 +198,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -257,7 +257,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -307,7 +307,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -359,7 +359,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -412,7 +412,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -465,7 +465,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -518,7 +518,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
@@ -577,7 +577,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
+                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
