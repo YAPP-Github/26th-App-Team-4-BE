@@ -20,7 +20,7 @@ class HomeDocumentTest : BaseDocumentTest() {
                 .requestHeader(
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
-                .pathParameter(
+                .queryParameter(
                     parameterWithName("targetDate")
                         .description("조회 기준 날짜 (ISO-8601 문자열), 기본값 현재 시각")
                         .optional(),
