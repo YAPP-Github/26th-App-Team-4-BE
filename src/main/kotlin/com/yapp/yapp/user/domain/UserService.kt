@@ -65,7 +65,12 @@ class UserService(
     @Transactional(readOnly = true)
     fun getUserById(id: Long): UserResponse {
         val user = userManager.getActiveUser(id)
-        return UserResponse(user.id, user.nickname, user.email, user.provider)
+        return UserResponse(
+            id = user.id,
+            nickname = user.nickname,
+            email = user.email,
+            provider = user.provider,
+        )
     }
 
     @Transactional(readOnly = true)
