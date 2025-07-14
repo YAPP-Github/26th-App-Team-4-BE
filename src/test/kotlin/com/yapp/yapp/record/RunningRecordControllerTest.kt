@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import java.time.DayOfWeek
-import java.time.Duration
 
 class RunningRecordControllerTest : BaseControllerTest() {
     @Autowired
@@ -149,7 +148,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
             runningFixture.createRunningRecord(
                 userId = user.id,
                 startAt = now,
-                totalTime = Duration.ofSeconds(10),
+                totalSeconds = 10L,
             )
 
         // when

@@ -21,7 +21,6 @@ import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Duration
 
 @Service
 class UserService(
@@ -112,7 +111,7 @@ class UserService(
             is WeeklyRunCountGoalRequest -> userGoalManager.saveWeeklyRunCountGoal(user, request.count)
             is PaceGoalRequest -> userGoalManager.savePaceGoal(user, Pace(request.pace))
             is DistanceGoalRequest -> userGoalManager.saveDistanceGoal(user, request.distanceMeter)
-            is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, Duration.parse(request.time))
+            is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, request.time)
             is RunningPurposeRequest -> userGoalManager.saveRunningPurpose(user, request.runningPurpose)
         }
     }

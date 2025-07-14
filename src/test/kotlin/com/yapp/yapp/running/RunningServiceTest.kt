@@ -46,7 +46,7 @@ class RunningServiceTest : BaseServiceTest() {
                 0.01,
                 0.01,
                 120,
-                "PT1M2.12S",
+                TimeProvider.toMills(minute = 1, second = 2) + 12,
                 TimeProvider.now().toString(),
             )
 
@@ -69,17 +69,42 @@ class RunningServiceTest : BaseServiceTest() {
         val recordId = runningService.start(userId = userId, startRequest).recordId
 
         val updates =
-            listOf(
-                // 9.444초
-                RunningUpdateRequest(37.54110, 126.95020, 123, "PT9.444S", "2025-06-17T17:00:09.444+09:00"),
-                // 18.887초
-                RunningUpdateRequest(37.54120, 126.95040, 127, "PT18.887S", "2025-06-17T17:00:18.887+09:00"),
-                // 28.331초
-                RunningUpdateRequest(37.54130, 126.95060, 130, "PT28.331S", "2025-06-17T17:00:28.331+09:00"),
-                // 37.775초
-                RunningUpdateRequest(37.54140, 126.95080, 132, "PT37.775S", "2025-06-17T17:00:37.775+09:00"),
-                // 47.218초
-                RunningUpdateRequest(37.54150, 126.95100, 135, "PT47.218S", "2025-06-17T17:00:47.218+09:00"),
+            listOf( // 9.444초
+                RunningUpdateRequest(
+                    37.54110,
+                    126.95020,
+                    123,
+                    TimeProvider.toMills(second = 9, mills = 444),
+                    "2025-06-17T17:00:09.444+09:00",
+                ), // 18.887초
+                RunningUpdateRequest(
+                    37.54120,
+                    126.95040,
+                    127,
+                    TimeProvider.toMills(second = 18, mills = 887),
+                    "2025-06-17T17:00:18.887+09:00",
+                ), // 28.331초
+                RunningUpdateRequest(
+                    37.54130,
+                    126.95060,
+                    130,
+                    TimeProvider.toMills(second = 28, mills = 331),
+                    "2025-06-17T17:00:28.331+09:00",
+                ), // 37.775초
+                RunningUpdateRequest(
+                    37.54140,
+                    126.95080,
+                    132,
+                    TimeProvider.toMills(second = 37, mills = 775),
+                    "2025-06-17T17:00:37.775+09:00",
+                ), // 47.218초
+                RunningUpdateRequest(
+                    37.54150,
+                    126.95100,
+                    135,
+                    TimeProvider.toMills(second = 47, mills = 218),
+                    "2025-06-17T17:00:47.218+09:00",
+                ),
             )
 
         // when & then
@@ -115,7 +140,7 @@ class RunningServiceTest : BaseServiceTest() {
                     lat + (i * 1.0 / 1000),
                     lon + (i * 1.0 / 1000),
                     120 + i,
-                    "PT${i}S",
+                    TimeProvider.toMills(second = i),
                     startAt.plusSeconds(i.toLong()).toString(),
                 ),
             )
@@ -150,7 +175,7 @@ class RunningServiceTest : BaseServiceTest() {
                     lat = startLat + (second * 0.0001),
                     lon = startLon + (second * 0.0001),
                     heartRate = 120 + second,
-                    totalRunningTime = "PT${second}S",
+                    totalRunningTime = TimeProvider.toMills(second = second),
                     timeStamp = startAt.plusSeconds(second.toLong()).toString(),
                 )
             }

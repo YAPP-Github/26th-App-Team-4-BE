@@ -73,7 +73,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("lat").description("위도"),
                     fieldWithPath("lon").description("경도"),
                     fieldWithPath("heartRate").description("심박수").optional(),
-                    fieldWithPath("totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
+                    fieldWithPath("totalRunningTime").description("총 러닝 시간 밀리초 단위"),
                     fieldWithPath("timeStamp").description("데이터를 기록한 시간"),
                 )
                 .requestHeader(
@@ -92,11 +92,11 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.runningPoint.lon").description("경도"),
                     fieldWithPath("result.runningPoint.speed").description("현재 속도 (m/s)"),
                     fieldWithPath("result.runningPoint.distance").description("현재 총 거리 (m)"),
-                    fieldWithPath("result.runningPoint.pace").description("현재 페이스 (1km 이동하는데 걸리는 시간), 초 단위 까지 제공"),
+                    fieldWithPath("result.runningPoint.pace").description("현재 페이스 (1km 이동하는데 걸리는 시간). 밀리초 단위"),
                     fieldWithPath("result.runningPoint.heartRate").description("현재 심박수").optional(),
                     fieldWithPath("result.runningPoint.calories").description("총 소모 칼로리"),
                     fieldWithPath("result.runningPoint.timeStamp").description("데이터를 기록한 시간"),
-                    fieldWithPath("result.runningPoint.totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간"),
+                    fieldWithPath("result.runningPoint.totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간. 밀리초 단위"),
                     fieldWithPath("result.runningPoint.totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
                 )
         val filter =
@@ -210,7 +210,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5665,
                 126.9780,
                 142,
-                "PT0S",
+                0L,
                 "2025-06-17T16:12:00+09:00",
             ),
         )
@@ -221,7 +221,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5675,
                 126.9790,
                 140,
-                "PT1S",
+                TimeProvider.toMills(second = 1),
                 "2025-06-17T16:12:01+09:00",
             ),
         )
@@ -256,11 +256,11 @@ class RunningDocumentTest : BaseDocumentTest() {
             response().responseBodyFieldWithResult(
                 fieldWithPath("result.recordId").description("러닝 기록 ID"),
                 fieldWithPath("result.totalRunningDistance").description("총 러닝 거리 (m)"),
-                fieldWithPath("result.totalRunningTime").description("총 러닝 시간 Duration 형식. ISO-8601 표준 문자열"),
+                fieldWithPath("result.totalRunningTime").description("총 러닝 시간. 밀리초 단위"),
                 fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                 fieldWithPath("result.startAt").description("러닝 시작 시간"),
                 fieldWithPath("result.averageSpeed").description("평균 속도 (m/s)"),
-                fieldWithPath("result.averagePace").description("평균 페이스 (1km 이동하는데 걸리는 시간), 초 단위까지 제공"),
+                fieldWithPath("result.averagePace").description("평균 페이스 (1km 이동하는데 걸리는 시간). 밀리초 단위"),
             )
 
         val filter =
@@ -285,7 +285,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5665,
                 126.9780,
                 142,
-                "PT0S",
+                0L,
                 "2025-06-17T16:12:00+09:00",
             ),
         )
@@ -296,7 +296,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 37.5675,
                 126.9790,
                 140,
-                "PT1S",
+                TimeProvider.toMills(second = 1),
                 "2025-06-17T16:12:01+09:00",
             ),
         )

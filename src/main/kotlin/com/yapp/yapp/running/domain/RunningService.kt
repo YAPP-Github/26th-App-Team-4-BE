@@ -13,7 +13,6 @@ import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Duration
 
 @Service
 class RunningService(
@@ -45,7 +44,7 @@ class RunningService(
                 lon = request.lon,
                 heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
-                totalRunningTime = Duration.parse(request.totalRunningTime),
+                totalRunningTime = request.totalRunningTime,
             )
         runningRecordManager.updateRecord(runningRecord)
         return RunningPointResponse(newRunningPoint)

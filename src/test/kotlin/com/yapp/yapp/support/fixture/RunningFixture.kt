@@ -18,7 +18,7 @@ class RunningFixture(
 ) {
     fun createRunningRecord(
         userId: Long = 0L,
-        totalTime: Duration = Duration.ofSeconds(9),
+        totalSeconds: Long = 9,
         startAt: OffsetDateTime = TimeProvider.parse("2025-06-17T17:00:00.000+09:00"),
     ): RunningRecord {
         // 1) 러닝 레코드 저장
@@ -31,7 +31,6 @@ class RunningFixture(
             )
 
         // 계산 보조 값
-        val totalSeconds = totalTime.seconds
         val caloriesPerSecond = 0.22
         val heartRateStart = 140.0
         val heartRateEnd = 160.0
@@ -50,7 +49,7 @@ class RunningFixture(
 
         // 2) 1초 단위 러닝 포인트 생성 및 저장
         (0..totalSeconds).forEach { curSecond ->
-            val elapsed = Duration.ofSeconds(curSecond)
+            val elapsed = TimeProvider.toMills(second = curSecond.toInt())
             // km/h → m로 환산: (km/h) * (초/3600) * 1000
             val caloriesSoFar = (caloriesPerSecond * curSecond).toInt()
             val heartRate = heartRateStart.toInt() + ((heartRateRange * curSecond) / totalSeconds).toInt()

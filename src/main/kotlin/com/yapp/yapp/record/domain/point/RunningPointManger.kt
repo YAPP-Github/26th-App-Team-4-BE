@@ -4,7 +4,6 @@ import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.record.domain.record.RunningRecord
 import org.springframework.stereotype.Component
-import java.time.Duration
 import java.time.OffsetDateTime
 
 @Component
@@ -33,7 +32,7 @@ class RunningPointManger(
         lon: Double,
         heartRate: Int?,
         timeStamp: OffsetDateTime,
-        totalRunningTime: Duration,
+        totalRunningTime: Long,
     ): RunningPoint {
         val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
         val newRunningPoint =
@@ -49,7 +48,7 @@ class RunningPointManger(
         newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
         newRunningPoint.speedKmh = RunningMetricsCalculator.calculateSpeedKmh(preRunningPoint, newRunningPoint)
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
-        newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, duration = totalRunningTime)
+        newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, durationMills = totalRunningTime)
         return runningPointDao.save(newRunningPoint)
     }
 

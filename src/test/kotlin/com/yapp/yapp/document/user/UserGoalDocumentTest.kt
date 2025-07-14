@@ -2,8 +2,8 @@ package com.yapp.yapp.document.user
 
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
+import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
-import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import java.time.Duration
 
 class UserGoalDocumentTest : BaseDocumentTest() {
     @Test
@@ -39,9 +40,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -76,7 +77,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("pace").description("목표 페이스(ISO 8601 형식)"),
+                    fieldWithPath("pace").description("목표 페이스 밀리초 단위"),
                 )
 
         val restDocsResponse =
@@ -92,9 +93,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -110,7 +111,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalRequest(pace = "PT6M30S")
+        val request = RequestFixture.paceGoalRequest()
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -145,9 +146,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -182,7 +183,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("time").description("목표 시간(ISO 8601 형식)"),
+                    fieldWithPath("time").description("목표 시간 밀리초 단위"),
                 )
 
         val restDocsResponse =
@@ -198,9 +199,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -216,7 +217,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = Duration.ofSeconds(40 * 60 + 30).toMillis())
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -257,9 +258,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -307,9 +308,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -359,9 +360,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -396,7 +397,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("pace").description("목표 페이스(ISO 8601 형식)"),
+                    fieldWithPath("pace").description("목표 페이스 밀리초 단위"),
                 )
 
         val restDocsResponse =
@@ -412,9 +413,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -430,7 +431,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = PaceGoalRequest(pace = "PT6M30S")
+        val request = RequestFixture.paceGoalRequest()
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -465,9 +466,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -502,7 +503,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("time").description("목표 시간(ISO 8601 형식)"),
+                    fieldWithPath("time").description("목표 시간 밀리초 단위"),
                 )
 
         val restDocsResponse =
@@ -518,9 +519,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =
@@ -536,7 +537,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = TimeGoalRequest(time = "PT40M30S")
+        val request = TimeGoalRequest(time = Duration.ofSeconds(40 * 60 + 30).toMillis())
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -577,9 +578,9 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
                     fieldWithPath("result.weeklyRunCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표(ISO 8601 형식)"),
+                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
                 )
 
         val restDocsFilter =

@@ -27,13 +27,13 @@ data class RunningPointXmlResponse(
     @JacksonXmlProperty(localName = "distance")
     var distance: Double = 0.0,
     @JacksonXmlProperty(localName = "pace")
-    var pace: Duration = Pace(secondFor1Km = 0).pacePerKm,
+    var pace: Long = Pace().toMills(),
     @JacksonXmlProperty(localName = "heartRate")
     val heartRate: Int? = 0,
     @JacksonXmlProperty(localName = "calories")
     val calories: Int = 0,
     @JacksonXmlProperty(localName = "totalRunningTime")
-    val totalRunningTime: Duration = Duration.ZERO,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
     @JacksonXmlProperty(localName = "totalRunningDistance")
     var totalRunningDistance: Double = 0.0,
     @JacksonXmlProperty(localName = "timeStamp")
@@ -48,7 +48,7 @@ data class RunningPointXmlResponse(
         lon = runningPoint.lon,
         speed = runningPoint.speedKmh,
         distance = runningPoint.distance,
-        pace = runningPoint.pace.pacePerKm,
+        pace = runningPoint.pace.toMills(),
         heartRate = runningPoint.heartRate,
         calories = runningPoint.calories,
         totalRunningTime = runningPoint.totalRunningTime,

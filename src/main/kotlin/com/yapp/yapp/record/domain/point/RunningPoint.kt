@@ -37,13 +37,13 @@ class RunningPoint(
     var distance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
-    var pace: Pace = Pace(0),
+    var pace: Pace = Pace(),
     @Column(nullable = false)
     val heartRate: Int? = 0,
     @Column(nullable = false)
     val calories: Int = 0,
     @Column(nullable = false)
-    val totalRunningTime: Duration = Duration.ZERO,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
     @Column(nullable = false)
     var totalRunningDistance: Double = 0.0,
     @Column(nullable = false)
