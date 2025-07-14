@@ -1,0 +1,38 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://${LOKI_IP}:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: fitrun-app
+    static_configs:
+      - targets: ["localhost"]
+        labels:
+          job: fitrun-app
+          __path__: /var/log/fitrun/app/*.log
+
+    pipeline_stages:
+      - regex:
+          expression: '\{"type":"(?P<type>REQUEST\s*|RESPONSE)",.*\}'
+      - labels:
+          type:
+
+
+  - job_name: nginx-access
+    static_configs:
+      - targets: ["localhost"]
+        labels:
+          job: nginx-access
+          __path__: /var/log/fitrun/nginx/access.log
+
+  - job_name: nginx-error
+    static_configs:
+      - targets: ["localhost"]
+        labels:
+          job: nginx-error
+          __path__: /var/log/fitrun/nginx/error.log
