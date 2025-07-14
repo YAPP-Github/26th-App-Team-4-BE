@@ -1,9 +1,9 @@
-package com.yapp.yapp.home
+package com.yapp.yapp.home.domain
 
-import com.yapp.yapp.home.api.HomeResponse
+import com.yapp.yapp.home.api.response.HomeResponse
 import com.yapp.yapp.record.domain.record.RunningRecordManager
-import com.yapp.yapp.user.domain.UserGoalManager
 import com.yapp.yapp.user.domain.UserManager
+import com.yapp.yapp.user.domain.goal.UserGoalManager
 import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
 

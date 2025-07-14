@@ -1,8 +1,9 @@
-package com.yapp.yapp.home
+package com.yapp.yapp.home.api
 
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.home.api.HomeResponse
+import com.yapp.yapp.home.api.response.HomeResponse
+import com.yapp.yapp.home.domain.HomeService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

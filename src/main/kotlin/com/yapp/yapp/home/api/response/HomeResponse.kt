@@ -1,8 +1,8 @@
-package com.yapp.yapp.home.api
+package com.yapp.yapp.home.api.response
 
 import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.user.domain.User
-import com.yapp.yapp.user.domain.UserGoal
+import com.yapp.yapp.user.domain.goal.UserGoal
 
 data class HomeResponse(
     val user: UserResponse,
@@ -14,19 +14,19 @@ data class HomeResponse(
             user = UserResponse(userId = user.id, nickname = user.nickname),
             userGoal =
                 GoalResponse(
-                    runningGoal = userGoal.runningGoal,
+                    runningPurpose = userGoal.runningPurpose,
                     weeklyRunCount = userGoal.weeklyRunCount,
-                    paceGoal = userGoal.paceGoal?.pacePerKm?.toMillis(),
+                    paceGoal = userGoal.paceGoal?.toMills(),
                     distanceMeterGoal = userGoal.distanceMeterGoal,
-                    timeGoal = userGoal.timeGoal?.toMillis(),
+                    timeGoal = userGoal.timeGoal,
                 ),
             record =
                 RecordResponse(
                     totalDistance = totalRecord.totalDistance,
                     thisWeekRunCount = thisWeekRunCount,
-                    recentPace = recentRecord.averagePace.pacePerKm.toMillis(),
+                    recentPace = recentRecord.averagePace.toMills(),
                     recentDistanceMeter = recentRecord.totalDistance,
-                    recentTime = recentRecord.totalTime.toMillis(),
+                    recentTime = recentRecord.totalTime,
                 ),
         )
 
@@ -44,7 +44,7 @@ data class HomeResponse(
     )
 
     data class GoalResponse(
-        var runningGoal: String? = null,
+        var runningPurpose: String? = null,
         var weeklyRunCount: Int? = null,
         var paceGoal: Long? = null,
         var distanceMeterGoal: Double? = null,
