@@ -11,14 +11,14 @@ class RunnerTypeTest {
     @ValueSource(ints = [7, 8, 9])
     fun `초보 러너 타입을 계산한다`(noCount: Int) {
         // given
-        val yseNoCount = 9
+        val yesNoCount = 9
 
         // then
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yesNoCount))
             .isEqualTo(RunnerType.BEGINNER)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yesNoCount))
             .isEqualTo(RunnerType.BEGINNER)
-        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount))
+        Assertions.assertThat(RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yesNoCount))
             .isEqualTo(RunnerType.BEGINNER)
     }
 
@@ -44,11 +44,11 @@ class RunnerTypeTest {
     @ValueSource(ints = [0, 1, 2, 3])
     fun `고급 러너 타입을 계산한다`(noCount: Int) {
         // given
-        val yseNoCount = 9
+        val yesNoCount = 9
 
         // then
         Assertions.assertThat(
-            RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yseNoCount),
+            RunnerType.calculateRunnerType(noCount = noCount, yesNoCount = yesNoCount),
         )
             .isEqualTo(RunnerType.EXPERT)
     }

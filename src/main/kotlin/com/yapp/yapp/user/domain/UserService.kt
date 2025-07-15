@@ -42,9 +42,9 @@ class UserService(
                     answer = it.answer,
                 )
             }
-        val yseNoCount = onboardings.count { it.answer != OnboardingAnswerLabel.B }
+        val yesNoCount = onboardings.count { it.answer != OnboardingAnswerLabel.B }
         val noCount = onboardings.count { it.answer == OnboardingAnswerLabel.C }
-        val runnerType = RunnerType.calculateRunnerType(noCount, yseNoCount)
+        val runnerType = RunnerType.calculateRunnerType(noCount, yesNoCount)
 
         onboardingManager.saveAll(onboardings)
         userManager.updateRunnerType(user = user, runnerType = runnerType)
