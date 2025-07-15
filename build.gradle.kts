@@ -86,6 +86,9 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api")
     implementation("com.sun.xml.bind:jaxb-impl")
+
+    // logback
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
 }
 
 kotlin {

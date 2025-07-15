@@ -1,0 +1,60 @@
+<configuration>
+    <!-- 기본 Spring Boot 색상, 패턴 포함 (선택 사항) -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!--    설정파일 지정 -->
+    <springProperty name="FILE_NAME" source="secret.logging.file.name"/>
+    <springProperty name="FILE_PATTERN" source="secret.logging.file.pattern"/>
+
+    <!-- 콘솔용: 텍스트 출력 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%thread]){magenta} %clr(%-5level){yellow} %clr(%logger{36}){cyan} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <!-- 루트 로거 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <springProfile name="!local">
+        <!-- JSON 형식 로그 파일 저장 -->
+        <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${FILE_NAME}</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${FILE_PATTERN}</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp>
+                        <fieldName>timestamp</fieldName>
+                    </timestamp>
+                    <pattern>
+                        <pattern>
+                            {
+                            "level": "%level",
+                            "logger": "%logger",
+                            "thread": "%thread",
+                            "message": "%message"
+                            }
+                        </pattern>
+                    </pattern>
+                    <stackTrace>
+                        <fieldName>stacktrace</fieldName>
+                    </stackTrace>
+                </providers>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="JSON_FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>

@@ -34,8 +34,8 @@ jobs:
 
           # 3. 기본 브랜치에 이미 머지된 원격 브랜치 목록을 조회합니다.
           #    - sed 's/ *origin\///' : 'origin/' 접두사를 제거하여 순수 브랜치 이름만 추출합니다.
-          #    - grep -v -E "^($DEFAULT_BRANCH|master|develop)$" : 보호할 브랜치(기본 브랜치, master, develop)를 제외합니다.
-          for branch in $(git branch -r --merged origin/$DEFAULT_BRANCH | sed 's/ *origin\///' | grep -v -E "^($DEFAULT_BRANCH|master|develop)$"); do
+          #    - grep -v -E "^($DEFAULT_BRANCH|master|develop|staging)$" : 보호할 브랜치(기본 브랜치, master, develop)를 제외합니다.
+          for branch in $(git branch -r --merged origin/$DEFAULT_BRANCH | sed 's/ *origin\///' | grep -v -E "^($DEFAULT_BRANCH|master|develop|staging)$"); do
             echo "Checking branch: $branch"
 
             # 4. 해당 브랜치로 생성된 PR 중, 닫힌(closed) 상태이고 머지된(merged) PR을 찾습니다.

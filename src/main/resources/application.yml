@@ -33,16 +33,6 @@ oidc:
         - ${secret.oidc.kakao.client-id[2]}
         - ${secret.oidc.kakao.client-id[3]}
 
-logging:
-  level:
-    root: info
-  pattern:
-    file: "[%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}][%-5level][%logger.%method:line%line] - %msg%n"
-  logback:
-    rollingpolicy:
-      file-name-pattern: ${secret.logging.file.pattern}
-      max-history: 30
-
 management:
   server:
     port: ${secret.management.port}
