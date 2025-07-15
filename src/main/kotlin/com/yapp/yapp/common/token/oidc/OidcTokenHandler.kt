@@ -7,7 +7,6 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Jwks
-import java.util.logging.Logger
 
 class OidcTokenHandler(
     private val oidcProperties: OidcProperties,
