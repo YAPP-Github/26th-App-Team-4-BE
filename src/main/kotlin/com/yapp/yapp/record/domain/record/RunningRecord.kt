@@ -23,7 +23,7 @@ class RunningRecord(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
-    @Column(nullable = false)
+    @Column(nullable = false) // TODO user로 바꾸기
     val userId: Long = 0L,
     @Column(nullable = false)
     var totalDistance: Double = 0.0,
@@ -69,5 +69,19 @@ class RunningRecord(
                 seconds = TimeProvider.millsToSecond(this.totalTime),
             )
         this.averagePace = Pace(distanceMeter = this.totalDistance, durationMills = this.totalTime)
+    }
+
+    fun update(
+        totalDistance: Double? = null,
+        totalTime: Long? = null,
+        totalCalories: Int? = null,
+        averageSpeed: Double? = null,
+        averagePace: Pace? = null,
+    ) {
+        totalDistance?.let { this.totalDistance = it }
+        totalTime?.let { this.totalTime = it }
+        totalCalories?.let { this.totalCalories = it }
+        averageSpeed?.let { this.averageSpeed = it }
+        averagePace?.let { this.averagePace = it }
     }
 }

@@ -21,7 +21,7 @@ class UserGoal(
     @Column(nullable = true)
     var runningPurpose: String? = null,
     @Column(nullable = true)
-    var weeklyRunCount: Int? = null,
+    var weeklyRunningCount: Int? = null,
     @Convert(converter = PaceConverter::class)
     @Column(nullable = true)
     var paceGoal: Pace? = null,
@@ -35,7 +35,7 @@ class UserGoal(
     }
 
     fun updateWeeklyRunCount(weeklyRunCount: Int) {
-        this.weeklyRunCount = weeklyRunCount
+        this.weeklyRunningCount = weeklyRunCount
     }
 
     fun updatePaceGoal(paceGoal: Pace) {

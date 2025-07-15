@@ -7,12 +7,10 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Jwks
-import java.util.logging.Logger
 
 class OidcTokenHandler(
     private val oidcProperties: OidcProperties,
 ) {
-    private val logger = Logger.getLogger(this::class.java.simpleName)
     val jwks =
         Jwks.setParser()
             .build()
@@ -36,7 +34,7 @@ class OidcTokenHandler(
         } catch (e: ExpiredJwtException) {
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
-            logger.warning { e.message }
+            e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
     }

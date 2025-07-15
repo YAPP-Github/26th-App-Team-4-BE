@@ -42,9 +42,9 @@ class UserService(
                     answer = it.answer,
                 )
             }
-        val yseNoCount = onboardings.count { it.answer != OnboardingAnswerLabel.B }
+        val yesNoCount = onboardings.count { it.answer != OnboardingAnswerLabel.B }
         val noCount = onboardings.count { it.answer == OnboardingAnswerLabel.C }
-        val runnerType = RunnerType.calculateRunnerType(noCount, yseNoCount)
+        val runnerType = RunnerType.calculateRunnerType(noCount, yesNoCount)
 
         onboardingManager.saveAll(onboardings)
         userManager.updateRunnerType(user = user, runnerType = runnerType)
@@ -65,7 +65,12 @@ class UserService(
     @Transactional(readOnly = true)
     fun getUserById(id: Long): UserResponse {
         val user = userManager.getActiveUser(id)
-        return UserResponse(user.id, user.nickname, user.email, user.provider)
+        return UserResponse(
+            id = user.id,
+            nickname = user.nickname,
+            email = user.email,
+            provider = user.provider,
+        )
     }
 
     @Transactional(readOnly = true)
