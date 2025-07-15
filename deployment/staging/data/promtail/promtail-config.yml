@@ -40,7 +40,7 @@ scrape_configs:
             body: body
 
       - labels:
-          type: unknown
+          type:
 
 
   - job_name: nginx-access
