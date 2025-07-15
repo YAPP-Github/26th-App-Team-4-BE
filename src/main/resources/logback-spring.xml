@@ -41,7 +41,7 @@
                             "level": "%level",
                             "logger": "%logger",
                             "thread": "%thread",
-                            "message": "%message",
+                            "message": "%message"
                             }
                         </pattern>
                     </pattern>
