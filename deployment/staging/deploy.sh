@@ -28,7 +28,8 @@ DATA_PATH="data"
 NGINX_PATH="${DATA_PATH}/nginx"
 NGINX_TEMPLATE_PATH="${NGINX_PATH}/nginx-template.conf"
 NGINX_CONF_PATH="./nginx/nginx.conf"
-PROMTAIL_PATH="${DATA_PATH}/promtail"
+SRC_PROMTAIL_PATH="${DATA_PATH}/promtail/promtail-config.yml"
+DST_PROMTAIL_PATH="./promtail/promtail-config.yml"
 
 #################################################################
 # Function
@@ -69,10 +70,32 @@ run_nginx() {
 
 run_promtail() {
     log_info "Starting ${PROMTAIL_CONTAINER^^} container"
-    if [ -z "$(${DOCKER_COMPOSE} ps -q "${PROMTAIL_CONTAINER}")" ]; then
-        cp -r ${PROMTAIL_PATH} ~/
+
+    ensure_run_container "${PROMTAIL_CONTAINER}"
+
+    if [[ ! -f "${SRC_PROMTAIL_PATH}" ]]; then
+        log_error "Source promtail config not found at ${SRC_PROMTAIL_PATH}"
+        return 1
     fi
-    ensure_run_container ${PROMTAIL_CONTAINER}
+
+    if [[ ! -f "${DST_PROMTAIL_PATH}" ]]; then
+        log_warn "Destination config not found. Copying and starting promtail..."
+        cp "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
+        ${DOCKER_COMPOSE} restart "${PROMTAIL_CONTAINER}"
+        return
+    fi
+
+    local src_conf_hash
+    src_conf_hash=$(sha256sum "${SRC_PROMTAIL_PATH}" | awk '{ print $1 }')
+
+    local dst_conf_hash
+    dst_conf_hash=$(sha256sum "${DST_PROMTAIL_PATH}" | awk '{ print $1 }')
+
+    if [[ "${src_conf_hash}" != "${dst_conf_hash}" ]]; then
+        log_warn "Config changed. Restarting promtail..."
+        cp "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
+        ${DOCKER_COMPOSE} restart "${PROMTAIL_CONTAINER}"
+    fi
 }
 
 run_service() {
