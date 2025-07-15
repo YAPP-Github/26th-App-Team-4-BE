@@ -24,9 +24,9 @@ data class HomeResponse(
                 RecordResponse(
                     totalDistance = totalRecord.totalDistance,
                     thisWeekRunningCount = thisWeekRunningCount,
-                    recentPace = recentRecord?.averagePace!!.toMills(),
-                    recentDistanceMeter = recentRecord.totalDistance,
-                    recentTime = recentRecord.totalTime,
+                    recentPace = recentRecord?.averagePace?.toMills(),
+                    recentDistanceMeter = recentRecord?.totalDistance,
+                    recentTime = recentRecord?.totalTime,
                 ),
         )
 
