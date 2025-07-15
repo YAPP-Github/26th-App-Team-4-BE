@@ -12,7 +12,6 @@ import java.util.logging.Logger
 class OidcTokenHandler(
     private val oidcProperties: OidcProperties,
 ) {
-    private val logger = Logger.getLogger(this::class.java.simpleName)
     val jwks =
         Jwks.setParser()
             .build()
@@ -37,7 +36,6 @@ class OidcTokenHandler(
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
         } catch (e: Exception) {
             e.printStackTrace()
-            logger.warning { e.message }
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
     }
