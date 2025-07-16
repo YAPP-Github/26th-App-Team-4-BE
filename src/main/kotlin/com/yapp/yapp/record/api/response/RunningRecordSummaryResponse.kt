@@ -2,7 +2,7 @@ package com.yapp.yapp.record.api.response
 
 import java.time.OffsetDateTime
 
-data class RunningRecordSummeryResponse(
+data class RunningRecordSummaryResponse(
     val recordId: Long,
     val userId: Long,
     val startAt: OffsetDateTime,

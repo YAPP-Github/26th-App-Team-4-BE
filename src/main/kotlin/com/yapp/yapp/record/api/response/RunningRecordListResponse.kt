@@ -2,7 +2,7 @@ package com.yapp.yapp.record.api.response
 
 data class RunningRecordListResponse(
     val userId: Long,
-    val records: List<RunningRecordSummeryResponse>,
+    val records: List<RunningRecordSummaryResponse>,
     val recordCount: Int,
     val totalDistance: Double,
     val totalTime: Long,
@@ -12,7 +12,7 @@ data class RunningRecordListResponse(
 ) {
     constructor(userId: Long, records: List<RunningRecordResponse>) : this(
         userId = userId,
-        records = records.map { RunningRecordSummeryResponse(it) },
+        records = records.map { RunningRecordSummaryResponse(it) },
         recordCount = records.size,
         totalDistance = records.sumOf { it.totalDistance },
         totalTime = records.fold(0L) { acc, record -> acc.plus(record.totalTime) },
