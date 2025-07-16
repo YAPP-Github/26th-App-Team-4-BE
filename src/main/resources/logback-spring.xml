@@ -3,14 +3,14 @@
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
     <!--    설정파일 지정 -->
-    <springProperty name="FILE_NAME" source="secret.logging.file.name"/>
-    <springProperty name="FILE_PATTERN" source="secret.logging.file.pattern"/>
+    <springProperty name="FILE_NAME" source="logging.file.name"/>
+    <springProperty name="FILE_PATTERN" source="logging.file.pattern"/>
 
     <!-- 콘솔용: 텍스트 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%thread]){magenta} %clr(%-5level){yellow} %clr(%logger{36}){cyan} - %msg%n
+                %clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%thread]){magenta} %clr(%-5level){highlight} %clr(%logger{36}){cyan} - %msg%n
             </pattern>
         </encoder>
     </appender>
