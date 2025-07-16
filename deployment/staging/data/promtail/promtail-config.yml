@@ -17,31 +17,10 @@ scrape_configs:
           __path__: /var/log/fitrun/app/*.log
 
     pipeline_stages:
-      - json:
-          expressions:
-            timestamp: timestamp
-            level: level
-            message: message
-
-      - timestamp:
-          source: timestamp
-          format: RFC3339Nano
-
-      - json:
-          source: message
-          expressions:
-            type: type
-            requestId: requestId
-            uri: uri
-            method: method
-            status: status
-            statusCode: statusCode
-            duration: duration
-            body: body
-
+      - regex:
+          expression: '\{"type":"(?P<type>REQUEST\s*|RESPONSE)",.*\}'
       - labels:
           type:
-
 
   - job_name: nginx-access
     static_configs:
