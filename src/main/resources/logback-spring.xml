@@ -62,8 +62,9 @@
             </filter>
         </appender>
 
-        <logger name="com.yapp" level="ERROR" additivity="false">
+        <logger name="com.yapp" level="ERROR" additivity="true">
             <appender-ref ref="ASYNC_DISCORD"/>
+
         </logger>
 
         <root level="INFO">
