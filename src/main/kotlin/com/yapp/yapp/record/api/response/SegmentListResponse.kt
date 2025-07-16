@@ -1,5 +1,6 @@
 package com.yapp.yapp.record.api.response
 
+import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.point.RunningPoint
 import kotlin.collections.forEach
 
@@ -20,7 +21,7 @@ data class SegmentListResponse(
                         SegmentResponse(
                             orderNo = segmentOrder++,
                             distanceMeter = point.totalRunningDistance,
-                            averagePace = point.pace.toMills(),
+                            averagePace = Pace(distanceMeter = point.totalRunningDistance, durationMills = point.totalRunningTime).toMills(),
                         ),
                     )
                     nextDistance += DIV_DISTANCE
