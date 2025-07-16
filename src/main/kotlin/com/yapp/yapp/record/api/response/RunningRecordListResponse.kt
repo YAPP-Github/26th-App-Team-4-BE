@@ -1,7 +1,5 @@
 package com.yapp.yapp.record.api.response
 
-import com.yapp.yapp.common.TimeProvider.average
-
 data class RunningRecordListResponse(
     val userId: Long,
     val records: List<RunningRecordResponse>,
