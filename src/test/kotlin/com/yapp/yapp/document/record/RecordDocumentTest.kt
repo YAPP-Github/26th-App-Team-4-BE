@@ -26,7 +26,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .requestHeader(
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
-                .pathParameter(
+                .queryParameter(
                     parameterWithName("type")
                         .description("검색 타입 (ALL, TODAY 등). 기본값 ALL")
                         .optional(),
