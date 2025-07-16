@@ -7,4 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 class HealthCheckController {
     @GetMapping("/check/health")
     fun check(): ApiResponse<String> = ApiResponse.success("I'm OK")
+
+    @GetMapping("/check/error")
+    fun error(): Unit = throw IllegalArgumentException("test error")
 }
