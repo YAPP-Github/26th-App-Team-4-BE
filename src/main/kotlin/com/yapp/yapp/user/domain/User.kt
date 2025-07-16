@@ -1,6 +1,8 @@
 package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -27,4 +29,9 @@ class User(
     var runnerType: RunnerType? = null,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
-)
+) {
+    fun getRunnerType(): RunnerType {
+        return runnerType
+            ?: throw CustomException(ErrorCode.RUNNER_TYPE_NOT_FOUND)
+    }
+}

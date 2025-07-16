@@ -1,8 +1,7 @@
 package com.yapp.yapp.user.domain
 
-import com.yapp.yapp.common.exception.CustomException
-import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
 import com.yapp.yapp.user.api.request.GoalRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
@@ -27,6 +26,7 @@ class UserService(
     private val userManager: UserManager,
     private val onboardingManager: OnboardingManager,
     private val userGoalManager: UserGoalManager,
+    private val recordManager: RunningRecordManager,
 ) {
     @Transactional
     fun saveOnboarding(
@@ -83,10 +83,20 @@ class UserService(
     @Transactional(readOnly = true)
     fun getRunnerType(userId: Long): RunnerTypeResponse {
         val user = userManager.getActiveUser(userId)
-        val runnerType: RunnerType =
-            user.runnerType
-                ?: throw CustomException(ErrorCode.RUNNER_TYPE_NOT_FOUND)
+        val runnerType = user.getRunnerType()
         return RunnerTypeResponse(userId = user.id, runnerType = runnerType)
+    }
+
+    @Transactional(readOnly = true)
+    fun getRecommendPace(userId: Long): Pace {
+        val user = userManager.getActiveUser(userId)
+        val runnerType = user.getRunnerType()
+        val recentRunningRecord = recordManager.findRecentRunningRecord(user)
+
+        return userGoalManager.calculateRecommendPace(
+            runnerType = runnerType,
+            recentRunningRecord = recentRunningRecord,
+        )
     }
 
     @Transactional

@@ -1,6 +1,8 @@
 package com.yapp.yapp.user.domain.goal
 
 import com.yapp.yapp.record.domain.Pace
+import com.yapp.yapp.record.domain.record.RunningRecord
+import com.yapp.yapp.user.domain.RunnerType
 import com.yapp.yapp.user.domain.User
 import org.springframework.stereotype.Component
 
@@ -66,5 +68,19 @@ class UserGoalManager(
 
     fun getUserGoal(user: User): UserGoal {
         return userGoalDao.getUserGoal(user)
+    }
+
+    fun calculateRecommendPace(
+        runnerType: RunnerType,
+        recentRunningRecord: RunningRecord?,
+    ): Pace {
+        if (recentRunningRecord == null) {
+            return runnerType.recommendPace
+        }
+        val averagePace = recentRunningRecord.averagePace
+        val recommendPace = runnerType.recommendPace
+
+        val millsPerKm = (averagePace.millsPerKm + recommendPace.millsPerKm) / 2
+        return Pace(millsPerKm)
     }
 }

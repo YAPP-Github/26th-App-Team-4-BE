@@ -7,6 +7,7 @@ import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
+import com.yapp.yapp.user.api.response.RecommendPaceResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
@@ -104,6 +105,18 @@ class UserGoalController(
     ): ApiResponse<UserGoalResponse> {
         return ApiResponse.success(
             UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+        )
+    }
+
+    @GetMapping("/pace/recommend")
+    fun getRecommendPace(
+        @CurrentUser id: Long,
+    ): ApiResponse<RecommendPaceResponse> {
+        return ApiResponse.success(
+            RecommendPaceResponse(
+                userId = id,
+                recommendPace = userService.getRecommendPace(id),
+            ),
         )
     }
 
