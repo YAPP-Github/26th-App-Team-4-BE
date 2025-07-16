@@ -57,4 +57,28 @@
         </root>
     </springProfile>
 
+    <springProperty name="DISCORD_WEBHOOK_URL" source="logging.discord.webhook-url">
+        <!-- DiscordAppender 설정 -->
+        <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
+            <webhookUri>${DISCORD_WEBHOOK_URL}</webhookUri>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss,Asia/Seoul} [%thread] [%-5level] %logger{36} - %msg%n```%ex{full}```
+                </pattern>
+            </layout>
+            <tts>false</tts>
+        </appender>
+
+        <!-- 비동기 처리를 위한 AsyncAppender 설정 -->
+        <appender name="ASYNC_DISCORD" class="ch.qos.logback.classic.AsyncAppender">
+            <!-- 이름이 DISCORD인 Appender에 대해서 비동기 처리 -->
+            <appender-ref ref="DISCORD"/>
+            <!-- 처리되는 로그 중, ERROR 이상의 수준만 필터링하여 실행함 -->
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
+    </springProperty>
+
 </configuration>
+

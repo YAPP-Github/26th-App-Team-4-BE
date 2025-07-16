@@ -59,3 +59,6 @@ logging:
   file:
     name: ${secret.logging.file.name}
     pattern: ${secret.logging.file.pattern}
+  discord:
+    webhook-url: ${secret.logging.discord.webhook-url}
+
