@@ -1,5 +1,6 @@
 package com.yapp.yapp.common.logging
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yapp.yapp.common.logging.format.RequestLogFormat
 import com.yapp.yapp.common.logging.format.ResponseLogFormat
@@ -11,7 +12,6 @@ import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.util.ContentCachingResponseWrapper
-import java.io.Serializable
 import java.util.UUID
 
 @Component
@@ -80,7 +80,7 @@ class DefaultLoggingInterceptor(
                 status = statusText,
                 statusCode = response.status,
                 duration = duration,
-                body = body.toString(),
+                body = body,
             )
         logger.info { responseLog.toString() }
     }
@@ -108,18 +108,19 @@ class DefaultLoggingInterceptor(
             ?: emptyMap()
     }
 
-    private fun extractRequestBody(request: HttpServletRequest): Serializable {
+    private fun extractRequestBody(request: HttpServletRequest): JsonNode {
         val wrapper = request as ReadableRequestWrapper
-        return if (request is ReadableRequestWrapper) {
-            try {
-                objectMapper.readTree(wrapper.contentAsByteArray)
-                    .toString()
-            } catch (e: Exception) {
-                "[Body 조회를 실패했습니다: ${e.message}]"
+        return (
+            if (request is ReadableRequestWrapper) {
+                try {
+                    objectMapper.readTree(wrapper.contentAsByteArray)
+                } catch (e: Exception) {
+                    "[Body 조회를 실패했습니다: ${e.message}]"
+                }
+            } else {
+                "[Request가 ContentCachingRequestWrapper로 변환되지 않았습니다]"
             }
-        } else {
-            "[Request가 ContentCachingRequestWrapper로 변환되지 않았습니다]"
-        }
+        ) as JsonNode
     }
 
     private fun getRequestParameters(request: HttpServletRequest): String {
@@ -127,15 +128,15 @@ class DefaultLoggingInterceptor(
         return if (params.isEmpty()) "" else "?" + params.joinToString("&") { "$it=${request.getParameter(it)}" }
     }
 
-    private fun extractResponseBody(response: HttpServletResponse): Serializable {
+    private fun extractResponseBody(response: HttpServletResponse): JsonNode {
         return if (response is ContentCachingResponseWrapper) {
             try {
-                java.lang.String(response.contentAsByteArray, response.characterEncoding ?: "UTF-8")
+                objectMapper.readTree(response.contentAsByteArray)
             } catch (e: Exception) {
                 "[Body 조회를 실패했습니다: ${e.message}]"
             }
         } else {
             "[Response가 ContentCachingResponseWrapper로 변환되지 않았습니다]"
-        }
+        } as JsonNode
     }
 }
