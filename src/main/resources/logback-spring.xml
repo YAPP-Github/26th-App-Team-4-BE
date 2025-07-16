@@ -1,35 +1,34 @@
 <configuration>
-    <!-- 기본 Spring Boot 색상, 패턴 포함 (선택 사항) -->
+    <!-- 기본 Spring Boot 로그 설정 포함 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!--    설정파일 지정 -->
-    <springProperty name="FILE_NAME" source="secret.logging.file.name"/>
-    <springProperty name="FILE_PATTERN" source="secret.logging.file.pattern"/>
+    <!-- 파일 로깅용 프로퍼티 -->
+    <springProperty name="FILE_NAME"   source="logging.file.name"/>
+    <springProperty name="FILE_PATTERN" source="logging.file.pattern"/>
+    <springProperty name="DISCORD_WEBHOOK_URL" source="logging.discord.webhook-url"/>
 
-    <!-- 콘솔용: 텍스트 출력 -->
+    <!-- 콘솔 Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%thread]){magenta} %clr(%-5level){yellow} %clr(%logger{36}){cyan} - %msg%n
+                %clr([%d{yyyy-MM-dd HH:mm:ss.SSS}]){faint} %clr([%thread]){magenta} %clr(%-5level){highlight} %clr(%logger{36}){cyan} - %msg%n
             </pattern>
         </encoder>
     </appender>
-    <!-- 루트 로거 -->
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <!-- local 프로파일이 아닐 때 JSON 파일 로깅 -->
     <springProfile name="!local">
-        <!-- JSON 형식 로그 파일 저장 -->
         <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${FILE_NAME}</file>
-
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <fileNamePattern>${FILE_PATTERN}</fileNamePattern>
                 <maxHistory>30</maxHistory>
                 <maxFileSize>10MB</maxFileSize>
             </rollingPolicy>
-
             <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                 <providers>
                     <timestamp>
@@ -37,12 +36,7 @@
                     </timestamp>
                     <pattern>
                         <pattern>
-                            {
-                            "level": "%level",
-                            "logger": "%logger",
-                            "thread": "%thread",
-                            "message": "%message"
-                            }
+                            {"level":"%level","logger":"%logger","thread":"%thread","message":"%message"}
                         </pattern>
                     </pattern>
                     <stackTrace>
@@ -52,9 +46,29 @@
             </encoder>
         </appender>
 
+        <!-- Discord로 ERROR 이상만 비동기 전송 -->
+        <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
+            <webhookUri>${DISCORD_WEBHOOK_URL}</webhookUri>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss}{Asia/Seoul} [%thread] [%-5level] %logger{36} - %msg%n%ex{full}</pattern>
+            </layout>
+            <tts>false</tts>
+        </appender>
+
+        <appender name="ASYNC_DISCORD" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="DISCORD"/>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
+
+        <logger name="com.yapp" level="INFO" additivity="true">
+            <appender-ref ref="ASYNC_DISCORD"/>
+        </logger>
+
         <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="JSON_FILE"/>
         </root>
     </springProfile>
-
 </configuration>

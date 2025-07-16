@@ -1,5 +1,8 @@
 package com.yapp.yapp.common.logging.format
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+
 data class ResponseLogFormat(
     val type: String = "RESPONSE",
     val requestId: String,
@@ -8,10 +11,22 @@ data class ResponseLogFormat(
     val status: String,
     val statusCode: Int,
     val duration: Long,
-    val body: String,
+    val body: JsonNode?,
 ) {
     override fun toString(): String {
-        return """{"type": "$type", "requestId": "$requestId", "method": "$method", "uri": "$uri", "status": "$status", """ +
-            """"statusCode": $statusCode, "duration": $duration, "body": "$body"}""".trimMargin()
+        val mapper = ObjectMapper()
+        val jsonNode =
+            mapper.createObjectNode().apply {
+                put("type", type)
+                put("requestId", requestId)
+                put("method", method)
+                put("uri", uri)
+                put("status", status)
+                put("statusCode", statusCode)
+                put("duration", duration)
+                put("body", body)
+            }
+
+        return mapper.writeValueAsString(jsonNode)
     }
 }

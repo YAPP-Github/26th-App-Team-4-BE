@@ -3,7 +3,7 @@ name: Dev CD
 on:
   workflow_dispatch:
   push:
-    branches: [ dev ]
+    branches: [ FITRUN-135-에러-알림-봇-설정하기 ] # TODO
 
 jobs:
   build:

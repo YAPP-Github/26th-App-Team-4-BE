@@ -13,7 +13,3 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-
-logging:
-  file:
-    name: ${secret.logging.file.name}

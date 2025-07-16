@@ -23,10 +23,10 @@ class AuthController(
 ) {
     @PostMapping("/login/{provider}")
     fun login(
-        @PathVariable(name = "provider") providerType: ProviderType,
+        @PathVariable(name = "provider") providerType: String,
         @RequestBody loginRequest: LoginRequest,
     ): ApiResponse<LoginResponse> {
-        val tokenResponse = authService.login(providerType, loginRequest)
+        val tokenResponse = authService.login(ProviderType.from(providerType), loginRequest)
         return ApiResponse.success(tokenResponse)
     }
 
