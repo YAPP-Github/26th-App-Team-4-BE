@@ -54,3 +54,8 @@ management:
     health:
       show-components: never
       access: unrestricted
+
+logging:
+  file:
+    name: ${secret.logging.file.name}
+    pattern: ${secret.logging.file.pattern}
