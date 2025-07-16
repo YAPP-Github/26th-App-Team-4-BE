@@ -48,6 +48,6 @@ class UserManager(
         user: User,
         runnerType: RunnerType,
     ) {
-        user.runnerType = runnerType
+        user.updateRunnerType(runnerType)
     }
 }

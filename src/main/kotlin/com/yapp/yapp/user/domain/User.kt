@@ -30,8 +30,12 @@ class User(
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
-    fun getRunnerType(): RunnerType {
+    fun getRunnerTypeOrThrow(): RunnerType {
         return runnerType
             ?: throw CustomException(ErrorCode.RUNNER_TYPE_NOT_FOUND)
+    }
+
+    fun updateRunnerType(runnerType: RunnerType) {
+        this.runnerType = runnerType
     }
 }

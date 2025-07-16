@@ -83,14 +83,14 @@ class UserService(
     @Transactional(readOnly = true)
     fun getRunnerType(userId: Long): RunnerTypeResponse {
         val user = userManager.getActiveUser(userId)
-        val runnerType = user.getRunnerType()
+        val runnerType = user.getRunnerTypeOrThrow()
         return RunnerTypeResponse(userId = user.id, runnerType = runnerType)
     }
 
     @Transactional(readOnly = true)
     fun getRecommendPace(userId: Long): Pace {
         val user = userManager.getActiveUser(userId)
-        val runnerType = user.getRunnerType()
+        val runnerType = user.getRunnerTypeOrThrow()
         val recentRunningRecord = recordManager.findRecentRunningRecord(user)
 
         return userGoalManager.calculateRecommendPace(
