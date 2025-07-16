@@ -62,7 +62,7 @@
             </filter>
         </appender>
 
-        <logger name="com.your.company" level="ERROR" additivity="false">
+        <logger name="com.yapp" level="ERROR" additivity="false">
             <appender-ref ref="ASYNC_DISCORD"/>
         </logger>
 
