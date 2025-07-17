@@ -60,7 +60,7 @@ class AuthControllerTest : BaseControllerTest() {
             assertAll(
                 { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
                 { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
-                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.userId).isNotNull() },
                 { Assertions.assertThat(response.user.email).isNotNull() },
                 { Assertions.assertThat(response.user.nickname).isNotNull() },
                 { Assertions.assertThat(response.isNew).isTrue() },
@@ -98,7 +98,7 @@ class AuthControllerTest : BaseControllerTest() {
             assertAll(
                 { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
                 { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
-                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.userId).isNotNull() },
                 { Assertions.assertThat(response.user.email).isNotNull() },
                 { Assertions.assertThat(response.user.nickname).isNotNull() },
                 { Assertions.assertThat(response.isNew).isTrue() },
@@ -138,7 +138,7 @@ class AuthControllerTest : BaseControllerTest() {
             assertAll(
                 { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
                 { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
-                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.userId).isNotNull() },
                 { Assertions.assertThat(response.user.email).isNotNull() },
                 { Assertions.assertThat(response.user.nickname).isNotNull() },
                 { Assertions.assertThat(response.isNew).isTrue() },
@@ -178,7 +178,7 @@ class AuthControllerTest : BaseControllerTest() {
             assertAll(
                 { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
                 { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
-                { Assertions.assertThat(response.user.id).isNotNull() },
+                { Assertions.assertThat(response.user.userId).isNotNull() },
                 { Assertions.assertThat(response.user.email).isNotNull() },
                 { Assertions.assertThat(response.user.nickname).isNotNull() },
                 { Assertions.assertThat(response.isNew).isTrue() },
@@ -300,7 +300,7 @@ class AuthControllerTest : BaseControllerTest() {
         assertAll(
             { Assertions.assertThat(response.tokenResponse.accessToken).isNotNull },
             { Assertions.assertThat(response.tokenResponse.refreshToken).isNotNull },
-            { Assertions.assertThat(response.user.id).isNotNull() },
+            { Assertions.assertThat(response.user.userId).isNotNull() },
             { Assertions.assertThat(response.user.email).isNotNull() },
             { Assertions.assertThat(response.user.nickname).isNotNull() },
             { Assertions.assertThat(response.isNew).isFalse() },
@@ -355,7 +355,7 @@ class AuthControllerTest : BaseControllerTest() {
         assertAll(
             { Assertions.assertThat(appleResponse.tokenResponse.accessToken).isNotNull },
             { Assertions.assertThat(appleResponse.tokenResponse.refreshToken).isNotNull },
-            { Assertions.assertThat(appleResponse.user.id).isNotNull() },
+            { Assertions.assertThat(appleResponse.user.userId).isNotNull() },
             { Assertions.assertThat(appleResponse.user.email).isNotNull() },
             { Assertions.assertThat(appleResponse.user.nickname).isNotNull() },
             { Assertions.assertThat(appleResponse.isNew).isTrue() },

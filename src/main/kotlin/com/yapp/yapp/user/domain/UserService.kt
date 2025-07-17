@@ -66,7 +66,7 @@ class UserService(
     fun getUserById(id: Long): UserResponse {
         val user = userManager.getActiveUser(id)
         return UserResponse(
-            id = user.id,
+            userId = user.id,
             nickname = user.nickname,
             email = user.email,
             provider = user.provider,

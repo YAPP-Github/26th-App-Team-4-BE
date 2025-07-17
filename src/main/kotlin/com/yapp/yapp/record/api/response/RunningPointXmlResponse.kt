@@ -11,7 +11,7 @@ import java.time.OffsetDateTime
 @JacksonXmlRootElement(localName = "runningPoint")
 data class RunningPointXmlResponse(
     @JacksonXmlProperty(localName = "id")
-    val id: Long,
+    val pointId: Long,
     @JacksonXmlProperty(localName = "userId")
     val userId: Long,
     @JacksonXmlProperty(localName = "recordId")
@@ -40,7 +40,7 @@ data class RunningPointXmlResponse(
     val timeStamp: OffsetDateTime = TimeProvider.now(),
 ) {
     constructor(runningPoint: RunningPoint) : this(
-        id = runningPoint.id,
+        pointId = runningPoint.id,
         userId = runningPoint.runningRecord.userId,
         recordId = runningPoint.runningRecord.id,
         orderNo = runningPoint.orderNo,
@@ -57,7 +57,7 @@ data class RunningPointXmlResponse(
     )
 
     constructor(runningPointResponse: RunningPointResponse) : this(
-        id = runningPointResponse.id,
+        pointId = runningPointResponse.pointId,
         userId = runningPointResponse.userId,
         recordId = runningPointResponse.recordId,
         orderNo = runningPointResponse.orderNo,

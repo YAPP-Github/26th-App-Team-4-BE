@@ -53,7 +53,7 @@ class RunningServiceTest : BaseServiceTest() {
         // when
         val response = runningService.update(userId, startResponse.recordId, request)
         // then
-        Assertions.assertThat(response.id).isNotNull
+        Assertions.assertThat(response.pointId).isNotNull
     }
 
     @Test
