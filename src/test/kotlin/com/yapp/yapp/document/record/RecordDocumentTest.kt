@@ -108,7 +108,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
                     fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),
-                    fieldWithPath("result.runningPoints[].id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPoints[].pointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.runningPoints[].userId").description("유저 ID"),
                     fieldWithPath("result.runningPoints[].recordId").description("기록 ID"),
                     fieldWithPath("result.runningPoints[].orderNo").description("러닝 포인트 순서"),
