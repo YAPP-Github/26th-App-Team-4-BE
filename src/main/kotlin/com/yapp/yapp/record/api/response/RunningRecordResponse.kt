@@ -18,7 +18,7 @@ data class RunningRecordResponse(
 ) {
     constructor(runningRecord: RunningRecord, runningPoints: List<RunningPoint>) : this(
         recordId = runningRecord.id,
-        userId = runningRecord.userId,
+        userId = runningRecord.user.id,
         runningPoints = runningPoints.map { RunningPointResponse(it) },
         segments = SegmentListResponse.of(runningPoints).segmentList,
         totalDistance = runningRecord.totalDistance,

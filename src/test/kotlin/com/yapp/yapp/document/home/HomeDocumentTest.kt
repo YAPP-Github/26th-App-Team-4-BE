@@ -56,8 +56,8 @@ class HomeDocumentTest : BaseDocumentTest() {
         val user = userFixture.create()
         userGoalFixture.create(user) // 유저 목표 데이터
         val targetDate = TimeProvider.now().with(DayOfWeek.SUNDAY)
-        runningFixture.createRunningRecord(user.id, startAt = targetDate.with(DayOfWeek.MONDAY))
-        runningFixture.createRunningRecord(user.id, startAt = targetDate.with(DayOfWeek.THURSDAY))
+        runningFixture.createRunningRecord(user, startAt = targetDate.with(DayOfWeek.MONDAY))
+        runningFixture.createRunningRecord(user, startAt = targetDate.with(DayOfWeek.THURSDAY))
 
         // when & then
         RestAssured.given(spec).log().all()

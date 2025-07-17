@@ -27,10 +27,11 @@ class RunningServiceTest : BaseServiceTest() {
     @Test
     fun `러닝을 시작한다`() {
         // given
+        val user = userFixture.create()
         val request = RunningStartRequest(0.0, 0.0, TimeProvider.now().toString())
 
         // when
-        val response = runningService.start(0L, request)
+        val response = runningService.start(userId = user.id, request)
 
         // then
         Assertions.assertThat(response.recordId).isNotNull
@@ -39,7 +40,8 @@ class RunningServiceTest : BaseServiceTest() {
     @Test
     fun `러닝 기록을 업데이트 한다`() {
         // given
-        val userId = 0L
+        val user = userFixture.create()
+        val userId = user.id
         val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
             RunningUpdateRequest(
@@ -123,7 +125,8 @@ class RunningServiceTest : BaseServiceTest() {
     @Test
     fun `러닝을 시작 - 중단 - 완료 한다`() {
         // given
-        val userId = userFixture.create().id
+        val user = userFixture.create()
+        val userId = user.id
         val lat = 37.54100
         val lon = 126.95000
         val startAt = TimeProvider.now()
@@ -151,14 +154,15 @@ class RunningServiceTest : BaseServiceTest() {
         val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
 
         // then
-        val record = runningRecordManager.getRunningRecord(userId, recordId)
+        val record = runningRecordManager.getRunningRecord(id = recordId, user = user)
         Assertions.assertThat(record.totalDistance).isEqualTo(done.totalRunningDistance)
     }
 
     @Test
     fun `러닝 포인트가 추가될 때 마다 기록이 변한다`() {
         // given
-        val userId = userFixture.create().id
+        val user = userFixture.create()
+        val userId = user.id
         val startLat = 37.54100
         val startLon = 126.95000
         val startAt = TimeProvider.now()
@@ -184,7 +188,7 @@ class RunningServiceTest : BaseServiceTest() {
         var count = 0
         updates.forEach { request ->
             val response = runningService.update(userId, start.recordId, request)
-            val record = runningRecordManager.getRunningRecord(userId, start.recordId)
+            val record = runningRecordManager.getRunningRecord(id = start.recordId, user = user)
             count++
 
             Assertions.assertThat(record.totalDistance).isGreaterThan(14.19 * count)

@@ -11,6 +11,7 @@ import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
+import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,14 +19,16 @@ import org.springframework.transaction.annotation.Transactional
 class RunningService(
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
+    private val userManager: UserManager,
 ) {
     @Transactional
     fun start(
         userId: Long,
         request: RunningStartRequest,
     ): RunningStartResponse {
+        val user = userManager.getActiveUser(userId)
         val startAt = TimeProvider.parse(request.timeStamp)
-        val runningRecord = runningRecordManager.start(userId, startAt)
+        val runningRecord = runningRecordManager.start(user, startAt)
         runningPointManger.saveRunningPoints(runningRecord, request.lat, request.lon, startAt)
         return RunningStartResponse(runningRecord.id)
     }
@@ -36,7 +39,8 @@ class RunningService(
         recordId: Long,
         request: RunningUpdateRequest,
     ): RunningPointResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId = userId)
+        val user = userManager.getActiveUser(userId)
+        val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)
         val newRunningPoint =
             runningPointManger.saveNewRunningPoints(
                 runningRecord = runningRecord,
@@ -56,7 +60,8 @@ class RunningService(
         recordId: Long,
         request: RunningPauseRequest,
     ): RunningPauseResponse {
-        val runningRecord = runningRecordManager.stop(recordId, userId = userId)
+        val user = userManager.getActiveUser(userId)
+        val runningRecord = runningRecordManager.stop(recordId, user = user)
         return RunningPauseResponse(userId, runningRecord.id)
     }
 
@@ -66,9 +71,10 @@ class RunningService(
         recordId: Long,
         request: RunningDoneRequest,
     ): RunningDoneResponse {
-        val runningRecord = runningRecordManager.getRunningRecord(recordId, userId = userId)
+        val user = userManager.getActiveUser(userId)
+        val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
-        val finishRunningRecord = runningRecordManager.finish(recordId, userId, runningPoints)
+        val finishRunningRecord = runningRecordManager.finish(recordId, user, runningPoints)
         return RunningDoneResponse(finishRunningRecord)
     }
 }

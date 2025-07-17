@@ -24,10 +24,11 @@ class RunningRecordControllerTest : BaseControllerTest() {
         // given
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.create()
+        val otherUser = userFixture.create(email = "otherUser@email.com")
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now)
-        runningFixture.createRunningRecord(userId = 999L, startAt = now)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1))
+        runningFixture.createRunningRecord(user = user, startAt = now)
+        runningFixture.createRunningRecord(user = otherUser, startAt = now)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusDays(1))
 
         // when
         val result =
@@ -55,9 +56,9 @@ class RunningRecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().with(DayOfWeek.MONDAY)
         val user = userFixture.create()
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2))
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusDays(8))
+        runningFixture.createRunningRecord(user = user, startAt = now)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusDays(2))
+        runningFixture.createRunningRecord(user = user, startAt = now.minusDays(8))
 
         // when
         val result =
@@ -85,9 +86,9 @@ class RunningRecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.create()
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusMonths(2))
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusYears(1))
+        runningFixture.createRunningRecord(user = user, startAt = now)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusMonths(2))
+        runningFixture.createRunningRecord(user = user, startAt = now.minusYears(1))
 
         // when
         val result =
@@ -115,9 +116,9 @@ class RunningRecordControllerTest : BaseControllerTest() {
         val now = TimeProvider.now().toStartOfDay().withHour(0)
         val user = userFixture.create()
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusHours(2))
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.minusHours(2))
+        runningFixture.createRunningRecord(user = user, startAt = now)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusHours(2))
+        runningFixture.createRunningRecord(user = user, startAt = now.minusHours(2))
 
         // when
         val result =
@@ -146,7 +147,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
         val user = userFixture.create()
         val runningRecord =
             runningFixture.createRunningRecord(
-                userId = user.id,
+                user = user,
                 startAt = now,
                 totalSeconds = 10L,
             )
