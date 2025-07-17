@@ -26,7 +26,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .requestHeader(
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
-                .pathParameter(
+                .queryParameter(
                     parameterWithName("type")
                         .description("검색 타입 (ALL, TODAY 등). 기본값 ALL")
                         .optional(),
@@ -71,6 +71,12 @@ class RecordDocumentTest : BaseDocumentTest() {
                         "result.records[].runningPoints[].totalRunningDistance",
                     ).description("러닝 포인트 기록 당시 총 러닝 거리"),
                     fieldWithPath("result.records[].runningPoints[].timeStamp").description("러닝 포인트 기록 시간"),
+                    fieldWithPath("result.records[].segments").description("구간 기록 리스트(1km 구간별 정보)"),
+                    fieldWithPath("result.records[].segments[].orderNo").description("구간 순서"),
+                    fieldWithPath(
+                        "result.records[].segments[].distanceMeter",
+                    ).description("구간 거리(m). 1,000 단위로 나누어 떨어지지 않습니다. 구간 순서에 따라서 (구간 순서 + km)로 거리를 나타내는 것을 추천합니다."),
+                    fieldWithPath("result.records[].segments[].averagePace").description("구간 평균 페이스 밀리초 단위"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.records").description("러닝 기록 리스트"),
                     fieldWithPath("result.recordCount").description("러닝 기록 개수"),
@@ -93,9 +99,9 @@ class RecordDocumentTest : BaseDocumentTest() {
         val now = TimeProvider.now()
         val user = userFixture.create()
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1))
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2))
+        runningFixture.createRunningRecord(userId = user.id, startAt = now, totalSeconds = 60 * 20L)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1), totalSeconds = 60 * 20L)
+        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2), totalSeconds = 60 * 20L)
 
         // when & then
         RestAssured.given(spec).log().all()
@@ -143,6 +149,12 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.runningPoints[].totalRunningTime").description("러닝 포인트 기록 당시 총 러닝 시간 밀리초 단위"),
                     fieldWithPath("result.runningPoints[].totalRunningDistance").description("러닝 포인트 기록 당시 총 러닝 거리"),
                     fieldWithPath("result.runningPoints[].timeStamp").description("러닝 포인트 기록 시간"),
+                    fieldWithPath("result.segments").description("구간 기록 리스트(1km 구간별 정보)"),
+                    fieldWithPath("result.segments[].orderNo").description("구간 순서"),
+                    fieldWithPath(
+                        "result.segments[].distanceMeter",
+                    ).description("구간 거리(m). 1,000 단위로 나누어 떨어지지 않습니다. 구간 순서에 따라서 (구간 순서 + km)로 거리를 나타내는 것을 추천합니다."),
+                    fieldWithPath("result.segments[].averagePace").description("구간 평균 페이스 밀리초 단위"),
                     fieldWithPath("result.totalDistance").description("총 이동 거리(m)"),
                     fieldWithPath("result.totalTime").description("총 이동 시간 밀리초 단위"),
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
@@ -164,6 +176,7 @@ class RecordDocumentTest : BaseDocumentTest() {
         val runningRecord =
             runningFixture.createRunningRecord(
                 userId = user.id,
+                totalSeconds = 60 * 20L,
             )
         val recordId = runningRecord.id
 
@@ -196,7 +209,11 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .build()
 
         val user = userFixture.create()
-        val runningRecord = runningFixture.createRunningRecord(userId = user.id)
+        val runningRecord =
+            runningFixture.createRunningRecord(
+                userId = user.id,
+                totalSeconds = 60 * 20L,
+            )
         val recordId = runningRecord.id
 
         // when & then
