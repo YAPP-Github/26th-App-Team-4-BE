@@ -19,7 +19,7 @@ class UserControllerTest : BaseControllerTest() {
         // then
         val result =
             RestAssured.given().log().all()
-                .header("Authorization", "$accessToken")
+                .header("Authorization", accessToken)
                 .`when`().get("/api/v1/users")
                 .then().log().all()
                 .statusCode(200)
@@ -42,7 +42,7 @@ class UserControllerTest : BaseControllerTest() {
         // when
         // then
         RestAssured.given().log().all()
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().delete("/api/v1/users")
             .then().log().all()
             .statusCode(204)
@@ -55,13 +55,13 @@ class UserControllerTest : BaseControllerTest() {
         // when
         // then
         RestAssured.given().log().all()
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().delete("/api/v1/users")
             .then().log().all()
             .statusCode(204)
 
         RestAssured.given().log().all()
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().get("/api/v1/users")
             .then().log().all()
             .statusCode(400)

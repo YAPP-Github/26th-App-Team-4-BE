@@ -1,11 +1,15 @@
 package com.yapp.yapp.user.domain
 
+import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.Pace
+
 enum class RunnerType(
     val description: String,
+    val recommendPace: Pace,
 ) {
-    BEGINNER("워밍업"),
-    INTERMEDIATE("루틴"),
-    EXPERT("챌린저"),
+    BEGINNER("워밍업", Pace(TimeProvider.minuteToMills(10))),
+    INTERMEDIATE("루틴", Pace(TimeProvider.minuteToMills(8))),
+    EXPERT("챌린저", Pace(TimeProvider.minuteToMills(6))),
     ;
 
     companion object {

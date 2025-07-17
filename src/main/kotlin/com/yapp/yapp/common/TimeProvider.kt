@@ -54,4 +54,12 @@ object TimeProvider {
     ): Long {
         return (minute * 60 + second) * 1000L + mills
     }
+
+    fun minuteToMills(minute: Long): Long {
+        return minute * 1000 * 60L
+    }
+
+    fun secondToMills(seconds: Long): Long {
+        return seconds * 1000L
+    }
 }

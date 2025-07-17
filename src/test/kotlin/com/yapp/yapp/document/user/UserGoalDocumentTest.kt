@@ -337,6 +337,44 @@ class UserGoalDocumentTest : BaseDocumentTest() {
     }
 
     @Test
+    fun `추천 페이스 조회 API`() {
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.userId").description("사용자 ID"),
+                    fieldWithPath("result.recommendPace").description("추천 페이스(밀리초)"),
+                )
+
+        val restDocsFilter =
+            filter("goal", "recommend-pace-search")
+                .tag(Tag.GOAL_API)
+                .summary("추천 페이스 조회 API")
+                .description("추천 페이스를 조회합니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+        userGoalFixture.create(user)
+
+        // when
+        // then
+        RestAssured.given(spec)
+            .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .header("Authorization", getAccessToken(email = user.email))
+            .`when`().get("/api/v1/users/goals/pace/recommend")
+            .then()
+            .statusCode(200)
+    }
+
+    @Test
     fun `주간 달리기 횟수 목표 수정 API`() {
         val restDocsRequest =
             request()
