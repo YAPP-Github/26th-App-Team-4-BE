@@ -8,15 +8,15 @@ data class SegmentListResponse(
     val segmentList: List<SegmentResponse>,
 ) {
     companion object {
-        private const val DIV_DISTANCE = 1000.0
+        private const val DIV_DISTANCE_METER = 1000.0
 
         fun of(runningPoints: List<RunningPoint>): SegmentListResponse {
             val segments = mutableListOf<SegmentResponse>()
-            var nextDistance = DIV_DISTANCE
+            var nextDistanceMeter = DIV_DISTANCE_METER
             var segmentOrder = 1
 
             runningPoints.forEach { point ->
-                if (point.totalRunningDistance >= nextDistance) {
+                if (point.totalRunningDistance >= nextDistanceMeter) {
                     segments.add(
                         SegmentResponse(
                             orderNo = segmentOrder++,
@@ -24,7 +24,7 @@ data class SegmentListResponse(
                             averagePace = Pace(distanceMeter = point.totalRunningDistance, durationMills = point.totalRunningTime).toMills(),
                         ),
                     )
-                    nextDistance += DIV_DISTANCE
+                    nextDistanceMeter += DIV_DISTANCE_METER
                 }
             }
 
