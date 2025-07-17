@@ -29,7 +29,7 @@ class UserControllerTest : BaseControllerTest() {
         val response = objectMapper.convertValue(result, UserResponse::class.java)
 
         assertAll(
-            { Assertions.assertThat(response.id).isNotNull() },
+            { Assertions.assertThat(response.userId).isNotNull() },
             { Assertions.assertThat(response.email).isEqualTo(email) },
             { Assertions.assertThat(response.nickname).isNotNull() },
         )

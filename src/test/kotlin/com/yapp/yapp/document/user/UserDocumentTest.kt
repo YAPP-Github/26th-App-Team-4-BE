@@ -25,7 +25,7 @@ class UserDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("사용자 ID"),
+                    fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.email").description("사용자 이메일"),
                     fieldWithPath("result.nickname").description("사용자 닉네임"),
                     fieldWithPath("result.provider").description("소셜 로그인 유형"),
@@ -46,7 +46,7 @@ class UserDocumentTest : BaseDocumentTest() {
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().get("/api/v1/users")
             .then()
             .statusCode(200)
@@ -77,7 +77,7 @@ class UserDocumentTest : BaseDocumentTest() {
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().delete("/api/v1/users")
             .then()
             .statusCode(204)
@@ -119,7 +119,7 @@ class UserDocumentTest : BaseDocumentTest() {
             .filter(restDocsFilter)
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -158,7 +158,7 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given()
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -168,7 +168,7 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().get("/api/v1/users/onboarding")
             .then()
             .statusCode(200)
@@ -212,7 +212,7 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given()
             .body(saveRequest)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -231,7 +231,7 @@ class UserDocumentTest : BaseDocumentTest() {
             .filter(restDocsFilter)
             .body(request)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().patch("/api/v1/users/onboarding")
             .then()
             .statusCode(200)
@@ -267,7 +267,7 @@ class UserDocumentTest : BaseDocumentTest() {
         RestAssured.given()
             .body(saveRequest)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().post("/api/v1/users/onboarding")
             .then()
             .statusCode(201)
@@ -276,7 +276,7 @@ class UserDocumentTest : BaseDocumentTest() {
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
-            .header("Authorization", "$accessToken")
+            .header("Authorization", accessToken)
             .`when`().get("/api/v1/users/type")
             .then()
             .statusCode(200)

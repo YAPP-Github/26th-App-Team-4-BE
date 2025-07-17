@@ -39,7 +39,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                 .responseBodyField(
                     fieldWithPath("result.tokenResponse.accessToken").description("액세스 토큰"),
                     fieldWithPath("result.tokenResponse.refreshToken").description("리프레시 토큰"),
-                    fieldWithPath("result.user.id").description("사용자 ID"),
+                    fieldWithPath("result.user.userId").description("사용자 ID"),
                     fieldWithPath("result.user.email").description("사용자 이메일"),
                     fieldWithPath("result.user.nickname").description("사용자 닉네임"),
                     fieldWithPath("result.user.provider").description("소셜 로그인 유형"),

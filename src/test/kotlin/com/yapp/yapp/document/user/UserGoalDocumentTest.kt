@@ -30,7 +30,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -83,7 +83,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -136,7 +136,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -189,7 +189,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -248,7 +248,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -298,7 +298,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -388,7 +388,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -441,7 +441,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -494,7 +494,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -547,7 +547,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +
@@ -606,7 +606,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
-                    fieldWithPath("result.id").description("목표 ID"),
+                    fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
                     fieldWithPath("result.runningPurpose").description(
                         "달리기 목적 (" +

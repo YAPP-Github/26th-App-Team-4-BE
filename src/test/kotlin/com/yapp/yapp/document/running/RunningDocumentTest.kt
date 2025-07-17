@@ -84,7 +84,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.recordId").description("러닝 기록 ID"),
                     fieldWithPath("result.userId").description("유저 ID"),
-                    fieldWithPath("result.runningPoint.id").description("러닝 포인트 ID"),
+                    fieldWithPath("result.runningPoint.pointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.runningPoint.userId").description("유저 ID"),
                     fieldWithPath("result.runningPoint.recordId").description("러닝 기록 ID"),
                     fieldWithPath("result.runningPoint.orderNo").description("러닝 포인트 순서"),
