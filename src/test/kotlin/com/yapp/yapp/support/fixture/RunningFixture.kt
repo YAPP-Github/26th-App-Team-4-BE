@@ -7,6 +7,7 @@ import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.record.domain.point.RunningPointRepository
 import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
+import com.yapp.yapp.user.domain.User
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -17,7 +18,7 @@ class RunningFixture(
     private val runningPointRepository: RunningPointRepository,
 ) {
     fun createRunningRecord(
-        userId: Long = 0L,
+        user: User,
         totalSeconds: Long = 9,
         startAt: OffsetDateTime = TimeProvider.parse("2025-06-17T17:00:00.000+09:00"),
     ): RunningRecord {
@@ -25,7 +26,7 @@ class RunningFixture(
         val runningRecord =
             runningRecordRepository.save(
                 RunningRecord(
-                    userId = userId,
+                    user = user,
                     startAt = startAt,
                 ),
             )

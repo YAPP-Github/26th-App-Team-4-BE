@@ -23,15 +23,15 @@ class RunningRecordDao(
     }
 
     fun getRunningRecordList(
-        userId: Long,
+        user: User,
         targetDate: OffsetDateTime,
         type: RecordsSearchType,
         pageable: Pageable? = null,
     ): List<RunningRecord> {
         val startDate = type.getStartDate(targetDate)
         val endDate = type.getEndDate(targetDate)
-        return runningRecordRepository.findByUserIdAndStartAtBetweenOrderByStartAtDesc(
-            userId,
+        return runningRecordRepository.findByUserAndStartAtBetweenOrderByStartAtDesc(
+            user,
             startDate,
             endDate,
             pageable,
@@ -39,13 +39,13 @@ class RunningRecordDao(
     }
 
     fun findRecentRunningRecord(user: User): RunningRecord? {
-        return runningRecordRepository.findFirstByUserIdOrderByStartAtDesc(user.id)
+        return runningRecordRepository.findFirstByUserOrderByStartAtDesc(user)
     }
 
     fun getThisWeekRunningCount(user: User): Int {
         val targetDate = TimeProvider.now()
         val startDate = RecordsSearchType.WEEKLY.getStartDate(targetDate)
         val endDate = RecordsSearchType.WEEKLY.getEndDate(targetDate)
-        return runningRecordRepository.countByUserIdAndStartAtBetween(userId = user.id, startDate = startDate, endDate = endDate)
+        return runningRecordRepository.countByUserAndStartAtBetween(user = user, startDate = startDate, endDate = endDate)
     }
 }

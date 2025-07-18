@@ -19,23 +19,23 @@ class RunningRecordManager(
 ) {
     fun getRunningRecord(
         id: Long,
-        userId: Long,
+        user: User,
     ): RunningRecord {
         val runningRecord = runningRecordDao.getById(id)
-        if (runningRecord.userId != userId) {
+        if (!runningRecord.isOwnedBy(user)) {
             throw CustomException(ErrorCode.RECORD_NO_MATCHED)
         }
         return runningRecord
     }
 
     fun getRunningRecords(
-        userId: Long,
+        user: User,
         searchType: RecordsSearchType,
         targetDate: OffsetDateTime,
         pageable: Pageable,
     ): List<RunningRecord> {
         return runningRecordDao.getRunningRecordList(
-            userId = userId,
+            user = user,
             targetDate = targetDate,
             type = searchType,
             pageable = pageable,
@@ -51,8 +51,8 @@ class RunningRecordManager(
         searchType: RecordsSearchType,
         targetDate: OffsetDateTime,
     ): RunningRecord {
-        val runningRecordList = runningRecordDao.getRunningRecordList(userId = user.id, targetDate = targetDate, type = searchType)
-        val totalRunningRecord = RunningRecord(userId = user.id, recordStatus = RecordStatus.DONE)
+        val runningRecordList = runningRecordDao.getRunningRecordList(user = user, targetDate = targetDate, type = searchType)
+        val totalRunningRecord = RunningRecord(user = user, recordStatus = RecordStatus.DONE)
         if (runningRecordList.isEmpty()) {
             return totalRunningRecord
         }
@@ -71,29 +71,29 @@ class RunningRecordManager(
     }
 
     fun start(
-        userId: Long,
+        user: User,
         startAt: OffsetDateTime,
     ): RunningRecord {
-        val runningRecord = RunningRecord(userId = userId, startAt = startAt)
+        val runningRecord = RunningRecord(user = user, startAt = startAt)
         runningRecord.start()
         return runningRecordDao.save(runningRecord)
     }
 
     fun stop(
         id: Long,
-        userId: Long,
+        user: User,
     ): RunningRecord {
-        val runningRecord = getRunningRecord(id, userId)
+        val runningRecord = getRunningRecord(id, user)
         runningRecord.pause()
         return runningRecord
     }
 
     fun finish(
         id: Long,
-        userId: Long,
+        user: User,
         runningPoints: List<RunningPoint>,
     ): RunningRecord {
-        val record = getRunningRecord(id, userId)
+        val record = getRunningRecord(id, user)
         record.finish()
         record.updateInfoByRunningPoints(runningPoints)
         return record

@@ -72,9 +72,9 @@ class RecordDocumentTest : BaseDocumentTest() {
         val now = TimeProvider.now()
         val user = userFixture.create()
 
-        runningFixture.createRunningRecord(userId = user.id, startAt = now, totalSeconds = 60 * 20L)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(1), totalSeconds = 60 * 20L)
-        runningFixture.createRunningRecord(userId = user.id, startAt = now.plusDays(2), totalSeconds = 60 * 20L)
+        runningFixture.createRunningRecord(user = user, startAt = now, totalSeconds = 60 * 20L)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusDays(1), totalSeconds = 60 * 20L)
+        runningFixture.createRunningRecord(user = user, startAt = now.plusDays(2), totalSeconds = 60 * 20L)
 
         // when & then
         RestAssured.given(spec).log().all()
@@ -148,7 +148,7 @@ class RecordDocumentTest : BaseDocumentTest() {
         val user = userFixture.create()
         val runningRecord =
             runningFixture.createRunningRecord(
-                userId = user.id,
+                user = user,
                 totalSeconds = 60 * 20L,
             )
         val recordId = runningRecord.id
@@ -184,7 +184,7 @@ class RecordDocumentTest : BaseDocumentTest() {
         val user = userFixture.create()
         val runningRecord =
             runningFixture.createRunningRecord(
-                userId = user.id,
+                user = user,
                 totalSeconds = 60 * 20L,
             )
         val recordId = runningRecord.id

@@ -29,7 +29,7 @@ class UserServiceTest : BaseServiceTest() {
         // given
         val runnerType = RunnerType.BEGINNER
         val user = userFixture.create(runnerType = runnerType)
-        runningFixture.createRunningRecord(userId = user.id, totalSeconds = 60 * 20)
+        runningFixture.createRunningRecord(user = user, totalSeconds = 60 * 20)
 
         // when
         val recommendPace = userService.getRecommendPace(user.id)

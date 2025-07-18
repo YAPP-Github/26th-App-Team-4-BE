@@ -20,7 +20,8 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
     @Test
     fun `거리를 계산한다`() {
         // given
-        val runningRecord = RunningRecord()
+        val user = userFixture.create()
+        val runningRecord = RunningRecord(user = user)
         val pointA =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -46,7 +47,8 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
     @Test
     fun `두 좌표 사이의 거리를 계산한다`() {
         // given
-        val runningRecord = RunningRecord()
+        val user = userFixture.create()
+        val runningRecord = RunningRecord(user = user)
         val pointA =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -72,7 +74,8 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
     @Test
     fun `속도를 계산한다`() {
         // given
-        val runningRecord = RunningRecord()
+        val user = userFixture.create()
+        val runningRecord = RunningRecord(user = user)
         val pointA =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -98,7 +101,8 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
     @Test
     fun `fixture를 통해 속도와 거리를 계산한다`() {
         // given
-        val runningRecord = runningFixture.createRunningRecord()
+        val user = userFixture.create()
+        val runningRecord = runningFixture.createRunningRecord(user)
         val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
         runningRecord.updateInfoByRunningPoints(runningPoints)
 

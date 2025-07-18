@@ -23,7 +23,7 @@ data class RunningPointResponse(
 ) {
     constructor(runningPoint: RunningPoint) : this(
         pointId = runningPoint.id,
-        userId = runningPoint.runningRecord.userId,
+        userId = runningPoint.runningRecord.user.id,
         recordId = runningPoint.runningRecord.id,
         orderNo = runningPoint.orderNo,
         lat = runningPoint.lat,
