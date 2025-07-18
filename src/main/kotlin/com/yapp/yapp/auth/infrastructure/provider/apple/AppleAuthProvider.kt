@@ -3,18 +3,14 @@ package com.yapp.yapp.auth.infrastructure.provider.apple
 import com.yapp.yapp.auth.domain.AuthProvider
 import com.yapp.yapp.auth.domain.AuthUserInfo
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
-import com.yapp.yapp.common.cache.CacheNames
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
-import com.yapp.yapp.common.token.oidc.OidcProperties
 import com.yapp.yapp.common.token.oidc.OidcTokenHandler
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 
 @Component
 class AppleAuthProvider(
-    private val appleProperties: AppleProperties,
-    private val appleFeignClient: AppleFeignClient,
+    private val appleApiClient: AppleApiClient,
 ) : AuthProvider {
     companion object {
         private const val EMAIL_CLAIM = "email"
@@ -24,7 +20,7 @@ class AppleAuthProvider(
         token: String,
         nonce: String?,
     ): AuthUserInfo {
-        val properties = getProperties()
+        val properties = appleApiClient.getOidcProperties()
         properties.nonce = nonce
 
         val handler = OidcTokenHandler(properties)
@@ -38,15 +34,5 @@ class AppleAuthProvider(
 
     override fun supports(providerType: ProviderType): Boolean {
         return providerType == ProviderType.APPLE
-    }
-
-    @Cacheable(cacheNames = [CacheNames.API_RESPONSE], key = "'applePublicKeyResponse'")
-    fun getProperties(): OidcProperties {
-        val jwkSet = appleFeignClient.fetchJwks()
-        return OidcProperties(
-            keySet = jwkSet,
-            issuer = appleProperties.url,
-            clientId = appleProperties.clientId,
-        )
     }
 }
