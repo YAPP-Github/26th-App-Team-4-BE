@@ -1,0 +1,49 @@
+name: Staging CI
+
+on:
+  pull_request:
+    branches: [ staging ]
+  workflow_dispatch:
+
+jobs:
+  test-and-generate-docs:
+    name: Run tests and generate API docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.REPO_TOKEN }}
+
+      - name: Run tests and generate API Docs
+        run: ./gradlew clean makeDocument
+
+      - name: Verify docs generated in build
+        run: ls -R build/docs
+
+      # GCP 서비스 계정 인증
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_STAG_SA_KEY }}'
+
+      # GCP SDK 설치 및 인증 정보 설정
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Copy file to remote via scp
+        run: |
+          gcloud compute ssh ${{ secrets.GCP_STAG_DEPLOY_USER }}@${{ secrets.GCP_STAG_VM_NAME }} \
+            --zone=${{ secrets.GCP_STAG_VM_ZONE }} \
+            --tunnel-through-iap \
+            --command='
+              mkdir -p ~/docs/build/docs
+          '
+
+          gcloud compute scp --tunnel-through-iap \
+            --zone=${{ secrets.GCP_STAG_VM_ZONE }} \
+            build/docs/openapi3.yaml \
+            ${{ secrets.GCP_STAG_DEPLOY_USER }}@${{ secrets.GCP_STAG_VM_NAME }}:~/docs/build/docs/openapi3.yaml
