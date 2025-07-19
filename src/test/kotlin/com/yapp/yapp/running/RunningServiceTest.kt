@@ -10,7 +10,6 @@ import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.within
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -192,7 +191,6 @@ class RunningServiceTest : BaseServiceTest() {
             count++
 
             Assertions.assertThat(record.totalDistance).isGreaterThan(14.19 * count)
-            Assertions.assertThat(record.averageSpeed).isCloseTo(51.1, within(0.1))
         }
     }
 }

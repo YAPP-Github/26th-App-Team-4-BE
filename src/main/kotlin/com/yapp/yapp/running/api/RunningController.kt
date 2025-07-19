@@ -41,6 +41,14 @@ class RunningController(
         return ApiResponse.success(RunningUpdateResponse(pointResponse))
     }
 
+    @PostMapping("/{recordId}")
+    fun save(
+        @CurrentUser userId: Long,
+        @PathVariable recordId: Long,
+        @RequestBody request: RunningUpdateRequest,
+    ) {
+    }
+
     @PatchMapping("/{recordId}")
     fun pause(
         @CurrentUser userId: Long,

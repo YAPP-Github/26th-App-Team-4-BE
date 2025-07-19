@@ -219,7 +219,6 @@ class RunningDocumentTest : BaseDocumentTest() {
                 fieldWithPath("result.totalRunningTime").description("총 러닝 시간. 밀리초 단위"),
                 fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                 fieldWithPath("result.startAt").description("러닝 시작 시간"),
-                fieldWithPath("result.averageSpeed").description("평균 속도 (m/s)"),
                 fieldWithPath("result.averagePace").description("평균 페이스 (1km 이동하는데 걸리는 시간). 밀리초 단위"),
             )
 
