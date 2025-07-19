@@ -2,6 +2,7 @@ package com.yapp.yapp.user.domain.goal
 
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.converter.PaceConverter
+import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.user.domain.User
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -48,5 +49,15 @@ class UserGoal(
 
     fun updateTimeGoal(timeGoal: Long) {
         this.timeGoal = timeGoal
+    }
+
+    fun isDistanceGoalAchieved(runningRecord: RunningRecord): Boolean {
+        if (this.distanceMeterGoal == null) return false
+        return runningRecord.totalDistance >= this.distanceMeterGoal as Double
+    }
+
+    fun isTimeGoalAchieved(runningRecord: RunningRecord): Boolean {
+        if (this.timeGoal == null) return false
+        return runningRecord.totalTime >= this.timeGoal as Long
     }
 }
