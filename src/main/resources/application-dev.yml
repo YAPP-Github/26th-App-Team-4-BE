@@ -1,6 +1,7 @@
 spring:
   config:
     import: dev-env.yml
+
   jpa:
     hibernate:
       ddl-auto: update
