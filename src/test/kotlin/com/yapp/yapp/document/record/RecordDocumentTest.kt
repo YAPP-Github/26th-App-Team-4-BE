@@ -58,6 +58,8 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.averageSpeed").description("평균 속도(km/h)"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
+                    fieldWithPath("result.timeGoalAchievedCount").description("시간 목표 달성 횟수"),
+                    fieldWithPath("result.distanceGoalAchievedCount").description("거리 목표 달성 횟수"),
                 )
 
         val filter =
@@ -70,7 +72,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .build()
 
         val now = TimeProvider.now()
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
 
         runningFixture.createRunningRecord(user = user, startAt = now, totalSeconds = 60 * 20L)
         runningFixture.createRunningRecord(user = user, startAt = now.plusDays(1), totalSeconds = 60 * 20L)
@@ -132,7 +134,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalTime").description("총 러닝 시간 밀리초 단위"),
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.startAt").description("시작 시간"),
-                    fieldWithPath("result.averageSpeed").description("평균 속도(km/h)"),
+                    fieldWithPath("result.averageSpeed").description("평균 속도"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
                 )
 
@@ -145,7 +147,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
         val runningRecord =
             runningFixture.createRunningRecord(
                 user = user,
@@ -181,7 +183,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .request(restDocsRequest)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
         val runningRecord =
             runningFixture.createRunningRecord(
                 user = user,
