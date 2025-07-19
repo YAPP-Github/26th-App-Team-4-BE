@@ -1,6 +1,6 @@
 package com.yapp.yapp.audio
 
-import com.deepromeet.atcha.support.BaseControllerTest
+import com.yapp.yapp.support.BaseControllerTest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 
