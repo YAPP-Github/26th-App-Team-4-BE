@@ -6,6 +6,7 @@ import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
@@ -38,6 +39,18 @@ class RunningService(
         userId: Long,
         recordId: Long,
         request: RunningUpdateRequest,
+    ) {
+        val user = userManager.getActiveUser(userId)
+        val startAt = TimeProvider.parse(request.startAt)
+        val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
+        // TODO
+    }
+
+    @Transactional
+    fun pollingUpdate(
+        userId: Long,
+        recordId: Long,
+        request: RunningPollingUpdateRequest,
     ): RunningPointResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)

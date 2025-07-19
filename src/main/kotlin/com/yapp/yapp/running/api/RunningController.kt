@@ -4,8 +4,8 @@ import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
@@ -35,9 +35,9 @@ class RunningController(
     fun pollingUpdate(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningUpdateRequest,
+        @RequestBody request: RunningPollingUpdateRequest,
     ): ApiResponse<RunningUpdateResponse> {
-        val pointResponse = runningService.update(userId, recordId, request)
+        val pointResponse = runningService.pollingUpdate(userId, recordId, request)
         return ApiResponse.success(RunningUpdateResponse(pointResponse))
     }
 
@@ -45,7 +45,7 @@ class RunningController(
     fun save(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningUpdateRequest,
+        @RequestBody request: RunningPollingUpdateRequest,
     ) {
     }
 

@@ -5,8 +5,8 @@ import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.BaseServiceTest
 import org.assertj.core.api.Assertions
@@ -43,7 +43,7 @@ class RunningServiceTest : BaseServiceTest() {
         val userId = user.id
         val startResponse = runningService.start(userId, RunningStartRequest(0.0, 0.0, TimeProvider.now().toString()))
         val request =
-            RunningUpdateRequest(
+            RunningPollingUpdateRequest(
                 0.01,
                 0.01,
                 120,
@@ -52,7 +52,7 @@ class RunningServiceTest : BaseServiceTest() {
             )
 
         // when
-        val response = runningService.update(userId, startResponse.recordId, request)
+        val response = runningService.pollingUpdate(userId, startResponse.recordId, request)
         // then
         Assertions.assertThat(response.pointId).isNotNull
     }
@@ -71,35 +71,35 @@ class RunningServiceTest : BaseServiceTest() {
 
         val updates =
             listOf( // 9.444초
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     37.54110,
                     126.95020,
                     123,
                     TimeProvider.toMills(second = 9, mills = 444),
                     "2025-06-17T17:00:09.444+09:00",
                 ), // 18.887초
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     37.54120,
                     126.95040,
                     127,
                     TimeProvider.toMills(second = 18, mills = 887),
                     "2025-06-17T17:00:18.887+09:00",
                 ), // 28.331초
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     37.54130,
                     126.95060,
                     130,
                     TimeProvider.toMills(second = 28, mills = 331),
                     "2025-06-17T17:00:28.331+09:00",
                 ), // 37.775초
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     37.54140,
                     126.95080,
                     132,
                     TimeProvider.toMills(second = 37, mills = 775),
                     "2025-06-17T17:00:37.775+09:00",
                 ), // 47.218초
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     37.54150,
                     126.95100,
                     135,
@@ -110,7 +110,7 @@ class RunningServiceTest : BaseServiceTest() {
 
         // when & then
         updates.forEach { req ->
-            val resp = runningService.update(userId, recordId, req)
+            val resp = runningService.pollingUpdate(userId, recordId, req)
 
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)
@@ -135,10 +135,10 @@ class RunningServiceTest : BaseServiceTest() {
         val recordId = start.recordId
         val maxTime = 10
         for (i in 1..maxTime) {
-            runningService.update(
+            runningService.pollingUpdate(
                 userId,
                 recordId,
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     lat + (i * 1.0 / 1000),
                     lon + (i * 1.0 / 1000),
                     120 + i,
@@ -174,7 +174,7 @@ class RunningServiceTest : BaseServiceTest() {
 
         val updates =
             (1..5).map { second ->
-                RunningUpdateRequest(
+                RunningPollingUpdateRequest(
                     lat = startLat + (second * 0.0001),
                     lon = startLon + (second * 0.0001),
                     heartRate = 120 + second,
@@ -186,7 +186,7 @@ class RunningServiceTest : BaseServiceTest() {
         // when & then
         var count = 0
         updates.forEach { request ->
-            val response = runningService.update(userId, start.recordId, request)
+            val response = runningService.pollingUpdate(userId, start.recordId, request)
             val record = runningRecordManager.getRunningRecord(id = start.recordId, user = user)
             count++
 

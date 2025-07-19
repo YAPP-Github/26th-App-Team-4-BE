@@ -5,8 +5,8 @@ import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.domain.RunningService
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
@@ -163,10 +163,10 @@ class RunningDocumentTest : BaseDocumentTest() {
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
-        runningService.update(
+        runningService.pollingUpdate(
             user.id,
             startResponse.recordId,
-            RunningUpdateRequest(
+            RunningPollingUpdateRequest(
                 37.5665,
                 126.9780,
                 142,
@@ -174,10 +174,10 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:00+09:00",
             ),
         )
-        runningService.update(
+        runningService.pollingUpdate(
             user.id,
             startResponse.recordId,
-            RunningUpdateRequest(
+            RunningPollingUpdateRequest(
                 37.5675,
                 126.9790,
                 140,
@@ -237,10 +237,10 @@ class RunningDocumentTest : BaseDocumentTest() {
                 user.id,
                 RunningStartRequest(37.5665, 126.9780, TimeProvider.now().toString()),
             )
-        runningService.update(
+        runningService.pollingUpdate(
             user.id,
             startResponse.recordId,
-            RunningUpdateRequest(
+            RunningPollingUpdateRequest(
                 37.5665,
                 126.9780,
                 142,
@@ -248,10 +248,10 @@ class RunningDocumentTest : BaseDocumentTest() {
                 "2025-06-17T16:12:00+09:00",
             ),
         )
-        runningService.update(
+        runningService.pollingUpdate(
             user.id,
             startResponse.recordId,
-            RunningUpdateRequest(
+            RunningPollingUpdateRequest(
                 37.5675,
                 126.9790,
                 140,

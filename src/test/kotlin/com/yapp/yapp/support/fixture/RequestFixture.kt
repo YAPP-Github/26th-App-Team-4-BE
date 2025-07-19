@@ -1,7 +1,7 @@
 package com.yapp.yapp.support.fixture
 
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalRequest
@@ -26,7 +26,7 @@ object RequestFixture {
         heartRate: Int = 142,
         totalRunningTime: Long = (1 * 60 + 2) * 1000 + 12,
         timeStamp: String = "2025-06-17T16:12:00+09:00",
-    ) = RunningUpdateRequest(
+    ) = RunningPollingUpdateRequest(
         lat = lat,
         lon = lon,
         heartRate = heartRate,
