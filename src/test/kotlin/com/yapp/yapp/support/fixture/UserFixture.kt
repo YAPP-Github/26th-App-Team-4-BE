@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class UserFixture(
     private val userRepository: UserRepository,
+    private val userGoalFixture: UserGoalFixture,
 ) {
     fun create(
         email: String = "test email",
@@ -24,4 +25,22 @@ class UserFixture(
                 runnerType = runnerType,
             ),
         )
+
+    fun createWithGoal(
+        email: String = "test email",
+        provider: ProviderType = ProviderType.APPLE,
+        runnerType: RunnerType = RunnerType.BEGINNER,
+    ): User {
+        val user =
+            userRepository.save(
+                User(
+                    nickname = NicknameGenerator.generate(email),
+                    email = email,
+                    provider = provider,
+                    runnerType = runnerType,
+                ),
+            )
+        userGoalFixture.create(user)
+        return user
+    }
 }

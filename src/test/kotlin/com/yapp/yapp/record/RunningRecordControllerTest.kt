@@ -23,7 +23,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     fun `유저의 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
         val otherUser = userFixture.create(email = "otherUser@email.com")
 
         runningFixture.createRunningRecord(user = user, startAt = now)
@@ -54,7 +54,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     fun `유저의 주간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().with(DayOfWeek.MONDAY)
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
 
         runningFixture.createRunningRecord(user = user, startAt = now)
         runningFixture.createRunningRecord(user = user, startAt = now.plusDays(2))
@@ -84,7 +84,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     fun `유저의 연간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
 
         runningFixture.createRunningRecord(user = user, startAt = now)
         runningFixture.createRunningRecord(user = user, startAt = now.plusMonths(2))
@@ -114,7 +114,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     fun `유저의 일간 러닝 기록들을 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay().withHour(0)
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
 
         runningFixture.createRunningRecord(user = user, startAt = now)
         runningFixture.createRunningRecord(user = user, startAt = now.plusHours(2))
@@ -144,7 +144,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     fun `유저의 러닝 기록을 XML로 조회한다`() {
         // given
         val now = TimeProvider.now().toStartOfDay()
-        val user = userFixture.create()
+        val user = userFixture.createWithGoal()
         val runningRecord =
             runningFixture.createRunningRecord(
                 user = user,
