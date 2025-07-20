@@ -123,7 +123,10 @@ class UserService(
     ): UserGoal {
         val user = userManager.getActiveUser(userId)
         return when (request) {
-            is WeeklyRunCountGoalRequest -> userGoalManager.saveWeeklyRunCountGoal(user, request.count)
+            is WeeklyRunCountGoalRequest -> {
+                user.updateRemindAlert(request.remindAlert)
+                userGoalManager.saveWeeklyRunCountGoal(user = user, weeklyRunCount = request.count, remindAlert = request.remindAlert)
+            }
             is PaceGoalRequest -> userGoalManager.savePaceGoal(user, Pace(request.pace))
             is DistanceGoalRequest -> userGoalManager.saveDistanceGoal(user, request.distanceMeter)
             is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, request.time)

@@ -24,7 +24,8 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("count").description("목표 달리기 회수"),
+                    fieldWithPath("count").description("목표 달리기 횟수"),
+                    fieldWithPath("remindAlert").description("리마인더 알림 설정(on인 경우 true"),
                 )
 
         val restDocsResponse =
@@ -58,7 +59,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = WeeklyRunCountGoalRequest(count = 3)
+        val request = WeeklyRunCountGoalRequest(count = 3, remindAlert = true)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -382,7 +383,8 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
                 .requestBodyField(
-                    fieldWithPath("count").description("목표 달리기 회수"),
+                    fieldWithPath("count").description("목표 달리기 수"),
+                    fieldWithPath("remindAlert").description("리마인더 알림 설정(on인 경우 true"),
                 )
 
         val restDocsResponse =
@@ -416,7 +418,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
 
         // when
         // then
-        val request = WeeklyRunCountGoalRequest(count = 3)
+        val request = WeeklyRunCountGoalRequest(count = 3, remindAlert = true)
         RestAssured.given(spec)
             .filter(restDocsFilter)
             .header(HttpHeaders.CONTENT_TYPE, "application/json")

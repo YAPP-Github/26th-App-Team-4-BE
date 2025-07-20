@@ -28,6 +28,8 @@ class User(
     @Enumerated(EnumType.STRING)
     var runnerType: RunnerType? = null,
     @Column(nullable = false)
+    var remindAlert: Boolean = false,
+    @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
     fun getRunnerTypeOrThrow(): RunnerType {
@@ -37,5 +39,9 @@ class User(
 
     fun updateRunnerType(runnerType: RunnerType) {
         this.runnerType = runnerType
+    }
+
+    fun updateRemindAlert(remindAlert: Boolean) {
+        this.remindAlert = remindAlert
     }
 }

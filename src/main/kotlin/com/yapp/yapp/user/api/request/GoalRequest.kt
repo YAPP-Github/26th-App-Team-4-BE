@@ -4,7 +4,7 @@ import com.yapp.yapp.user.domain.goal.RunningPurposeAnswerLabel
 
 sealed interface GoalRequest
 
-data class WeeklyRunCountGoalRequest(val count: Int) : GoalRequest
+data class WeeklyRunCountGoalRequest(val count: Int, val remindAlert: Boolean) : GoalRequest
 
 data class PaceGoalRequest(val pace: Long) : GoalRequest
 
