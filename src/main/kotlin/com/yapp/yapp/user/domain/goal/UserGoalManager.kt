@@ -13,6 +13,7 @@ class UserGoalManager(
     fun saveWeeklyRunCountGoal(
         user: User,
         weeklyRunCount: Int,
+        remindAlert: Boolean,
     ): UserGoal {
         val userGoal =
             userGoalDao.findUserGoal(user)
