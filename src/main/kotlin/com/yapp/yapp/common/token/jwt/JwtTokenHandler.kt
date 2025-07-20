@@ -70,11 +70,11 @@ class JwtTokenHandler(
             val claims = validToken.payload
             validateBlacklist(claims.id)
             return claims
-        } catch (e: CustomException) {
-            throw e
         } catch (e: ExpiredJwtException) {
+            e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
-        } catch (e: Exception) {
+        } catch (e: JwtException) {
+            e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
     }

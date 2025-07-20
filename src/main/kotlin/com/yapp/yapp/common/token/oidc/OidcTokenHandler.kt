@@ -32,8 +32,9 @@ class OidcTokenHandler(
             val claims = getValidClaims(token)
             return claims.entries.associate { it.key to it.value }
         } catch (e: ExpiredJwtException) {
+            e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_EXPIRED)
-        } catch (e: Exception) {
+        } catch (e: JwtException) {
             e.printStackTrace()
             throw CustomException(ErrorCode.TOKEN_INVALID)
         }
