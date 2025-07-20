@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 class RunningPointManger(
     private val runningPointDao: RunningPointDao,
 ) {
-    fun saveRunningPoints(
+    fun saveRunningPoint(
         runningRecord: RunningRecord,
         lat: Double,
         lon: Double,
@@ -26,13 +26,13 @@ class RunningPointManger(
         runningPointDao.save(runningPoint)
     }
 
-    fun saveNewRunningPoints(
+    fun saveNewRunningPoint(
         runningRecord: RunningRecord,
         lat: Double,
         lon: Double,
-        heartRate: Int?,
+        heartRate: Int? = null,
         timeStamp: OffsetDateTime,
-        totalRunningTime: Long,
+        totalRunningTimeMills: Long,
     ): RunningPoint {
         val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
         val newRunningPoint =
@@ -43,12 +43,12 @@ class RunningPointManger(
                 orderNo = preRunningPoint.orderNo + 1,
                 heartRate = heartRate,
                 timeStamp = timeStamp,
-                totalRunningTime = totalRunningTime,
+                totalRunningTime = totalRunningTimeMills,
             )
         newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
         newRunningPoint.speedKmh = RunningMetricsCalculator.calculateSpeedKmh(preRunningPoint, newRunningPoint)
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
-        newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, durationMills = totalRunningTime)
+        newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, durationMills = totalRunningTimeMills)
         return runningPointDao.save(newRunningPoint)
     }
 

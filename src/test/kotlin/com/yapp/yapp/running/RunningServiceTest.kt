@@ -3,7 +3,6 @@ package com.yapp.yapp.running
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
-import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -150,7 +149,7 @@ class RunningServiceTest : BaseServiceTest() {
         val stopTime = maxTime + 1L
         val stop = runningService.pause(userId, recordId, RunningPauseRequest(startAt.plusSeconds(stopTime).toString()))
         val doneTime = stopTime + 5L
-        val done = runningService.done(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
+        val done = runningService.oldDone(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
 
         // then
         val record = runningRecordManager.getRunningRecord(id = recordId, user = user)

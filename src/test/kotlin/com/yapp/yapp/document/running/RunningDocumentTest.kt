@@ -3,7 +3,6 @@ package com.yapp.yapp.document.running
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
-import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest

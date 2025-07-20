@@ -2,13 +2,13 @@ package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.api.response.RunningPointResponse
+import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
@@ -30,20 +30,33 @@ class RunningService(
         val user = userManager.getActiveUser(userId)
         val startAt = TimeProvider.parse(request.timeStamp)
         val runningRecord = runningRecordManager.start(user, startAt)
-        runningPointManger.saveRunningPoints(runningRecord, request.lat, request.lon, startAt)
+        runningPointManger.saveRunningPoint(runningRecord, request.lat, request.lon, startAt)
         return RunningStartResponse(runningRecord.id)
     }
 
     @Transactional
-    fun update(
+    fun done(
         userId: Long,
         recordId: Long,
-        request: RunningUpdateRequest,
-    ) {
+        request: RunningDoneRequest,
+    ): RunningRecordResponse {
         val user = userManager.getActiveUser(userId)
-        val startAt = TimeProvider.parse(request.startAt)
         val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
-        // TODO
+        val runningPoints =
+            request.runningPoints.map {
+                runningPointManger.saveNewRunningPoint(
+                    runningRecord = runningRecord,
+                    lat = it.lat,
+                    lon = it.lon,
+                    totalRunningTimeMills = it.totalRunningTimeMills,
+                    timeStamp = TimeProvider.parse(it.timeStamp),
+                )
+            }
+        runningRecordManager.updateRecord(runningRecord)
+        return RunningRecordResponse(
+            runningRecord = runningRecord,
+            runningPoints = runningPoints,
+        )
     }
 
     @Transactional
@@ -55,13 +68,13 @@ class RunningService(
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)
         val newRunningPoint =
-            runningPointManger.saveNewRunningPoints(
+            runningPointManger.saveNewRunningPoint(
                 runningRecord = runningRecord,
                 lat = request.lat,
                 lon = request.lon,
                 heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
-                totalRunningTime = request.totalRunningTime,
+                totalRunningTimeMills = request.totalRunningTime,
             )
         runningRecordManager.updateRecord(runningRecord)
         return RunningPointResponse(newRunningPoint)
@@ -79,10 +92,9 @@ class RunningService(
     }
 
     @Transactional
-    fun done(
+    fun oldDone(
         userId: Long,
         recordId: Long,
-        request: RunningDoneRequest,
     ): RunningDoneResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)

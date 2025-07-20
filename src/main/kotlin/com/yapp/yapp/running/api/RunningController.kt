@@ -2,7 +2,7 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.running.api.request.RunningDoneRequest
+import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -46,7 +46,8 @@ class RunningController(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
         @RequestBody request: RunningPollingUpdateRequest,
-    ) {
+    ): RunningRecordResponse {
+        TODO()
     }
 
     @PatchMapping("/{recordId}")
@@ -62,8 +63,7 @@ class RunningController(
     fun done(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningDoneResponse> {
-        return ApiResponse.success(runningService.done(userId, recordId, request))
+        return ApiResponse.success(runningService.oldDone(userId, recordId))
     }
 }
