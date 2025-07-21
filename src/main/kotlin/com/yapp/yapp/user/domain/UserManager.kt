@@ -27,9 +27,9 @@ class UserManager(
         email: String,
         provider: ProviderType,
     ): UserInfo {
-        val user = userDao.findByEmail(email)
-        if (user == null) {
-            return save(email, provider)
+        val user = userDao.findByEmail(email) ?: return save(email, provider)
+        if (user.isDeleted) {
+            user.isDeleted = false
         }
         return UserInfo(user)
     }
