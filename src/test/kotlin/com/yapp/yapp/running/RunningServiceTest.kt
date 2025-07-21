@@ -148,8 +148,7 @@ class RunningServiceTest : BaseServiceTest() {
         }
         val stopTime = maxTime + 1L
         val stop = runningService.pause(userId, recordId, RunningPauseRequest(startAt.plusSeconds(stopTime).toString()))
-        val doneTime = stopTime + 5L
-        val done = runningService.oldDone(userId, recordId, RunningDoneRequest(startAt.plusSeconds(doneTime).toString()))
+        val done = runningService.oldDone(userId, recordId)
 
         // then
         val record = runningRecordManager.getRunningRecord(id = recordId, user = user)

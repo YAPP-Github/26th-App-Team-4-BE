@@ -3,6 +3,7 @@ package com.yapp.yapp.running.api
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
+import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -42,16 +43,17 @@ class RunningController(
     }
 
     @PostMapping("/{recordId}")
-    fun save(
+    fun done(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningPollingUpdateRequest,
-    ): RunningRecordResponse {
-        TODO()
+        @RequestBody request: RunningDoneRequest,
+    ): ApiResponse<RunningRecordResponse> {
+        val recordResponse = runningService.done(userId = userId, recordId = recordId, request = request)
+        return ApiResponse.success(recordResponse)
     }
 
     @PatchMapping("/{recordId}")
-    fun pause(
+    fun pollingPause(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
         @RequestBody request: RunningPauseRequest,
@@ -60,7 +62,7 @@ class RunningController(
     }
 
     @PostMapping("/{recordId}/done")
-    fun done(
+    fun pollingDone(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
     ): ApiResponse<RunningDoneResponse> {

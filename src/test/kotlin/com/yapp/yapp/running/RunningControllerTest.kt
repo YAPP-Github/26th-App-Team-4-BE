@@ -20,7 +20,7 @@ class RunningControllerTest : BaseControllerTest() {
         val startResponse = runningService.start(user.id, RequestFixture.runningStartRequest())
         val recordId = startResponse.recordId
         val request =
-            RequestFixture.runningUpdateRequest(
+            RequestFixture.runningPollingUpdateRequest(
                 heartRate = 100,
             )
 
@@ -32,6 +32,26 @@ class RunningControllerTest : BaseControllerTest() {
             .body(request)
             .pathParam("recordId", recordId)
             .`when`().post("/api/v1/running/{recordId}/polling")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝을 일괄로 업데이트 한다`() {
+        val user = userFixture.create()
+        val startResponse = runningService.start(user.id, RequestFixture.runningStartRequest())
+        val recordId = startResponse.recordId
+        val request =
+            RequestFixture.runningDoneRequest()
+
+        // when
+        RestAssured.given().log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .pathParam("recordId", recordId)
+            .`when`().post("/api/v1/running/{recordId}")
             .then().log().all()
             .statusCode(200)
     }

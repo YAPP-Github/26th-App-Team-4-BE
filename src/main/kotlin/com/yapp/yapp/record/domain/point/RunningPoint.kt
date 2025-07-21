@@ -38,7 +38,7 @@ class RunningPoint(
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
     var pace: Pace = Pace(),
-    @Column(nullable = false)
+    @Column(nullable = true)
     val heartRate: Int? = 0,
     @Column(nullable = false)
     val calories: Int = 0,
