@@ -201,4 +201,43 @@ class RecordDocumentTest : BaseDocumentTest() {
             .then().log().all()
             .statusCode(200)
     }
+
+    @Test
+    fun `러닝 기록 삭제 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                )
+                .pathParameter(
+                    parameterWithName("recordId").description("러닝 기록 ID"),
+                )
+
+        val restDocsResponse =
+            response()
+                .responseBodyField()
+
+        val filter =
+            filter("record", "record-delete")
+                .tag(Tag.RECORD_API)
+                .summary("러닝 기록 삭제")
+                .description("사용자의 러닝 기록을 삭제하는 API입니다.")
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.createWithGoal()
+
+        val runningRecord = runningFixture.createRunningRecord(user = user)
+        val recordId = runningRecord.id
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .`when`().delete("/api/v1/records/{recordId}", recordId)
+            .then().log().all()
+            .statusCode(200)
+    }
 }
