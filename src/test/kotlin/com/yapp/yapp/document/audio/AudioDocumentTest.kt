@@ -127,7 +127,7 @@ class AudioDocumentTest : BaseDocumentTest() {
         RestAssured.given(spec).log().all()
             .filter(filter)
             .param("type", PaceAudioType.PACE_GOOD.name)
-            .`when`().get("/api/v1/audios/pace")
+            .`when`().get("/api/v1/audios/goals/pace")
             .then().log().all()
             .statusCode(200)
     }

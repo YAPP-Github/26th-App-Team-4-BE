@@ -88,15 +88,15 @@ class GoogleAudioRepository(
 
         private val PACE_AUDIO_PATH_MAP =
             mapOf(
-                PaceAudioType.PACE_FAST to setOf("pace/pace-fast-01.wav"),
-                PaceAudioType.PACE_FAST to setOf("pace/pace-fast-02.wav"),
-                PaceAudioType.PACE_SLOW to setOf("pace/pace-slow-01.wav"),
-                PaceAudioType.PACE_SLOW to setOf("pace/pace-slow-02.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-01.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-02.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-03.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-04.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-05.wav"),
+                PaceAudioType.PACE_FAST to setOf("goals/pace/pace-fast-01.wav"),
+                PaceAudioType.PACE_FAST to setOf("goals/pace/pace-fast-02.wav"),
+                PaceAudioType.PACE_SLOW to setOf("goals/pace/pace-slow-01.wav"),
+                PaceAudioType.PACE_SLOW to setOf("goals/pace/pace-slow-02.wav"),
+                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-01.wav"),
+                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-02.wav"),
+                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-03.wav"),
+                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-04.wav"),
+                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-05.wav"),
             )
     }
 
@@ -126,7 +126,7 @@ class GoogleAudioRepository(
         return getAudioResource(filePath)
     }
 
-    override fun getPaceAudio(type: PaceAudioType): AudioResource {
+    override fun getPaceGoalAudio(type: PaceAudioType): AudioResource {
         val filePath =
             PACE_AUDIO_PATH_MAP[type]?.random()
                 ?: throw CustomException(ErrorCode.INVALID_PACE_AUDIO_TYPE)

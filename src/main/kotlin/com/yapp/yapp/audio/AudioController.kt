@@ -26,11 +26,11 @@ class AudioController(
         return AudioRequestHandler.handle(audioResource)
     }
 
-    @GetMapping("/pace")
+    @GetMapping("/goals/pace")
     fun getPaceAudio(
         @RequestParam type: String,
     ): ResponseEntity<Resource> {
-        val audioResource = audioService.getPaceAudio(PaceAudioType.getByName(type))
+        val audioResource = audioService.getPaceGoalAudio(PaceAudioType.getByName(type))
         return AudioRequestHandler.handle(audioResource)
     }
 

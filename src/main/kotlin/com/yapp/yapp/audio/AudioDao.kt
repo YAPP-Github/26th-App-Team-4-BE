@@ -22,7 +22,7 @@ class AudioDao(
         return audioRepository.getTimeGoalAudio(type)
     }
 
-    fun getPaceAudio(type: PaceAudioType): AudioResource {
-        return audioRepository.getPaceAudio(type)
+    fun getPaceGoalAudio(type: PaceAudioType): AudioResource {
+        return audioRepository.getPaceGoalAudio(type)
     }
 }

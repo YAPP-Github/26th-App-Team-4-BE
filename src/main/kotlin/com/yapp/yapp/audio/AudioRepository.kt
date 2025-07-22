@@ -9,5 +9,5 @@ interface AudioRepository {
 
     fun getTimeGoalAudio(type: TimeAudioType): AudioResource
 
-    fun getPaceAudio(type: PaceAudioType): AudioResource
+    fun getPaceGoalAudio(type: PaceAudioType): AudioResource
 }
