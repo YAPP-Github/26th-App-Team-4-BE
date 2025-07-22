@@ -29,9 +29,6 @@ spring:
       credentials:
         location: ${secret.gcp.location}
 
-audio:
-  bucket: test-bucket-running
-
 logging:
   level:
     org.hibernate.SQL: debug
@@ -43,6 +40,9 @@ jwt:
   access-expiration-millis: 3600000
   refresh-secret: a2JqeG1IemZYZVRIYlpqM2hHN2xLVGFxVDR0b0RHc2s=
   refresh-expiration-millis: 604800000
+
+audio:
+  bucket: ${secret.gcp.bucket-name}
 
 oidc:
   response-millis: 3600000

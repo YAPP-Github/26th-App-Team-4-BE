@@ -22,7 +22,6 @@ spring:
 audio:
   bucket: ${secret.gcp.bucket-name}
 
-
 jwt:
   issuer: ${secret.jwt.issuer}
   access-secret: ${secret.jwt.access-secret}
