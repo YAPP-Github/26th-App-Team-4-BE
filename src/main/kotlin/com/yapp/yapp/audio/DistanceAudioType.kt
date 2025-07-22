@@ -15,7 +15,7 @@ enum class DistanceAudioType {
         fun getByName(name: String): DistanceAudioType {
             return DistanceAudioType.entries
                 .find { it.name == name }
-                ?: throw CustomException(ErrorCode.INVALID_AUDIO_DISTANCE_TYPE)
+                ?: throw CustomException(ErrorCode.INVALID_DISTANCE_AUDIO_TYPE)
         }
     }
 }

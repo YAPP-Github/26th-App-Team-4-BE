@@ -8,4 +8,6 @@ interface AudioRepository {
     fun getDistanceGoalAudio(type: DistanceAudioType): AudioResource
 
     fun getTimeGoalAudio(type: TimeAudioType): AudioResource
+
+    fun getPaceAudio(type: PaceAudioType): AudioResource
 }

@@ -21,4 +21,8 @@ class AudioDao(
     fun getTimeGoalAudio(type: TimeAudioType): AudioResource {
         return audioRepository.getTimeGoalAudio(type)
     }
+
+    fun getPaceAudio(type: PaceAudioType): AudioResource {
+        return audioRepository.getPaceAudio(type)
+    }
 }

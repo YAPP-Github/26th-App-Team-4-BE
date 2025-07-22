@@ -21,4 +21,8 @@ class AudioService(
     fun getTimeGoalAudio(type: TimeAudioType): AudioResource {
         return audioManager.getTimeGoalAudio(type)
     }
+
+    fun getPaceAudio(type: PaceAudioType): AudioResource {
+        return audioManager.getPaceAudio(type)
+    }
 }

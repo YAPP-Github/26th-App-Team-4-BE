@@ -6,6 +6,7 @@ import com.google.cloud.storage.Storage
 import com.yapp.yapp.audio.AudioRepository
 import com.yapp.yapp.audio.AudioResource
 import com.yapp.yapp.audio.DistanceAudioType
+import com.yapp.yapp.audio.PaceAudioType
 import com.yapp.yapp.audio.TimeAudioType
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
@@ -40,6 +41,13 @@ class GoogleAudioRepository(
                 TimeAudioType.TIME_LEFT_5MIN to "goals/time/time-left-5min-01.wav",
                 TimeAudioType.TIME_PASS_HALF to "goals/time/time-pass-half-01.wav",
             )
+
+        private val PACE_AUDIO_PATH_MAP =
+            mapOf(
+                PaceAudioType.PACE_FAST to setOf("pace/pace-fast-01.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-01.wav"),
+                PaceAudioType.PACE_SLOW to setOf("pace/pace-slow-01.wav"),
+            )
     }
 
     override fun loadResource(filePath: String): AudioResource {
@@ -57,14 +65,21 @@ class GoogleAudioRepository(
     override fun getDistanceGoalAudio(type: DistanceAudioType): AudioResource {
         val filePath =
             DISTANCE_AUDIO_PATH_MAP[type]
-                ?: throw CustomException(ErrorCode.AUDIO_NOT_FOUND)
+                ?: throw CustomException(ErrorCode.INVALID_DISTANCE_AUDIO_TYPE)
         return getAudioResource(filePath)
     }
 
     override fun getTimeGoalAudio(type: TimeAudioType): AudioResource {
         val filePath =
             TIME_AUDIO_PATH_MAP[type]
-                ?: throw CustomException(ErrorCode.AUDIO_NOT_FOUND)
+                ?: throw CustomException(ErrorCode.INVALID_TIME_AUDIO_TYPE)
+        return getAudioResource(filePath)
+    }
+
+    override fun getPaceAudio(type: PaceAudioType): AudioResource {
+        val filePath =
+            PACE_AUDIO_PATH_MAP[type]?.random()
+                ?: throw CustomException(ErrorCode.INVALID_PACE_AUDIO_TYPE)
         return getAudioResource(filePath)
     }
 

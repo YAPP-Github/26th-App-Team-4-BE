@@ -13,7 +13,7 @@ enum class TimeAudioType {
         fun getByName(name: String): TimeAudioType {
             return TimeAudioType.entries
                 .find { it.name == name }
-                ?: throw CustomException(ErrorCode.INVALID_AUDIO_DISTANCE_TYPE)
+                ?: throw CustomException(ErrorCode.INVALID_TIME_AUDIO_TYPE)
         }
     }
 }
