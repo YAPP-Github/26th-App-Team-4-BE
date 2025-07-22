@@ -13,4 +13,12 @@ class AudioManager(
     fun getRandomCoachAudio(): AudioResource {
         return audioDao.getRandomCoachAudio()
     }
+
+    fun getDistanceGoalAudio(type: DistanceAudioType): AudioResource {
+        return audioDao.getDistanceGoalAudio(type)
+    }
+
+    fun getTimeGoalAudio(type: TimeAudioType): AudioResource {
+        return audioDao.getTimeGoalAudio(type)
+    }
 }

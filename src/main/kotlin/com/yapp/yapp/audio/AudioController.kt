@@ -5,6 +5,7 @@ import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,6 +23,22 @@ class AudioController(
     @GetMapping("/coach")
     fun getCoachAudio(): ResponseEntity<Resource> {
         val audioResource = audioService.getCoachAudio()
+        return AudioRequestHandler.handle(audioResource)
+    }
+
+    @GetMapping("/goals/distance")
+    fun getDistanceGoalAudio(
+        @RequestParam type: String,
+    ): ResponseEntity<Resource> {
+        val audioResource = audioService.getDistanceGoalAudio(DistanceAudioType.getByName(type))
+        return AudioRequestHandler.handle(audioResource)
+    }
+
+    @GetMapping("/goals/time")
+    fun getTimeGoalAudio(
+        @RequestParam type: String,
+    ): ResponseEntity<Resource> {
+        val audioResource = audioService.getTimeGoalAudio(TimeAudioType.getByName(type))
         return AudioRequestHandler.handle(audioResource)
     }
 }
