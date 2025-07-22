@@ -1,6 +1,8 @@
 package com.yapp.yapp.running.domain
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.api.response.RunningPointResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
@@ -42,6 +44,9 @@ class RunningService(
     ): RunningRecordResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
+        if (request.runningPoints.isEmpty()) {
+            throw CustomException(ErrorCode.POINT_NOT_FOUND)
+        }
         val runningPoints =
             request.runningPoints.map {
                 runningPointManger.saveNewRunningPoint(

@@ -1,8 +1,10 @@
 package com.yapp.yapp.running
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
+import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
@@ -190,5 +192,29 @@ class RunningServiceTest : BaseServiceTest() {
 
             Assertions.assertThat(record.totalDistance).isGreaterThan(14.19 * count)
         }
+    }
+
+    @Test
+    fun `러닝 포인트가 없는데 완료 메서드를 호출하면 에러가 발생한다`() {
+        // given
+        val user = userFixture.create()
+        val userId = user.id
+        val startAt = TimeProvider.now()
+        val start = runningService.start(userId, RunningStartRequest(0.0, 0.0, startAt.toString()))
+        val recordId = start.recordId
+        val request =
+            RunningDoneRequest(
+                totalTime = TimeProvider.minuteToMills(8),
+                totalDistance = 1000.0,
+                totalCalories = 100,
+                averagePace = 1000L,
+                startAt = startAt.toString(),
+                runningPoints = emptyList(),
+            )
+
+        // when & then
+        Assertions.assertThatThrownBy {
+            runningService.done(userId = userId, recordId = recordId, request = request)
+        }.isInstanceOf(CustomException::class.java)
     }
 }
