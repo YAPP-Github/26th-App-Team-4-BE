@@ -93,4 +93,8 @@ class RunningRecord(
     fun isOwnedBy(user: User): Boolean {
         return this.user.id == user.id
     }
+
+    fun delete() {
+        this.isDeleted = true
+    }
 }

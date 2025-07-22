@@ -8,6 +8,7 @@ import com.yapp.yapp.user.domain.UserManager
 import com.yapp.yapp.user.domain.goal.UserGoalManager
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
 
 @Service
@@ -54,5 +55,15 @@ class RunningRecordService(
             timeGoalAchievedCount = timeGoalAchievedCount,
             distanceGoalAchievedCount = distanceGoalAchievedCount,
         )
+    }
+
+    @Transactional
+    fun deleteRecord(
+        userId: Long,
+        recordId: Long,
+    ) {
+        val user = userManager.getActiveUser(userId)
+        val record = recordManager.getRunningRecord(id = recordId, user = user)
+        record.delete()
     }
 }
