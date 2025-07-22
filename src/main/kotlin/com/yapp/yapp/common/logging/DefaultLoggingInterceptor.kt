@@ -2,6 +2,7 @@ package com.yapp.yapp.common.logging
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.TextNode
 import com.yapp.yapp.common.logging.format.RequestLogFormat
 import com.yapp.yapp.common.logging.format.ResponseLogFormat
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -9,6 +10,7 @@ import jakarta.servlet.RequestDispatcher
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.util.ContentCachingResponseWrapper
@@ -24,6 +26,7 @@ class DefaultLoggingInterceptor(
         const val REQUEST_ID = "requestId"
         const val REQUEST_TIME = "requestTime"
         val ignoreUrls = listOf<String>("/health", "/static", "/error")
+        val validContentTypes = setOf<String>(MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_PLAIN_VALUE)
     }
 
     override fun preHandle(
@@ -129,14 +132,18 @@ class DefaultLoggingInterceptor(
     }
 
     private fun extractResponseBody(response: HttpServletResponse): JsonNode {
-        return if (response is ContentCachingResponseWrapper) {
-            try {
-                objectMapper.readTree(response.contentAsByteArray)
-            } catch (e: Exception) {
-                "[Body 조회를 실패했습니다: ${e.message}]"
-            }
-        } else {
-            "[Response가 ContentCachingResponseWrapper로 변환되지 않았습니다]"
-        } as JsonNode
+        if (response !is ContentCachingResponseWrapper ||
+            response.contentType == null ||
+            response.contentType !in validContentTypes
+        ) {
+            val msg = "Response가 ContentCachingResponseWrapper가 아니거나 지원하지 않는 Content-Type(${response.contentType})입니다"
+            return TextNode.valueOf(msg)
+        }
+
+        return try {
+            objectMapper.readTree(response.contentAsByteArray)
+        } catch (e: Exception) {
+            TextNode.valueOf("Body 조회를 실패했습니다: ${e.message}")
+        }
     }
 }
