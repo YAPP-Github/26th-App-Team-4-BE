@@ -25,6 +25,11 @@ class GoogleAudioRepository(
             listOf(
                 "coach/coach-01.wav",
                 "coach/coach-02.wav",
+                "coach/coach-03.wav",
+                "coach/coach-04.wav",
+                "coach/coach-05.wav",
+                "coach/coach-06.wav",
+                "coach/coach-07.wav",
             )
         private val DISTANCE_AUDIO_PATH_MAP =
             mapOf(
@@ -33,6 +38,45 @@ class GoogleAudioRepository(
                 DistanceAudioType.DISTANCE_PASS_1KM to "goals/distance/distance-pass-1km-01.wav",
                 DistanceAudioType.DISTANCE_PASS_2KM to "goals/distance/distance-pass-2km-01.wav",
                 DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-3km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-4km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-5km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-6km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-7km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-8km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-9km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_3KM to "goals/distance/distance-pass-10km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_11KM to "goals/distance/distance-pass-11km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_12KM to "goals/distance/distance-pass-12km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_13KM to "goals/distance/distance-pass-13km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_14KM to "goals/distance/distance-pass-14km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_15KM to "goals/distance/distance-pass-15km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_16KM to "goals/distance/distance-pass-16km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_17KM to "goals/distance/distance-pass-17km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_18KM to "goals/distance/distance-pass-18km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_19KM to "goals/distance/distance-pass-19km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_20KM to "goals/distance/distance-pass-20km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_21KM to "goals/distance/distance-pass-21km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_22KM to "goals/distance/distance-pass-22km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_23KM to "goals/distance/distance-pass-23km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_24KM to "goals/distance/distance-pass-24km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_25KM to "goals/distance/distance-pass-25km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_26KM to "goals/distance/distance-pass-26km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_27KM to "goals/distance/distance-pass-27km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_28KM to "goals/distance/distance-pass-28km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_29KM to "goals/distance/distance-pass-29km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_30KM to "goals/distance/distance-pass-30km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_31KM to "goals/distance/distance-pass-31km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_32KM to "goals/distance/distance-pass-32km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_33KM to "goals/distance/distance-pass-33km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_34KM to "goals/distance/distance-pass-34km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_35KM to "goals/distance/distance-pass-35km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_36KM to "goals/distance/distance-pass-36km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_37KM to "goals/distance/distance-pass-37km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_38KM to "goals/distance/distance-pass-38km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_39KM to "goals/distance/distance-pass-39km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_40KM to "goals/distance/distance-pass-40km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_41KM to "goals/distance/distance-pass-41km-01.wav",
+                DistanceAudioType.DISTANCE_PASS_42KM to "goals/distance/distance-pass-42km-01.wav",
             )
 
         private val TIME_AUDIO_PATH_MAP =
@@ -45,8 +89,14 @@ class GoogleAudioRepository(
         private val PACE_AUDIO_PATH_MAP =
             mapOf(
                 PaceAudioType.PACE_FAST to setOf("pace/pace-fast-01.wav"),
-                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-01.wav"),
+                PaceAudioType.PACE_FAST to setOf("pace/pace-fast-02.wav"),
                 PaceAudioType.PACE_SLOW to setOf("pace/pace-slow-01.wav"),
+                PaceAudioType.PACE_SLOW to setOf("pace/pace-slow-02.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-01.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-02.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-03.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-04.wav"),
+                PaceAudioType.PACE_GOOD to setOf("pace/pace-good-05.wav"),
             )
     }
 
