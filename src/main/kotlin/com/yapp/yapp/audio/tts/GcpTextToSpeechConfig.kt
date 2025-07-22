@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
 
 @Configuration
-class GcpTtsConfig(
+class GcpTextToSpeechConfig(
     private val resourceLoader: ResourceLoader,
     @Value("\${spring.cloud.gcp.credentials.location}") private val credentialsLocation: String,
 ) {

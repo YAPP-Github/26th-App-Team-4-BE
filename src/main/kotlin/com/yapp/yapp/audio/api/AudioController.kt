@@ -35,9 +35,8 @@ class AudioController(
     @GetMapping("/running-info")
     fun getRunningInfoAudio(
         @CurrentUser userId: Long,
-
-        ) {
-
+    ) {
+        TODO()
     }
 
     @GetMapping("/goals/pace")
