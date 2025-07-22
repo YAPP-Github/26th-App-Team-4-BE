@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,12 +13,15 @@ class AudioController(
     private val audioService: AudioService,
 ) {
     @GetMapping("/**")
-    fun streamAudio(
-        request: HttpServletRequest,
-        @RequestHeader(value = "Range", required = false) rangeHeader: String?,
-    ): ResponseEntity<Resource> {
+    fun streamAudio(request: HttpServletRequest): ResponseEntity<Resource> {
         val filename = AudioRequestHandler.parseFilename(request)
-        val (blob, resource) = audioService.loadBlob(filename)
-        return AudioRequestHandler.handle(blob, resource, rangeHeader)
+        val audioResource = audioService.loadResource(filename)
+        return AudioRequestHandler.handle(audioResource)
+    }
+
+    @GetMapping("/coach")
+    fun getCoachAudio(): ResponseEntity<Resource> {
+        val audioResource = audioService.getCoachAudio()
+        return AudioRequestHandler.handle(audioResource)
     }
 }
