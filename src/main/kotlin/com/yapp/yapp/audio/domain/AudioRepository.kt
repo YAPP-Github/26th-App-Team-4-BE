@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio
+package com.yapp.yapp.audio.domain
 
 interface AudioRepository {
     fun getRandomCoachAudio(): AudioResource

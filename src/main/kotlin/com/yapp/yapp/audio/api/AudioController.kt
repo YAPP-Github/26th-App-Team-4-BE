@@ -1,5 +1,11 @@
-package com.yapp.yapp.audio
+package com.yapp.yapp.audio.api
 
+import com.yapp.yapp.audio.domain.AudioRequestHandler
+import com.yapp.yapp.audio.domain.AudioService
+import com.yapp.yapp.audio.domain.DistanceAudioType
+import com.yapp.yapp.audio.domain.PaceAudioType
+import com.yapp.yapp.audio.domain.TimeAudioType
+import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
@@ -26,11 +32,19 @@ class AudioController(
         return AudioRequestHandler.handle(audioResource)
     }
 
+    @GetMapping("/running-info")
+    fun getRunningInfoAudio(
+        @CurrentUser userId: Long,
+
+        ) {
+
+    }
+
     @GetMapping("/goals/pace")
     fun getPaceAudio(
         @RequestParam type: String,
     ): ResponseEntity<Resource> {
-        val audioResource = audioService.getPaceGoalAudio(PaceAudioType.getByName(type))
+        val audioResource = audioService.getPaceGoalAudio(PaceAudioType.Companion.getByName(type))
         return AudioRequestHandler.handle(audioResource)
     }
 
@@ -38,7 +52,7 @@ class AudioController(
     fun getDistanceGoalAudio(
         @RequestParam type: String,
     ): ResponseEntity<Resource> {
-        val audioResource = audioService.getDistanceGoalAudio(DistanceAudioType.getByName(type))
+        val audioResource = audioService.getDistanceGoalAudio(DistanceAudioType.Companion.getByName(type))
         return AudioRequestHandler.handle(audioResource)
     }
 
@@ -46,7 +60,7 @@ class AudioController(
     fun getTimeGoalAudio(
         @RequestParam type: String,
     ): ResponseEntity<Resource> {
-        val audioResource = audioService.getTimeGoalAudio(TimeAudioType.getByName(type))
+        val audioResource = audioService.getTimeGoalAudio(TimeAudioType.Companion.getByName(type))
         return AudioRequestHandler.handle(audioResource)
     }
 }

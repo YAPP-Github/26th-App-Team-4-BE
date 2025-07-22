@@ -1,13 +1,13 @@
-package com.yapp.yapp.audio.infrastructure
+package com.yapp.yapp.audio.domain.infrastructure
 
 import com.google.cloud.storage.Blob
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.Storage
-import com.yapp.yapp.audio.AudioRepository
-import com.yapp.yapp.audio.AudioResource
-import com.yapp.yapp.audio.DistanceAudioType
-import com.yapp.yapp.audio.PaceAudioType
-import com.yapp.yapp.audio.TimeAudioType
+import com.yapp.yapp.audio.domain.AudioRepository
+import com.yapp.yapp.audio.domain.AudioResource
+import com.yapp.yapp.audio.domain.DistanceAudioType
+import com.yapp.yapp.audio.domain.PaceAudioType
+import com.yapp.yapp.audio.domain.TimeAudioType
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import org.springframework.beans.factory.annotation.Value

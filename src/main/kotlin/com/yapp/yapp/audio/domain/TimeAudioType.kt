@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio
+package com.yapp.yapp.audio.domain
 
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode

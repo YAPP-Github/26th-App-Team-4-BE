@@ -1,8 +1,8 @@
 package com.yapp.yapp.document.audio
 
-import com.yapp.yapp.audio.DistanceAudioType
-import com.yapp.yapp.audio.PaceAudioType
-import com.yapp.yapp.audio.TimeAudioType
+import com.yapp.yapp.audio.domain.DistanceAudioType
+import com.yapp.yapp.audio.domain.PaceAudioType
+import com.yapp.yapp.audio.domain.TimeAudioType
 import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import io.restassured.RestAssured

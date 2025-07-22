@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio
+package com.yapp.yapp.audio.domain
 
 import org.springframework.core.io.Resource
 import org.springframework.http.MediaType

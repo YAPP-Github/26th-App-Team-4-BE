@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio
+package com.yapp.yapp.audio.domain
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.io.Resource
