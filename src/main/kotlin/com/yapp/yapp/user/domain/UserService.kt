@@ -2,15 +2,31 @@ package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.record.RunningRecordManager
+import com.yapp.yapp.user.api.request.AnalysisFeedbackUpdateRequest
+import com.yapp.yapp.user.api.request.AudioCoachingUpdateRequest
+import com.yapp.yapp.user.api.request.AudioFeedbackUpdateRequest
+import com.yapp.yapp.user.api.request.CrewRankingUpdateRequest
 import com.yapp.yapp.user.api.request.DistanceGoalRequest
 import com.yapp.yapp.user.api.request.GoalRequest
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalRequest
+import com.yapp.yapp.user.api.request.PromEventUpdateRequest
+import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
+import com.yapp.yapp.user.api.request.SettingUpdateRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
+import com.yapp.yapp.user.api.response.AlertSettingResponse
+import com.yapp.yapp.user.api.response.AnalysisFeedbackUpdateResponse
 import com.yapp.yapp.user.api.response.AnswerResponse
+import com.yapp.yapp.user.api.response.AudioCoachingUpdateResponse
+import com.yapp.yapp.user.api.response.AudioFeedbackUpdateResponse
+import com.yapp.yapp.user.api.response.CrewRankingUpdateResponse
+import com.yapp.yapp.user.api.response.PromEventUpdateResponse
+import com.yapp.yapp.user.api.response.RemindAlertUpdateResponse
 import com.yapp.yapp.user.api.response.RunnerTypeResponse
+import com.yapp.yapp.user.api.response.RunningSettingResponse
+import com.yapp.yapp.user.api.response.SettingUpdateResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.goal.UserGoal
@@ -99,6 +115,26 @@ class UserService(
         )
     }
 
+    @Transactional(readOnly = true)
+    fun getRunningSetting(userId: Long): RunningSettingResponse {
+        val user = userManager.getActiveUser(userId)
+        return RunningSettingResponse(
+            audioCoaching = user.audioCoaching,
+            audioFeedback = user.audioFeedback,
+        )
+    }
+
+    @Transactional(readOnly = true)
+    fun getAlertSetting(userId: Long): AlertSettingResponse {
+        val user = userManager.getActiveUser(userId)
+        return AlertSettingResponse(
+            remindAlert = user.remindAlert,
+            analysisFeedback = user.analysisFeedback,
+            crewRanking = user.crewRanking,
+            promEvent = user.promEvent,
+        )
+    }
+
     @Transactional
     fun updateOnboardings(
         id: Long,
@@ -113,6 +149,40 @@ class UserService(
                 questionType = onboarding.questionType,
                 answer = onboarding.answer,
             )
+        }
+    }
+
+    @Transactional
+    fun updateSetting(
+        userId: Long,
+        request: SettingUpdateRequest,
+    ): SettingUpdateResponse {
+        val user = userManager.getActiveUser(userId)
+        return when (request) {
+            is AudioCoachingUpdateRequest -> {
+                user.updateAudioCoaching(request.audioCoaching)
+                AudioCoachingUpdateResponse(user.audioCoaching)
+            }
+            is AudioFeedbackUpdateRequest -> {
+                user.updateAudioFeedback(request.audioFeedback)
+                AudioFeedbackUpdateResponse(user.audioFeedback)
+            }
+            is RemindAlertUpdateRequest -> {
+                user.updateRemindAlert(request.remindAlert)
+                RemindAlertUpdateResponse(user.remindAlert)
+            }
+            is AnalysisFeedbackUpdateRequest -> {
+                user.updateAnalysisFeedback(request.analysisFeedback)
+                AnalysisFeedbackUpdateResponse(user.analysisFeedback)
+            }
+            is CrewRankingUpdateRequest -> {
+                user.updateCrewRanking(request.crewRanking)
+                CrewRankingUpdateResponse(user.crewRanking)
+            }
+            is PromEventUpdateRequest -> {
+                user.updatePromEvent(request.promEvent)
+                PromEventUpdateResponse(user.promEvent)
+            }
         }
     }
 
