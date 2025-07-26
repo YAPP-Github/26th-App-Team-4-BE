@@ -6,9 +6,15 @@ import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
+import com.yapp.yapp.user.api.request.AnalysisFeedbackUpdateRequest
+import com.yapp.yapp.user.api.request.AudioCoachingUpdateRequest
+import com.yapp.yapp.user.api.request.AudioFeedbackUpdateRequest
+import com.yapp.yapp.user.api.request.CrewRankingUpdateRequest
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalRequest
+import com.yapp.yapp.user.api.request.PromEventUpdateRequest
+import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import java.time.OffsetDateTime
@@ -117,5 +123,29 @@ object RequestFixture {
 
     fun paceGoalRequest(pace: Long = (7 * 60 + 30) * 1000L): PaceGoalRequest {
         return PaceGoalRequest(pace)
+    }
+
+    fun audioCoachingUpdateRequest(audioCoaching: Boolean = true): AudioCoachingUpdateRequest {
+        return AudioCoachingUpdateRequest(audioCoaching = audioCoaching)
+    }
+
+    fun remindAlertUpdateRequest(remindAlert: Boolean = true): RemindAlertUpdateRequest {
+        return RemindAlertUpdateRequest(remindAlert = remindAlert)
+    }
+
+    fun audioFeedbackUpdateRequest(audioFeedback: Boolean = true): AudioFeedbackUpdateRequest {
+        return AudioFeedbackUpdateRequest(audioFeedback = audioFeedback)
+    }
+
+    fun analysisFeedbackUpdateRequest(analysisFeedback: Boolean = true): AnalysisFeedbackUpdateRequest {
+        return AnalysisFeedbackUpdateRequest(analysisFeedback = analysisFeedback)
+    }
+
+    fun crewRankingUpdateRequest(crewRanking: Boolean = true): CrewRankingUpdateRequest {
+        return CrewRankingUpdateRequest(crewRanking = crewRanking)
+    }
+
+    fun promEventUpdateRequest(promEvent: Boolean = true): PromEventUpdateRequest {
+        return PromEventUpdateRequest(promEvent = promEvent)
     }
 }

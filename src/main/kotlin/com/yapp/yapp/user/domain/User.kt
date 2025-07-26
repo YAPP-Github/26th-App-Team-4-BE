@@ -28,7 +28,17 @@ class User(
     @Enumerated(EnumType.STRING)
     var runnerType: RunnerType? = null,
     @Column(nullable = false)
+    var audioCoaching: Boolean = false,
+    @Column(nullable = false)
+    var audioFeedback: Boolean = false,
+    @Column(nullable = false)
     var remindAlert: Boolean = false,
+    @Column(nullable = false)
+    var analysisFeedback: Boolean = false,
+    @Column(nullable = false)
+    var crewRanking: Boolean = false,
+    @Column(nullable = false)
+    var promEvent: Boolean = false,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
@@ -43,5 +53,25 @@ class User(
 
     fun updateRemindAlert(remindAlert: Boolean) {
         this.remindAlert = remindAlert
+    }
+
+    fun updateAudioCoaching(audioCoaching: Boolean) {
+        this.audioCoaching = audioCoaching
+    }
+
+    fun updateAudioFeedback(audioFeedback: Boolean) {
+        this.audioFeedback = audioFeedback
+    }
+
+    fun updateAnalysisFeedback(analysisFeedback: Boolean) {
+        this.analysisFeedback = analysisFeedback
+    }
+
+    fun updateCrewRanking(crewRanking: Boolean) {
+        this.crewRanking = crewRanking
+    }
+
+    fun updatePromEvent(promEvent: Boolean) {
+        this.promEvent = promEvent
     }
 }
