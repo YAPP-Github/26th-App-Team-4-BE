@@ -31,7 +31,11 @@ class TokenAspect(
                 ?: throw CustomException(ErrorCode.INVALID_REQUEST)
 
         val request = attrs.request
-        val token = request.getHeader(AUTHORIZATION_HEADER).substring(TOKEN_TYPE.length)
+        val token =
+            request.getHeader(AUTHORIZATION_HEADER)
+                ?.takeIf { it.startsWith(TOKEN_TYPE) }
+                ?.substring(TOKEN_TYPE.length)
+                ?: throw CustomException(ErrorCode.UNAUTHORIZED_REQUEST)
         val tokenType = authenticated.tokenType
 
         jwtTokenHandler.getUserId(token, tokenType)

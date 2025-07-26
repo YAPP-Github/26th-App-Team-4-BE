@@ -34,10 +34,10 @@ class CurrentUserArgumentResolver(
     ): Long {
         val request =
             webRequest.getNativeRequest(HttpServletRequest::class.java)
-                ?: throw CustomException(ErrorCode.UNAUTHORIZE_REQUEST)
+                ?: throw CustomException(ErrorCode.UNAUTHORIZED_REQUEST)
         val authorization = request.getHeader(HttpHeaders.AUTHORIZATION)
         if (authorization == null || !authorization.startsWith(TOKEN_TYPE)) {
-            throw CustomException(ErrorCode.UNAUTHORIZE_REQUEST)
+            throw CustomException(ErrorCode.UNAUTHORIZED_REQUEST)
         }
         val token = authorization.substring(TOKEN_TYPE.length)
         return tokenHandler.getUserId(token, TokenType.ACCESS)
