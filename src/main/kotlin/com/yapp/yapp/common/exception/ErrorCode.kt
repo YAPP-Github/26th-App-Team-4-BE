@@ -47,9 +47,9 @@ enum class ErrorCode(
     POINT_NOT_FOUND(400, "RPO_001", "러닝 포인트가 존재하지 않습니다.", LogLevel.WARN),
 
     AUDIO_NOT_FOUND(400, "AUD_001", "일치하는 오디오 파일이 존재하지 않습니다.", LogLevel.WARN),
-    INVALID_DISTANCE_AUDIO_TYPE(400, "AUD_002", "유효하지 않은 오디오 거리 타입입니다", LogLevel.WARN),
-    INVALID_TIME_AUDIO_TYPE(400, "AUD_003", "유효하지 않은 오디오 시간 타입입니다", LogLevel.WARN),
-    INVALID_PACE_AUDIO_TYPE(400, "AUD_003", "유효하지 않은 오디오 시간 타입입니다", LogLevel.WARN),
+    INVALID_DISTANCE_AUDIO_TYPE(400, "AUD_002", "유효하지 않은 오디오 거리 타입입니다.", LogLevel.WARN),
+    INVALID_TIME_AUDIO_TYPE(400, "AUD_003", "유효하지 않은 오디오 시간 타입입니다.", LogLevel.WARN),
+    INVALID_PACE_AUDIO_TYPE(400, "AUD_003", "유효하지 않은 오디오 페이스 타입입니다.", LogLevel.WARN),
 
     ANSWER_NOT_FOUND(400, "ONB_001", "온보딩 답변이 존재하지 않습니다.", LogLevel.WARN),
     RUNNER_TYPE_NOT_FOUND(400, "ONB_002", "러너 타입이 존재하지 않습니다.", LogLevel.WARN),

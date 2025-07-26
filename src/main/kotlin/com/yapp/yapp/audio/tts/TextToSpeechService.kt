@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class TextToSpeechService(
     private val client: TextToSpeechClient,
-    private val voidSelectParam: VoiceSelectionParams,
+    private val voiceSelectionParams: VoiceSelectionParams,
     private val audioConfig: AudioConfig,
 ) {
     fun synthesize(text: String): ByteArray {
@@ -21,7 +21,7 @@ class TextToSpeechService(
                 .build()
 
         client.use {
-            val response = it.synthesizeSpeech(input, voidSelectParam, audioConfig)
+            val response = it.synthesizeSpeech(input, voiceSelectionParams, audioConfig)
             val audioBytes: ByteString = response.audioContent
             return audioBytes.toByteArray()
         }
