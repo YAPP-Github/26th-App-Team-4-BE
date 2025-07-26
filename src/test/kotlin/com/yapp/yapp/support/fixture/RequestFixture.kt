@@ -6,7 +6,6 @@ import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.user.api.request.AnalysisFeedbackUpdateRequest
 import com.yapp.yapp.user.api.request.AudioCoachingUpdateRequest
 import com.yapp.yapp.user.api.request.AudioFeedbackUpdateRequest
