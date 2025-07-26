@@ -17,7 +17,6 @@ import com.yapp.yapp.user.api.request.PromEventUpdateRequest
 import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
-import org.springframework.mock.web.MockMultipartFile
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.ceil
@@ -65,7 +64,6 @@ object RequestFixture {
             averagePace = Pace(distanceMeter = totalDistance, durationMills = totalTime).toMills(),
             startAt = startAt,
             runningPoints = runningPoints,
-            imageFile = MockMultipartFile("test", null),
         )
     }
 

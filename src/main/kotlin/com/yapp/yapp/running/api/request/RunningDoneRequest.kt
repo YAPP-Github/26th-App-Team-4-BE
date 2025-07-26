@@ -1,13 +1,10 @@
 package com.yapp.yapp.running.api.request
 
-import org.springframework.web.multipart.MultipartFile
-
 data class RunningDoneRequest(
     val totalTime: Long,
     val totalDistance: Double,
     val totalCalories: Int,
     val averagePace: Long,
-    val imageFile: MultipartFile,
     val startAt: String,
     val runningPoints: List<RunningPointRequest>,
 ) {

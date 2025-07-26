@@ -128,14 +128,16 @@ class RunningDocumentTest : BaseDocumentTest() {
             )
         val request = RequestFixture.runningDoneRequest()
         val recordId = startResponse.recordId
+        val testImageFile = runningFixture.file()
 
         // when & then
         RestAssured.given(spec).log().all()
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
-            .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            .contentType("multipart/form-data")
+            .multiPart("metadata", objectMapper.writeValueAsString(request), "application/json")
+            .multiPart("image", testImageFile, "images/png")
             .pathParam("recordId", recordId)
-            .body(request)
             .`when`().post("/api/v1/running/{recordId}")
             .then().log().all()
             .statusCode(200)

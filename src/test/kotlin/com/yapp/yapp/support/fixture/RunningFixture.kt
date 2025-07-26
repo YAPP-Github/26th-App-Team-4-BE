@@ -11,6 +11,7 @@ import com.yapp.yapp.user.domain.User
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.time.Duration
 import java.time.OffsetDateTime
 
@@ -92,4 +93,6 @@ class RunningFixture(
     }
 
     fun multipartFile(): MultipartFile = MockMultipartFile("test", null)
+
+    fun file(): File = File("src/test/resources/image/running-record.png")
 }

@@ -6,6 +6,7 @@ import com.google.cloud.storage.Storage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.util.concurrent.TimeUnit
 
 @Component
 class GoogleStorgeRepository(
@@ -16,12 +17,17 @@ class GoogleStorgeRepository(
         filePath: String,
         multipartFile: MultipartFile,
     ): File {
-        val blobId =
-            storage.create(
-                BlobInfo.newBuilder(bucketName, filePath).build(),
-                multipartFile.bytes,
+        val blobInfo = BlobInfo.newBuilder(bucketName, filePath).build()
+        storage.create(blobInfo, multipartFile.bytes)
+
+        val url =
+            storage.signUrl(
+                blobInfo,
+                15, // 만료 시간
+                TimeUnit.MINUTES,
+                Storage.SignUrlOption.withV4Signature(),
             )
-        return File(filePath = filePath, url = blobId.mediaLink)
+        return File(filePath = filePath, url = url.toString())
     }
 
     fun deleteFile(filePath: String): Boolean {
