@@ -88,15 +88,21 @@ class GoogleAudioRepository(
 
         private val PACE_AUDIO_PATH_MAP =
             mapOf(
-                PaceAudioType.PACE_FAST to setOf("goals/pace/pace-fast-01.wav"),
-                PaceAudioType.PACE_FAST to setOf("goals/pace/pace-fast-02.wav"),
-                PaceAudioType.PACE_SLOW to setOf("goals/pace/pace-slow-01.wav"),
-                PaceAudioType.PACE_SLOW to setOf("goals/pace/pace-slow-02.wav"),
-                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-01.wav"),
-                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-02.wav"),
-                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-03.wav"),
-                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-04.wav"),
-                PaceAudioType.PACE_GOOD to setOf("goals/pace/pace-good-05.wav"),
+                PaceAudioType.PACE_FAST to setOf(
+                    "goals/pace/pace-fast-01.wav",
+                    "goals/pace/pace-fast-02.wav"
+                ),
+                PaceAudioType.PACE_SLOW to setOf(
+                    "goals/pace/pace-slow-01.wav",
+                    "goals/pace/pace-slow-02.wav"
+                ),
+                PaceAudioType.PACE_GOOD to setOf(
+                    "goals/pace/pace-good-01.wav",
+                    "goals/pace/pace-good-02.wav",
+                    "goals/pace/pace-good-03.wav",
+                    "goals/pace/pace-good-04.wav",
+                    "goals/pace/pace-good-05.wav"
+                ),
             )
     }
 
