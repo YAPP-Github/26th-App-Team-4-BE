@@ -109,6 +109,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.startAt").description("시작 시간"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
+                    fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL"),
                 )
         val filter =
             filter("running", "running-done")

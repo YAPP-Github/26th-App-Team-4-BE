@@ -19,7 +19,7 @@ spring:
   mvc:
     static-path-pattern: /static/**
 
-audio:
+gcp:
   bucket: ${secret.gcp.bucket-name}
 
 jwt:

@@ -41,7 +41,7 @@ jwt:
   refresh-secret: a2JqeG1IemZYZVRIYlpqM2hHN2xLVGFxVDR0b0RHc2s=
   refresh-expiration-millis: 604800000
 
-audio:
+gcp:
   bucket: ${secret.gcp.bucket-name}
 
 oidc:

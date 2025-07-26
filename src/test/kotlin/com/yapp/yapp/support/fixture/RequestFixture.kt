@@ -17,6 +17,7 @@ import com.yapp.yapp.user.api.request.PromEventUpdateRequest
 import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
+import org.springframework.mock.web.MockMultipartFile
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.ceil
@@ -55,14 +56,18 @@ object RequestFixture {
             generateRunningPointsForDistance(
                 targetDistanceMeters = totalDistance,
             ),
-    ) = RunningDoneRequest(
-        totalTime = runningPoints.last().totalRunningTimeMills,
-        totalDistance = totalDistance,
-        totalCalories = totalCalories,
-        averagePace = Pace(distanceMeter = totalDistance, durationMills = runningPoints.last().totalRunningTimeMills).toMills(),
-        startAt = startAt,
-        runningPoints = runningPoints,
-    )
+    ): RunningDoneRequest {
+        val totalTime = if (runningPoints.isNotEmpty()) runningPoints.last().totalRunningTimeMills else 0L
+        return RunningDoneRequest(
+            totalTime = totalTime,
+            totalDistance = totalDistance,
+            totalCalories = totalCalories,
+            averagePace = Pace(distanceMeter = totalDistance, durationMills = totalTime).toMills(),
+            startAt = startAt,
+            runningPoints = runningPoints,
+            imageFile = MockMultipartFile("test", null),
+        )
+    }
 
     fun generateRunningPointsForDistance(
         targetDistanceMeters: Double = 1_000.0,

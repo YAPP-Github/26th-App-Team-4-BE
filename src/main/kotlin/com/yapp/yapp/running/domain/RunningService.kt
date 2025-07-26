@@ -3,6 +3,8 @@ package com.yapp.yapp.running.domain
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
+import com.yapp.yapp.common.storage.FilePathGenerator
+import com.yapp.yapp.common.storage.StorageManager
 import com.yapp.yapp.record.api.response.RunningPointResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
@@ -17,12 +19,14 @@ import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class RunningService(
     private val runningRecordManager: RunningRecordManager,
     private val runningPointManger: RunningPointManger,
     private val userManager: UserManager,
+    private val storageManager: StorageManager,
 ) {
     @Transactional
     fun start(
@@ -41,6 +45,7 @@ class RunningService(
         userId: Long,
         recordId: Long,
         request: RunningDoneRequest,
+        imageFile: MultipartFile,
     ): RunningRecordResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
@@ -57,6 +62,10 @@ class RunningService(
                     timeStamp = TimeProvider.parse(it.timeStamp),
                 )
             }
+        val filePath = FilePathGenerator.generateRunningRecordImagePath(runningRecord)
+        val imageFile = storageManager.uploadFile(filePath = filePath, multipartFile = imageFile)
+        runningRecord.update(imageUrl = imageFile.url)
+
         runningRecordManager.updateRecord(runningRecord)
         return RunningRecordResponse(
             runningRecord = runningRecord,

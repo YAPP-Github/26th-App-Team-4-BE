@@ -4,12 +4,12 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
-import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.BaseServiceTest
+import com.yapp.yapp.support.fixture.RequestFixture
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -203,18 +203,16 @@ class RunningServiceTest : BaseServiceTest() {
         val start = runningService.start(userId, RunningStartRequest(0.0, 0.0, startAt.toString()))
         val recordId = start.recordId
         val request =
-            RunningDoneRequest(
-                totalTime = TimeProvider.minuteToMills(8),
+            RequestFixture.runningDoneRequest(
                 totalDistance = 1000.0,
                 totalCalories = 100,
-                averagePace = 1000L,
                 startAt = startAt.toString(),
                 runningPoints = emptyList(),
             )
 
         // when & then
         Assertions.assertThatThrownBy {
-            runningService.done(userId = userId, recordId = recordId, request = request)
+            runningService.done(userId = userId, recordId = recordId, request = request, imageFile = runningFixture.multipartFile())
         }.isInstanceOf(CustomException::class.java)
     }
 }

@@ -8,7 +8,9 @@ import com.yapp.yapp.record.domain.point.RunningPointRepository
 import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
 import com.yapp.yapp.user.domain.User
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import java.time.Duration
 import java.time.OffsetDateTime
 
@@ -88,4 +90,6 @@ class RunningFixture(
         runningRecord.updateInfoByRunningPoints(savedRunningPoints)
         return runningRecordRepository.save(runningRecord)
     }
+
+    fun multipartFile(): MultipartFile = MockMultipartFile("test", null)
 }
