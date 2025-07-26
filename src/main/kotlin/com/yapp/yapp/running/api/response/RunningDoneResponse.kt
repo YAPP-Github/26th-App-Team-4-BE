@@ -9,7 +9,6 @@ data class RunningDoneResponse(
     val totalRunningTime: Long,
     val totalCalories: Int,
     val startAt: OffsetDateTime,
-    val averageSpeed: Double,
     val averagePace: Long,
 ) {
     constructor(runningRecord: RunningRecord) : this(
@@ -18,7 +17,6 @@ data class RunningDoneResponse(
         runningRecord.totalTime,
         runningRecord.totalCalories,
         runningRecord.startAt,
-        runningRecord.averageSpeed,
         runningRecord.averagePace.toMills(),
     )
 }

@@ -113,16 +113,10 @@ class RunningMetricsCalculatorTest : BaseServiceTest() {
         }
 
         val totalTime = Duration.between(runningPoints.first().timeStamp, runningPoints.last().timeStamp)
-        val averageSpeed =
-            RunningMetricsCalculator.calculateSpeedKmh(
-                distanceMeter = totalDistance,
-                seconds = totalTime.seconds,
-            )
         val averagePace = Pace(distanceMeter = totalDistance, duration = totalTime)
 
         // then
         Assertions.assertThat(runningRecord.totalDistance).isCloseTo(totalDistance, within(0.001))
-        Assertions.assertThat(runningRecord.averageSpeed).isCloseTo(averageSpeed, within(0.001))
         Assertions.assertThat(runningRecord.averagePace.toMills()).isEqualTo(averagePace.toMills())
     }
 }

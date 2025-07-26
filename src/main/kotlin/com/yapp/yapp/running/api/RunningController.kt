@@ -2,18 +2,16 @@ package com.yapp.yapp.running.api
 
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.common.web.ApiXmlResponse
+import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.request.RunningUpdateRequest
 import com.yapp.yapp.running.api.response.RunningDoneResponse
 import com.yapp.yapp.running.api.response.RunningPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.api.response.RunningUpdateResponse
-import com.yapp.yapp.running.api.response.RunningUpdateXmlResponse
 import com.yapp.yapp.running.domain.RunningService
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -34,31 +32,28 @@ class RunningController(
         return ApiResponse.success(runningService.start(userId, request))
     }
 
-    @PostMapping("/{recordId}")
-    fun update(
+    @PostMapping("/{recordId}/polling")
+    fun pollingUpdate(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningUpdateRequest,
+        @RequestBody request: RunningPollingUpdateRequest,
     ): ApiResponse<RunningUpdateResponse> {
-        val pointResponse = runningService.update(userId, recordId, request)
+        val pointResponse = runningService.pollingUpdate(userId, recordId, request)
         return ApiResponse.success(RunningUpdateResponse(pointResponse))
     }
 
-    @PostMapping(
-        value = ["/{recordId}"],
-        produces = [MediaType.APPLICATION_XML_VALUE],
-    )
-    fun updateXml(
+    @PostMapping("/{recordId}")
+    fun done(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningUpdateRequest,
-    ): ApiXmlResponse<RunningUpdateXmlResponse> {
-        val pointResponse = runningService.update(userId, recordId, request)
-        return ApiXmlResponse.success(RunningUpdateXmlResponse(pointResponse))
+        @RequestBody request: RunningDoneRequest,
+    ): ApiResponse<RunningRecordResponse> {
+        val recordResponse = runningService.done(userId = userId, recordId = recordId, request = request)
+        return ApiResponse.success(recordResponse)
     }
 
     @PatchMapping("/{recordId}")
-    fun pause(
+    fun pollingPause(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
         @RequestBody request: RunningPauseRequest,
@@ -67,11 +62,10 @@ class RunningController(
     }
 
     @PostMapping("/{recordId}/done")
-    fun done(
+    fun pollingDone(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningDoneResponse> {
-        return ApiResponse.success(runningService.done(userId, recordId, request))
+        return ApiResponse.success(runningService.oldDone(userId, recordId))
     }
 }

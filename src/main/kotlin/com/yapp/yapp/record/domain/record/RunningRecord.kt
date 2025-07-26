@@ -3,7 +3,6 @@ package com.yapp.yapp.record.domain.record
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.record.domain.Pace
 import com.yapp.yapp.record.domain.RecordStatus
-import com.yapp.yapp.record.domain.RunningMetricsCalculator
 import com.yapp.yapp.record.domain.converter.PaceConverter
 import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.user.domain.User
@@ -39,8 +38,6 @@ class RunningRecord(
     @Column(nullable = false)
     val startAt: OffsetDateTime = TimeProvider.now(),
     @Column(nullable = false)
-    var averageSpeed: Double = 0.0,
-    @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
     var averagePace: Pace = Pace(0),
     @Enumerated(EnumType.STRING)
@@ -68,11 +65,6 @@ class RunningRecord(
         this.totalDistance = runningPoints.sumOf { it.distance }
         this.totalTime = runningPoints.last().totalRunningTime
         this.totalCalories = runningPoints.sumOf { it.calories }
-        this.averageSpeed =
-            RunningMetricsCalculator.calculateSpeedKmh(
-                distanceMeter = this.totalDistance,
-                seconds = TimeProvider.millsToSecond(this.totalTime),
-            )
         this.averagePace = Pace(distanceMeter = this.totalDistance, durationMills = this.totalTime)
     }
 
@@ -86,7 +78,6 @@ class RunningRecord(
         totalDistance?.let { this.totalDistance = it }
         totalTime?.let { this.totalTime = it }
         totalCalories?.let { this.totalCalories = it }
-        averageSpeed?.let { this.averageSpeed = it }
         averagePace?.let { this.averagePace = it }
     }
 

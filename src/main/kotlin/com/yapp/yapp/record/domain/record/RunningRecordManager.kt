@@ -60,7 +60,6 @@ class RunningRecordManager(
             totalDistance = runningRecordList.sumOf { it.totalDistance },
             totalTime = runningRecordList.sumOf { it.totalTime },
             totalCalories = runningRecordList.sumOf { it.totalCalories },
-            averageSpeed = if (runningRecordList.isEmpty()) 0.0 else runningRecordList.map { it.averageSpeed }.average(),
             averagePace = runningRecordList.map { it.averagePace.toMills() }.average().let { Pace(it.toLong()) },
         )
         return totalRunningRecord

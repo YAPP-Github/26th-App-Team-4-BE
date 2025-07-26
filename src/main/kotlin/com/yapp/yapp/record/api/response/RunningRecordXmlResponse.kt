@@ -14,7 +14,6 @@ data class RunningRecordXmlResponse(
     val totalTime: Long,
     val totalCalories: Int,
     val startAt: OffsetDateTime,
-    val averageSpeed: Double,
     val averagePace: Long,
 ) {
     constructor(runningRecordResponse: RunningRecordResponse) : this(
@@ -25,7 +24,6 @@ data class RunningRecordXmlResponse(
         totalTime = runningRecordResponse.totalTime,
         totalCalories = runningRecordResponse.totalCalories,
         startAt = runningRecordResponse.startAt,
-        averageSpeed = runningRecordResponse.averageSpeed,
         averagePace = runningRecordResponse.averagePace,
     )
 }
