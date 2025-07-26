@@ -8,6 +8,7 @@ import org.springframework.boot.logging.LogLevel
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.NoHandlerFoundException
@@ -40,9 +41,13 @@ class GlobalControllerAdvice {
         HttpMessageNotReadableException::class,
     )
     fun handleInvalidRequestException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
-        val errorCode = ErrorCode.INVALID_REQUEST
-        logger.warn { exception.message }
+        val errorCode = ErrorCode.NOT_FOUND_REQUEST
         return handleError(errorCode, exception)
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun handleInvalidParamRequestException(exception: Exception): ResponseEntity<ApiResponse<Unit>> {
+        return handleError(ErrorCode.INVALID_PARAM_REQUEST, exception)
     }
 
     private fun handleError(
@@ -63,7 +68,7 @@ class GlobalControllerAdvice {
                 logLevel = errorCode.logLevel,
                 requestId = MDC.get(REQUEST_ID) ?: "N/A",
                 errorCode = errorCode,
-                message = exception.message ?: "N/A",
+                message = "[${exception.javaClass}]: ${exception.message}" ?: "N/A",
             )
         when (errorCode.logLevel) {
             LogLevel.WARN -> logger.warn { errorLog.toString() }

@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     kotlin("plugin.jpa") version "2.0.10"
-    id("org.springframework.boot") version "3.4.5"
+    id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
 
     // ktlint
@@ -28,11 +28,13 @@ repositories {
     maven { url = uri("https://jitpack.io") }
 }
 
-extra["springCloudVersion"] = "2024.0.0"
+extra["springCloudVersion"] = "2025.0.0"
+extra["googleCloudVersion"] = "26.61.0"
 
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("com.google.cloud:libraries-bom:${property("googleCloudVersion")}")
     }
 }
 
@@ -82,6 +84,11 @@ dependencies {
     implementation("org.testcontainers:testcontainers-bom:1.20.2")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:testcontainers")
+
+    // Google Cloud Platform
+    implementation("com.google.cloud:spring-cloud-gcp-starter-storage:6.2.2")
+    implementation(platform("com.google.cloud:spring-cloud-gcp-dependencies:6.2.2"))
+    implementation("com.google.cloud:google-cloud-texttospeech")
 
     // xml
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
@@ -158,7 +165,7 @@ tasks.register("copyHooks") {
 
 tasks.register<Copy>("copySecret") {
     from("./Yapp-26th-env")
-    include("*.yml")
+    include("*")
     into("src/main/resources")
     println("Secret files이 성공적으로 복사되었습니다.")
 }

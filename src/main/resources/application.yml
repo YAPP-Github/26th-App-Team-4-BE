@@ -1,14 +1,26 @@
 spring:
   profiles:
     active: local
+  datasource:
+    url: jdbc:mysql://${secret.database.host}:${secret.database.port}/${secret.database.name}?useSSL=false&allowPublicKeyRetrieval=true
+    username: ${secret.database.user}
+    password: ${secret.database.password}
   data:
     redis:
       client-name: ${secret.redis.client-name}
       host: ${secret.redis.host}
       port: ${secret.redis.port}
       password: ${secret.redis.password}
+  cloud:
+    gcp:
+      project-id: ${secret.gcp.project-id}
+      credentials:
+        location: ${secret.gcp.location}
   mvc:
     static-path-pattern: /static/**
+
+audio:
+  bucket: ${secret.gcp.bucket-name}
 
 jwt:
   issuer: ${secret.jwt.issuer}

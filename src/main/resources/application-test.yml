@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: dev-env.yml
   datasource:
     url: jdbc:h2:mem:yapp;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -21,6 +23,11 @@ spring:
       client-name: fitrun
       host: localhost
       port: 6379
+  cloud:
+    gcp:
+      project-id: ${secret.gcp.project-id}
+      credentials:
+        location: ${secret.gcp.location}
 
 logging:
   level:
@@ -33,6 +40,9 @@ jwt:
   access-expiration-millis: 3600000
   refresh-secret: a2JqeG1IemZYZVRIYlpqM2hHN2xLVGFxVDR0b0RHc2s=
   refresh-expiration-millis: 604800000
+
+audio:
+  bucket: ${secret.gcp.bucket-name}
 
 oidc:
   response-millis: 3600000
