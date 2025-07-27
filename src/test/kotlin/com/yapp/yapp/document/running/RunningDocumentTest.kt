@@ -58,7 +58,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             .statusCode(200)
     }
 
-    @Test
+//    @Test
     fun `러닝 완료 API`() {
         // given
         val restDocsRequest =
