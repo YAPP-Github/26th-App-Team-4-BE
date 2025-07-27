@@ -23,7 +23,7 @@ RUN mkdir -p build/extracted && \
          -jar $(find build/libs -name "*.jar" | head -n 1) \
          extract --destination build/extracted
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jre-slim
 WORKDIR /app
 
 VOLUME /tmp
