@@ -63,8 +63,8 @@ class RunningService(
                 )
             }
         val filePath = FilePathGenerator.generateRunningRecordImagePath(runningRecord)
-        val imageFile = storageManager.uploadFile(filePath = filePath, multipartFile = imageFile)
-        runningRecord.update(imageUrl = imageFile.url)
+        val uploadFile = storageManager.uploadFile(filePath = filePath, multipartFile = imageFile)
+        runningRecord.update(imageUrl = uploadFile.url)
 
         runningRecordManager.updateRecord(runningRecord)
         return RunningRecordResponse(
