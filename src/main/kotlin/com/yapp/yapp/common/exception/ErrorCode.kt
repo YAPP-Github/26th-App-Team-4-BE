@@ -55,4 +55,5 @@ enum class ErrorCode(
     RUNNER_TYPE_NOT_FOUND(400, "ONB_002", "러너 타입이 존재하지 않습니다.", LogLevel.WARN),
 
     GOAL_NOT_FOUND(400, "GAL_001", "설정한 목표가 존재하지 않습니다.", LogLevel.WARN),
+    FILE_UPLOAD_FAILED(500, "FIL_001", "파일 업로드에 실패했습니다.", LogLevel.ERROR),
 }

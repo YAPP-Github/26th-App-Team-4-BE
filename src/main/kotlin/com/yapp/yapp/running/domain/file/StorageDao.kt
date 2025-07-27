@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Component
 class StorageDao(
-    private val storgeRepository: GoogleStorgeRepository,
+    private val storgeRepository: GoogleStorageRepository,
 ) {
     fun uploadFile(
         filePath: String,
