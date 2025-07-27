@@ -59,7 +59,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
                     fieldWithPath("result.timeGoalAchievedCount").description("시간 목표 달성 횟수"),
-                    fieldWithPath("result.distanceGoalAchievedCount").description("러닝 경로 이미지 URL"),
+                    fieldWithPath("result.distanceGoalAchievedCount").description("거리 목표 달성 횟수"),
                 )
 
         val filter =
