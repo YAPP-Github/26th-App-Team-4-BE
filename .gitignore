@@ -46,4 +46,4 @@ build/
 **/dev-env.yml
 **/staging-env.yml
 **/openapi3.yaml
-**/fitrun.*
+**/fitrun*
