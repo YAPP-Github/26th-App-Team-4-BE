@@ -9,7 +9,7 @@ data class RunningRecordSummaryResponse(
     val averagePace: Long,
     val totalDistance: Double,
     val totalTime: Long,
-    val imageUrl: String?,
+    val imageUrl: String,
 ) {
     constructor(runningRecordResponse: RunningRecordResponse) : this(
         recordId = runningRecordResponse.recordId,

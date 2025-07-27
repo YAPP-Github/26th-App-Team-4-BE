@@ -43,8 +43,8 @@ class RunningRecord(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var recordStatus: RecordStatus = RecordStatus.READY,
-    @Column(nullable = true, columnDefinition = "TEXT")
-    var imageUrl: String? = null,
+    @Column(nullable = false, columnDefinition = "TEXT")
+    var imageUrl: String = "",
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {

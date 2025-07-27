@@ -59,7 +59,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
                     fieldWithPath("result.timeGoalAchievedCount").description("시간 목표 달성 횟수"),
-                    fieldWithPath("result.distanceGoalAchievedCount").description("러닝 경로 이미지 URL").optional(),
+                    fieldWithPath("result.distanceGoalAchievedCount").description("러닝 경로 이미지 URL"),
                 )
 
         val filter =
@@ -135,7 +135,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.totalCalories").description("총 소모 칼로리"),
                     fieldWithPath("result.startAt").description("시작 시간"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
-                    fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL").optional(),
+                    fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL"),
                 )
 
         val filter =
