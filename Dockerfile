@@ -23,14 +23,16 @@ RUN mkdir -p build/extracted && \
          -jar $(find build/libs -name "*.jar" | head -n 1) \
          extract --destination build/extracted
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
 VOLUME /tmp
 
 ARG EXTRACTED=/workspace/app/build/extracted
 
-RUN apk update && apk --no-cache add curl
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends curl \
+ && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build ${EXTRACTED}/dependencies/ ./
 COPY --from=build ${EXTRACTED}/spring-boot-loader/ ./
