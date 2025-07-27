@@ -9,6 +9,7 @@ data class RunningRecordSummaryResponse(
     val averagePace: Long,
     val totalDistance: Double,
     val totalTime: Long,
+    val imageUrl: String?,
 ) {
     constructor(runningRecordResponse: RunningRecordResponse) : this(
         recordId = runningRecordResponse.recordId,
@@ -17,5 +18,6 @@ data class RunningRecordSummaryResponse(
         averagePace = runningRecordResponse.averagePace,
         totalDistance = runningRecordResponse.totalDistance,
         totalTime = runningRecordResponse.totalTime,
+        imageUrl = runningRecordResponse.imageUrl,
     )
 }
