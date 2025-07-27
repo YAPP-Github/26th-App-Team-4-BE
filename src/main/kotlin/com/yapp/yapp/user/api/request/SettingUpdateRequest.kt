@@ -7,9 +7,3 @@ data class AudioCoachingUpdateRequest(val audioCoaching: Boolean) : SettingUpdat
 data class RemindAlertUpdateRequest(val remindAlert: Boolean) : SettingUpdateRequest
 
 data class AudioFeedbackUpdateRequest(val audioFeedback: Boolean) : SettingUpdateRequest
-
-data class AnalysisFeedbackUpdateRequest(val analysisFeedback: Boolean) : SettingUpdateRequest
-
-data class CrewRankingUpdateRequest(val crewRanking: Boolean) : SettingUpdateRequest
-
-data class PromEventUpdateRequest(val promEvent: Boolean) : SettingUpdateRequest
