@@ -140,7 +140,7 @@ class DefaultLoggingInterceptor(
     private fun extractResponseBody(response: HttpServletResponse): JsonNode {
         if (response !is ContentCachingResponseWrapper ||
             response.contentType == null ||
-            response.contentType !in validContentTypes
+            validContentTypes.none { response.contentType.startsWith(it, ignoreCase = true) }
         ) {
             val msg = "Response가 ContentCachingResponseWrapper가 아니거나 지원하지 않는 Content-Type(${response.contentType})입니다"
             return TextNode.valueOf(msg)
