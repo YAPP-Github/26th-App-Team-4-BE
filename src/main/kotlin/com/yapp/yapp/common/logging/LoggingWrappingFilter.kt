@@ -16,7 +16,14 @@ class LoggingWrappingFilter : Filter {
         response: ServletResponse,
         chain: FilterChain,
     ) {
-        val wrappedRequest = ReadableRequestWrapper(request as HttpServletRequest)
+        val wrappedRequest =
+            if (
+                request.contentType?.startsWith("multipart/form-data") == true
+            ) {
+                request
+            } else {
+                ReadableRequestWrapper(request as HttpServletRequest)
+            }
         val wrappedResponse =
             ContentCachingResponseWrapper(response as HttpServletResponse).apply {
                 characterEncoding = "UTF-8"

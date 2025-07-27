@@ -18,7 +18,7 @@ import java.nio.channels.Channels
 @Repository
 class GoogleAudioRepository(
     private val storage: Storage,
-    @Value("\${audio.bucket}") private val bucketName: String,
+    @Value("\${gcp.bucket}") private val bucketName: String,
 ) : AudioRepository {
     companion object {
         private val COACH_AUDIO_PATHS =

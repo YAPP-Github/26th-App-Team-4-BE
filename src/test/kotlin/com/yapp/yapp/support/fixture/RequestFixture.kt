@@ -55,14 +55,17 @@ object RequestFixture {
             generateRunningPointsForDistance(
                 targetDistanceMeters = totalDistance,
             ),
-    ) = RunningDoneRequest(
-        totalTime = runningPoints.last().totalRunningTimeMills,
-        totalDistance = totalDistance,
-        totalCalories = totalCalories,
-        averagePace = Pace(distanceMeter = totalDistance, durationMills = runningPoints.last().totalRunningTimeMills).toMills(),
-        startAt = startAt,
-        runningPoints = runningPoints,
-    )
+    ): RunningDoneRequest {
+        val totalTime = if (runningPoints.isNotEmpty()) runningPoints.last().totalRunningTimeMills else 0L
+        return RunningDoneRequest(
+            totalTime = totalTime,
+            totalDistance = totalDistance,
+            totalCalories = totalCalories,
+            averagePace = Pace(distanceMeter = totalDistance, durationMills = totalTime).toMills(),
+            startAt = startAt,
+            runningPoints = runningPoints,
+        )
+    }
 
     fun generateRunningPointsForDistance(
         targetDistanceMeters: Double = 1_000.0,

@@ -14,6 +14,7 @@ data class RunningRecordResponse(
     val totalCalories: Int,
     val startAt: OffsetDateTime,
     val averagePace: Long,
+    val imageUrl: String?,
 ) {
     constructor(runningRecord: RunningRecord, runningPoints: List<RunningPoint>) : this(
         recordId = runningRecord.id,
@@ -25,5 +26,6 @@ data class RunningRecordResponse(
         totalCalories = runningRecord.totalCalories,
         startAt = runningRecord.startAt,
         averagePace = runningRecord.averagePace.toMills(),
+        imageUrl = runningRecord.imageUrl,
     )
 }

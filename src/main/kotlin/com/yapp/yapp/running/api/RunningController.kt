@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/v1/running")
@@ -46,9 +48,16 @@ class RunningController(
     fun done(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestBody request: RunningDoneRequest,
+        @RequestPart("metadata") request: RunningDoneRequest,
+        @RequestPart("image") imageFile: MultipartFile,
     ): ApiResponse<RunningRecordResponse> {
-        val recordResponse = runningService.done(userId = userId, recordId = recordId, request = request)
+        val recordResponse =
+            runningService.done(
+                userId = userId,
+                recordId = recordId,
+                request = request,
+                imageFile = imageFile,
+            )
         return ApiResponse.success(recordResponse)
     }
 

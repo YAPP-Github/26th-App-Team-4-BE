@@ -26,7 +26,13 @@ class DefaultLoggingInterceptor(
         const val REQUEST_ID = "requestId"
         const val REQUEST_TIME = "requestTime"
         val ignoreUrls = listOf<String>("/health", "/static", "/error")
-        val validContentTypes = setOf<String>(MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_PLAIN_VALUE)
+        val validContentTypes =
+            setOf<String>(
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.TEXT_PLAIN_VALUE,
+                MediaType.MULTIPART_FORM_DATA_VALUE,
+            )
     }
 
     override fun preHandle(
@@ -112,16 +118,16 @@ class DefaultLoggingInterceptor(
     }
 
     private fun extractRequestBody(request: HttpServletRequest): JsonNode {
-        val wrapper = request as ReadableRequestWrapper
         return (
             if (request is ReadableRequestWrapper) {
                 try {
+                    val wrapper = request as ReadableRequestWrapper
                     objectMapper.readTree(wrapper.contentAsByteArray)
                 } catch (e: Exception) {
-                    "[Body 조회를 실패했습니다: ${e.message}]"
+                    objectMapper.createObjectNode().put("error", "Body 조회 실패: ${e.message}")
                 }
             } else {
-                "[Request가 ContentCachingRequestWrapper로 변환되지 않았습니다]"
+                objectMapper.createObjectNode().put("error", "Request가 ReadableRequestWrapper가 아님")
             }
         ) as JsonNode
     }
@@ -134,7 +140,7 @@ class DefaultLoggingInterceptor(
     private fun extractResponseBody(response: HttpServletResponse): JsonNode {
         if (response !is ContentCachingResponseWrapper ||
             response.contentType == null ||
-            response.contentType !in validContentTypes
+            validContentTypes.none { response.contentType.startsWith(it, ignoreCase = true) }
         ) {
             val msg = "Response가 ContentCachingResponseWrapper가 아니거나 지원하지 않는 Content-Type(${response.contentType})입니다"
             return TextNode.valueOf(msg)

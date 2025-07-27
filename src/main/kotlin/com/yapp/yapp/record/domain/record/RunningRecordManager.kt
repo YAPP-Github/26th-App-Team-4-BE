@@ -73,8 +73,16 @@ class RunningRecordManager(
         user: User,
         startAt: OffsetDateTime,
     ): RunningRecord {
-        val runningRecord = RunningRecord(user = user, startAt = startAt)
+        val runningRecord = createRunningRecord(user = user, startAt = startAt)
         runningRecord.start()
+        return runningRecord
+    }
+
+    fun createRunningRecord(
+        user: User,
+        startAt: OffsetDateTime,
+    ): RunningRecord {
+        val runningRecord = RunningRecord(user = user, startAt = startAt)
         return runningRecordDao.save(runningRecord)
     }
 

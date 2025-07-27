@@ -43,6 +43,8 @@ class RunningRecord(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var recordStatus: RecordStatus = RecordStatus.READY,
+    @Column(nullable = true, columnDefinition = "TEXT")
+    var imageUrl: String? = null,
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
@@ -72,13 +74,14 @@ class RunningRecord(
         totalDistance: Double? = null,
         totalTime: Long? = null,
         totalCalories: Int? = null,
-        averageSpeed: Double? = null,
         averagePace: Pace? = null,
+        imageUrl: String? = null,
     ) {
         totalDistance?.let { this.totalDistance = it }
         totalTime?.let { this.totalTime = it }
         totalCalories?.let { this.totalCalories = it }
         averagePace?.let { this.averagePace = it }
+        imageUrl?.let { this.imageUrl = it }
     }
 
     fun isOwnedBy(user: User): Boolean {
