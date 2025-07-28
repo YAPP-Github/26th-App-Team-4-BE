@@ -180,6 +180,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .param("paceMills", 841234)
             .`when`().get("/api/v1/audios/running-info")
