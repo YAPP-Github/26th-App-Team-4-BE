@@ -50,7 +50,10 @@ class RestDocsRequest(
         return this
     }
 
-    fun requestBodyField(multiFileField: String, vararg descriptors: FieldDescriptor): RestDocsRequest {
+    fun requestBodyField(
+        multiFileField: String,
+        vararg descriptors: FieldDescriptor,
+    ): RestDocsRequest {
 //        resourceBuilder.requestFields(*descriptors)
         snippets.add(requestPartBody(multiFileField))
         snippets.add(requestPartFields(multiFileField, *descriptors))

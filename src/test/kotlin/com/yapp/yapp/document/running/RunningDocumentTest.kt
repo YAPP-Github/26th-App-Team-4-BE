@@ -68,7 +68,8 @@ class RunningDocumentTest : BaseDocumentTest() {
                     partWithName("image").description("러닝 경로 이미지"),
                     partWithName("metadata").description("메타 데이터"),
                 )
-                .requestBodyField("metadata",
+                .requestBodyField(
+                    "metadata",
                     fieldWithPath("totalTime").description("총 러닝 시간 (밀리초)"),
                     fieldWithPath("totalDistance").description("총 러닝 거리 (m)"),
                     fieldWithPath("totalCalories").description("총 소모 칼로리"),
