@@ -57,9 +57,6 @@ class UserSettingDocumentTest : BaseDocumentTest() {
             response()
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.remindAlert").description("루틴 리마인드 설정 여부"),
-                    fieldWithPath("result.analysisFeedback").description("기록 분석 피드백 설정 여부"),
-                    fieldWithPath("result.crewRanking").description("크루 경쟁 설정 여부"),
-                    fieldWithPath("result.promEvent").description("프로모션/이벤트 설정 여부"),
                 )
 
         val restDocsFilter =
@@ -195,123 +192,6 @@ class UserSettingDocumentTest : BaseDocumentTest() {
             .header("Authorization", getAccessToken(email = "test@test.com"))
             .body(request)
             .`when`().patch("/api/v1/users/setting/audio-feedback")
-            .then()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `기록 분석 설정 업데이트 API`() {
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-                .requestBodyField(
-                    fieldWithPath("analysisFeedback").description("기록 분석 설정"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.analysisFeedback").description("기록 분석 피드백 설정 갱신 결과"),
-                )
-
-        val restDocsFilter =
-            filter("setting", "analysis-feedback-update")
-                .tag(Tag.SETTING_API)
-                .summary("기록 분석 피드백 설정 업데이트 API")
-                .description("기록 분석 피드백 설정을 업데이트 합니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-
-        // when
-        // then
-        val request = RequestFixture.analysisFeedbackUpdateRequest()
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", getAccessToken(email = "test@test.com"))
-            .body(request)
-            .`when`().patch("/api/v1/users/setting/analysis-feedback")
-            .then()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `크루 랭킹 설정 업데이트 API`() {
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-                .requestBodyField(
-                    fieldWithPath("crewRanking").description("크루 랭킹 설정"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.crewRanking").description("크루 경쟁 설정 갱신 결과"),
-                )
-
-        val restDocsFilter =
-            filter("setting", "crew-ranking-update")
-                .tag(Tag.SETTING_API)
-                .summary("크루 랭킹 설정 업데이트 API")
-                .description("크루 랭킹 설정을 업데이트 합니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-
-        // when
-        // then
-        val request = RequestFixture.crewRankingUpdateRequest()
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", getAccessToken(email = "test@test.com"))
-            .body(request)
-            .`when`().patch("/api/v1/users/setting/crew-ranking")
-            .then()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `프로모션 이벤트 설정 업데이트 API`() {
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-                .requestBodyField(
-                    fieldWithPath("promEvent").description("프로모션/이벤트 설정"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.promEvent").description("프로모션/이벤트 설정 여부"),
-                )
-
-        val restDocsFilter =
-            filter("setting", "prom-event-update")
-                .tag(Tag.SETTING_API)
-                .summary("프로모션 이벤트 설정 업데이트 API")
-                .description("프로모션 이벤트 설정을 업데이트 합니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-
-        // when
-        // then
-        val request = RequestFixture.promEventUpdateRequest()
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", getAccessToken(email = "test@test.com"))
-            .body(request)
-            .`when`().patch("/api/v1/users/setting/prom-event")
             .then()
             .statusCode(200)
     }

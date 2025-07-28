@@ -34,12 +34,6 @@ class User(
     @Column(nullable = false)
     var remindAlert: Boolean = false,
     @Column(nullable = false)
-    var analysisFeedback: Boolean = false,
-    @Column(nullable = false)
-    var crewRanking: Boolean = false,
-    @Column(nullable = false)
-    var promEvent: Boolean = false,
-    @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
     fun getRunnerTypeOrThrow(): RunnerType {
@@ -61,17 +55,5 @@ class User(
 
     fun updateAudioFeedback(audioFeedback: Boolean) {
         this.audioFeedback = audioFeedback
-    }
-
-    fun updateAnalysisFeedback(analysisFeedback: Boolean) {
-        this.analysisFeedback = analysisFeedback
-    }
-
-    fun updateCrewRanking(crewRanking: Boolean) {
-        this.crewRanking = crewRanking
-    }
-
-    fun updatePromEvent(promEvent: Boolean) {
-        this.promEvent = promEvent
     }
 }
