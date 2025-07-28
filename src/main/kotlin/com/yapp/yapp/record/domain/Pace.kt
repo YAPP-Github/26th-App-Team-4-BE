@@ -39,6 +39,11 @@ class Pace(
     constructor(distanceMeter: Double, durationMills: Long) :
         this(calculatePace(distanceMeter, durationMills))
 
+    fun toTts(): String {
+        val seconds = TimeProvider.millsToSecond(toMills())
+        return String.format("%d분 %d초", seconds / 60, seconds % 60)
+    }
+
     override fun toString(): String {
         val seconds = TimeProvider.millsToSecond(toMills())
         return String.format("%d:%02d /km", seconds / 60, seconds % 60)

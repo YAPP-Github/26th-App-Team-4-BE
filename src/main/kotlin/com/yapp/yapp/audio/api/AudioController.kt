@@ -5,8 +5,8 @@ import com.yapp.yapp.audio.domain.AudioServletHandler
 import com.yapp.yapp.audio.domain.DistanceAudioType
 import com.yapp.yapp.audio.domain.PaceAudioType
 import com.yapp.yapp.audio.domain.TimeAudioType
-import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -34,8 +34,10 @@ class AudioController(
 
     @GetMapping("/running-info")
     fun getRunningInfoAudio(
-        @CurrentUser userId: Long,
-    ) {
+        @RequestParam paceMills: Long,
+    ): ResponseEntity<ByteArrayResource> {
+        val audioBytes = audioService.getUserInfoAudio(paceMills)
+        return AudioServletHandler.handleAudioResource(audioBytes)
     }
 
     @GetMapping("/goals/pace")

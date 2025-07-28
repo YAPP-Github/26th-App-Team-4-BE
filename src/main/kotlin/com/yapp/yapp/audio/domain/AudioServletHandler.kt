@@ -1,6 +1,7 @@
 package com.yapp.yapp.audio.domain
 
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
@@ -28,6 +29,14 @@ object AudioServletHandler {
             }
         return ResponseEntity.ok().headers(headers)
             .body(audioResource.resource)
+    }
+
+    fun handleAudioResource(audioBytes: ByteArray): ResponseEntity<ByteArrayResource> {
+        val resource = ByteArrayResource(audioBytes)
+        val headers = createAudioHeader()
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource)
     }
 
     fun createAudioHeader(): HttpHeaders {
