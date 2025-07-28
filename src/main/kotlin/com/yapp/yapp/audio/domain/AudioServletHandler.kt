@@ -29,4 +29,11 @@ object AudioServletHandler {
         return ResponseEntity.ok().headers(headers)
             .body(audioResource.resource)
     }
+
+    fun createAudioHeader(): HttpHeaders {
+        return HttpHeaders().apply {
+            contentType = MediaType.parseMediaType("audio/mpeg")
+            add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"speech.mp3\"")
+        }
+    }
 }
