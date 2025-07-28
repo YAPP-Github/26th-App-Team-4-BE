@@ -21,6 +21,7 @@ import com.yapp.yapp.user.api.response.RemindAlertUpdateResponse
 import com.yapp.yapp.user.api.response.RunnerTypeResponse
 import com.yapp.yapp.user.api.response.RunningSettingResponse
 import com.yapp.yapp.user.api.response.SettingUpdateResponse
+import com.yapp.yapp.user.api.response.UserAndGoalResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
 import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.goal.UserGoal
@@ -73,6 +74,15 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
+    fun getUserAndGoalById(id: Long): UserAndGoalResponse {
+        val user = userManager.getActiveUser(id)
+        val userResponse = UserResponse(user)
+        val userGoal = userGoalManager.findUserGoal(user)
+        val userGoalResponse = userGoal?.let { UserGoalResponse(it) }
+        return UserAndGoalResponse(user = userResponse, goal = userGoalResponse)
+    }
+
+    @Transactional(readOnly = true)
     fun getUserById(id: Long): UserResponse {
         val user = userManager.getActiveUser(id)
         return UserResponse(
@@ -80,6 +90,7 @@ class UserService(
             nickname = user.nickname,
             email = user.email,
             provider = user.provider,
+            runnerType = user.runnerType,
         )
     }
 

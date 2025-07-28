@@ -5,7 +5,7 @@ import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.response.OnboardingResponse
 import com.yapp.yapp.user.api.response.RunnerTypeResponse
-import com.yapp.yapp.user.api.response.UserResponse
+import com.yapp.yapp.user.api.response.UserAndGoalResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,8 +25,8 @@ class UserController(
     @GetMapping
     fun getUserById(
         @CurrentUser id: Long,
-    ): ApiResponse<UserResponse> {
-        val user = userService.getUserById(id)
+    ): ApiResponse<UserAndGoalResponse> {
+        val user = userService.getUserAndGoalById(id)
         return ApiResponse.success(user)
     }
 

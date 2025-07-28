@@ -75,6 +75,10 @@ class UserGoalManager(
         return userGoalDao.findUserGoal(user) != null
     }
 
+    fun findUserGoal(user: User): UserGoal? {
+        return userGoalDao.findUserGoal(user)
+    }
+
     fun calculateRecommendPace(
         runnerType: RunnerType,
         recentRunningRecord: RunningRecord?,
