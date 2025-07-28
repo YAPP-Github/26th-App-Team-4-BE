@@ -30,6 +30,8 @@ class RunningRecord(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
     @Column(nullable = false)
+    var title: String = "",
+    @Column(nullable = false)
     var totalDistance: Double = 0.0,
     @Column(nullable = false)
     var totalTime: Long = 0L,
@@ -48,6 +50,31 @@ class RunningRecord(
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
+    companion object {
+        private fun generateDefaultTitle(startAt: OffsetDateTime): String {
+            val seoulTime = startAt.atZoneSameInstant(java.time.ZoneId.of("Asia/Seoul"))
+            val month = seoulTime.monthValue
+            val day = seoulTime.dayOfMonth
+
+            val formattedMonth = String.format("%02d", month)
+            val formattedDay = String.format("%02d", day)
+
+            val hour = seoulTime.hour
+            val timeOfDay =
+                when {
+                    hour in 0..<5 -> "새벽"
+                    hour in 5..<12 -> "아침"
+                    hour in 12..<18 -> "오후"
+                    else -> "저녁"
+                }
+            return "${formattedMonth}월 ${formattedDay}일 $timeOfDay 러닝"
+        }
+    }
+
+    init {
+        title = generateDefaultTitle(startAt)
+    }
+
     fun start() {
         this.recordStatus = RecordStatus.IN_PROGRESS
     }
@@ -76,12 +103,14 @@ class RunningRecord(
         totalCalories: Int? = null,
         averagePace: Pace? = null,
         imageUrl: String? = null,
+        title: String? = null,
     ) {
         totalDistance?.let { this.totalDistance = it }
         totalTime?.let { this.totalTime = it }
         totalCalories?.let { this.totalCalories = it }
         averagePace?.let { this.averagePace = it }
         imageUrl?.let { this.imageUrl = it }
+        title?.let { this.title = it }
     }
 
     fun isOwnedBy(user: User): Boolean {

@@ -45,6 +45,7 @@ class RecordDocumentTest : BaseDocumentTest() {
             response()
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.records[].recordId").description("러닝 기록 ID"),
+                    fieldWithPath("result.records[].title").description("러닝 기록 제목"),
                     fieldWithPath("result.records[].userId").description("유저 ID"),
                     fieldWithPath("result.records[].totalDistance").description("총 이동 거리"),
                     fieldWithPath("result.records[].totalTime").description("총 러닝 시간 밀리초 단위"),
@@ -109,6 +110,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
+                    fieldWithPath("result.title").description("러닝 기록 제목"),
                     fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),
                     fieldWithPath("result.runningPoints[].pointId").description("러닝 포인트 ID"),
                     fieldWithPath("result.runningPoints[].userId").description("유저 ID"),
