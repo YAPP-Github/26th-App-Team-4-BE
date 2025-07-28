@@ -10,7 +10,7 @@ import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
-object AudioRequestHandler {
+object AudioServletHandler {
     fun parseFilename(request: HttpServletRequest): String {
         val rawPath = request.requestURI
         return URLDecoder.decode(
@@ -19,7 +19,7 @@ object AudioRequestHandler {
         )
     }
 
-    fun handle(audioResource: AudioResource): ResponseEntity<Resource> {
+    fun handleAudioResource(audioResource: AudioResource): ResponseEntity<Resource> {
         val headers =
             HttpHeaders().apply {
                 this.contentType = audioResource.contentType ?: MediaType.APPLICATION_OCTET_STREAM
