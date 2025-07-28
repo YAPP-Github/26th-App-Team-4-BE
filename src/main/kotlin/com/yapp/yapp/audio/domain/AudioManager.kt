@@ -29,6 +29,6 @@ class AudioManager(
 
     fun getPaceAudioText(paceMills: Long): String {
         val pace = Pace(paceMills)
-        return "현재 페이스는 ${pace.toTts()}입니다."
+        return "현재 페이스는 ${pace.toAudioText()}입니다."
     }
 }
