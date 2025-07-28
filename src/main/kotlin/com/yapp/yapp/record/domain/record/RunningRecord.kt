@@ -30,6 +30,8 @@ class RunningRecord(
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
     @Column(nullable = false)
+    var title: String = "",
+    @Column(nullable = false)
     var totalDistance: Double = 0.0,
     @Column(nullable = false)
     var totalTime: Long = 0L,
@@ -48,6 +50,34 @@ class RunningRecord(
     @Column(nullable = false)
     var isDeleted: Boolean = false,
 ) {
+    companion object {
+        private fun generateDefaultTitle(startAt: OffsetDateTime): String {
+            val dayOfWeek =
+                when (startAt.dayOfWeek.value) {
+                    1 -> "월요일"
+                    2 -> "화요일"
+                    3 -> "수요일"
+                    4 -> "목요일"
+                    5 -> "금요일"
+                    6 -> "토요일"
+                    else -> "일요일"
+                }
+            val hour = startAt.hour
+            val timeOfDay =
+                when {
+                    hour in 0..<5 -> "고요한 새벽"
+                    hour in 5..<12 -> "상쾌한 아침"
+                    hour in 12..<18 -> "나른한 오후"
+                    else -> "하루끝 저녁"
+                }
+            return "$dayOfWeek/$timeOfDay"
+        }
+    }
+
+    init {
+        title = generateDefaultTitle(startAt)
+    }
+
     fun start() {
         this.recordStatus = RecordStatus.IN_PROGRESS
     }
@@ -76,12 +106,14 @@ class RunningRecord(
         totalCalories: Int? = null,
         averagePace: Pace? = null,
         imageUrl: String? = null,
+        title: String? = null,
     ) {
         totalDistance?.let { this.totalDistance = it }
         totalTime?.let { this.totalTime = it }
         totalCalories?.let { this.totalCalories = it }
         averagePace?.let { this.averagePace = it }
         imageUrl?.let { this.imageUrl = it }
+        title?.let { this.title = it }
     }
 
     fun isOwnedBy(user: User): Boolean {

@@ -7,6 +7,7 @@ import java.time.OffsetDateTime
 data class RunningRecordResponse(
     val recordId: Long,
     val userId: Long,
+    val title: String,
     val runningPoints: List<RunningPointResponse>,
     val segments: List<SegmentResponse>,
     val totalDistance: Double,
@@ -19,6 +20,7 @@ data class RunningRecordResponse(
     constructor(runningRecord: RunningRecord, runningPoints: List<RunningPoint>) : this(
         recordId = runningRecord.id,
         userId = runningRecord.user.id,
+        title = runningRecord.title,
         runningPoints = runningPoints.map { RunningPointResponse(it) },
         segments = SegmentListResponse.of(runningPoints).segmentList,
         totalDistance = runningRecord.totalDistance,

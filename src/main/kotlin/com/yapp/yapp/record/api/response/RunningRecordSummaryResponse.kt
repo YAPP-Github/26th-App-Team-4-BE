@@ -4,6 +4,7 @@ import java.time.OffsetDateTime
 
 data class RunningRecordSummaryResponse(
     val recordId: Long,
+    val title: String,
     val userId: Long,
     val startAt: OffsetDateTime,
     val averagePace: Long,
@@ -13,6 +14,7 @@ data class RunningRecordSummaryResponse(
 ) {
     constructor(runningRecordResponse: RunningRecordResponse) : this(
         recordId = runningRecordResponse.recordId,
+        title = runningRecordResponse.title,
         userId = runningRecordResponse.userId,
         startAt = runningRecordResponse.startAt,
         averagePace = runningRecordResponse.averagePace,
