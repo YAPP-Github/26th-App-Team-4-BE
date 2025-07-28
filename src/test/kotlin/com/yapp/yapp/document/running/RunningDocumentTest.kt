@@ -117,11 +117,54 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
                     fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL"),
                 )
+        val description =
+            """
+            러닝을 완료하는 API입니다.
+            응답은 러닝 기록 단건 조회 API의 응답과 동일합니다.
+
+            # Request
+            ### Path parameter
+
+            | recordId | String | 기록 ID |
+            | --- | --- | --- |
+
+            ### Header
+
+            | **Authorization** | String | 엑세스 토큰 |
+            | --- | --- | --- |
+            | **Content-Type** | String | `multipart/form-data` |
+
+            ### Form-data
+
+            | image | File | 러닝 기록 지도 사진 |  |
+            | --- | --- | --- | --- |
+            | metadata | Text | 러닝 완료 정보가 담긴 JSON 페이로드 | application/json |
+
+            ### metadata
+
+            | **필드** | **타입** | **설명** | **비고** |
+            | --- | --- | --- | --- |
+            | totalTime | Long | 총 러닝 시간 | 밀리초 (ms) |
+            | totalDistance | Double | 총 러닝 거리 | 미터 (m) |
+            | totalCalories | Int | 소모된 칼로리 | kcal |
+            | averagePace | Long | 평균 페이스 (1km 당 소요 시간) | 밀리초 (ms) |
+            | startAt | String | 러닝 시작 시각 | ISO 8601 문자열 |
+            | runningPoints | List<RunningPointRequest> | 구간별 위치·시간 기록 목록 |  |
+
+            [runningPoints]
+
+            | **필드** | **타입** | **설명** | **비고** |
+            | --- | --- | --- | --- |
+            | lat | Double | 위도 |  |
+            | lon | Double | 경도 |  |
+            | totalRunningTimeMills | Long | 러닝 시작 후 해당 지점까지 누적 시간 | 밀리초 (ms) |
+            | timeStamp | String | 해당 지점 기록 시각 | ISO 8601 문자열 |
+            """.trimIndent()
         val filter =
             filter("running", "running-done")
                 .tag(Tag.RUNNING_API)
                 .summary("러닝 완료")
-                .description("러닝을 완료하는 API입니다.\n응답은 러닝 기록 단건 조회 API의 응답과 동일합니다.")
+                .description(description)
                 .request(restDocsRequest)
                 .response(restDocsResponse)
                 .build()
