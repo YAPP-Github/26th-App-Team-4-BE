@@ -1,6 +1,5 @@
 package com.yapp.yapp.audio.domain
 
-import com.yapp.yapp.audio.tts.TextToSpeechManager
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio.tts
+package com.yapp.yapp.audio.domain.infrastructure
 
 import com.google.api.gax.core.FixedCredentialsProvider
 import com.google.auth.oauth2.GoogleCredentials
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
 
 @Configuration
-class GcpTextToSpeechConfig(
+class GoogleTextToSpeechConfig(
     private val resourceLoader: ResourceLoader,
     @Value("\${spring.cloud.gcp.credentials.location}") private val credentialsLocation: String,
 ) {

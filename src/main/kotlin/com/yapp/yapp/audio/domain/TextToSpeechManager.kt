@@ -1,4 +1,4 @@
-package com.yapp.yapp.audio.tts
+package com.yapp.yapp.audio.domain
 
 import com.google.cloud.texttospeech.v1.AudioConfig
 import com.google.cloud.texttospeech.v1.SynthesisInput
