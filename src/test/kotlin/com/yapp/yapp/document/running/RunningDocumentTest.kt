@@ -83,6 +83,7 @@ class RunningDocumentTest : BaseDocumentTest() {
                 )
                 .requestHeader(
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                    headerWithName("Content-Type").description("multipart/form-data"),
                 )
         val restDocsResponse =
             response()
@@ -122,22 +123,11 @@ class RunningDocumentTest : BaseDocumentTest() {
             러닝을 완료하는 API입니다.
             응답은 러닝 기록 단건 조회 API의 응답과 동일합니다.
 
-            # Request
-            ### Path parameter
+            ## 요청 값
 
-            | recordId | String | 기록 ID |
-            | --- | --- | --- |
-
-            ### Header
-
-            | **Authorization** | String | 엑세스 토큰 |
-            | --- | --- | --- |
-            | **Content-Type** | String | `multipart/form-data` |
-
-            ### Form-data
-
-            | image | File | 러닝 기록 지도 사진 |  |
+            | **필드** | **타입** | **설명** | **비고** |
             | --- | --- | --- | --- |
+            | image | File | 러닝 기록 지도 사진 |  |
             | metadata | Text | 러닝 완료 정보가 담긴 JSON 페이로드 | application/json |
 
             ### metadata
@@ -151,7 +141,7 @@ class RunningDocumentTest : BaseDocumentTest() {
             | startAt | String | 러닝 시작 시각 | ISO 8601 문자열 |
             | runningPoints | List<RunningPointRequest> | 구간별 위치·시간 기록 목록 |  |
 
-            [runningPoints]
+            ### runningPoints
 
             | **필드** | **타입** | **설명** | **비고** |
             | --- | --- | --- | --- |
