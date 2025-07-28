@@ -1,14 +1,14 @@
-package com.yapp.yapp.audio.tts
+package com.yapp.yapp.audio.domain
 
 import com.google.cloud.texttospeech.v1.AudioConfig
 import com.google.cloud.texttospeech.v1.SynthesisInput
 import com.google.cloud.texttospeech.v1.TextToSpeechClient
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams
 import com.google.protobuf.ByteString
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
-class TextToSpeechService(
+@Component
+class TextToSpeechManager(
     private val client: TextToSpeechClient,
     private val voiceSelectionParams: VoiceSelectionParams,
     private val audioConfig: AudioConfig,

@@ -1,6 +1,7 @@
 package com.yapp.yapp.audio.domain
 
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpHeaders
@@ -10,7 +11,7 @@ import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
-object AudioRequestHandler {
+object AudioServletHandler {
     fun parseFilename(request: HttpServletRequest): String {
         val rawPath = request.requestURI
         return URLDecoder.decode(
@@ -19,7 +20,7 @@ object AudioRequestHandler {
         )
     }
 
-    fun handle(audioResource: AudioResource): ResponseEntity<Resource> {
+    fun handleAudioResource(audioResource: AudioResource): ResponseEntity<Resource> {
         val headers =
             HttpHeaders().apply {
                 this.contentType = audioResource.contentType ?: MediaType.APPLICATION_OCTET_STREAM
@@ -28,5 +29,20 @@ object AudioRequestHandler {
             }
         return ResponseEntity.ok().headers(headers)
             .body(audioResource.resource)
+    }
+
+    fun handleAudioResource(audioBytes: ByteArray): ResponseEntity<ByteArrayResource> {
+        val resource = ByteArrayResource(audioBytes)
+        val headers = createAudioHeader()
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource)
+    }
+
+    fun createAudioHeader(): HttpHeaders {
+        return HttpHeaders().apply {
+            contentType = MediaType.parseMediaType("audio/mpeg")
+            add(HttpHeaders.CONTENT_DISPOSITION, "inline")
+        }
     }
 }
