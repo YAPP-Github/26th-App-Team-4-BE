@@ -7,6 +7,7 @@ data class UserInfo(
     val email: String,
     val nickname: String,
     val provider: ProviderType,
+    val runnerType: RunnerType?,
     val isNew: Boolean = false,
 ) {
     constructor(user: User) : this(
@@ -14,6 +15,7 @@ data class UserInfo(
         email = user.email,
         nickname = user.nickname,
         provider = user.provider,
+        runnerType = user.runnerType,
         isNew = false,
     )
 }

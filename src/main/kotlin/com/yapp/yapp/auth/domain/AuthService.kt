@@ -37,13 +37,7 @@ class AuthService(
 
         val tokenInfo = jwtTokenGenerator.generateTokens(userInfo.id)
         val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
-        val userResponse =
-            UserResponse(
-                userInfo.id,
-                userInfo.nickname,
-                userInfo.email,
-                userInfo.provider,
-            )
+        val userResponse = UserResponse(userInfo)
         return LoginResponse(tokenResponse, userResponse, userInfo.isNew)
     }
 

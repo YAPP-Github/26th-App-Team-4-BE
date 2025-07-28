@@ -13,7 +13,14 @@ class UserManager(
     ): UserInfo {
         val nickname = getRandomNickname(email)
         val user = userDao.save(email, nickname, provider)
-        return UserInfo(user.id, user.email, user.nickname, provider, true)
+        return UserInfo(
+            id = user.id,
+            email = user.email,
+            nickname = user.nickname,
+            provider = user.provider,
+            runnerType = user.runnerType,
+            isNew = true,
+        )
     }
 
     fun getUserInfo(
