@@ -3,16 +3,13 @@ package com.yapp.yapp.record.api
 import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
-import com.yapp.yapp.common.web.ApiXmlResponse
 import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
-import com.yapp.yapp.record.api.response.RunningRecordXmlResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.RunningRecordService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -44,15 +41,6 @@ class RunningRecordController(
         @PathVariable recordId: Long,
     ): ApiResponse<RunningRecordResponse> {
         return ApiResponse.success(runningRecordService.getRecord(userId, recordId))
-    }
-
-    @GetMapping(value = ["/{recordId}"], produces = [MediaType.APPLICATION_XML_VALUE])
-    fun getXmlRunningRecord(
-        @CurrentUser userId: Long,
-        @PathVariable recordId: Long,
-    ): ApiXmlResponse<RunningRecordXmlResponse> {
-        val recordResponse = runningRecordService.getRecord(userId, recordId)
-        return ApiXmlResponse.success(RunningRecordXmlResponse(recordResponse))
     }
 
     @DeleteMapping("/{recordId}")
