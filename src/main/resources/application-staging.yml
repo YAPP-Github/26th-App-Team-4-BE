@@ -8,3 +8,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  access-expiration-millis: 31536000000
+  refresh-expiration-millis: 31536000000
