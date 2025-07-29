@@ -35,7 +35,7 @@ class PrincipalArgumentResolver(
     ): Any? {
         val request =
             webRequest.getNativeRequest(HttpServletRequest::class.java)
-                ?: throw CustomException(ErrorCode.UNAUTHORIZED_REQUEST)
+                ?: throw CustomException(ErrorCode.INTERNAL_SERVER)
         val authorization = request.getHeader(HttpHeaders.AUTHORIZATION)
         if (authorization == null || !authorization.startsWith(TOKEN_TYPE)) {
             throw CustomException(ErrorCode.UNAUTHORIZED_REQUEST)
