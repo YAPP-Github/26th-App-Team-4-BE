@@ -6,9 +6,13 @@ import org.springframework.restdocs.headers.HeaderDescriptor
 import org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
+import org.springframework.restdocs.payload.PayloadDocumentation.requestPartBody
+import org.springframework.restdocs.payload.PayloadDocumentation.requestPartFields
 import org.springframework.restdocs.request.ParameterDescriptor
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.restdocs.request.RequestDocumentation.queryParameters
+import org.springframework.restdocs.request.RequestDocumentation.requestParts
+import org.springframework.restdocs.request.RequestPartDescriptor
 import org.springframework.restdocs.snippet.Snippet
 import java.util.LinkedList
 import java.util.List
@@ -43,6 +47,21 @@ class RestDocsRequest(
     fun requestBodyField(vararg descriptors: FieldDescriptor): RestDocsRequest {
         resourceBuilder.requestFields(*descriptors)
         snippets.add(requestFields(*descriptors))
+        return this
+    }
+
+    fun requestBodyField(
+        multiFileField: String,
+        vararg descriptors: FieldDescriptor,
+    ): RestDocsRequest {
+//        resourceBuilder.requestFields(*descriptors)
+        snippets.add(requestPartBody(multiFileField))
+        snippets.add(requestPartFields(multiFileField, *descriptors))
+        return this
+    }
+
+    fun multipartField(vararg descriptors: RequestPartDescriptor): RestDocsRequest {
+        snippets.add(requestParts(*descriptors))
         return this
     }
 
