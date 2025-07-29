@@ -18,6 +18,12 @@ x-fitrun-base: &fitrun-template
     start_period: 30s
   volumes:
     - ./logs:/app/logs
+    - ./pinpoint-agent:/pinpoint-agent
+  command: >
+    sh -c 'java -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
+                -Dpinpoint.agentId=$${HOSTNAME}
+                -Dpinpoint.applicationName=FITRUN-STAGING
+                -jar application.jar'
 
 services:
   fitrun-blue:
