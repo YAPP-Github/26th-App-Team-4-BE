@@ -7,6 +7,8 @@ import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpHeaders
+import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 
 class AudioDocumentTest : BaseDocumentTest() {
@@ -15,6 +17,9 @@ class AudioDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰(Bearer)"),
+                )
 
         val filter =
             filter("audio", "coach")
@@ -32,6 +37,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .`when`().get("/api/v1/audios/coach")
             .then().log().all()
@@ -43,6 +49,9 @@ class AudioDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰(Bearer)"),
+                )
                 .queryParameter(
                     parameterWithName("type")
                         .description(
@@ -65,6 +74,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .param("type", DistanceAudioType.DISTANCE_PASS_1KM.name)
             .`when`().get("/api/v1/audios/goals/distance")
@@ -77,6 +87,9 @@ class AudioDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰(Bearer)"),
+                )
                 .queryParameter(
                     parameterWithName("type")
                         .description("시간 오디오 타입 (TIME_LEFT_5MIN, TIME_PASS_HALF, TIME_FINISH)."),
@@ -97,6 +110,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .param("type", TimeAudioType.TIME_PASS_HALF.name)
             .`when`().get("/api/v1/audios/goals/time")
@@ -109,6 +123,9 @@ class AudioDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰(Bearer)"),
+                )
                 .queryParameter(
                     parameterWithName("type")
                         .description("페이스 오디오 타입 (PACE_FAST, PACE_GOOD, PACE_SLOW)."),
@@ -129,6 +146,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .param("type", PaceAudioType.PACE_GOOD.name)
             .`when`().get("/api/v1/audios/goals/pace")
@@ -162,6 +180,7 @@ class AudioDocumentTest : BaseDocumentTest() {
 
         // when & then
         RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
             .filter(filter)
             .param("paceMills", 841234)
             .`when`().get("/api/v1/audios/running-info")

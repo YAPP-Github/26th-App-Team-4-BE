@@ -40,6 +40,13 @@ class JwtTokenHandler(
                 }
             }.build()
 
+    fun validateToken(
+        token: String,
+        tokenType: TokenType,
+    ) {
+        getValidClaims(token, tokenType)
+    }
+
     fun getTokenId(
         token: String,
         tokenType: TokenType,

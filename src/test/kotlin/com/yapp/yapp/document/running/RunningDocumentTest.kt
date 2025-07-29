@@ -88,6 +88,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         val restDocsResponse =
             response()
                 .responseBodyFieldWithResult(
+                    fieldWithPath("result.title").description("러닝 기록 제목"),
                     fieldWithPath("result.userId").description("유저 ID"),
                     fieldWithPath("result.recordId").description("기록 ID"),
                     fieldWithPath("result.runningPoints").description("러닝 포인트 리스트"),

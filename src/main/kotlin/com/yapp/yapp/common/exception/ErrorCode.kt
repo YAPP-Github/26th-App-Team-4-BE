@@ -30,10 +30,10 @@ enum class ErrorCode(
     EXTERNAL_API_NOT_FOUND(404, "EXT_003", "찾을 수 없는 외부 API 입니다.", LogLevel.WARN),
     EXTERNAL_API_SERVER(500, "EXT_004", "외부 API 서버에 알 수 없는 에러가 발생했습니다.", LogLevel.ERROR),
 
-    UNAUTHORIZE_REQUEST(401, "AUH_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
+    UNAUTHORIZED_REQUEST(401, "AUH_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
     UNSUPPORTED_ATTRIBUTE(400, "ATB_001", "지원 되지 않는 속성 입니다.", LogLevel.WARN),
 
-    INVALID_REQUEST(401, "REQ_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
+    INVALID_REQUEST(400, "REQ_001", "유효하지 않은 요청 입니다.", LogLevel.WARN),
     NOT_FOUND_REQUEST(404, "REQ_002", "존재하지 않는 요청 입니다.", LogLevel.WARN),
     INVALID_HEADER_REQUEST(400, "REQ_003", "유효하지 않는 헤더 요청 입니다.", LogLevel.WARN),
     INVALID_PARAM_REQUEST(400, "REQ_004", "유효하지 않는 파라미터 요청 입니다.", LogLevel.WARN),
