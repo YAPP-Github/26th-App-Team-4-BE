@@ -3,7 +3,7 @@ name: Staging CD
 on:
   workflow_dispatch:
   push:
-    branches: [ FITRUN-183-Server-pinpoint-구축 ]
+    branches: [ staging ]
 
 env:
   REGION: asia-northeast3-docker.pkg.dev
