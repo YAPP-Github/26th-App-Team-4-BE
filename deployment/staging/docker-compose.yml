@@ -19,11 +19,13 @@ x-fitrun-base: &fitrun-template
   volumes:
     - ./logs:/app/logs
     - ./pinpoint-agent:/pinpoint-agent
-  command: >
-    sh -c 'java -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
-                -Dpinpoint.agentId=$${HOSTNAME}
-                -Dpinpoint.applicationName=FITRUN-STAGING
-                -jar application.jar'
+  entrypoint:
+    - java
+    - -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
+    - -Dpinpoint.agentId=$${HOSTNAME}
+    - -Dpinpoint.applicationName=FITRUN-STAGING
+    - -Duser.timezone=Asia/Seoul
+    - org.springframework.boot.loader.launch.JarLauncher
 
 services:
   fitrun-blue:
