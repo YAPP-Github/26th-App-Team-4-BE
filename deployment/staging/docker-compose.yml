@@ -18,7 +18,7 @@ x-fitrun-base: &fitrun-template
     start_period: 30s
   volumes:
     - ./logs:/app/logs
-    - ./pinpoint-agent:/pinpoint-agent
+    - /home/yapp/pinpoint-agent:/pinpoint-agent
   entrypoint:
     - java
     - -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
