@@ -30,7 +30,6 @@ class RunningPointManger(
         runningRecord: RunningRecord,
         lat: Double,
         lon: Double,
-        heartRate: Int? = null,
         timeStamp: OffsetDateTime,
         totalRunningTimeMills: Long,
     ): RunningPoint {
@@ -41,12 +40,10 @@ class RunningPointManger(
                 lat = lat,
                 lon = lon,
                 orderNo = preRunningPoint.orderNo + 1,
-                heartRate = heartRate,
                 timeStamp = timeStamp,
                 totalRunningTime = totalRunningTimeMills,
             )
         newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
-        newRunningPoint.speedKmh = RunningMetricsCalculator.calculateSpeedKmh(preRunningPoint, newRunningPoint)
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
         newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, durationMills = totalRunningTimeMills)
         return runningPointDao.save(newRunningPoint)

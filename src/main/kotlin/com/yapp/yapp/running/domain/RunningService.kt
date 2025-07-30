@@ -86,7 +86,6 @@ class RunningService(
                 runningRecord = runningRecord,
                 lat = request.lat,
                 lon = request.lon,
-                heartRate = request.heartRate,
                 timeStamp = TimeProvider.parse(request.timeStamp),
                 totalRunningTimeMills = request.totalRunningTime,
             )

@@ -116,9 +116,6 @@ class RunningServiceTest : BaseServiceTest() {
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)
                 .isEqualTo(20.847)
-
-            Assertions.assertThat(resp.speed)
-                .isBetween(2.207, 2.208)
         }
     }
 

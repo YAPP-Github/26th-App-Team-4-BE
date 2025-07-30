@@ -32,14 +32,10 @@ class RunningPoint(
     @Column(nullable = false)
     val lon: Double,
     @Column(nullable = false)
-    var speedKmh: Double = 0.0,
-    @Column(nullable = false)
     var distance: Double = 0.0,
     @Column(nullable = false)
     @Convert(converter = PaceConverter::class)
     var pace: Pace = Pace(),
-    @Column(nullable = true)
-    val heartRate: Int? = null,
     @Column(nullable = false)
     val calories: Int = 0,
     @Column(nullable = false)
