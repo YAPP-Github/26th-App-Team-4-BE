@@ -1,6 +1,6 @@
 package com.yapp.yapp.running.api.response
 
-data class RunningPauseResponse(
+data class RunningPollingPauseResponse(
     val userId: Long,
     val recordId: Long,
 )

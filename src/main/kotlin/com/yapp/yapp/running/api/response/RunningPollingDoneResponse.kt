@@ -3,7 +3,7 @@ package com.yapp.yapp.running.api.response
 import com.yapp.yapp.record.domain.record.RunningRecord
 import java.time.OffsetDateTime
 
-data class RunningDoneResponse(
+data class RunningPollingDoneResponse(
     val recordId: Long,
     val totalRunningDistance: Double,
     val totalRunningTime: Long,

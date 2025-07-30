@@ -10,11 +10,11 @@ import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
-import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
-import com.yapp.yapp.running.api.response.RunningDoneResponse
-import com.yapp.yapp.running.api.response.RunningPauseResponse
+import com.yapp.yapp.running.api.response.RunningPollingDoneResponse
+import com.yapp.yapp.running.api.response.RunningPollingPauseResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
@@ -98,22 +98,22 @@ class RunningService(
     fun pause(
         userId: Long,
         recordId: Long,
-        request: RunningPauseRequest,
-    ): RunningPauseResponse {
+        request: RunningPollingPauseRequest,
+    ): RunningPollingPauseResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.stop(recordId, user = user)
-        return RunningPauseResponse(userId, runningRecord.id)
+        return RunningPollingPauseResponse(userId, runningRecord.id)
     }
 
     @Transactional
     fun oldDone(
         userId: Long,
         recordId: Long,
-    ): RunningDoneResponse {
+    ): RunningPollingDoneResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(recordId, user = user)
         val runningPoints = runningPointManger.getRunningPoints(runningRecord)
         val finishRunningRecord = runningRecordManager.finish(recordId, user, runningPoints)
-        return RunningDoneResponse(finishRunningRecord)
+        return RunningPollingDoneResponse(finishRunningRecord)
     }
 }
