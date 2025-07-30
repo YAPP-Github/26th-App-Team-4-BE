@@ -6,6 +6,7 @@ import com.yapp.yapp.common.exception.ErrorCode
 enum class ProviderType {
     KAKAO,
     APPLE,
+    TEST,
     ;
 
     companion object {
