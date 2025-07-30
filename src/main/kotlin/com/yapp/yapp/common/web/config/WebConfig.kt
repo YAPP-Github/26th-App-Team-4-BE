@@ -3,9 +3,9 @@ package com.yapp.yapp.common.web.config
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.yapp.yapp.auth.infrastructure.ProviderTypeConverter
 import com.yapp.yapp.common.token.jwt.resolver.CurrentUserArgumentResolver
 import com.yapp.yapp.common.token.jwt.resolver.PrincipalArgumentResolver
+import com.yapp.yapp.common.web.converter.ProviderTypeConverter
 import org.springframework.context.annotation.Configuration
 import org.springframework.format.FormatterRegistry
 import org.springframework.http.converter.HttpMessageConverter

@@ -1,4 +1,4 @@
-package com.yapp.yapp.auth.infrastructure
+package com.yapp.yapp.common.web.converter
 
 import com.yapp.yapp.auth.infrastructure.provider.ProviderType
 import org.springframework.core.convert.converter.Converter
