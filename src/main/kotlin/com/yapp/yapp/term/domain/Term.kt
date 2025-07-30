@@ -23,7 +23,7 @@ class Term(
     @Column(nullable = false)
     val title: String,
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     val content: String,
     @Column(nullable = false)
     val isRequired: Boolean,
