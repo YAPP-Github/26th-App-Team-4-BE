@@ -2,7 +2,7 @@ package com.yapp.yapp.running.api.response
 
 import com.yapp.yapp.record.api.response.RunningPointResponse
 
-data class RunningUpdateResponse(
+data class RunningPollingUpdateResponse(
     val recordId: Long,
     val userId: Long,
     val runningPoint: RunningPointResponse,

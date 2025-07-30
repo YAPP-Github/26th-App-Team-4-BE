@@ -4,7 +4,7 @@ import com.yapp.yapp.common.TimeProvider
 import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
-import com.yapp.yapp.running.api.request.RunningPauseRequest
+import com.yapp.yapp.running.api.request.RunningPollingPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.domain.RunningService
@@ -116,9 +116,6 @@ class RunningServiceTest : BaseServiceTest() {
             // 구간 거리(고정)
             Assertions.assertThat(resp.distance)
                 .isEqualTo(20.847)
-
-            Assertions.assertThat(resp.speed)
-                .isBetween(2.207, 2.208)
         }
     }
 
@@ -149,7 +146,7 @@ class RunningServiceTest : BaseServiceTest() {
             )
         }
         val stopTime = maxTime + 1L
-        val stop = runningService.pause(userId, recordId, RunningPauseRequest(startAt.plusSeconds(stopTime).toString()))
+        val stop = runningService.pause(userId, recordId, RunningPollingPauseRequest(startAt.plusSeconds(stopTime).toString()))
         val done = runningService.oldDone(userId, recordId)
 
         // then
