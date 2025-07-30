@@ -12,6 +12,7 @@ enum class Tag(
     GOAL_API("Goal API"),
     HOME_API("Home API"),
     SETTING_API("Setting API"),
+    TERM_API("Term API"),
     ;
 
     fun getDisplayName(): String {
