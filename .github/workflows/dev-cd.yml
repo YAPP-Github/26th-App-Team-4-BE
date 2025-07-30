@@ -3,7 +3,7 @@ name: Dev CD
 on:
   workflow_dispatch:
   push:
-    branches: [ FITRUN-188-Server-부하-테스트-데이터-세팅 ] # TODO
+    branches: [ dev ]
 
 jobs:
   build:

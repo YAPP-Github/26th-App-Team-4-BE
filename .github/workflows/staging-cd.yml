@@ -3,7 +3,7 @@ name: Staging CD
 on:
   workflow_dispatch:
   push:
-    branches: [ staging ]
+    branches: [ FITRUN-188-Server-부하-테스트-데이터-세팅 ] # TODO
 
 env:
   REGION: asia-northeast3-docker.pkg.dev
