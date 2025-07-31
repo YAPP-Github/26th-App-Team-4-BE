@@ -20,4 +20,8 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
         startDate: OffsetDateTime,
         endDate: OffsetDateTime,
     ): Int
+
+    fun findAllByUserIdIn(userIds: List<Long>): List<RunningRecord>
+
+    fun deleteByUserIdIn(userIds: List<Long>)
 }
