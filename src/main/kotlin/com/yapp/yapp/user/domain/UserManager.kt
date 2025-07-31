@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 @Component
 class UserManager(
     private val userDao: UserDao,
+    private val deletedUserDao: DeletedUserDao,
 ) {
     fun save(
         email: String,
@@ -34,9 +35,14 @@ class UserManager(
         return UserInfo(user)
     }
 
-    fun getUserInfo(id: Long): UserInfo {
-        val user = userDao.getByIdAndIsDeletedFalse(id)
-        return UserInfo(user)
+    fun delete(
+        userId: Long,
+        reason: String?,
+    ) {
+        val user = userDao.getByIdAndIsDeletedFalse(userId)
+        val deletedUser = DeletedUser(id = user.id, reason = reason)
+        user.isDeleted = true
+        deletedUserDao.save(deletedUser)
     }
 
     private fun getRandomNickname(email: String): String {

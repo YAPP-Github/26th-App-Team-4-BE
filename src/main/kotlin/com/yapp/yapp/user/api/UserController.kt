@@ -3,6 +3,7 @@ package com.yapp.yapp.user.api
 import com.yapp.yapp.common.token.jwt.annotation.CurrentUser
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.user.api.request.OnboardingRequest
+import com.yapp.yapp.user.api.request.WithdrawRequest
 import com.yapp.yapp.user.api.response.OnboardingResponse
 import com.yapp.yapp.user.api.response.RunnerTypeResponse
 import com.yapp.yapp.user.api.response.UserAndGoalResponse
@@ -34,8 +35,9 @@ class UserController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun withdraw(
         @CurrentUser id: Long,
+        @RequestBody request: WithdrawRequest,
     ): ApiResponse<Unit> {
-        userService.delete(id)
+        userService.delete(id, request)
         return ApiResponse.success()
     }
 
