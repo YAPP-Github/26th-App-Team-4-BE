@@ -9,13 +9,15 @@ data class UserInfo(
     val provider: ProviderType,
     val runnerType: RunnerType?,
     val isNew: Boolean = false,
+    val isRestore: Boolean = false,
 ) {
-    constructor(user: User) : this(
+    constructor(user: User, isNew: Boolean = false, isRestore: Boolean = false) : this(
         id = user.id,
         email = user.email,
         nickname = user.nickname,
         provider = user.provider,
         runnerType = user.runnerType,
-        isNew = false,
+        isNew = isNew,
+        isRestore = isRestore,
     )
 }
