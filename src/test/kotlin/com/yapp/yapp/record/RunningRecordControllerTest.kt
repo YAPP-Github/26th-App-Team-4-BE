@@ -193,10 +193,11 @@ class RunningRecordControllerTest : BaseControllerTest() {
     }
 
     @ParameterizedTest
-    @CsvSource("0,10", "1,10", "2,5")
+    @CsvSource("0,10,10", "1,10,10", "2,10,5", "0,5,5")
     fun `유저의 러닝 기록 리스트를 페이지 단위로 조회한다`(
         page: Int,
         size: Int,
+        expectedSize: Int,
     ) {
         // given
         val now = TimeProvider.now().toStartOfDay()
@@ -211,7 +212,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
                 .param("type", RecordsSearchType.ALL.name)
                 .param("targetDate", now.toString())
                 .param("page", page)
-                .param("size", 10)
+                .param("size", size)
                 .`when`()
                 .get("/api/v1/records")
                 .then().log().all()
@@ -221,6 +222,6 @@ class RunningRecordControllerTest : BaseControllerTest() {
         val response = convert(result, RunningRecordListResponse::class.java)
 
         // then
-        Assertions.assertThat(response.records.size).isEqualTo(size)
+        Assertions.assertThat(response.records.size).isEqualTo(expectedSize)
     }
 }
