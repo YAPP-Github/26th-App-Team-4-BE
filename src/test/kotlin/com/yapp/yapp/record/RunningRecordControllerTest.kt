@@ -194,7 +194,10 @@ class RunningRecordControllerTest : BaseControllerTest() {
 
     @ParameterizedTest
     @CsvSource("0,10", "1,10", "2,5")
-    fun `유저의 러닝 기록 리스트를 페이지 단위로 조회한다`(page: Int, size: Int) {
+    fun `유저의 러닝 기록 리스트를 페이지 단위로 조회한다`(
+        page: Int,
+        size: Int,
+    ) {
         // given
         val now = TimeProvider.now().toStartOfDay()
         val user = userFixture.createWithGoal()
