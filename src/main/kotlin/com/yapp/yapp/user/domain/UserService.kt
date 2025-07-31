@@ -74,8 +74,8 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun getUserAndGoalById(id: Long): UserAndGoalResponse {
-        val user = userManager.getActiveUser(id)
+    fun getUserAndGoalByUserId(userId: Long): UserAndGoalResponse {
+        val user = userManager.getActiveUser(userId)
         val userResponse = UserResponse(user)
         val userGoal = userGoalManager.findUserGoal(user)
         val userGoalResponse = userGoal?.let { UserGoalResponse(it) }

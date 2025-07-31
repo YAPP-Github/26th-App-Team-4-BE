@@ -26,7 +26,7 @@ class UserController(
     fun getUserById(
         @CurrentUser id: Long,
     ): ApiResponse<UserAndGoalResponse> {
-        val user = userService.getUserAndGoalById(id)
+        val user = userService.getUserAndGoalByUserId(id)
         return ApiResponse.success(user)
     }
 
