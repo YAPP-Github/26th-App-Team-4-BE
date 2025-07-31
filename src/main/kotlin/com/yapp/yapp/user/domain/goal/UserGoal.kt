@@ -15,7 +15,7 @@ import jakarta.persistence.OneToOne
 @Entity
 class UserGoal(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0L,
     @OneToOne
     val user: User,
