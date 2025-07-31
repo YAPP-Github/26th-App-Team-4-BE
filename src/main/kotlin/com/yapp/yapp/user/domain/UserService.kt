@@ -83,18 +83,6 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun getUserById(id: Long): UserResponse {
-        val user = userManager.getActiveUser(id)
-        return UserResponse(
-            userId = user.id,
-            nickname = user.nickname,
-            email = user.email,
-            provider = user.provider,
-            runnerType = user.runnerType,
-        )
-    }
-
-    @Transactional(readOnly = true)
     fun getGoal(userId: Long): UserGoalResponse {
         val user = userManager.getActiveUser(userId)
         val userGoal = userGoalManager.getUserGoal(user)
