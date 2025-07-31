@@ -11,6 +11,8 @@ import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -188,5 +190,34 @@ class RunningRecordControllerTest : BaseControllerTest() {
             .get("/api/v1/records")
             .then().log().all()
             .statusCode(200)
+    }
+
+    @ParameterizedTest
+    @CsvSource("0,10", "1,10", "2,5")
+    fun `유저의 러닝 기록 리스트를 페이지 단위로 조회한다`(page: Int, size: Int) {
+        // given
+        val now = TimeProvider.now().toStartOfDay()
+        val user = userFixture.createWithGoal()
+
+        (1L..25L).forEach { runningFixture.createRunningRecord(user = user, startAt = now.plusDays(it)) }
+
+        // when
+        val result =
+            RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+                .param("type", RecordsSearchType.ALL.name)
+                .param("targetDate", now.toString())
+                .param("page", page)
+                .param("size", 10)
+                .`when`()
+                .get("/api/v1/records")
+                .then().log().all()
+                .statusCode(200)
+                .extract().`as`(ApiResponse::class.java)
+                .result
+        val response = convert(result, RunningRecordListResponse::class.java)
+
+        // then
+        Assertions.assertThat(response.records.size).isEqualTo(size)
     }
 }
