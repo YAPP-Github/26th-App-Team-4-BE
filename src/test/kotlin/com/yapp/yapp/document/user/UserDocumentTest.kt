@@ -29,8 +29,14 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.user.userId").description("사용자 ID"),
                     fieldWithPath("result.user.email").description("사용자 이메일"),
                     fieldWithPath("result.user.nickname").description("사용자 닉네임"),
-                    fieldWithPath("result.user.provider").description("소셜 로그인 유형"),
-                    fieldWithPath("result.user.runnerType").description("사용자 러너 유형").type(JsonFieldType.STRING).optional(),
+                    fieldWithPath("result.user.provider").description("소셜 로그인 유형 (카카오: KAKAO, 애플: APPLE )"),
+                    fieldWithPath("result.user.runnerType").description(
+                        "사용자 러너 유형 (" +
+                            "초보: BEGINNER, " +
+                            "중급: INTERMEDIATE, " +
+                            "전문가: EXPORT )",
+                    ).type(JsonFieldType.STRING)
+                        .optional(),
                     fieldWithPath("result.goal").description("사용자의 목표 정보 (없을 경우 null)").optional(),
                     fieldWithPath("result.goal.goalId").description("목표 ID").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.userId").description("사용자 ID").type(JsonFieldType.NUMBER).optional(),
@@ -39,7 +45,7 @@ class UserDocumentTest : BaseDocumentTest() {
                             "다이어트: WEIGHT_LOSS_PURPOSE, " +
                             "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
+                            "대회 준비: COMPETITION_PREPARATION )",
                     ).type(JsonFieldType.STRING).optional(),
                     fieldWithPath("result.goal.weeklyRunningCount").description("주간 달리기 횟수").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.paceGoal").description("페이스 목표 시간 밀리초 단위").type(JsonFieldType.NUMBER).optional(),
