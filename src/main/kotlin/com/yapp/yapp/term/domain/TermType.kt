@@ -13,6 +13,6 @@ enum class TermType() {
     companion object {
         fun from(name: String): TermType =
             entries.firstOrNull { it.name.equals(name, ignoreCase = true) }
-                ?: throw CustomException(ErrorCode.INVALID_REQUEST)
+                ?: throw CustomException(ErrorCode.TERM_NOT_FOUND)
     }
 }
