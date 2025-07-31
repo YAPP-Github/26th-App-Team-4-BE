@@ -3,10 +3,13 @@ package com.yapp.yapp.user
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.BaseControllerTest
 import com.yapp.yapp.user.api.response.UserAndGoalResponse
+import com.yapp.yapp.support.fixture.RequestFixture
+import com.yapp.yapp.user.api.response.UserResponse
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpHeaders
 
 class UserControllerTest : BaseControllerTest() {
     @Test
@@ -80,10 +83,13 @@ class UserControllerTest : BaseControllerTest() {
     fun `회원탈퇴를 한다`() {
         // given
         val accessToken = getAccessToken("test@test.com")
+        val withdrawRequest = RequestFixture.withDrawRequest("회원 탈퇴 하고 싶음")
         // when
         // then
         RestAssured.given().log().all()
             .header("Authorization", accessToken)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .body(withdrawRequest)
             .`when`().delete("/api/v1/users")
             .then().log().all()
             .statusCode(204)
@@ -93,10 +99,13 @@ class UserControllerTest : BaseControllerTest() {
     fun `회원탈퇴 후 조회`() {
         // given
         val accessToken = getAccessToken("test@test.com")
+        val withdrawRequest = RequestFixture.withDrawRequest("회원 탈퇴 하고 싶음")
         // when
         // then
         RestAssured.given().log().all()
             .header("Authorization", accessToken)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .body(withdrawRequest)
             .`when`().delete("/api/v1/users")
             .then().log().all()
             .statusCode(204)

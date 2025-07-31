@@ -12,6 +12,7 @@ import com.yapp.yapp.user.api.request.OnboardingAnswerDto
 import com.yapp.yapp.user.api.request.OnboardingRequest
 import com.yapp.yapp.user.api.request.PaceGoalRequest
 import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
+import com.yapp.yapp.user.api.request.WithdrawRequest
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import java.time.OffsetDateTime
@@ -135,5 +136,9 @@ object RequestFixture {
 
     fun audioFeedbackUpdateRequest(audioFeedback: Boolean = true): AudioFeedbackUpdateRequest {
         return AudioFeedbackUpdateRequest(audioFeedback = audioFeedback)
+    }
+
+    fun withDrawRequest(reason: String? = null): WithdrawRequest {
+        return WithdrawRequest(reason)
     }
 }
