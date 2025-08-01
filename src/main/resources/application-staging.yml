@@ -8,3 +8,4 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+        leak-detection-threshold: 5000
