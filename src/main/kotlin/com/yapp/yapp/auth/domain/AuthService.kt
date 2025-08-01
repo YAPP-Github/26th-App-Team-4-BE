@@ -8,7 +8,6 @@ import com.yapp.yapp.common.exception.CustomException
 import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.common.token.jwt.JwtTokenGenerator
 import com.yapp.yapp.common.token.jwt.JwtTokenHandler
-import com.yapp.yapp.user.api.response.UserResponse
 import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -36,15 +35,7 @@ class AuthService(
         }
 
         val tokenInfo = jwtTokenGenerator.generateTokens(userInfo.id)
-        val tokenResponse = TokenResponse(tokenInfo.accessToken, tokenInfo.refreshToken)
-        val userResponse =
-            UserResponse(
-                userInfo.id,
-                userInfo.nickname,
-                userInfo.email,
-                userInfo.provider,
-            )
-        return LoginResponse(tokenResponse, userResponse, userInfo.isNew)
+        return LoginResponse(tokenInfo, userInfo, userInfo.isNew)
     }
 
     @Transactional
