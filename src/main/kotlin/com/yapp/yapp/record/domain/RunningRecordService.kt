@@ -43,17 +43,22 @@ class RunningRecordService(
                 targetDate = targetDate,
                 pageable = pageable,
             )
-        val userGoal = userGoalManager.getUserGoal(user)
-        val timeGoalAchievedCount = runningRecords.count { userGoal.isTimeGoalAchieved(it) }
-        val distanceGoalAchievedCount = runningRecords.count { userGoal.isDistanceGoalAchieved(it) }
         val runningRecordResponse =
             runningRecords.map { RunningRecordResponse(it, pointManager.getRunningPoints(it)) }
-
+        if (userGoalManager.hasUserGoal(user)) {
+            val userGoal = userGoalManager.getUserGoal(user)
+            val timeGoalAchievedCount = runningRecords.count { userGoal.isTimeGoalAchieved(it) }
+            val distanceGoalAchievedCount = runningRecords.count { userGoal.isDistanceGoalAchieved(it) }
+            return RunningRecordListResponse(
+                userId = user.id,
+                records = runningRecordResponse,
+                timeGoalAchievedCount = timeGoalAchievedCount,
+                distanceGoalAchievedCount = distanceGoalAchievedCount,
+            )
+        }
         return RunningRecordListResponse(
             userId = user.id,
             records = runningRecordResponse,
-            timeGoalAchievedCount = timeGoalAchievedCount,
-            distanceGoalAchievedCount = distanceGoalAchievedCount,
         )
     }
 

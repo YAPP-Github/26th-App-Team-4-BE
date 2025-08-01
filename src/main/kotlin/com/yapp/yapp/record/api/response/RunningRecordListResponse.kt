@@ -11,7 +11,7 @@ data class RunningRecordListResponse(
     val timeGoalAchievedCount: Int,
     val distanceGoalAchievedCount: Int,
 ) {
-    constructor(userId: Long, records: List<RunningRecordResponse>, timeGoalAchievedCount: Int, distanceGoalAchievedCount: Int) : this(
+    constructor(userId: Long, records: List<RunningRecordResponse>, timeGoalAchievedCount: Int = 0, distanceGoalAchievedCount: Int = 0) : this(
         userId = userId,
         records = records.map { RunningRecordSummaryResponse(it) },
         recordCount = records.size,

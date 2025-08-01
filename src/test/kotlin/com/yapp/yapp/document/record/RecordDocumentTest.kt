@@ -26,7 +26,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                 )
                 .queryParameter(
                     parameterWithName("type")
-                        .description("검색 타입 (ALL, TODAY 등). 기본값 ALL")
+                        .description("검색 타입 (ALL, DAILY, WEEKLY, MONTHLY, YEARLY). 기본값 ALL")
                         .optional(),
                     parameterWithName("targetDate")
                         .description("조회 기준 날짜 (ISO-8601 문자열), 기본값 현재 시각")
@@ -36,7 +36,7 @@ class RecordDocumentTest : BaseDocumentTest() {
                     parameterWithName("size")
                         .description("페이지 크기").optional(),
                     parameterWithName("sort")
-                        .description("정렬 기준 (ex: createdAt,DESC)").optional(),
+                        .description("정렬 기준입니다. 기본적으로 러닝 시작일 기준 내림차순입니다. 생략해도 됩니다. (ex: startAt,DESC)").optional(),
                 )
 
         val restDocsResponse =
@@ -85,6 +85,7 @@ class RecordDocumentTest : BaseDocumentTest() {
             .param("targetDate", now.toString())
             .param("page", 0)
             .param("size", 10)
+            .param("sort", "startAt,DESC")
             .`when`()
             .get("/api/v1/records")
             .then().log().all()
