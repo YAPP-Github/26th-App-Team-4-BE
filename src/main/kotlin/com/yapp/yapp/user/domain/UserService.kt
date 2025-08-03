@@ -188,9 +188,9 @@ class UserService(
 
     @Transactional
     fun delete(
-        id: Long,
+        userId: Long,
         withdrawRequest: WithdrawRequest,
     ) {
-        userManager.delete(id, withdrawRequest.reason)
+        userManager.delete(userId, withdrawRequest.reason)
     }
 }
