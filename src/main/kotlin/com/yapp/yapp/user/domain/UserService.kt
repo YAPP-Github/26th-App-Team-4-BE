@@ -193,4 +193,9 @@ class UserService(
     ) {
         userManager.delete(userId, withdrawRequest.reason)
     }
+
+    @Transactional
+    fun cleanup() {
+        userManager.cleanup()
+    }
 }
