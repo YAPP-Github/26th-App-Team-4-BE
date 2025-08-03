@@ -45,6 +45,7 @@ class AuthDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.user.provider").description("소셜 로그인 유형"),
                     fieldWithPath("result.user.runnerType").description("사용자 러너 타입"),
                     fieldWithPath("result.isNew").description("신규 가입 여부"),
+                    fieldWithPath("result.isRestore").description("사용자 계정 복구 여부"),
                 )
 
         val restDocsFilter =

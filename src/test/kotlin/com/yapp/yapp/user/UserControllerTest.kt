@@ -2,9 +2,8 @@ package com.yapp.yapp.user
 
 import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.BaseControllerTest
-import com.yapp.yapp.user.api.response.UserAndGoalResponse
 import com.yapp.yapp.support.fixture.RequestFixture
-import com.yapp.yapp.user.api.response.UserResponse
+import com.yapp.yapp.user.api.response.UserAndGoalResponse
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertAll
@@ -80,7 +79,7 @@ class UserControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `회원탈퇴를 한다`() {
+    fun `회원 탈퇴를 한다`() {
         // given
         val accessToken = getAccessToken("test@test.com")
         val withdrawRequest = RequestFixture.withDrawRequest("회원 탈퇴 하고 싶음")
