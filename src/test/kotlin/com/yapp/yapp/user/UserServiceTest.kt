@@ -51,7 +51,7 @@ class UserServiceTest : BaseServiceTest() {
     }
 
     @Test
-    fun `회원탈퇴 후 한달 뒤 회원 삭제한다`() {
+    fun `회원 탈퇴 후 한달 뒤 회원 삭제한다`() {
         // given
         val user = userFixture.create(email = "test@test.com")
         val deletedAt = TimeProvider.now().minusMonths(1)
@@ -73,7 +73,7 @@ class UserServiceTest : BaseServiceTest() {
     }
 
     @Test
-    fun `회원탈퇴 후 재가입한다`() {
+    fun `회원 탈퇴 후 재가입한다`() {
         // given
         val user = userFixture.create(email = "test@test.com")
         val deletedAt = TimeProvider.now().minusMonths(1)

@@ -96,7 +96,7 @@ class UserControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `회원탈퇴 후 조회`() {
+    fun `회원 탈퇴 후 조회`() {
         // given
         val accessToken = getAccessToken("test@test.com")
         val withdrawRequest = RequestFixture.withDrawRequest("회원 탈퇴 하고 싶음")
@@ -115,5 +115,32 @@ class UserControllerTest : BaseControllerTest() {
             .`when`().get("/api/v1/users")
             .then().log().all()
             .statusCode(400)
+    }
+
+    @Test
+    fun `회원 탈퇴 후 재로그인`() {
+        // given
+        val email = "test@test.com"
+        val accessToken = getAccessToken("test@test.com")
+        val withdrawRequest = RequestFixture.withDrawRequest("회원 탈퇴 하고 싶음")
+        // when
+        // then
+        RestAssured.given().log().all()
+            .header("Authorization", accessToken)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .body(withdrawRequest)
+            .`when`().delete("/api/v1/users")
+            .then().log().all()
+            .statusCode(204)
+
+        val response = getLoginResponse(email = email)
+        assertAll(
+            { Assertions.assertThat(response.user.userId).isNotNull() },
+            { Assertions.assertThat(response.user.email).isEqualTo(email) },
+            { Assertions.assertThat(response.user.email).isNotNull() },
+            { Assertions.assertThat(response.user.provider).isNotNull() },
+            { Assertions.assertThat(response.isNew).isFalse() },
+            { Assertions.assertThat(response.isRestore).isTrue() },
+        )
     }
 }
