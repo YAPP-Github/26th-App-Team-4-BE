@@ -8,11 +8,13 @@ data class LoginResponse(
     val tokenResponse: TokenResponse,
     val user: UserResponse,
     val isNew: Boolean = false,
+    val isRestore: Boolean = false,
 ) {
-    constructor(tokenInfo: TokenInfo, userInfo: UserInfo, isNew: Boolean) : this(
+    constructor(tokenInfo: TokenInfo, userInfo: UserInfo, isNew: Boolean, isRestore: Boolean) : this(
         tokenResponse = TokenResponse(tokenInfo),
         user = UserResponse(userInfo),
         isNew = isNew,
+        isRestore = isRestore
     )
 }
 
