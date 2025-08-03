@@ -14,7 +14,7 @@ data class LoginResponse(
         tokenResponse = TokenResponse(tokenInfo),
         user = UserResponse(userInfo),
         isNew = isNew,
-        isRestore = isRestore
+        isRestore = isRestore,
     )
 }
 
