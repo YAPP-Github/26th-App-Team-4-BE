@@ -10,6 +10,7 @@ import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.response.RunningPollingDoneResponse
 import com.yapp.yapp.running.api.response.RunningPollingPauseResponse
 import com.yapp.yapp.running.api.response.RunningPollingUpdateResponse
+import com.yapp.yapp.running.api.response.RunningRecordImageResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.running.domain.RunningService
 import org.springframework.web.bind.annotation.PatchMapping
@@ -38,17 +39,30 @@ class RunningController(
     fun done(
         @CurrentUser userId: Long,
         @PathVariable recordId: Long,
-        @RequestPart("metadata") request: RunningDoneRequest,
-        @RequestPart("image") imageFile: MultipartFile,
+        @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningRecordResponse> {
         val recordResponse =
             runningService.done(
                 userId = userId,
                 recordId = recordId,
                 request = request,
-                imageFile = imageFile,
             )
         return ApiResponse.success(recordResponse)
+    }
+
+    @PostMapping("/{recordId}/images")
+    fun uploadRecordImage(
+        @CurrentUser userId: Long,
+        @PathVariable recordId: Long,
+        @RequestPart("image") imageFile: MultipartFile,
+    ): ApiResponse<RunningRecordImageResponse> {
+        val imageResponse =
+            runningService.uploadRecordImage(
+                userId = userId,
+                recordId = recordId,
+                imageFile = imageFile,
+            )
+        return ApiResponse.success(imageResponse)
     }
 
     @PostMapping("/{recordId}/polling")

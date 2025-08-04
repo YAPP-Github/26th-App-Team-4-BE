@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 class RunningControllerTest : BaseControllerTest() {
     @Autowired
@@ -42,14 +43,12 @@ class RunningControllerTest : BaseControllerTest() {
         val startResponse = runningService.start(user.id, RequestFixture.runningStartRequest())
         val recordId = startResponse.recordId
         val request = RequestFixture.runningDoneRequest()
-        val testImageFile = runningFixture.file()
 
         // when
         RestAssured.given().log().all()
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
-            .contentType("multipart/form-data")
-            .multiPart("metadata", objectMapper.writeValueAsString(request), "application/json")
-            .multiPart("image", testImageFile, "images/png")
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(request)
             .pathParam("recordId", recordId)
             .`when`().post("/api/v1/running/{recordId}")
             .then().log().all()

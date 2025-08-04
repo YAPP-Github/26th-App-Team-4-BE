@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
 import org.springframework.restdocs.request.RequestDocumentation.partWithName
 
 class RunningDocumentTest : BaseDocumentTest() {
@@ -64,12 +65,7 @@ class RunningDocumentTest : BaseDocumentTest() {
         // given
         val restDocsRequest =
             request()
-                .multipartField(
-                    partWithName("image").description("러닝 경로 이미지"),
-                    partWithName("metadata").description("메타 데이터"),
-                )
                 .requestBodyField(
-                    "metadata",
                     fieldWithPath("totalTime").description("총 러닝 시간 (밀리초)"),
                     fieldWithPath("totalDistance").description("총 러닝 거리 (m)"),
                     fieldWithPath("totalCalories").description("총 소모 칼로리"),
@@ -121,33 +117,6 @@ class RunningDocumentTest : BaseDocumentTest() {
             """
             러닝을 완료하는 API입니다.
             응답은 러닝 기록 단건 조회 API의 응답과 동일합니다.
-
-            ## 요청 값
-
-            | **필드** | **타입** | **설명** | **비고** |
-            | --- | --- | --- | --- |
-            | image | File | 러닝 기록 지도 사진 |  |
-            | metadata | Text | 러닝 완료 정보가 담긴 JSON 페이로드 | application/json |
-
-            ### metadata
-
-            | **필드** | **타입** | **설명** | **비고** |
-            | --- | --- | --- | --- |
-            | totalTime | Long | 총 러닝 시간 | 밀리초 (ms) |
-            | totalDistance | Double | 총 러닝 거리 | 미터 (m) |
-            | totalCalories | Int | 소모된 칼로리 | kcal |
-            | averagePace | Long | 평균 페이스 (1km 당 소요 시간) | 밀리초 (ms) |
-            | startAt | String | 러닝 시작 시각 | ISO 8601 문자열 |
-            | runningPoints | List<RunningPointRequest> | 구간별 위치·시간 기록 목록 |  |
-
-            ### runningPoints
-
-            | **필드** | **타입** | **설명** | **비고** |
-            | --- | --- | --- | --- |
-            | lat | Double | 위도 |  |
-            | lon | Double | 경도 |  |
-            | totalRunningTimeMills | Long | 러닝 시작 후 해당 지점까지 누적 시간 | 밀리초 (ms) |
-            | timeStamp | String | 해당 지점 기록 시각 | ISO 8601 문자열 |
             """.trimIndent()
         val filter =
             filter("running", "running-done")
@@ -166,6 +135,70 @@ class RunningDocumentTest : BaseDocumentTest() {
             )
         val request = RequestFixture.runningDoneRequest()
         val recordId = startResponse.recordId
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .filter(filter)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(request)
+            .pathParam("recordId", recordId)
+            .`when`().post("/api/v1/running/{recordId}")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
+    fun `러닝 기록 이미지 업로드 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .multipartField(
+                    partWithName("image").description("러닝 경로 이미지"),
+                )
+                .pathParameter(
+                    parameterWithName("recordId").description("러닝 기록 ID"),
+                )
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
+                    headerWithName("Content-Type").description("multipart/form-data"),
+                )
+        val restDocsResponse =
+            response()
+                .responseBodyFieldWithResult(
+                    fieldWithPath("result.userId").description("유저 ID"),
+                    fieldWithPath("result.recordId").description("기록 ID"),
+                    fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL"),
+                )
+        val description =
+            """
+            러닝 기록 이미지 업로드 API입니다.
+            이미지는 Multipart로 images/jpg 파일 형식을 받도록 처리되어 있습니다.
+            임의로 정한 형식입니다. 다른 파일 형식으로 처리하는게 편한 경우 DM 주세요!
+
+            ## 요청 값
+
+            | **필드** | **타입** | **설명** | **비고** |
+            | --- | --- | --- | --- |
+            | image | File | 러닝 기록 지도 사진 |  |
+
+            """.trimIndent()
+        val filter =
+            filter("running", "running-recrod-image-upload")
+                .tag(Tag.RUNNING_API)
+                .summary("러닝 기록 이미지 업로드 API")
+                .description(description)
+                .request(restDocsRequest)
+                .response(restDocsResponse)
+                .build()
+
+        val user = userFixture.create()
+        val startResponse =
+            runningService.start(
+                user.id,
+                RunningStartRequest(37.5665, 126.9780, "2025-06-17T16:12:03+09:00"),
+            )
+        val recordId = startResponse.recordId
         val testImageFile = runningFixture.file()
 
         // when & then
@@ -173,10 +206,9 @@ class RunningDocumentTest : BaseDocumentTest() {
             .filter(filter)
             .header(HttpHeaders.AUTHORIZATION, getAccessToken(email = user.email))
             .contentType("multipart/form-data")
-            .multiPart("metadata", objectMapper.writeValueAsString(request), "application/json")
-            .multiPart("image", testImageFile, "images/png")
+            .multiPart("image", testImageFile, "images/jpg")
             .pathParam("recordId", recordId)
-            .`when`().post("/api/v1/running/{recordId}")
+            .`when`().post("/api/v1/running/{recordId}/images")
             .then().log().all()
             .statusCode(200)
     }

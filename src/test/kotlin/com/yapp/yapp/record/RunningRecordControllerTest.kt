@@ -176,7 +176,6 @@ class RunningRecordControllerTest : BaseControllerTest() {
             userId = user.id,
             recordId = recordId,
             request = RequestFixture.runningDoneRequest(),
-            imageFile = runningFixture.multipartFile(),
         )
 
         // when
