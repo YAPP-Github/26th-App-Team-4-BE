@@ -58,6 +58,11 @@ class UserGoal(
 
     fun isTimeGoalAchieved(runningRecord: RunningRecord): Boolean {
         if (this.timeGoal == null) return false
-        return runningRecord.totalTime >= this.timeGoal as Long
+        return runningRecord.totalTime <= this.timeGoal as Long
+    }
+
+    fun isPaceGoalAchieved(runningRecord: RunningRecord): Boolean {
+        if (this.paceGoal == null) return false
+        return runningRecord.averagePace.toMills() <= this.paceGoal?.millsPerKm as Long
     }
 }
