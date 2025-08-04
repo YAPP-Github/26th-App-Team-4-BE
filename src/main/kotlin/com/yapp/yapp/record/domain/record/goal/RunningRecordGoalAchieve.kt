@@ -19,9 +19,21 @@ class RunningRecordGoalAchieve(
     @ManyToOne(fetch = FetchType.LAZY)
     val runningRecord: RunningRecord,
     @Column(nullable = false)
-    val isPaceGoalAchieved: Boolean,
+    var isPaceGoalAchieved: Boolean = false,
     @Column(nullable = false)
-    val isDistanceGoalAchieved: Boolean,
+    var isDistanceGoalAchieved: Boolean = false,
     @Column(nullable = false)
-    val isTimeGoalAchieved: Boolean,
-)
+    var isTimeGoalAchieved: Boolean = false,
+) {
+    fun achievedPaceGoal() {
+        isPaceGoalAchieved = true
+    }
+
+    fun achievedDistanceGoal() {
+        isDistanceGoalAchieved = true
+    }
+
+    fun achievedTimeGoal() {
+        isTimeGoalAchieved = true
+    }
+}

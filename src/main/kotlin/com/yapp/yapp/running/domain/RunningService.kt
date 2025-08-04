@@ -41,6 +41,7 @@ class RunningService(
         val startAt = TimeProvider.parse(request.timeStamp)
         val runningRecord = runningRecordManager.start(user, startAt)
         runningPointManger.saveRunningPoint(runningRecord, request.lat, request.lon, startAt)
+        recordGoalArchiveManager.save(runningRecord = runningRecord)
         return RunningStartResponse(runningRecord.id)
     }
 
@@ -71,14 +72,14 @@ class RunningService(
         runningRecord.update(imageUrl = uploadFile.url)
 
         if (userGoalManager.hasUserGoal(user)) {
-            val userGoal = userGoalManager.getUserGoal(user)
-            recordGoalArchiveManager.save(userGoal = userGoal, runningRecord = runningRecord)
+            recordGoalArchiveManager.update(runningRecord, userGoal = userGoalManager.getUserGoal(user))
         }
-
         runningRecordManager.updateRecord(runningRecord)
+
         return RunningRecordResponse(
             runningRecord = runningRecord,
             runningPoints = runningPoints,
+            runningRecordGoalAchieve = recordGoalArchiveManager.getByRecord(runningRecord),
         )
     }
 
