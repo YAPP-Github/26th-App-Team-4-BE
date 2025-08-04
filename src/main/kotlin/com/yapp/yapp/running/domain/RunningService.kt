@@ -15,6 +15,7 @@ import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
 import com.yapp.yapp.running.api.request.RunningStartRequest
 import com.yapp.yapp.running.api.response.RunningPollingDoneResponse
 import com.yapp.yapp.running.api.response.RunningPollingPauseResponse
+import com.yapp.yapp.running.api.response.RunningRecordImageResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.user.domain.UserManager
 import org.springframework.stereotype.Service
@@ -45,7 +46,6 @@ class RunningService(
         userId: Long,
         recordId: Long,
         request: RunningDoneRequest,
-        imageFile: MultipartFile,
     ): RunningRecordResponse {
         val user = userManager.getActiveUser(userId)
         val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
@@ -62,14 +62,29 @@ class RunningService(
                     timeStamp = TimeProvider.parse(it.timeStamp),
                 )
             }
-        val filePath = FilePathGenerator.generateRunningRecordImagePath(runningRecord)
-        val uploadFile = storageManager.uploadFile(filePath = filePath, multipartFile = imageFile)
-        runningRecord.update(imageUrl = uploadFile.url)
 
         runningRecordManager.updateRecord(runningRecord)
         return RunningRecordResponse(
             runningRecord = runningRecord,
             runningPoints = runningPoints,
+        )
+    }
+
+    @Transactional
+    fun uploadRecordImage(
+        userId: Long,
+        recordId: Long,
+        imageFile: MultipartFile,
+    ): RunningRecordImageResponse {
+        val user = userManager.getActiveUser(userId)
+        val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
+        val filePath = FilePathGenerator.generateRunningRecordImagePath(runningRecord)
+        val uploadFile = storageManager.uploadFile(filePath = filePath, multipartFile = imageFile)
+        runningRecord.update(imageUrl = uploadFile.url)
+        return RunningRecordImageResponse(
+            userId = user.id,
+            recordId = runningRecord.id,
+            imageUrl = runningRecord.imageUrl,
         )
     }
 

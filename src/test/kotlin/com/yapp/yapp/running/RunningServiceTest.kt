@@ -209,7 +209,7 @@ class RunningServiceTest : BaseServiceTest() {
 
         // when & then
         Assertions.assertThatThrownBy {
-            runningService.done(userId = userId, recordId = recordId, request = request, imageFile = runningFixture.multipartFile())
+            runningService.done(userId = userId, recordId = recordId, request = request)
         }.isInstanceOf(CustomException::class.java)
     }
 }
