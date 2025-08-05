@@ -58,6 +58,6 @@ class User(
     }
 
     fun delete() {
-        isDeleted = false
+        isDeleted = true
     }
 }
