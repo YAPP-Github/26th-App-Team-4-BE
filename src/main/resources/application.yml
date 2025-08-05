@@ -31,6 +31,8 @@ jwt:
 
 oidc:
   response-millis: ${secret.oidc.response-millis}
+  response-refresh-millis: ${secret.oidc.response-refresh-millis}
+  initial-refresh-delay: ${secret.oidc.initial-refresh-delay}
   apple:
     api:
       url: ${secret.oidc.apple.url}
