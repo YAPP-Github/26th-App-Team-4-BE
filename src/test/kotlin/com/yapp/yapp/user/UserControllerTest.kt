@@ -117,7 +117,7 @@ class UserControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `회원 탈퇴 후 재로그인`() {
+    fun `회원 탈퇴 후 재가입`() {
         // given
         val email = "test@test.com"
         val accessToken = getAccessToken("test@test.com")
@@ -138,7 +138,7 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.user.email).isEqualTo(email) },
             { Assertions.assertThat(response.user.email).isNotNull() },
             { Assertions.assertThat(response.user.provider).isNotNull() },
-            { Assertions.assertThat(response.isNew).isFalse() },
+            { Assertions.assertThat(response.isNew).isTrue() },
         )
     }
 }
