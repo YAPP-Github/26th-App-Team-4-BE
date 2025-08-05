@@ -39,6 +39,7 @@ class UserService(
     private val onboardingManager: OnboardingManager,
     private val userGoalManager: UserGoalManager,
     private val recordManager: RunningRecordManager,
+    private val deletedUserManager: DeletedUserManager,
 ) {
     @Transactional
     fun saveOnboarding(
@@ -196,6 +197,6 @@ class UserService(
 
     @Transactional
     fun cleanup() {
-        userManager.cleanup()
+        deletedUserManager.cleanup()
     }
 }

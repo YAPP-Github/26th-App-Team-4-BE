@@ -8,5 +8,5 @@ interface RunningPointRepository : CrudRepository<RunningPoint, Long> {
 
     fun findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord: RunningRecord): List<RunningPoint>
 
-    fun deleteByRunningRecordIn(runningRecords: List<RunningRecord>)
+    fun deleteByRunningRecordIdIn(runningRecords: List<Long>)
 }

@@ -60,8 +60,4 @@ class UserManager(
     ) {
         user.updateRunnerType(runnerType)
     }
-
-    fun cleanup() {
-        deletedUserDao.cleanup()
-    }
 }

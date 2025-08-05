@@ -35,4 +35,8 @@ class UserDao(
     fun existsByNickname(nickname: String): Boolean {
         return userRepository.existsByNickname(nickname)
     }
+
+    fun deleteByIdIn(ids: List<Long>) {
+        userRepository.deleteByIdIn(ids)
+    }
 }
