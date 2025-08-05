@@ -100,6 +100,8 @@ dependencies {
 
     // Discord Appender
     implementation("com.github.napstr:logback-discord-appender:1.0.0")
+
+    implementation("net.ttddyy:datasource-proxy:1.7")
 }
 
 kotlin {

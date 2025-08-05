@@ -2,10 +2,17 @@ spring:
   config:
     import: dev-env.yml
   datasource:
-    url: jdbc:h2:mem:yapp;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+#    url: jdbc:h2:mem:yapp;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+    url: jdbc:mysql://localhost:33060/fitrun?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 2
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -14,6 +21,7 @@ spring:
         show-sql: true
         format_sql: true
         default_batch_fetch_size: 100
+    open-in-view: false
   h2:
     console:
       enabled: true
@@ -31,8 +39,12 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.SQL: warn
+    org.hibernate.type.descriptor.sql.BasicBinder: warn
+
+    com:
+      zaxxer:
+        hikari: DEBUG
 
 jwt:
   issuer: http://test.com

@@ -8,7 +8,6 @@ import com.yapp.yapp.common.web.ApiResponse
 import com.yapp.yapp.support.fixture.IdTokenFixture
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -20,7 +19,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 
-@ExtendWith(DatabaseCleanerExtension::class)
+// @ExtendWith(DatabaseCleanerExtension::class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
