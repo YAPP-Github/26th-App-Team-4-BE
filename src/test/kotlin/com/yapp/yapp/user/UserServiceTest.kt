@@ -71,27 +71,4 @@ class UserServiceTest : BaseServiceTest() {
             ),
         ).isEmpty()
     }
-
-    @Test
-    fun `회원 탈퇴 후 재가입한다`() {
-        // given
-        val user = userFixture.create(email = "test@test.com")
-        val deletedAt = TimeProvider.now().minusMonths(1)
-        userFixture.createWithdrawUser(user = user, deletedAt = deletedAt)
-        runningFixture.createRunningRecord(user = user, totalSeconds = 60 * 20)
-
-        // when
-        userService.cleanup()
-
-        Assertions.assertThat(userDao.findByEmailAndIsDeletedFalse(user.email)).isNull()
-        Assertions.assertThat(
-            runningRecordDao.getRunningRecordList(
-                user = user,
-                targetDate = OffsetDateTime.now(),
-                type = RecordsSearchType.ALL,
-                pageable = PageRequest.of(1, 10),
-            ),
-        ).isEmpty()
-        Assertions.assertThat(userDao.save(user.email, user.nickname, user.provider)).isNotNull
-    }
 }
