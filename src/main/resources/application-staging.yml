@@ -5,6 +5,7 @@ spring:
     hikari:
       maximum-pool-size: 51
       minimum-idle: 3
+      idle-timeout: 30000
 
   jpa:
     hibernate:
