@@ -106,7 +106,7 @@ class RunningRecordManager(
         return record
     }
 
-    fun updateRecord(runningRecord: RunningRecord) {
+    fun updateRecord(runningRecord: RunningRecord) { // TODO 러닝 완료 메서드 만들어서 Manager에서 처리하기
         val runningPoints = runningPointDao.getAllPointByRunningRecord(runningRecord)
         runningRecord.updateInfoByRunningPoints(runningPoints)
     }

@@ -58,4 +58,6 @@ enum class ErrorCode(
     FILE_UPLOAD_FAILED(500, "FIL_001", "파일 업로드에 실패했습니다.", LogLevel.ERROR),
 
     TERM_NOT_FOUND(404, "TRM_001", "존재하지 않는 약관 타입입니다.", LogLevel.WARN),
+
+    RECORD_GOAL_ARCHIVE_NO_MATCHED(400, "RGA_001", "일치하는 러닝 기록 달성 여부가 존재하지 않습니다.", LogLevel.WARN),
 }

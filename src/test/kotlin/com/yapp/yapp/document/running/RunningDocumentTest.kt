@@ -112,6 +112,9 @@ class RunningDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.startAt").description("시작 시간"),
                     fieldWithPath("result.averagePace").description("평균 페이스 밀리초 단위"),
                     fieldWithPath("result.imageUrl").description("러닝 경로 이미지 URL"),
+                    fieldWithPath("result.isPaceGoalAchieved").description("페이스 목표 달성 여부, 목표가 설정되어 있지 않으면 false 입니다."),
+                    fieldWithPath("result.isDistanceGoalAchieved").description("거리 목표 달성 여부, 목표가 설정되어 있지 않으면 false 입니다."),
+                    fieldWithPath("result.isTimeGoalAchieved").description("시간 목표 달성 여부, 목표가 설정되어 있지 않으면 false 입니다."),
                 )
         val description =
             """

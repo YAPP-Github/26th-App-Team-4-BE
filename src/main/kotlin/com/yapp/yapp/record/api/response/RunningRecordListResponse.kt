@@ -11,7 +11,7 @@ data class RunningRecordListResponse(
     val timeGoalAchievedCount: Int,
     val distanceGoalAchievedCount: Int,
 ) {
-    constructor(userId: Long, records: List<RunningRecordResponse>, timeGoalAchievedCount: Int = 0, distanceGoalAchievedCount: Int = 0) : this(
+    constructor(userId: Long, records: List<RunningRecordResponse>) : this(
         userId = userId,
         records = records.map { RunningRecordSummaryResponse(it) },
         recordCount = records.size,
@@ -19,7 +19,7 @@ data class RunningRecordListResponse(
         totalTime = records.fold(0L) { acc, record -> acc.plus(record.totalTime) },
         totalCalories = records.sumOf { it.totalCalories },
         averagePace = records.map { it.averagePace }.average().toLong(),
-        timeGoalAchievedCount = timeGoalAchievedCount,
-        distanceGoalAchievedCount = distanceGoalAchievedCount,
+        timeGoalAchievedCount = records.count { it.isTimeGoalAchieved },
+        distanceGoalAchievedCount = records.count { it.isDistanceGoalAchieved },
     )
 }

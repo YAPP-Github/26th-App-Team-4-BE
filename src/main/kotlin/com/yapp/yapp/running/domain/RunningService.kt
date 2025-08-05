@@ -9,6 +9,7 @@ import com.yapp.yapp.record.api.response.RunningPointResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
+import com.yapp.yapp.record.domain.record.goal.RunningRecordGoalAchieveManager
 import com.yapp.yapp.running.api.request.RunningDoneRequest
 import com.yapp.yapp.running.api.request.RunningPollingPauseRequest
 import com.yapp.yapp.running.api.request.RunningPollingUpdateRequest
@@ -18,6 +19,7 @@ import com.yapp.yapp.running.api.response.RunningPollingPauseResponse
 import com.yapp.yapp.running.api.response.RunningRecordImageResponse
 import com.yapp.yapp.running.api.response.RunningStartResponse
 import com.yapp.yapp.user.domain.UserManager
+import com.yapp.yapp.user.domain.goal.UserGoalManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -28,6 +30,8 @@ class RunningService(
     private val runningPointManger: RunningPointManger,
     private val userManager: UserManager,
     private val storageManager: StorageManager,
+    private val userGoalManager: UserGoalManager,
+    private val recordGoalArchiveManager: RunningRecordGoalAchieveManager,
 ) {
     @Transactional
     fun start(
@@ -38,6 +42,7 @@ class RunningService(
         val startAt = TimeProvider.parse(request.timeStamp)
         val runningRecord = runningRecordManager.start(user, startAt)
         runningPointManger.saveRunningPoint(runningRecord, request.lat, request.lon, startAt)
+        recordGoalArchiveManager.save(runningRecord = runningRecord)
         return RunningStartResponse(runningRecord.id)
     }
 
@@ -63,10 +68,15 @@ class RunningService(
                 )
             }
 
+        if (userGoalManager.hasUserGoal(user)) {
+            recordGoalArchiveManager.update(runningRecord, userGoal = userGoalManager.getUserGoal(user))
+        }
         runningRecordManager.updateRecord(runningRecord)
+
         return RunningRecordResponse(
             runningRecord = runningRecord,
             runningPoints = runningPoints,
+            runningRecordGoalAchieve = recordGoalArchiveManager.getByRecord(runningRecord),
         )
     }
 

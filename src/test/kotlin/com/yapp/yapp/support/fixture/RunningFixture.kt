@@ -7,6 +7,8 @@ import com.yapp.yapp.record.domain.point.RunningPoint
 import com.yapp.yapp.record.domain.point.RunningPointRepository
 import com.yapp.yapp.record.domain.record.RunningRecord
 import com.yapp.yapp.record.domain.record.RunningRecordRepository
+import com.yapp.yapp.record.domain.record.goal.RunningRecordGoalAchieve
+import com.yapp.yapp.record.domain.record.goal.RunningRecordGoalAchieveRepository
 import com.yapp.yapp.user.domain.User
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.stereotype.Component
@@ -19,6 +21,7 @@ import java.time.OffsetDateTime
 class RunningFixture(
     private val runningRecordRepository: RunningRecordRepository,
     private val runningPointRepository: RunningPointRepository,
+    private val runningRecordGoalAchieveRepository: RunningRecordGoalAchieveRepository,
 ) {
     fun createRunningRecord(
         user: User,
@@ -33,6 +36,7 @@ class RunningFixture(
                     startAt = startAt,
                 ),
             )
+        runningRecordGoalAchieveRepository.save(RunningRecordGoalAchieve(runningRecord = runningRecord))
 
         // 계산 보조 값
         val caloriesPerSecond = 0.22

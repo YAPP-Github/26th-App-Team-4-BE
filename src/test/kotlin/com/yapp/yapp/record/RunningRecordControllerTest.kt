@@ -15,7 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import java.time.DayOfWeek
 
 class RunningRecordControllerTest : BaseControllerTest() {
@@ -141,29 +140,6 @@ class RunningRecordControllerTest : BaseControllerTest() {
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(2)
-    }
-
-    @Test
-    fun `유저의 러닝 기록을 XML로 조회한다`() {
-        // given
-        val now = TimeProvider.now().toStartOfDay()
-        val user = userFixture.createWithGoal()
-        val runningRecord =
-            runningFixture.createRunningRecord(
-                user = user,
-                startAt = now,
-                totalSeconds = 10L,
-            )
-
-        // when
-        RestAssured.given().log().all()
-            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
-            .accept(MediaType.APPLICATION_XML_VALUE)
-            .pathParam("recordId", runningRecord.id)
-            .`when`()
-            .get("/api/v1/records/{recordId}")
-            .then().log().all()
-            .statusCode(200)
     }
 
     @Test

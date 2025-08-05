@@ -4,8 +4,8 @@ import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.api.response.RunningRecordResponse
 import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
+import com.yapp.yapp.record.domain.record.goal.RunningRecordGoalAchieveManager
 import com.yapp.yapp.user.domain.UserManager
-import com.yapp.yapp.user.domain.goal.UserGoalManager
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +16,7 @@ class RunningRecordService(
     private val recordManager: RunningRecordManager,
     private val pointManager: RunningPointManger,
     private val userManager: UserManager,
-    private val userGoalManager: UserGoalManager,
+    private val recordGoalAchieveManager: RunningRecordGoalAchieveManager,
 ) {
     fun getRecord(
         userId: Long,
@@ -25,7 +25,8 @@ class RunningRecordService(
         val user = userManager.getActiveUser(userId)
         val runningRecord = recordManager.getRunningRecord(id = recordId, user = user)
         val runningPoints = pointManager.getRunningPoints(runningRecord)
-        return RunningRecordResponse(runningRecord, runningPoints)
+        val runningGoalAchieved = recordGoalAchieveManager.getByRecord(runningRecord)
+        return RunningRecordResponse(runningRecord, runningPoints, runningGoalAchieved)
     }
 
     fun getRecords(
@@ -44,18 +45,13 @@ class RunningRecordService(
                 pageable = pageable,
             )
         val runningRecordResponse =
-            runningRecords.map { RunningRecordResponse(it, pointManager.getRunningPoints(it)) }
-        if (userGoalManager.hasUserGoal(user)) {
-            val userGoal = userGoalManager.getUserGoal(user)
-            val timeGoalAchievedCount = runningRecords.count { userGoal.isTimeGoalAchieved(it) }
-            val distanceGoalAchievedCount = runningRecords.count { userGoal.isDistanceGoalAchieved(it) }
-            return RunningRecordListResponse(
-                userId = user.id,
-                records = runningRecordResponse,
-                timeGoalAchievedCount = timeGoalAchievedCount,
-                distanceGoalAchievedCount = distanceGoalAchievedCount,
-            )
-        }
+            runningRecords.map {
+                RunningRecordResponse(
+                    runningRecord = it,
+                    runningPoints = pointManager.getRunningPoints(it),
+                    runningRecordGoalAchieve = recordGoalAchieveManager.getByRecord(it),
+                )
+            }
         return RunningRecordListResponse(
             userId = user.id,
             records = runningRecordResponse,
