@@ -2,6 +2,7 @@ package com.yapp.yapp.record.domain.record
 
 import com.yapp.yapp.user.domain.User
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.time.OffsetDateTime
@@ -25,5 +26,7 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
     @Query("SELECT r.id from RunningRecord r WHERE r.user.id IN :userIds")
     fun findIdsByUserIdIn(userIds: List<Long>): List<Long>
 
+    @Modifying
+    @Query("DELETE FROM RunningRecord r WHERE r.user.id in :userIds")
     fun deleteByUserIdIn(userIds: List<Long>)
 }

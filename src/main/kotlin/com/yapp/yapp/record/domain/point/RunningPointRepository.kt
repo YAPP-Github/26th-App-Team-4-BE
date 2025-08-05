@@ -1,6 +1,8 @@
 package com.yapp.yapp.record.domain.point
 
 import com.yapp.yapp.record.domain.record.RunningRecord
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface RunningPointRepository : CrudRepository<RunningPoint, Long> {
@@ -8,5 +10,7 @@ interface RunningPointRepository : CrudRepository<RunningPoint, Long> {
 
     fun findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord: RunningRecord): List<RunningPoint>
 
-    fun deleteByRunningRecordIdIn(runningRecords: List<Long>)
+    @Modifying
+    @Query("DELETE FROM RunningPoint p WHERE p.runningRecord.id in :runningRecordIds")
+    fun deleteByRunningRecordIdIn(runningRecordIds: List<Long>)
 }
