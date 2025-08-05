@@ -28,13 +28,8 @@ class UserManager(
         email: String,
         provider: ProviderType,
     ): UserInfo {
-        val user = userDao.findByEmail(email) ?: return save(email, provider)
-        var isRestore = false
-        if (user.isDeleted) {
-            restore(user.id)
-            isRestore = true
-        }
-        return UserInfo(user, isRestore = isRestore)
+        val user = userDao.findByEmailAndIsDeletedFalse(email) ?: return save(email, provider)
+        return UserInfo(user)
     }
 
     fun delete(
@@ -43,14 +38,8 @@ class UserManager(
     ) {
         val user = userDao.getByIdAndIsDeletedFalse(userId)
         val deletedUser = DeletedUser(id = user.id, reason = reason)
-        user.isDeleted = true
+        user.delete()
         deletedUserDao.save(deletedUser)
-    }
-
-    fun restore(userId: Long) {
-        val user = userDao.getByIdAndIsDeletedTrue(userId)
-        deletedUserDao.delete(user.id)
-        user.isDeleted = false
     }
 
     private fun getRandomNickname(email: String): String {

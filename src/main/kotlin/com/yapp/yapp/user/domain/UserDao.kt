@@ -23,13 +23,8 @@ class UserDao(
         )
     }
 
-    fun findByEmail(email: String): User? {
-        return userRepository.findByEmail(email)
-    }
-
-    fun getByIdAndIsDeletedTrue(id: Long): User {
-        return userRepository.findByIdAndIsDeletedTrue(id)
-            ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
+    fun findByEmailAndIsDeletedFalse(email: String): User? {
+        return userRepository.findByEmailAndIsDeletedFalse(email)
     }
 
     fun getByIdAndIsDeletedFalse(id: Long): User {

@@ -35,7 +35,7 @@ class AuthService(
         }
 
         val tokenInfo = jwtTokenGenerator.generateTokens(userInfo.id)
-        return LoginResponse(tokenInfo = tokenInfo, userInfo = userInfo, isNew = userInfo.isNew, isRestore = userInfo.isRestore)
+        return LoginResponse(tokenInfo = tokenInfo, userInfo = userInfo, isNew = userInfo.isNew)
     }
 
     @Transactional

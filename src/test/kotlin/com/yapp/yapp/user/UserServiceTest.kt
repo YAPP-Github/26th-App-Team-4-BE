@@ -61,7 +61,7 @@ class UserServiceTest : BaseServiceTest() {
         // when
         userService.cleanup()
 
-        Assertions.assertThat(userDao.findByEmail(user.email)).isNull()
+        Assertions.assertThat(userDao.findByEmailAndIsDeletedFalse(user.email)).isNull()
         Assertions.assertThat(
             runningRecordDao.getRunningRecordList(
                 user = user,
@@ -83,7 +83,7 @@ class UserServiceTest : BaseServiceTest() {
         // when
         userService.cleanup()
 
-        Assertions.assertThat(userDao.findByEmail(user.email)).isNull()
+        Assertions.assertThat(userDao.findByEmailAndIsDeletedFalse(user.email)).isNull()
         Assertions.assertThat(
             runningRecordDao.getRunningRecordList(
                 user = user,

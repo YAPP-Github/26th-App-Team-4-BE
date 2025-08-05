@@ -139,7 +139,6 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.user.email).isNotNull() },
             { Assertions.assertThat(response.user.provider).isNotNull() },
             { Assertions.assertThat(response.isNew).isFalse() },
-            { Assertions.assertThat(response.isRestore).isTrue() },
         )
     }
 }
