@@ -50,7 +50,7 @@ class RunningRecordDao(
     }
 
     fun getIdsByUserIdIn(userIds: List<Long>): List<Long> {
-        return runningRecordRepository.getIdsByUserIdIn(userIds)
+        return runningRecordRepository.findIdsByUserIdIn(userIds)
     }
 
     fun deleteByUserIdIn(userIds: List<Long>) {

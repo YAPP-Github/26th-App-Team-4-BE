@@ -23,7 +23,7 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
     ): Int
 
     @Query("SELECT r.id from RunningRecord r WHERE r.user.id IN :userIds")
-    fun getIdsByUserIdIn(userIds: List<Long>): List<Long>
+    fun findIdsByUserIdIn(userIds: List<Long>): List<Long>
 
     fun deleteByUserIdIn(userIds: List<Long>)
 }
