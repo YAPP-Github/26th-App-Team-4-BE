@@ -17,7 +17,7 @@ class DeletedUser(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     val user: User,
     @Column(length = 100)
     val reason: String? = null,
