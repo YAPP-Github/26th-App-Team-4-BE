@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query
 import java.time.OffsetDateTime
 
 interface DeletedUserRepository : JpaRepository<DeletedUser, Long> {
-    @Query("SELECT u.id FROM DeletedUser u where u.deletedAt <= :at")
-    fun findIdsByDeletedAtBefore(at: OffsetDateTime): List<Long>
+    @Query("SELECT d.user.id FROM DeletedUser d where d.deletedAt <= :at")
+    fun findUserIdsByDeletedAtBefore(at: OffsetDateTime): List<Long>
+
+    fun deleteByUserIdIn(userIds: List<Long>)
 }

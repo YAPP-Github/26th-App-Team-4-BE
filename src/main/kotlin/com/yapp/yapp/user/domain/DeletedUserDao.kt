@@ -25,11 +25,12 @@ class DeletedUserDao(
         val cutoffDate = LocalDate.now().minusDays(30)
         val cutoffDateTime = cutoffDate.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime()
 
-        val deletedUserIds = deletedUserRepository.findIdsByDeletedAtBefore(cutoffDateTime)
+        val deletedUserIds = deletedUserRepository.findUserIdsByDeletedAtBefore(cutoffDateTime)
         val runningRecords = runningRecordRepository.findAllByUserIdIn(deletedUserIds)
 
         runningPointRepository.deleteByRunningRecordIn(runningRecords)
         runningRecordRepository.deleteByUserIdIn(deletedUserIds)
+        deletedUserRepository.deleteByUserIdIn(deletedUserIds)
         userRepository.deleteByIdIn(deletedUserIds)
     }
 }

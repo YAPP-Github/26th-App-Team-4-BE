@@ -54,7 +54,7 @@ class UserFixture(
         deletedAt: OffsetDateTime,
     ): DeletedUser {
         user.isDeleted = true
-        val deletedUser = DeletedUser(id = user.id, reason = reason, deletedAt = deletedAt)
+        val deletedUser = DeletedUser(reason = reason, deletedAt = deletedAt, user = user)
         return deletedRepository.save(deletedUser)
     }
 }

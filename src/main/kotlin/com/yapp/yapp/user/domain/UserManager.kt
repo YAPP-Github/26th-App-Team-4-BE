@@ -37,7 +37,7 @@ class UserManager(
         reason: String?,
     ) {
         val user = userDao.getByIdAndIsDeletedFalse(userId)
-        val deletedUser = DeletedUser(id = user.id, reason = reason)
+        val deletedUser = DeletedUser(reason = reason, user = user)
         user.delete()
         deletedUserDao.save(deletedUser)
     }
