@@ -48,4 +48,12 @@ class RunningRecordDao(
         val endDate = RecordsSearchType.WEEKLY.getEndDate(targetDate)
         return runningRecordRepository.countByUserAndStartAtBetween(user = user, startDate = startDate, endDate = endDate)
     }
+
+    fun getIdsByUserIdIn(userIds: List<Long>): List<Long> {
+        return runningRecordRepository.findIdsByUserIdIn(userIds)
+    }
+
+    fun deleteByUserIdIn(userIds: List<Long>) {
+        runningRecordRepository.deleteByUserIdIn(userIds)
+    }
 }

@@ -23,8 +23,8 @@ class UserDao(
         )
     }
 
-    fun findByEmail(email: String): User? {
-        return userRepository.findByEmail(email)
+    fun findByEmailAndIsDeletedFalse(email: String): User? {
+        return userRepository.findByEmailAndIsDeletedFalse(email)
     }
 
     fun getByIdAndIsDeletedFalse(id: Long): User {
@@ -34,5 +34,9 @@ class UserDao(
 
     fun existsByNickname(nickname: String): Boolean {
         return userRepository.existsByNickname(nickname)
+    }
+
+    fun deleteByIdIn(ids: List<Long>) {
+        userRepository.deleteByIdIn(ids)
     }
 }

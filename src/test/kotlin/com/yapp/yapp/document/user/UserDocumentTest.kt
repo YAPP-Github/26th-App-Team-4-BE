@@ -84,6 +84,9 @@ class UserDocumentTest : BaseDocumentTest() {
                 .requestHeader(
                     headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
                 )
+                .requestBodyField(
+                    fieldWithPath("reason").description("회원 탈퇴 사유 (최대 100자)").optional(),
+                )
 
         val restDocsResponse =
             response()
@@ -97,11 +100,15 @@ class UserDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
         val accessToken = getAccessToken()
+
+        val withdrawRequest = RequestFixture.withDrawRequest()
         // when
         // then
         RestAssured.given(spec)
             .filter(restDocsFilter)
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .header("Authorization", accessToken)
+            .body(withdrawRequest)
             .`when`().delete("/api/v1/users")
             .then()
             .statusCode(204)

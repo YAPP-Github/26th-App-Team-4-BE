@@ -13,6 +13,7 @@ import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.SettingUpdateRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
+import com.yapp.yapp.user.api.request.WithdrawRequest
 import com.yapp.yapp.user.api.response.AlertSettingResponse
 import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.AudioCoachingUpdateResponse
@@ -38,6 +39,7 @@ class UserService(
     private val onboardingManager: OnboardingManager,
     private val userGoalManager: UserGoalManager,
     private val recordManager: RunningRecordManager,
+    private val deletedUserManager: DeletedUserManager,
 ) {
     @Transactional
     fun saveOnboarding(
@@ -186,8 +188,15 @@ class UserService(
     }
 
     @Transactional
-    fun delete(id: Long) {
-        val findUser = userManager.getActiveUser(id)
-        findUser.isDeleted = true
+    fun delete(
+        userId: Long,
+        withdrawRequest: WithdrawRequest,
+    ) {
+        userManager.delete(userId, withdrawRequest.reason)
+    }
+
+    @Transactional
+    fun cleanup() {
+        deletedUserManager.cleanup()
     }
 }

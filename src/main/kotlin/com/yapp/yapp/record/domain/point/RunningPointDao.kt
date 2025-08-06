@@ -26,4 +26,8 @@ class RunningPointDao(
     fun getAllPointByRunningRecord(runningRecord: RunningRecord): List<RunningPoint> {
         return runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord)
     }
+
+    fun deleteByRunningRecordIdIn(runningRecordIds: List<Long>) {
+        runningPointRepository.deleteByRunningRecordIdIn(runningRecordIds)
+    }
 }

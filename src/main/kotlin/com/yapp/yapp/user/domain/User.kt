@@ -20,7 +20,7 @@ class User(
     val id: Long = 0L,
     @Column(nullable = false, unique = true)
     val nickname: String,
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val email: String,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -55,5 +55,9 @@ class User(
 
     fun updateAudioFeedback(audioFeedback: Boolean) {
         this.audioFeedback = audioFeedback
+    }
+
+    fun delete() {
+        isDeleted = true
     }
 }

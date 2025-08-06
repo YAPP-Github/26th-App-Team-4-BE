@@ -10,12 +10,12 @@ data class UserInfo(
     val runnerType: RunnerType?,
     val isNew: Boolean = false,
 ) {
-    constructor(user: User) : this(
+    constructor(user: User, isNew: Boolean = false) : this(
         id = user.id,
         email = user.email,
         nickname = user.nickname,
         provider = user.provider,
         runnerType = user.runnerType,
-        isNew = false,
+        isNew = isNew,
     )
 }

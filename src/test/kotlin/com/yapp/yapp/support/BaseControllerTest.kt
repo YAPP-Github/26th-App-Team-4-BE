@@ -59,6 +59,10 @@ abstract class BaseControllerTest : BaseSupportMethod() {
         return "Bearer ${loginResponse.accessToken()}"
     }
 
+    protected fun getLoginResponse(email: String): LoginResponse {
+        return loginUser(email = email)
+    }
+
     private fun loginUser(email: String): LoginResponse {
         val idToken =
             IdTokenFixture.createValidIdToken(issuer = "https://appleid.apple.com", email = email)
