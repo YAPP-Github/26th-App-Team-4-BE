@@ -15,7 +15,7 @@ class DeletedUserDao(
         deletedUserRepository.deleteById(userId)
     }
 
-    fun getDeletedUserIds(cutoffDateTime: OffsetDateTime): List<Long> {
+    fun getUserIdsByDeletedAtBefore(cutoffDateTime: OffsetDateTime): List<Long> {
         return deletedUserRepository.findUserIdsByDeletedAtBefore(cutoffDateTime)
     }
 

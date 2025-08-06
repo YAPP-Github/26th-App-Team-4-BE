@@ -11,7 +11,7 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun existsByNickname(nickname: String): Boolean
 
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query("DELETE FROM User u WHERE u.id IN :ids")
     fun deleteByIdIn(ids: List<Long>)
 }

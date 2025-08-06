@@ -17,7 +17,7 @@ class DeletedUserManager(
         val cutoffDate = LocalDate.now().minusDays(30)
         val cutoffDateTime = cutoffDate.atStartOfDay(ZoneOffset.UTC).toOffsetDateTime()
 
-        val userIds = deletedUserDao.getDeletedUserIds(cutoffDateTime)
+        val userIds = deletedUserDao.getUserIdsByDeletedAtBefore(cutoffDateTime)
         if (userIds.isEmpty()) {
             return
         }
