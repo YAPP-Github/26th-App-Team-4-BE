@@ -10,7 +10,7 @@ interface RunningPointRepository : CrudRepository<RunningPoint, Long> {
 
     fun findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord: RunningRecord): List<RunningPoint>
 
-    @Modifying(flushAutomatically = true)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM RunningPoint p WHERE p.runningRecord.id IN :runningRecordIds")
     fun deleteByRunningRecordIdIn(runningRecordIds: List<Long>)
 }

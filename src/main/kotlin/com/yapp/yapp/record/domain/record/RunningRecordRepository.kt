@@ -26,7 +26,7 @@ interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
     @Query("SELECT r.id from RunningRecord r WHERE r.user.id IN :userIds")
     fun findIdsByUserIdIn(userIds: List<Long>): List<Long>
 
-    @Modifying(flushAutomatically = true)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM RunningRecord r WHERE r.user.id IN :userIds")
     fun deleteByUserIdIn(userIds: List<Long>)
 }

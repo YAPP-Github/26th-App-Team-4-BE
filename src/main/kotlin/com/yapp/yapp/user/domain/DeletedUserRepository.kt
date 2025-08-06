@@ -9,7 +9,7 @@ interface DeletedUserRepository : JpaRepository<DeletedUser, Long> {
     @Query("SELECT d.user.id FROM DeletedUser d where d.deletedAt <= :at")
     fun findUserIdsByDeletedAtBefore(at: OffsetDateTime): List<Long>
 
-    @Modifying(flushAutomatically = true)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM DeletedUser d WHERE d.user.id IN :userIds")
     fun deleteByUserIdIn(userIds: List<Long>)
 }
