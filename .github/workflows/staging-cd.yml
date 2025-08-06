@@ -56,6 +56,9 @@ jobs:
           CONFIG=./deployment/staging/data/promtail/promtail-config.yml
           envsubst < "$CONFIG" > tmp && mv tmp $CONFIG
 
+      - name: Wait for SSH key propagation
+        run: sleep 20
+
       - name: Copy deployment files via IAP
         run: |
           gcloud compute scp --tunnel-through-iap \
