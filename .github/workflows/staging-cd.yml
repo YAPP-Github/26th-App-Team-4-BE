@@ -56,9 +56,6 @@ jobs:
           CONFIG=./deployment/staging/data/promtail/promtail-config.yml
           envsubst < "$CONFIG" > tmp && mv tmp $CONFIG
 
-      - name: Wait for SSH key propagation
-        run: sleep 20
-
       - name: Copy deployment files via IAP
         run: |
           gcloud compute scp --tunnel-through-iap \
@@ -77,6 +74,9 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_STAG_SA_KEY }}'
+
+      - name: Check current position
+        run: pwd
 
       # GCP SDK 설치 및 인증 정보 설정
       - name: Set up Cloud SDK
