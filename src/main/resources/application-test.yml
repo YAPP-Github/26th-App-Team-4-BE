@@ -46,6 +46,8 @@ gcp:
 
 oidc:
   response-millis: 3600000
+  response-refresh-millis: 300000
+  initial-refresh-delay: 60000
   apple:
     api:
       url: https://appleid.apple.com
