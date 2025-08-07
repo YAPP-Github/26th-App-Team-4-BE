@@ -8,3 +8,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+  datasource:
+    hikari:
+      maximum-pool-size: ${secret.database.hikari.maximum-pool-size}
+      minimum-idle: ${secret.database.hikari.minimum-idle}
+      idle-timeout: ${secret.database.hikari.idle-timeout}
