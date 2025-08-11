@@ -19,7 +19,7 @@ class UserFixture(
     fun create(
         email: String = "test email",
         provider: ProviderType = ProviderType.APPLE,
-        runnerType: RunnerType = RunnerType.BEGINNER,
+        runnerType: RunnerType? = RunnerType.BEGINNER,
     ): User =
         userRepository.save(
             User(

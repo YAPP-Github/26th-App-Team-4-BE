@@ -44,6 +44,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -55,7 +56,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -97,6 +98,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -108,7 +110,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -150,6 +152,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -161,7 +164,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -203,6 +206,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -214,7 +218,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -262,6 +266,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -273,7 +278,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -312,6 +317,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -323,7 +329,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
         userGoalFixture.create(user)
 
         // when
@@ -403,6 +409,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -414,7 +421,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -456,6 +463,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -467,7 +475,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -509,6 +517,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -520,7 +529,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -562,6 +571,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -573,7 +583,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
@@ -621,6 +631,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -632,7 +643,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create()
+        val user = userFixture.create(runnerType = null)
 
         // when
         // then
