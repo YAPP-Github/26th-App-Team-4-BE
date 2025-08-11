@@ -59,7 +59,7 @@ services:
     container_name: promtail
     volumes:
       - ./logs:/var/log/fitrun
-      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+      - ./data/promtail/promtail-config.yml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml -log.level=debug
     restart: unless-stopped
     networks:

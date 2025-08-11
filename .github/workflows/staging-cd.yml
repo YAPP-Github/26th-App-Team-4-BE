@@ -3,7 +3,7 @@ name: Staging CD
 on:
   workflow_dispatch:
   push:
-    branches: [ staging ]
+    branches: [ FITRUN-198-Server-CD-플로우-수정 ]
 
 env:
   REGION: asia-northeast3-docker.pkg.dev
@@ -85,8 +85,6 @@ jobs:
             --zone=${{ secrets.GCP_STAG_VM_ZONE }} \
             --tunnel-through-iap \
             --command '
-              mkdir -p ~/docs/stoplight
-              mv ~/docs/build/docs/openapi3.yaml ~/docs/stoplight
               echo "[DEPLOY] Running deploy.sh..."
               bash ./deploy.sh
             '
