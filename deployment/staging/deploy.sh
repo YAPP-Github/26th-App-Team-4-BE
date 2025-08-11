@@ -83,7 +83,6 @@ run_promtail() {
         log_warn "Destination config not found. Copying and starting promtail..."
         cp -f "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
         ${DOCKER_COMPOSE} restart "${PROMTAIL_CONTAINER}"
-        return
     else
         local src_conf_hash dst_conf_hash
         src_conf_hash=$(sha256sum "${SRC_PROMTAIL_PATH}" | awk '{ print $1 }')
