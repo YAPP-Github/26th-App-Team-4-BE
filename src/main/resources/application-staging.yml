@@ -3,8 +3,8 @@ spring:
     import: staging-env.yml
   datasource:
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 10
+      maximum-pool-size: 51
+      minimum-idle: 3
 
   jpa:
     hibernate:
