@@ -51,6 +51,7 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.goal.paceGoal").description("페이스 목표 시간 밀리초 단위").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.distanceMeterGoal").description("거리 목표(m)").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.timeGoal").description("시간 목표 시간 밀리초 단위").type(JsonFieldType.NUMBER).optional(),
+                    fieldWithPath("result.goal.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -281,7 +282,7 @@ class UserDocumentTest : BaseDocumentTest() {
             response()
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runnerType").description("러너 유형(Enum). 초보: 워밍업, 중급: 루틴, 고급: 챌린저"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =

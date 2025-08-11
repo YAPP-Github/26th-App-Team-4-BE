@@ -33,18 +33,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
                     fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -56,7 +45,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -87,18 +76,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -110,7 +88,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -141,18 +119,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -164,7 +131,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -195,18 +162,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -218,7 +174,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -262,11 +218,6 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -278,7 +229,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -329,7 +280,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
         userGoalFixture.create(user)
 
         // when
@@ -398,18 +349,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
                     fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -421,7 +361,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -452,18 +392,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -475,7 +404,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -506,18 +435,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -529,7 +447,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -560,18 +478,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .responseBodyFieldWithResult(
                     fieldWithPath("result.goalId").description("목표 ID"),
                     fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runningPurpose").description(
-                        "달리기 목적 (" +
-                            "다이어트: WEIGHT_LOSS_PURPOSE, " +
-                            "건강 유지: HEALTH_MAINTENANCE_PURPOSE, " +
-                            "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
-                            "대회 준비: COMPETITION_PREPARATION",
-                    ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -583,7 +490,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
@@ -627,11 +534,6 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                             "체력 증진: DAILY_STRENGTH_IMPROVEMENT, " +
                             "대회 준비: COMPETITION_PREPARATION",
                     ),
-                    fieldWithPath("result.weeklyRunningCount").description("주간 달리기 횟수"),
-                    fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
-                    fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
                 )
 
         val restDocsFilter =
@@ -643,7 +545,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                 .response(restDocsResponse)
                 .build()
 
-        val user = userFixture.create(runnerType = null)
+        val user = userFixture.create()
 
         // when
         // then
