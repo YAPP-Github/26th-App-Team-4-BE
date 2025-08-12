@@ -9,6 +9,11 @@ import com.yapp.yapp.user.api.request.TimeGoalRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.response.RecommendPaceResponse
 import com.yapp.yapp.user.api.response.UserGoalResponse
+import com.yapp.yapp.user.api.response.goal.DistanceGoalResponse
+import com.yapp.yapp.user.api.response.goal.PaceGoalResponse
+import com.yapp.yapp.user.api.response.goal.PurposeGoalResponse
+import com.yapp.yapp.user.api.response.goal.TimeGoalResponse
+import com.yapp.yapp.user.api.response.goal.WeeklyRunCountGoalResponse
 import com.yapp.yapp.user.domain.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,9 +34,10 @@ class UserGoalController(
     fun saveWeeklyRunCountGoal(
         @CurrentUser id: Long,
         @RequestBody request: WeeklyRunCountGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<WeeklyRunCountGoalResponse> {
+        val userGoalResponse = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            WeeklyRunCountGoalResponse(userGoalResponse),
         )
     }
 
@@ -40,9 +46,10 @@ class UserGoalController(
     fun savePaceGoal(
         @CurrentUser id: Long,
         @RequestBody request: PaceGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<PaceGoalResponse> {
+        val userGoalResponse = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            PaceGoalResponse(userGoalResponse),
         )
     }
 
@@ -51,9 +58,10 @@ class UserGoalController(
     fun saveDistanceGoal(
         @CurrentUser id: Long,
         @RequestBody request: DistanceGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<DistanceGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            DistanceGoalResponse(userGoal),
         )
     }
 
@@ -62,9 +70,10 @@ class UserGoalController(
     fun saveTimeGoal(
         @CurrentUser id: Long,
         @RequestBody request: TimeGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<TimeGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            TimeGoalResponse(userGoal),
         )
     }
 
@@ -73,9 +82,10 @@ class UserGoalController(
     fun saveRunningGoal(
         @CurrentUser id: Long,
         @RequestBody request: RunningPurposeRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<PurposeGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            PurposeGoalResponse(userGoal),
         )
     }
 
@@ -92,9 +102,12 @@ class UserGoalController(
     fun updateWeeklyRunCountGoal(
         @CurrentUser id: Long,
         @RequestBody request: WeeklyRunCountGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<WeeklyRunCountGoalResponse> {
+        val userGoalResponse = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            WeeklyRunCountGoalResponse(
+                userGoalResponse,
+            ),
         )
     }
 
@@ -102,9 +115,10 @@ class UserGoalController(
     fun updatePaceGoal(
         @CurrentUser id: Long,
         @RequestBody request: PaceGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<PaceGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            PaceGoalResponse(userGoal),
         )
     }
 
@@ -124,9 +138,10 @@ class UserGoalController(
     fun updateDistanceGoal(
         @CurrentUser id: Long,
         @RequestBody request: DistanceGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<DistanceGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            DistanceGoalResponse(userGoal),
         )
     }
 
@@ -134,9 +149,10 @@ class UserGoalController(
     fun updateTimeGoal(
         @CurrentUser id: Long,
         @RequestBody request: TimeGoalRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<TimeGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            TimeGoalResponse(userGoal),
         )
     }
 
@@ -144,9 +160,10 @@ class UserGoalController(
     fun updateRunningGoal(
         @CurrentUser id: Long,
         @RequestBody request: RunningPurposeRequest,
-    ): ApiResponse<UserGoalResponse> {
+    ): ApiResponse<PurposeGoalResponse> {
+        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
         return ApiResponse.success(
-            UserGoalResponse(userService.upsertGoal(userId = id, request = request)),
+            PurposeGoalResponse(userGoal),
         )
     }
 }
