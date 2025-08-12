@@ -43,7 +43,6 @@ build/
 
 ### Custom ###
 **/application-local.yml
-**/dev-env.yml
-**/staging-env.yml
+**/*-env.yml
 **/openapi3.yaml
 **/fitrun*
