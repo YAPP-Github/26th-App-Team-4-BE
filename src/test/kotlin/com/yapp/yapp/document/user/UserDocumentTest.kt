@@ -105,7 +105,7 @@ class UserDocumentTest : BaseDocumentTest() {
                 .build()
         val accessToken = getAccessToken()
 
-        val withdrawRequest = RequestFixture.withDrawRequest()
+        val withdrawRequest = RequestFixture.withDrawRequest("러닝 목표를 달성했어요")
         // when
         // then
         RestAssured.given(spec)
