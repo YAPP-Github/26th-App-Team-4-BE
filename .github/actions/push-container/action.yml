@@ -25,7 +25,7 @@ runs:
 
     - name: Build Docker Image
       shell: bash
-      run: docker build -t ${{ input.username }}/fitrun-${{inputs.profile}}:latest .
+      run: docker build -t ${{ inputs.username }}/fitrun-${{inputs.profile}}:latest .
 
     - name: Push Docker Image
       shell: bash
