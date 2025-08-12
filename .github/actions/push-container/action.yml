@@ -25,8 +25,8 @@ runs:
 
     - name: Build Docker Image
       shell: bash
-      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/fitrun-${{inputs.container-name}}:latest .
+      run: docker build -t ${{ input.username }}/fitrun-${{inputs.profile}}:latest .
 
     - name: Push Docker Image
       shell: bash
-      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/fitrun-${{inputs.container-name}}:latest
+      run: docker push ${{ inputs.username }}/fitrun-${{inputs.profile}}:latest
