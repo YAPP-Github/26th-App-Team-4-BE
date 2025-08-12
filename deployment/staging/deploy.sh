@@ -19,6 +19,7 @@ BLUE_CONTAINER="fitrun-blue"
 GREEN_CONTAINER="fitrun-green"
 NGINX_CONTAINER="nginx"
 PROMTAIL_CONTAINER="promtail"
+NODE_EXPORTER_CONTAINER="node-exporter"
 
 MAX_RETRIES=60
 MAX_SCALE=1
@@ -46,6 +47,7 @@ switch_container() {
     run_nginx "${target}"
     stop_and_remove_container "${old}"
     run_promtail
+    run_node_exporter
     prune_images
 }
 
@@ -96,6 +98,11 @@ run_promtail() {
         cp "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
         ${DOCKER_COMPOSE} restart "${PROMTAIL_CONTAINER}"
     fi
+}
+
+run_node_exporter() {
+    log_info "Starting ${NODE_EXPORTER_CONTAINER^^} container"
+    ensure_run_container "${NODE_EXPORTER_CONTAINER}"
 }
 
 run_service() {
