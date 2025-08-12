@@ -63,7 +63,7 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
 
       - name: Run tests and generate API Docs
-        run: ./gradlew clean md
+        run: ./gradlew md
 
       - name: Verify docs generated in build
         run: ls -R build/docs
