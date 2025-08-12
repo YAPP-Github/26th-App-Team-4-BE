@@ -2,11 +2,14 @@ name: Dev CI
 
 on:
   pull_request:
-    branches: [ dev ]
+    branches: [ FITRUN-198-Server-CD-플로우-수정 ] # TODO
   workflow_dispatch:
 
 jobs:
-  test-and-generate-docs:
+  start-redis:
+    uses: ./.github/actions/start-redis-container.yml
+
+  test:
     name: Run tests and generate API docs
     runs-on: ubuntu-latest
 
@@ -16,23 +19,6 @@ jobs:
         with:
           submodules: true
           token: ${{ secrets.REPO_TOKEN }}
-
-      - name: Start Redis container
-        run: docker run -d --name redis -p 6379:6379 redis:7.2-alpine
-
-      - name: Wait for Redis to be ready
-        run: |
-          echo "Waiting for Redis..."
-          for i in {1..10}; do
-            if docker exec redis redis-cli ping | grep -q "PONG"; then
-              echo "Redis is up!"
-              exit 0
-            fi
-            echo "Still waiting... ($i)"
-            sleep 3
-          done
-          echo "Redis did not start in time"
-          exit 1
 
       - name: Run tests
         run: ./gradlew clean test
