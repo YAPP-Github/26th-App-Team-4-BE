@@ -12,6 +12,7 @@ import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.SettingUpdateRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
+import com.yapp.yapp.user.api.request.UpdateRunnerTypeRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.request.WithdrawRequest
 import com.yapp.yapp.user.api.response.AlertSettingResponse
@@ -185,6 +186,20 @@ class UserService(
             is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, request.time)
             is RunningPurposeRequest -> userGoalManager.saveRunningPurpose(user, request.runningPurpose)
         }
+    }
+
+    @Transactional
+    fun updateRunnerType(
+        userId: Long,
+        request: UpdateRunnerTypeRequest,
+    ): RunnerTypeResponse {
+        val user = userManager.getActiveUser(userId)
+        val runnerType = RunnerType.getByName(request.runnerType)
+        user.updateRunnerType(runnerType)
+        return RunnerTypeResponse(
+            userId = user.id,
+            runnerType = runnerType,
+        )
     }
 
     @Transactional

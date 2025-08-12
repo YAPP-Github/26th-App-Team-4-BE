@@ -8,6 +8,6 @@ data class RunnerTypeResponse(
 ) {
     constructor(userId: Long, runnerType: RunnerType) : this(
         userId = userId,
-        runnerType = runnerType.description,
+        runnerType = runnerType.name,
     )
 }
