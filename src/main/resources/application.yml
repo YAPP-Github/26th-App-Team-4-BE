@@ -25,9 +25,9 @@ gcp:
 jwt:
   issuer: ${secret.jwt.issuer}
   access-secret: ${secret.jwt.access-secret}
-  access-expiration-millis: ${secret.jwt.access-expiration-ms}
+  access-expiration-millis: 31536000000
   refresh-secret: ${secret.jwt.refresh-secret}
-  refresh-expiration-millis: ${secret.jwt.refresh-expiration-ms}
+  refresh-expiration-millis: 31536000000
 
 oidc:
   response-millis: ${secret.oidc.response-millis}
