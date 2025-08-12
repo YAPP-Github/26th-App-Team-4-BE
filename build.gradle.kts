@@ -177,17 +177,6 @@ tasks.register<Exec>("initSubmodule") {
     finalizedBy("copySecret")
 }
 
-tasks.register<Copy>("makeDocument") {
-    group = "documentation"
-    description = "Generate API Docs and copy to static folder."
-    dependsOn("documentTest")
-    dependsOn("openapi3")
-}
-
-tasks.register<Exec>("md") {
-    commandLine("./gradlew", "makeDocument", "--exclude-task", "test")
-}
-
 tasks.test {
     exclude("**/document/**")
 }
@@ -198,4 +187,14 @@ tasks.register<Test>("documentTest") {
         includeTestsMatching("*.document.*")
     }
     useJUnitPlatform()
+}
+
+tasks.register<Copy>("makeDocument") {
+    group = "documentation"
+    description = "Generate API Docs and copy to static folder."
+    dependsOn("documentTest", "openapi3")
+}
+
+tasks.register<Exec>("md") {
+    commandLine("./gradlew", "makeDocument", "-x", "copyHooks", "-x", "check")
 }
