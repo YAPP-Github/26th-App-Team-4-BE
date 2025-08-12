@@ -1,6 +1,8 @@
 package com.yapp.yapp.user.domain
 
 import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.common.exception.CustomException
+import com.yapp.yapp.common.exception.ErrorCode
 import com.yapp.yapp.record.domain.Pace
 
 enum class RunnerType(
@@ -26,6 +28,11 @@ enum class RunnerType(
                 in 0.4..<0.7 -> INTERMEDIATE
                 else -> BEGINNER
             }
+        }
+
+        fun getByName(name: String): RunnerType {
+            return entries.find { it.name == name }
+                ?: throw CustomException(ErrorCode.RUNNER_TYPE_NOT_FOUND)
         }
     }
 }
