@@ -61,8 +61,8 @@ jobs:
     name: Generate Document
     runs-on: ubuntu-latest
     steps:
-      - name: Start redis container
-        uses: ./.github/actions/start-redis-container.yml
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/start-redis-container
 
       - name: Run tests and generate API Docs
         run: ./gradlew clean makeDocument

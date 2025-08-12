@@ -4,11 +4,14 @@ on:
   workflow_call:
 
 runs:
+  using: "composite"
   steps:
     - name: Start Redis container
+      shell: bash
       run: docker run -d --name redis -p 6379:6379 redis:7.2-alpine
 
     - name: Wait for Redis to be ready
+      shell: bash
       run: |
         echo "Waiting for Redis..."
         for i in {1..10}; do
