@@ -268,7 +268,7 @@ class UserGoalDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.paceGoal").description("페이스 목표 시간 밀리초 단위"),
                     fieldWithPath("result.distanceMeterGoal").description("거리 목표(m)"),
                     fieldWithPath("result.timeGoal").description("시간 목표 시간 밀리초 단위"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPORT)"),
+                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPERT)"),
                 )
 
         val restDocsFilter =
