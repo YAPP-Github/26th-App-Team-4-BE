@@ -181,7 +181,7 @@ tasks.register<Copy>("makeDocument") {
     group = "documentation"
     description = "Generate API Docs and copy to static folder."
     dependsOn("documentTest")
-    dependsOn("openapi3") // openapi3 Task가 먼저 실행되도록 설정
+    dependsOn("openapi3")
 }
 
 tasks.register<Exec>("md") {

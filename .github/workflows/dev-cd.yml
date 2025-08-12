@@ -20,25 +20,17 @@ jobs:
         run: |
           ls -Rla ./Yapp-26th-env
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/push-container
         with:
-          registry: docker.io
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/fitrun-dev:latest .
-
-      - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/fitrun-dev:latest
+          profile: dev
 
   deploy:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Run deployment script
+      - name: Copy and Run deployment script
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_HOST }}
@@ -61,8 +53,11 @@ jobs:
     name: Generate Document
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/start-redis-container
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.REPO_TOKEN }}
 
       - name: Run tests and generate API Docs
         run: ./gradlew clean makeDocument
