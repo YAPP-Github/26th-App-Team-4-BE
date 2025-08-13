@@ -18,14 +18,6 @@ x-fitrun-base: &fitrun-template
     start_period: 30s
   volumes:
     - ./logs:/app/logs
-    - /home/yapp/pinpoint-agent:/pinpoint-agent
-#  entrypoint:
-#    - java
-#    - -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
-#    - -Dpinpoint.agentId=$${HOSTNAME}
-#    - -Dpinpoint.applicationName=FITRUN-PROD
-#    - -Duser.timezone=Asia/Seoul
-#    - org.springframework.boot.loader.launch.JarLauncher
 
 services:
   fitrun-blue:
