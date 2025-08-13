@@ -1,0 +1,36 @@
+package com.yapp.yapp.record.api.response
+
+import com.yapp.yapp.common.TimeProvider
+import com.yapp.yapp.record.domain.point.RunningPoint
+import java.time.Duration
+import java.time.OffsetDateTime
+
+data class RunningPointResponse(
+    val pointId: Long,
+    val userId: Long,
+    val recordId: Long,
+    val orderNo: Long,
+    val lat: Double,
+    val lon: Double,
+    val distance: Double = 0.0,
+    val pace: Long = Duration.ZERO.toMillis(),
+    val calories: Int = 0,
+    val totalRunningTime: Long = Duration.ZERO.toMillis(),
+    val totalRunningDistance: Double = 0.0,
+    val timeStamp: OffsetDateTime = TimeProvider.now(),
+) {
+    constructor(runningPoint: RunningPoint) : this(
+        pointId = runningPoint.id,
+        userId = runningPoint.runningRecord.user.id,
+        recordId = runningPoint.runningRecord.id,
+        orderNo = runningPoint.orderNo,
+        lat = runningPoint.lat,
+        lon = runningPoint.lon,
+        distance = runningPoint.distance,
+        pace = runningPoint.pace.toMills(),
+        calories = runningPoint.calories,
+        totalRunningTime = runningPoint.totalRunningTime,
+        totalRunningDistance = runningPoint.totalRunningDistance,
+        timeStamp = runningPoint.timeStamp,
+    )
+}

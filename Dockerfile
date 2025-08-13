@@ -1,0 +1,42 @@
+FROM eclipse-temurin:17-jdk-alpine AS build
+WORKDIR /workspace/app
+
+ARG VERSION=0.0.1
+
+# Gradle 설정 및 wrapper 복사
+COPY gradlew ./
+COPY build.gradle.kts settings.gradle.kts ./
+COPY gradle ./gradle
+
+# gradlew 실행 권한 부여
+RUN chmod +x gradlew
+
+# 의존성 다운로드 (캐시용)
+RUN ./gradlew dependencies
+
+# 이후 전체 소스 복사
+COPY . .
+
+RUN ./gradlew bootJar -x test --build-cache
+RUN mkdir -p build/extracted && \
+    java -Djarmode=layertools \
+         -jar $(find build/libs -name "*.jar" | head -n 1) \
+         extract --destination build/extracted
+
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+
+VOLUME /tmp
+
+ARG EXTRACTED=/workspace/app/build/extracted
+
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends curl \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build ${EXTRACTED}/dependencies/ ./
+COPY --from=build ${EXTRACTED}/spring-boot-loader/ ./
+COPY --from=build ${EXTRACTED}/snapshot-dependencies/ ./
+COPY --from=build ${EXTRACTED}/application/ ./
+
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "org.springframework.boot.loader.launch.JarLauncher"]

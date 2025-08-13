@@ -1,0 +1,30 @@
+labels:
+  '✨feat':
+    include:
+      - '\bfeat\b'
+  '🚨bug':
+    include:
+      - '\bfix\b'
+      - '\bhotfix\b'
+  '🛠infra':
+    include:
+      - '\binfra\b'
+      - '\binfrastructure\b'
+  '⚙️cicd':
+    include:
+      - '\bci\b'
+      - '\bcicd\b'
+      - '\bcd\b'
+  '📝docs':
+    include:
+      - '\bdocs\b'
+      - '\bdoc\b'
+      - '\breadme\b'
+  '♻️refactor':
+    include:
+      - '\brefactor\b'
+  '✅test':
+    include:
+      - '\btest\b'
+      - '\btests\b'
+      - '\btesting\b'

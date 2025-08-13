@@ -1,0 +1,58 @@
+networks:
+  app-tier:
+    driver: bridge
+
+x-fitrun-base: &fitrun-template
+  networks:
+    - app-tier
+  image: asia-northeast3-docker.pkg.dev/virtual-subset-468405-g2/fitrun-prod-registry/fitrun:latest
+  environment:
+    - SPRING_PROFILES_ACTIVE=prod
+  restart: always
+  pull_policy: always
+  healthcheck:
+    test: "curl -f http://localhost:8080/check/health || exit 1"
+    interval: 1m
+    timeout: 10s
+    retries: 3
+    start_period: 30s
+  volumes:
+    - ./logs:/app/logs
+
+services:
+  fitrun-blue:
+    <<: *fitrun-template
+    container_name: fitrun-blue
+
+  fitrun-green:
+    <<: *fitrun-template
+    container_name: fitrun-green
+
+  nginx:
+    depends_on:
+      - fitrun-green
+      - fitrun-blue
+    image: nginx:1.15-alpine
+    container_name: nginx
+    networks:
+      - app-tier
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+      - /etc/localtime:/etc/localtime
+      - ./docs:/usr/share/nginx/html/docs
+    ports:
+      - "80:80"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./logs:/var/log/fitrun
+      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml -log.level=debug
+    restart: unless-stopped
+    networks:
+      - app-tier

@@ -1,0 +1,92 @@
+name: Staging CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ staging ]
+
+env:
+  REGION: asia-northeast3-docker.pkg.dev
+  IMAGE_REGISTRY: fitrun-staging-registry
+  LOKI_IP: ${{ secrets.STAG_LOKI_IP }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.REPO_TOKEN }}
+
+      - name: Debug - List submodule folder contents
+        run: |
+          ls -Rla ./Yapp-26th-env
+
+      # GCP 서비스 계정 인증
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_STAG_SA_KEY }}'
+
+      # GCP SDK 설치 및 인증 정보 설정
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # GCP Artifact Registry 인증
+      - name: Authenticate Docker with GCP Artifact Registry
+        run: gcloud auth configure-docker "${{ env.REGION }}"
+
+      - name: Set IMAGE variable
+        run: echo "IMAGE=${{ env.REGION }}/${{ secrets.GCP_STAG_PROJECT_ID }}/${{ env.IMAGE_REGISTRY }}/fitrun-staging" >> "$GITHUB_ENV"
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ env.IMAGE }}:latest .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ env.IMAGE }}:latest
+
+      - name: Replace variables using envsubst
+        run: |
+          CONFIG=./deployment/staging/data/promtail/promtail-config.yml
+          envsubst < "$CONFIG" > tmp && mv tmp $CONFIG
+
+      - name: Copy deployment files via IAP
+        run: |
+          gcloud compute scp --tunnel-through-iap \
+            --zone=${{ secrets.GCP_STAG_VM_ZONE }} \
+            --recurse ./deployment/staging/* \
+            ${{ secrets.GCP_STAG_DEPLOY_USER }}@${{ secrets.GCP_STAG_VM_NAME }}:/home/${{ secrets.GCP_STAG_DEPLOY_USER }}/
+
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # GCP 서비스 계정 인증
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_STAG_SA_KEY }}'
+
+      # GCP SDK 설치 및 인증 정보 설정
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Run deployment script via SSH
+        run: |
+          gcloud compute ssh ${{ secrets.GCP_STAG_DEPLOY_USER }}@${{ secrets.GCP_STAG_VM_NAME }} \
+            --zone=${{ secrets.GCP_STAG_VM_ZONE }} \
+            --tunnel-through-iap \
+            --command '
+              mkdir -p ~/docs/stoplight
+              mv ~/docs/build/docs/openapi3.yaml ~/docs/stoplight
+              echo "[DEPLOY] Running deploy.sh..."
+              bash ./deploy.sh
+            '
