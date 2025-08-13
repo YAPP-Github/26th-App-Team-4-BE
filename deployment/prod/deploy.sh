@@ -25,11 +25,15 @@ MAX_SCALE=1
 SLEEP_SECONDS=5
 
 DATA_PATH="data"
-NGINX_PATH="${DATA_PATH}/nginx"
-NGINX_TEMPLATE_PATH="${NGINX_PATH}/nginx-template.conf"
-NGINX_CONF_PATH="./nginx/nginx.conf"
+
+NGINX_DATA_PATH="${DATA_PATH}/nginx"
+NGINX_TEMPLATE_PATH="${NGINX_DATA_PATH}/nginx-template.conf"
+NGINX_DIR_PATH="./nginx"
+NGINX_CONF_PATH="${NGINX_DIR_PATH}/nginx.conf"
+
 SRC_PROMTAIL_PATH="${DATA_PATH}/promtail/promtail-config.yml"
-DST_PROMTAIL_PATH="./promtail/promtail-config.yml"
+PROMTAIL_DIR_PATH="./promtail"
+DST_PROMTAIL_PATH="${PROMTAIL_DIR_PATH}/promtail-config.yml"
 
 #################################################################
 # Function
@@ -156,10 +160,25 @@ prune_images() {
     docker image prune -f || true
 }
 
+init() {
+    log_info "Init Setting..."
+
+    if [ ! -d "${NGINX_DIR_PATH}" ]; then
+        log_info "Make nginx directory..."
+        mkdir -p "${NGINX_DIR_PATH}"
+    fi
+
+    if [ ! -d "${PROMTAIL_DIR_PATH}" ]; then
+        log_info "Make promtail directory..."
+        mkdir -p "${PROMTAIL_DIR_PATH}"
+    fi
+}
+
 #################################################################
 # Main
 #################################################################
 main() {
+    init
     if ! ${DOCKER_COMPOSE} ps | grep -q "${BLUE_CONTAINER}"; then
         switch_container "${BLUE_CONTAINER}" "${GREEN_CONTAINER}"
     else
