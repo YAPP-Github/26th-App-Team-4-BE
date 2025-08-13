@@ -27,7 +27,7 @@
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <fileNamePattern>${FILE_PATTERN}</fileNamePattern>
                 <maxHistory>30</maxHistory>
-                <maxFileSize>10GB</maxFileSize>
+                <maxFileSize>1024MB</maxFileSize>
             </rollingPolicy>
             <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                 <providers>
