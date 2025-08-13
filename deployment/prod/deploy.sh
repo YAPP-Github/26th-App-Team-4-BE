@@ -78,9 +78,8 @@ run_promtail() {
 
     if [[ ! -f "${DST_PROMTAIL_PATH}" ]]; then
         log_warn "Destination config not found. Copying and starting promtail..."
+        cp "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
     fi
-
-    cp  -n "${SRC_PROMTAIL_PATH}" "${DST_PROMTAIL_PATH}"
 
     ensure_run_container "${PROMTAIL_CONTAINER}"
 
