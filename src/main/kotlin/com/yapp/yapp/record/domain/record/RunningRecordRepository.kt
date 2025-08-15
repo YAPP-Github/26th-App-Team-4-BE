@@ -8,16 +8,16 @@ import org.springframework.data.repository.CrudRepository
 import java.time.OffsetDateTime
 
 interface RunningRecordRepository : CrudRepository<RunningRecord, Long> {
-    fun findByUserAndStartAtBetweenOrderByStartAtDesc(
+    fun findByUserAndIsDeletedFalseAndStartAtBetweenOrderByStartAtDesc(
         user: User,
         startDate: OffsetDateTime,
         endDate: OffsetDateTime,
         pageable: Pageable?,
     ): List<RunningRecord>
 
-    fun findFirstByUserOrderByStartAtDesc(user: User): RunningRecord?
+    fun findFirstByUserAndIsDeletedFalseOrderByStartAtDesc(user: User): RunningRecord?
 
-    fun countByUserAndStartAtBetween(
+    fun countByUserAndIsDeletedFalseAndStartAtBetween(
         user: User,
         startDate: OffsetDateTime,
         endDate: OffsetDateTime,
