@@ -1,8 +1,6 @@
 package com.yapp.yapp.running.domain.file
 
-import com.google.cloud.storage.Acl
 import com.google.cloud.storage.Blob
-import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
 import com.yapp.yapp.common.exception.CustomException
@@ -21,16 +19,17 @@ class GoogleStorageRepository(
         multipartFile: MultipartFile,
     ): File {
         try {
-            val blobInfo = BlobInfo.newBuilder(bucketName, filePath).build()
+            val blobInfo =
+                BlobInfo.newBuilder(bucketName, filePath)
+                    .setContentType(multipartFile.contentType ?: "application/octet-stream")
+                    .build()
             storage.create(blobInfo, multipartFile.bytes)
 
-            storage.createAcl(
-                BlobId.of(bucketName, filePath),
-                Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER),
-            ) // TODO 보안성 고려
+            // TODO 보안성 고려
             val publicUrl = "https://storage.googleapis.com/$bucketName/$filePath"
             return File(filePath = filePath, url = publicUrl)
         } catch (e: Exception) {
+            println(e.message)
             throw CustomException(ErrorCode.FILE_UPLOAD_FAILED)
         }
     }
