@@ -33,7 +33,34 @@ class RunningPointManger(
         timeStamp: OffsetDateTime,
         totalRunningTimeMills: Long,
     ): RunningPoint {
-        val preRunningPoint = runningPointDao.getPrePointByRunningRecord(runningRecord)
+        val preRunningPoint = getRecentRunningPoint(runningRecord)
+        val newRunningPoint =
+            createRunningPoint(
+                preRunningPoint = preRunningPoint,
+                runningRecord = runningRecord,
+                lat = lat,
+                lon = lon,
+                timeStamp = timeStamp,
+                totalRunningTimeMills = totalRunningTimeMills,
+            )
+        return runningPointDao.save(newRunningPoint)
+    }
+
+    fun saveAllRunningPoints(
+        runningRecord: RunningRecord,
+        runningPoints: List<RunningPoint>,
+    ) {
+        runningPointDao.saveAll(runningRecord = runningRecord, runningPoints = runningPoints)
+    }
+
+    fun createRunningPoint(
+        preRunningPoint: RunningPoint,
+        runningRecord: RunningRecord,
+        lat: Double,
+        lon: Double,
+        timeStamp: OffsetDateTime,
+        totalRunningTimeMills: Long,
+    ): RunningPoint {
         val newRunningPoint =
             RunningPoint(
                 runningRecord = runningRecord,
@@ -46,10 +73,14 @@ class RunningPointManger(
         newRunningPoint.distance = RunningMetricsCalculator.calculateDistance(preRunningPoint, newRunningPoint)
         newRunningPoint.totalRunningDistance = preRunningPoint.totalRunningDistance + newRunningPoint.distance
         newRunningPoint.pace = Pace(distanceMeter = newRunningPoint.totalRunningDistance, durationMills = totalRunningTimeMills)
-        return runningPointDao.save(newRunningPoint)
+        return newRunningPoint
     }
 
     fun getRunningPoints(runningRecord: RunningRecord): List<RunningPoint> {
         return runningPointDao.getAllPointByRunningRecord(runningRecord)
+    }
+
+    fun getRecentRunningPoint(runningRecord: RunningRecord): RunningPoint {
+        return runningPointDao.getPrePointByRunningRecord(runningRecord)
     }
 }

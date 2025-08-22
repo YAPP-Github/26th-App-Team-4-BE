@@ -42,7 +42,7 @@ class RunningController(
         @RequestBody request: RunningDoneRequest,
     ): ApiResponse<RunningRecordResponse> {
         val recordResponse =
-            runningService.done(
+            runningService.doneBatch(
                 userId = userId,
                 recordId = recordId,
                 request = request,

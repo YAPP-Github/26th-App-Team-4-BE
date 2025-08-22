@@ -8,7 +8,6 @@ import com.yapp.yapp.common.exception.ErrorCode
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.util.concurrent.TimeUnit
 
 @Component
 class GoogleStorageRepository(
@@ -20,18 +19,17 @@ class GoogleStorageRepository(
         multipartFile: MultipartFile,
     ): File {
         try {
-            val blobInfo = BlobInfo.newBuilder(bucketName, filePath).build()
+            val blobInfo =
+                BlobInfo.newBuilder(bucketName, filePath)
+                    .setContentType(multipartFile.contentType ?: "application/octet-stream")
+                    .build()
             storage.create(blobInfo, multipartFile.bytes)
 
-            val url =
-                storage.signUrl(
-                    blobInfo,
-                    15, // 만료 시간
-                    TimeUnit.MINUTES,
-                    Storage.SignUrlOption.withV4Signature(),
-                )
-            return File(filePath = filePath, url = url.toString())
+            // TODO 보안성 고려
+            val publicUrl = "https://storage.googleapis.com/$bucketName/$filePath"
+            return File(filePath = filePath, url = publicUrl)
         } catch (e: Exception) {
+            println(e.message)
             throw CustomException(ErrorCode.FILE_UPLOAD_FAILED)
         }
     }
