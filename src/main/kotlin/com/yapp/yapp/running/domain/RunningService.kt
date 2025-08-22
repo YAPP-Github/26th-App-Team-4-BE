@@ -57,6 +57,7 @@ class RunningService(
         if (request.runningPoints.isEmpty()) {
             throw CustomException(ErrorCode.POINT_NOT_FOUND)
         }
+
         val runningPoints =
             request.runningPoints.map {
                 runningPointManger.saveNewRunningPoint(
@@ -67,6 +68,46 @@ class RunningService(
                     timeStamp = TimeProvider.parse(it.timeStamp),
                 )
             }
+
+        if (userGoalManager.hasUserGoal(user)) {
+            recordGoalArchiveManager.update(runningRecord, userGoal = userGoalManager.getUserGoal(user))
+        }
+        runningRecordManager.updateRecord(runningRecord)
+
+        return RunningRecordResponse(
+            runningRecord = runningRecord,
+            runningPoints = runningPoints,
+            runningRecordGoalAchieve = recordGoalArchiveManager.getByRecord(runningRecord),
+        )
+    }
+
+    @Transactional
+    fun doneBatch(
+        userId: Long,
+        recordId: Long,
+        request: RunningDoneRequest,
+    ): RunningRecordResponse {
+        val user = userManager.getActiveUser(userId)
+        val runningRecord = runningRecordManager.getRunningRecord(id = recordId, user = user)
+        if (request.runningPoints.isEmpty()) {
+            throw CustomException(ErrorCode.POINT_NOT_FOUND)
+        }
+
+        var preRunningPoint = runningPointManger.getRecentRunningPoint(runningRecord)
+        val runningPoints =
+            request.runningPoints.map {
+                preRunningPoint =
+                    runningPointManger.createRunningPoint(
+                        preRunningPoint = preRunningPoint,
+                        runningRecord = runningRecord,
+                        lat = it.lat,
+                        lon = it.lon,
+                        totalRunningTimeMills = it.totalRunningTimeMills,
+                        timeStamp = TimeProvider.parse(it.timeStamp),
+                    )
+                preRunningPoint
+            }
+        runningPointManger.saveAllRunningPoints(runningRecord, runningPoints)
 
         if (userGoalManager.hasUserGoal(user)) {
             recordGoalArchiveManager.update(runningRecord, userGoal = userGoalManager.getUserGoal(user))
