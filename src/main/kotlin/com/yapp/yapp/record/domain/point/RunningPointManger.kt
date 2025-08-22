@@ -35,7 +35,7 @@ class RunningPointManger(
     ): RunningPoint {
         val preRunningPoint = getRecentRunningPoint(runningRecord)
         val newRunningPoint =
-            createNewRunningPoint(
+            createRunningPoint(
                 preRunningPoint = preRunningPoint,
                 runningRecord = runningRecord,
                 lat = lat,
@@ -53,7 +53,7 @@ class RunningPointManger(
         runningPointDao.saveAll(runningRecord = runningRecord, runningPoints = runningPoints)
     }
 
-    fun createNewRunningPoint(
+    fun createRunningPoint(
         preRunningPoint: RunningPoint,
         runningRecord: RunningRecord,
         lat: Double,

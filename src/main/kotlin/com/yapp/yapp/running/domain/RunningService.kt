@@ -97,7 +97,7 @@ class RunningService(
         val runningPoints =
             request.runningPoints.map {
                 preRunningPoint =
-                    runningPointManger.createNewRunningPoint(
+                    runningPointManger.createRunningPoint(
                         preRunningPoint = preRunningPoint,
                         runningRecord = runningRecord,
                         lat = it.lat,
