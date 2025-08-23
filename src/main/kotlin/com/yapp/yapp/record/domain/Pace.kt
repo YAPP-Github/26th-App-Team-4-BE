@@ -52,4 +52,17 @@ class Pace(
     fun toMills(): Long {
         return millsPerKm
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Pace
+
+        return millsPerKm == other.millsPerKm
+    }
+
+    override fun hashCode(): Int {
+        return millsPerKm.hashCode()
+    }
 }
