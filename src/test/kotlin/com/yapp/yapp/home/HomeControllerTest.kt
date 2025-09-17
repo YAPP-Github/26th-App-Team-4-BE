@@ -10,7 +10,7 @@ import org.springframework.http.MediaType
 
 class HomeControllerTest : BaseControllerTest() {
     @Test
-    fun `러닝 목표가 없는 유저의 목표는 null이다 `() {
+    fun `러닝 목표가 없는 유저의 홈 화면에서 목표는 null이다 `() {
         // given
         val email = "test@test.com"
         val user = userFixture.create(email)
