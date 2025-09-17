@@ -14,10 +14,10 @@ class UserGoalFixture(
 ) {
     fun create(
         user: User,
-        distanceMeterGoal: Double = 5000.0,
-        timeGoal: Long = TimeProvider.toMills(minute = 40, second = 30),
-        weeklyRunCount: Int = 3,
-        paceGoal: Pace = Pace(distanceMeter = 5000.0, durationMills = TimeProvider.toMills(minute = 40, second = 30)),
+        distanceMeterGoal: Double? = 5000.0,
+        timeGoal: Long? = TimeProvider.toMills(minute = 40, second = 30),
+        weeklyRunCount: Int? = 3,
+        paceGoal: Pace? = Pace(distanceMeter = 5000.0, durationMills = TimeProvider.toMills(minute = 40, second = 30)),
         runningPurpose: RunningPurposeAnswerLabel = RunningPurposeAnswerLabel.WEIGHT_LOSS_PURPOSE,
     ): UserGoal {
         return userGoalRepository.save(

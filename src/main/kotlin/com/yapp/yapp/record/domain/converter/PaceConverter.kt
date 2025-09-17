@@ -11,6 +11,9 @@ class PaceConverter : AttributeConverter<Pace, Long> {
     }
 
     override fun convertToEntityAttribute(dbData: Long?): Pace? {
-        return Pace(dbData ?: 0L)
+        if (dbData == null) {
+            return null
+        }
+        return Pace(dbData)
     }
 }

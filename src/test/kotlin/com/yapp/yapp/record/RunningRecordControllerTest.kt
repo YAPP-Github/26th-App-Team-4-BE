@@ -7,7 +7,6 @@ import com.yapp.yapp.record.api.response.RunningRecordListResponse
 import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.running.domain.RunningService
 import com.yapp.yapp.support.BaseControllerTest
-import com.yapp.yapp.support.fixture.RequestFixture
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -145,14 +144,7 @@ class RunningRecordControllerTest : BaseControllerTest() {
     @Test
     fun `목표가 없는 사용자가 러닝 기록 리스트를 조회한다`() {
         // given
-        val user = userFixture.create()
-        val startResponse = runningService.start(userId = user.id, request = RequestFixture.runningStartRequest())
-        val recordId = startResponse.recordId
-        runningService.done(
-            userId = user.id,
-            recordId = recordId,
-            request = RequestFixture.runningDoneRequest(),
-        )
+        val user = userFixture.createWithPurposeGoal()
 
         // when
         // then
