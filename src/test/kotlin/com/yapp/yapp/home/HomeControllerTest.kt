@@ -1,8 +1,6 @@
 package com.yapp.yapp.home
 
 import com.yapp.yapp.support.BaseControllerTest
-import com.yapp.yapp.user.api.request.RunningPurposeRequest
-import com.yapp.yapp.user.domain.goal.RunningPurposeAnswerLabel
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
@@ -13,22 +11,12 @@ class HomeControllerTest : BaseControllerTest() {
     fun `러닝 목표가 없는 유저의 홈 화면에서 목표는 null이다 `() {
         // given
         val email = "test@test.com"
-        val user = userFixture.create(email)
-        val accessToken = getAccessToken(user.email)
-
-        val request = RunningPurposeRequest(RunningPurposeAnswerLabel.COMPETITION_PREPARATION)
-        RestAssured.given().log().all()
-            .header(HttpHeaders.AUTHORIZATION, accessToken)
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
-            .`when`().post("/api/v1/users/goals/purpose")
-            .then().log().all()
-            .statusCode(201)
+        val user = userFixture.createWithPurposeGoal(email)
 
         // when
         // then
         RestAssured.given().log().all()
-            .header(HttpHeaders.AUTHORIZATION, accessToken)
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .`when`().get("/api/v1/home")
             .then().log().all()
