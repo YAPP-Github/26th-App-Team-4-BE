@@ -48,6 +48,24 @@ class UserFixture(
         return user
     }
 
+    fun createWithPurposeGoal(
+        email: String = "test email",
+        provider: ProviderType = ProviderType.APPLE,
+        runnerType: RunnerType = RunnerType.BEGINNER,
+    ): User {
+        val user =
+            userRepository.save(
+                User(
+                    nickname = NicknameGenerator.generate(email),
+                    email = email,
+                    provider = provider,
+                    runnerType = runnerType,
+                ),
+            )
+        userGoalFixture.create(user = user, distanceMeterGoal = null, timeGoal = null, weeklyRunCount = null, paceGoal = null)
+        return user
+    }
+
     fun createWithdrawUser(
         user: User,
         reason: String? = null,

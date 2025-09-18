@@ -5,14 +5,12 @@ import com.yapp.yapp.record.domain.RecordsSearchType
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.user.domain.UserManager
 import com.yapp.yapp.user.domain.goal.UserGoalManager
-import com.yapp.yapp.user.domain.onboarding.OnboardingManager
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 
 @Service
 class HomeService(
     private val userManager: UserManager,
-    private val onboardingManager: OnboardingManager,
     private val recordManager: RunningRecordManager,
     private val userGoalManager: UserGoalManager,
 ) {

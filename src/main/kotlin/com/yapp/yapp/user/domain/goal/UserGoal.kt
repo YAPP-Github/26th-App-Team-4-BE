@@ -65,4 +65,12 @@ class UserGoal(
         if (this.paceGoal == null) return false
         return runningRecord.averagePace.toMills() <= this.paceGoal?.millsPerKm as Long
     }
+
+    fun hasTimeGoal(): Boolean {
+        return this.timeGoal != null
+    }
+
+    fun hasDistanceGoal(): Boolean {
+        return this.distanceMeterGoal != null
+    }
 }

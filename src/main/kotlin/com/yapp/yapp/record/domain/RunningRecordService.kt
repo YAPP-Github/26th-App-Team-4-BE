@@ -6,6 +6,7 @@ import com.yapp.yapp.record.domain.point.RunningPointManger
 import com.yapp.yapp.record.domain.record.RunningRecordManager
 import com.yapp.yapp.record.domain.record.goal.RunningRecordGoalAchieveManager
 import com.yapp.yapp.user.domain.UserManager
+import com.yapp.yapp.user.domain.goal.UserGoalManager
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,6 +17,7 @@ class RunningRecordService(
     private val recordManager: RunningRecordManager,
     private val pointManager: RunningPointManger,
     private val userManager: UserManager,
+    private val userGoalManager: UserGoalManager,
     private val recordGoalAchieveManager: RunningRecordGoalAchieveManager,
 ) {
     fun getRecord(
@@ -55,6 +57,7 @@ class RunningRecordService(
         return RunningRecordListResponse(
             userId = user.id,
             records = runningRecordResponse,
+            userGoal = userGoalManager.getUserGoal(user),
         )
     }
 
