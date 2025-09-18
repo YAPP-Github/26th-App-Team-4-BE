@@ -10,4 +10,6 @@ interface AudioRepository {
     fun getTimeGoalAudio(type: TimeAudioType): AudioResource
 
     fun getPaceGoalAudio(type: PaceAudioType): AudioResource
+
+    fun getRunningStartBeeps(): AudioResource
 }

@@ -25,4 +25,8 @@ class AudioDao(
     fun getPaceGoalAudio(type: PaceAudioType): AudioResource {
         return audioRepository.getPaceGoalAudio(type)
     }
+
+    fun getRunningStartBeeps(): AudioResource {
+        return audioRepository.getRunningStartBeeps()
+    }
 }
