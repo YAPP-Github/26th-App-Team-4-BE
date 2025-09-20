@@ -36,6 +36,13 @@ class AudioController(
     }
 
     @Authenticated
+    @GetMapping("/running-start-beeps")
+    fun getStartBeepsAudio(): ResponseEntity<Resource> {
+        val audioResource = audioService.getRunningStartBeeps()
+        return AudioServletHandler.handleAudioResource(audioResource)
+    }
+
+    @Authenticated
     @GetMapping("/running-info")
     fun getRunningInfoAudio(
         @RequestParam paceMills: Long,

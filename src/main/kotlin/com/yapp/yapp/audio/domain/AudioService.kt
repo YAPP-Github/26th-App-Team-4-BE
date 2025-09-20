@@ -31,4 +31,8 @@ class AudioService(
         val audioText = audioManager.getPaceAudioText(paceMills)
         return ttsManager.synthesize(audioText)
     }
+
+    fun getRunningStartBeeps(): AudioResource {
+        return audioManager.getRunningStartBeeps()
+    }
 }

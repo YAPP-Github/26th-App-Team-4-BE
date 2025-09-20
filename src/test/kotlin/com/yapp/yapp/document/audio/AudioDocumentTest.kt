@@ -13,6 +13,35 @@ import org.springframework.restdocs.request.RequestDocumentation.parameterWithNa
 
 class AudioDocumentTest : BaseDocumentTest() {
     @Test
+    fun `오디오 러닝 시작 API`() {
+        // given
+        val restDocsRequest =
+            request()
+                .requestHeader(
+                    headerWithName("Authorization").description("엑세스 토큰(Bearer)"),
+                )
+
+        val filter =
+            filter("audio", "start-beeps")
+                .tag(Tag.AUDIO_API)
+                .summary("오디오 러닝 시작 API")
+                .description(
+                    "러닝 시작 효과음 API입니다.<br>" +
+                        "Content-Type: audio/wav;charset=UTF-8 입니다.",
+                )
+                .request(restDocsRequest)
+                .build()
+
+        // when & then
+        RestAssured.given(spec).log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken())
+            .filter(filter)
+            .`when`().get("/api/v1/audios/running-start-beeps")
+            .then().log().all()
+            .statusCode(200)
+    }
+
+    @Test
     fun `오디오 코치용 API`() {
         // given
         val restDocsRequest =

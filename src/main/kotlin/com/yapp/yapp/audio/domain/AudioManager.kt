@@ -31,4 +31,8 @@ class AudioManager(
         val pace = Pace(paceMills)
         return "현재 페이스는 ${pace.toAudioText()}입니다."
     }
+
+    fun getRunningStartBeeps(): AudioResource {
+        return audioDao.getRunningStartBeeps()
+    }
 }

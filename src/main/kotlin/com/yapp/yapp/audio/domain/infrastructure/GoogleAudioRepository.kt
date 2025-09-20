@@ -21,6 +21,7 @@ class GoogleAudioRepository(
     @Value("\${gcp.bucket}") private val bucketName: String,
 ) : AudioRepository {
     companion object {
+        private val START_BEEPS = "running/start-beeps.wav"
         private val COACH_AUDIO_PATHS =
             listOf(
                 "coach/coach-01.wav",
@@ -140,6 +141,10 @@ class GoogleAudioRepository(
             PACE_AUDIO_PATH_MAP[type]?.random()
                 ?: throw CustomException(ErrorCode.INVALID_PACE_AUDIO_TYPE)
         return getAudioResource(filePath)
+    }
+
+    override fun getRunningStartBeeps(): AudioResource {
+        return getAudioResource(START_BEEPS)
     }
 
     private fun getAudioResource(filePath: String): AudioResource {
