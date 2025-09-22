@@ -51,6 +51,9 @@ class RunningRecord(
     var isDeleted: Boolean = false,
 ) {
     companion object {
+        private const val MIN_VALID_DISTANCE = 500.0
+        private val MIN_VALID_TIME_MILLIS = TimeProvider.minuteToMills(1)
+
         private fun generateDefaultTitle(startAt: OffsetDateTime): String {
             val seoulTime = startAt.atZoneSameInstant(java.time.ZoneId.of("Asia/Seoul"))
             val month = seoulTime.monthValue
@@ -122,8 +125,9 @@ class RunningRecord(
     }
 
     fun isValidRecord(): Boolean {
-        return totalTime >= TimeProvider.minuteToMills(1) &&
-            totalDistance >= 500.0 &&
+        return recordStatus == RecordStatus.DONE &&
+            totalTime >= MIN_VALID_TIME_MILLIS &&
+            totalDistance >= MIN_VALID_DISTANCE &&
             !isDeleted
     }
 }
