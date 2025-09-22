@@ -12,7 +12,6 @@ import com.yapp.yapp.user.api.request.RemindAlertUpdateRequest
 import com.yapp.yapp.user.api.request.RunningPurposeRequest
 import com.yapp.yapp.user.api.request.SettingUpdateRequest
 import com.yapp.yapp.user.api.request.TimeGoalRequest
-import com.yapp.yapp.user.api.request.UpdateRunnerTypeRequest
 import com.yapp.yapp.user.api.request.WeeklyRunCountGoalRequest
 import com.yapp.yapp.user.api.request.WithdrawRequest
 import com.yapp.yapp.user.api.response.AlertSettingResponse
@@ -20,7 +19,6 @@ import com.yapp.yapp.user.api.response.AnswerResponse
 import com.yapp.yapp.user.api.response.AudioCoachingUpdateResponse
 import com.yapp.yapp.user.api.response.AudioFeedbackUpdateResponse
 import com.yapp.yapp.user.api.response.RemindAlertUpdateResponse
-import com.yapp.yapp.user.api.response.RunnerTypeResponse
 import com.yapp.yapp.user.api.response.RunningSettingResponse
 import com.yapp.yapp.user.api.response.SettingUpdateResponse
 import com.yapp.yapp.user.api.response.UserAndGoalResponse
@@ -90,13 +88,6 @@ class UserService(
         val user = userManager.getActiveUser(userId)
         val userGoal = userGoalManager.getUserGoal(user)
         return UserGoalResponse(userGoal)
-    }
-
-    @Transactional(readOnly = true)
-    fun getRunnerType(userId: Long): RunnerTypeResponse {
-        val user = userManager.getActiveUser(userId)
-        val runnerType = user.getRunnerTypeOrThrow()
-        return RunnerTypeResponse(userId = user.id, runnerType = runnerType)
     }
 
     @Transactional(readOnly = true)
@@ -186,20 +177,6 @@ class UserService(
             is TimeGoalRequest -> userGoalManager.saveTimeGoal(user, request.time)
             is RunningPurposeRequest -> userGoalManager.saveRunningPurpose(user, request.runningPurpose)
         }
-    }
-
-    @Transactional
-    fun updateRunnerType(
-        userId: Long,
-        request: UpdateRunnerTypeRequest,
-    ): RunnerTypeResponse {
-        val user = userManager.getActiveUser(userId)
-        val runnerType = RunnerType.getByName(request.runnerType)
-        user.updateRunnerType(runnerType)
-        return RunnerTypeResponse(
-            userId = user.id,
-            runnerType = runnerType,
-        )
     }
 
     @Transactional

@@ -1,6 +1,5 @@
 package com.yapp.yapp.user.api.response
 
-import com.yapp.yapp.user.domain.RunnerType
 import com.yapp.yapp.user.domain.goal.UserGoal
 
 data class UserGoalResponse(
@@ -11,7 +10,6 @@ data class UserGoalResponse(
     val paceGoal: Long? = null,
     val distanceMeterGoal: Double? = null,
     val timeGoal: Long? = null,
-    val runnerType: RunnerType? = null,
 ) {
     constructor(userGoal: UserGoal) : this(
         goalId = userGoal.id,
@@ -21,6 +19,5 @@ data class UserGoalResponse(
         paceGoal = userGoal.paceGoal?.toMills(),
         distanceMeterGoal = userGoal.distanceMeterGoal,
         timeGoal = userGoal.timeGoal,
-        runnerType = userGoal.user.runnerType,
     )
 }

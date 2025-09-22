@@ -4,14 +4,11 @@ import com.yapp.yapp.document.Tag
 import com.yapp.yapp.document.support.BaseDocumentTest
 import com.yapp.yapp.support.fixture.RequestFixture
 import com.yapp.yapp.user.api.request.OnboardingAnswerDto
-import com.yapp.yapp.user.api.request.UpdateRunnerTypeRequest
-import com.yapp.yapp.user.domain.RunnerType
 import com.yapp.yapp.user.domain.onboarding.OnboardingAnswerLabel
 import com.yapp.yapp.user.domain.onboarding.OnboardingQuestionType
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.restdocs.headers.HeaderDocumentation.headerWithName
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -33,13 +30,6 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.user.email").description("사용자 이메일"),
                     fieldWithPath("result.user.nickname").description("사용자 닉네임"),
                     fieldWithPath("result.user.provider").description("소셜 로그인 유형 (카카오: KAKAO, 애플: APPLE )"),
-                    fieldWithPath("result.user.runnerType").description(
-                        "사용자 러너 유형 (" +
-                            "초보: BEGINNER, " +
-                            "중급: INTERMEDIATE, " +
-                            "전문가: EXPERT )",
-                    ).type(JsonFieldType.STRING)
-                        .optional(),
                     fieldWithPath("result.goal").description("사용자의 목표 정보 (없을 경우 null)").optional(),
                     fieldWithPath("result.goal.goalId").description("목표 ID").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.userId").description("사용자 ID").type(JsonFieldType.NUMBER).optional(),
@@ -54,7 +44,6 @@ class UserDocumentTest : BaseDocumentTest() {
                     fieldWithPath("result.goal.paceGoal").description("페이스 목표 시간 밀리초 단위").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.distanceMeterGoal").description("거리 목표(m)").type(JsonFieldType.NUMBER).optional(),
                     fieldWithPath("result.goal.timeGoal").description("시간 목표 시간 밀리초 단위").type(JsonFieldType.NUMBER).optional(),
-                    fieldWithPath("result.goal.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPERT)"),
                 )
 
         val restDocsFilter =
@@ -268,94 +257,6 @@ class UserDocumentTest : BaseDocumentTest() {
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
             .header("Authorization", accessToken)
             .`when`().patch("/api/v1/users/onboarding")
-            .then()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `러너 타입 조회 API`() {
-        // given
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPERT)"),
-                )
-
-        val restDocsFilter =
-            filter("user", "runner-type-search")
-                .tag(Tag.USER_API)
-                .summary("러너 타입 조회 API")
-                .description("사용자의 러너 타입을 조회합니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-
-        val accessToken = getAccessToken()
-        val saveRequest = RequestFixture.onboardingRequest()
-        RestAssured.given()
-            .body(saveRequest)
-            .header(HttpHeaders.CONTENT_TYPE, "application/json")
-            .header("Authorization", accessToken)
-            .`when`().post("/api/v1/users/onboarding")
-            .then()
-            .statusCode(201)
-
-        // when
-        // then
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header("Authorization", accessToken)
-            .`when`().get("/api/v1/users/type")
-            .then()
-            .statusCode(200)
-    }
-
-    @Test
-    fun `러너 타입 수정 API`() {
-        // given
-        val restDocsRequest =
-            request()
-                .requestHeader(
-                    headerWithName("Authorization").description("엑세스 토큰 (Bearer)"),
-                )
-                .requestBodyField(
-                    fieldWithPath("runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPERT)"),
-                )
-
-        val restDocsResponse =
-            response()
-                .responseBodyFieldWithResult(
-                    fieldWithPath("result.userId").description("사용자 ID"),
-                    fieldWithPath("result.runnerType").description("러너 타입(초보: BEGINNER, 중급: INTERMEDIATE, 전문가: EXPERT)"),
-                )
-
-        val restDocsFilter =
-            filter("user", "runner-type-update")
-                .tag(Tag.USER_API)
-                .summary("러너 타입 수정 API")
-                .description("사용자의 러너 타입을 수정합니다.")
-                .request(restDocsRequest)
-                .response(restDocsResponse)
-                .build()
-
-        val accessToken = getAccessToken()
-        val request = UpdateRunnerTypeRequest(runnerType = RunnerType.BEGINNER.name)
-
-        // when
-        // then
-        RestAssured.given(spec)
-            .filter(restDocsFilter)
-            .header("Authorization", accessToken)
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(request)
-            .`when`().put("/api/v1/users/type")
             .then()
             .statusCode(200)
     }
