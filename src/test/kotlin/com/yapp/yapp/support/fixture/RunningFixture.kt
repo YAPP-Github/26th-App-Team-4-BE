@@ -94,6 +94,93 @@ class RunningFixture(
         return runningRecordRepository.save(runningRecord)
     }
 
+    fun createRunningRecord(
+        user: User,
+        duration: Duration,
+        startAt: OffsetDateTime = TimeProvider.parse("2025-06-17T17:00:00.000+09:00"),
+    ): RunningRecord {
+        // 방어 로직
+        val totalSeconds = duration.seconds.coerceAtLeast(0L)
+
+        // 1) 러닝 레코드 저장
+        val runningRecord =
+            runningRecordRepository.save(
+                RunningRecord(
+                    user = user,
+                    startAt = startAt,
+                ),
+            )
+        runningRecordGoalAchieveRepository.save(RunningRecordGoalAchieve(runningRecord = runningRecord))
+
+        // 계산 보조 값
+        val caloriesPerSecond = 0.22
+        val heartRateStart = 140.0
+        val heartRateEnd = 160.0
+        val heartRateRange = heartRateEnd - heartRateStart
+
+        val startLat = 37.5665
+        val startLon = 126.9780
+
+        // 1초 이동 기준 거리(고정) 계산
+        val perDistance =
+            RunningMetricsCalculator.calculateDistance(
+                startLat,
+                startLon,
+                startLat + 0.00001,
+                startLon + 0.00001,
+            )
+
+        // 2) 1초 단위 러닝 포인트 생성 및 저장
+        //   0초 포함: (0..totalSeconds) → 총 (totalSeconds + 1)개 포인트
+        for (curSecond in 0..totalSeconds.toInt()) {
+            val elapsed = TimeProvider.toMills(second = curSecond)
+            val caloriesSoFar = (caloriesPerSecond * curSecond).toInt()
+
+            // totalSeconds == 0 방어 (분모 0 회피)
+            val heartRate =
+                if (totalSeconds == 0L) {
+                    heartRateStart.toInt()
+                } else {
+                    (heartRateStart + (heartRateRange * curSecond) / totalSeconds).toInt()
+                }
+
+            val toLat = startLat + 0.00001 * curSecond
+            val toLon = startLon + 0.00001 * curSecond
+
+            val totalDistance =
+                RunningMetricsCalculator.calculateDistance(
+                    fromLat = startLat,
+                    fromLon = startLon,
+                    toLat = toLat,
+                    toLon = toLon,
+                )
+
+            val runningPoint =
+                RunningPoint(
+                    runningRecord = runningRecord,
+                    orderNo = curSecond.toLong(),
+                    lat = toLat,
+                    lon = toLon,
+                    distance = if (curSecond == 0) 0.0 else perDistance, // 구간 거리
+                    pace =
+                        Pace(
+                            distanceMeter = totalDistance,
+                            duration = Duration.ofSeconds(curSecond.toLong()),
+                        ),
+                    calories = caloriesSoFar,
+                    totalRunningTime = elapsed,
+                    totalRunningDistance = totalDistance,
+                    timeStamp = startAt.plusSeconds(curSecond.toLong()),
+                )
+            runningPointRepository.save(runningPoint)
+        }
+
+        val savedRunningPoints =
+            runningPointRepository.findAllByRunningRecordAndIsDeletedFalseOrderByOrderNoAsc(runningRecord)
+        runningRecord.updateInfoByRunningPoints(savedRunningPoints)
+        return runningRecordRepository.save(runningRecord)
+    }
+
     fun multipartFile(): MultipartFile = MockMultipartFile("test", null)
 
     fun file(): File = File("src/test/resources/image/running-record.png")

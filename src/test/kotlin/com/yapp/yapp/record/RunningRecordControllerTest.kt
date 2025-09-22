@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import java.time.DayOfWeek
+import java.time.Duration
 
 class RunningRecordControllerTest : BaseControllerTest() {
     @Autowired
@@ -190,5 +191,22 @@ class RunningRecordControllerTest : BaseControllerTest() {
 
         // then
         Assertions.assertThat(response.records.size).isEqualTo(expectedSize)
+    }
+
+    @Test
+    fun `러닝 기록이 없는 경우 목표를 달성하지 못한것으로 조회된다`() {
+        // given
+        val user = userFixture.createWithPurposeGoal()
+        val runningRecord = runningFixture.createRunningRecord(user, Duration.ofSeconds(3))
+
+        // when
+        // then
+        RestAssured.given().log().all()
+            .header(HttpHeaders.AUTHORIZATION, getAccessToken(user.email))
+            .`when`()
+            .pathParam("id", runningRecord.id)
+            .get("/api/v1/records/{id}")
+            .then().log().all()
+            .statusCode(200)
     }
 }
