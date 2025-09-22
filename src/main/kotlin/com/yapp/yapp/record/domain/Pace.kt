@@ -30,6 +30,18 @@ class Pace(
 
             return (durationMills / distanceKm).toLong()
         }
+
+        fun createBeginnerPace(): Pace {
+            return Pace(distanceMeter = 1000.0, duration = Duration.ofMinutes(8))
+        }
+
+        fun createIntermediatePace(): Pace {
+            return Pace(distanceMeter = 1000.0, duration = Duration.ofSeconds(6 * 60 + 30))
+        }
+
+        fun createExpertPace(): Pace {
+            return Pace(distanceMeter = 1000.0, duration = Duration.ofSeconds(5 * 60))
+        }
     }
     constructor() : this(0L)
 

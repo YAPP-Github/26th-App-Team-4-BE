@@ -37,12 +37,10 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.user.email).isEqualTo(email) },
             { Assertions.assertThat(response.user.nickname).isNotNull() },
             { Assertions.assertThat(response.user.provider).isNotNull() },
-            { Assertions.assertThat(response.user.runnerType).isNotNull() },
             { Assertions.assertThat(response.goal!!.userId).isNotNull() },
             { Assertions.assertThat(response.goal!!.goalId).isEqualTo(userGoal.id) },
             { Assertions.assertThat(response.goal!!.paceGoal).isNotNull() },
             { Assertions.assertThat(response.goal!!.timeGoal).isNotNull() },
-            { Assertions.assertThat(response.goal!!.runningPurpose).isNotNull() },
             { Assertions.assertThat(response.goal!!.distanceMeterGoal).isNotNull() },
             { Assertions.assertThat(response.goal!!.weeklyRunningCount).isNotNull() },
         )
@@ -73,7 +71,6 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.user.email).isEqualTo(email) },
             { Assertions.assertThat(response.user.nickname).isNotNull() },
             { Assertions.assertThat(response.user.provider).isNotNull() },
-            { Assertions.assertThat(response.user.runnerType).isNotNull() },
             { Assertions.assertThat(response.goal).isNull() },
         )
     }

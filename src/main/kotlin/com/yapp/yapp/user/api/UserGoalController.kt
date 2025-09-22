@@ -77,18 +77,6 @@ class UserGoalController(
         )
     }
 
-    @PostMapping("/purpose")
-    @ResponseStatus(HttpStatus.CREATED)
-    fun saveRunningGoal(
-        @CurrentUser id: Long,
-        @RequestBody request: RunningPurposeRequest,
-    ): ApiResponse<PurposeGoalResponse> {
-        val userGoal = UserGoalResponse(userService.upsertGoal(userId = id, request = request))
-        return ApiResponse.success(
-            PurposeGoalResponse(userGoal),
-        )
-    }
-
     @GetMapping
     fun getGoals(
         @CurrentUser id: Long,
