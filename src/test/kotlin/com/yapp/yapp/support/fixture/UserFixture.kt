@@ -26,14 +26,12 @@ class UserFixture(
                 nickname = NicknameGenerator.generate(email),
                 email = email,
                 provider = provider,
-                runnerType = runnerType,
             ),
         )
 
     fun createWithGoal(
         email: String = "test email",
         provider: ProviderType = ProviderType.APPLE,
-        runnerType: RunnerType = RunnerType.BEGINNER,
     ): User {
         val user =
             userRepository.save(
@@ -41,7 +39,6 @@ class UserFixture(
                     nickname = NicknameGenerator.generate(email),
                     email = email,
                     provider = provider,
-                    runnerType = runnerType,
                 ),
             )
         userGoalFixture.create(user)
@@ -51,7 +48,6 @@ class UserFixture(
     fun createWithPurposeGoal(
         email: String = "test email",
         provider: ProviderType = ProviderType.APPLE,
-        runnerType: RunnerType = RunnerType.BEGINNER,
     ): User {
         val user =
             userRepository.save(
@@ -59,7 +55,6 @@ class UserFixture(
                     nickname = NicknameGenerator.generate(email),
                     email = email,
                     provider = provider,
-                    runnerType = runnerType,
                 ),
             )
         userGoalFixture.create(user = user, distanceMeterGoal = null, timeGoal = null, weeklyRunCount = null, paceGoal = null)

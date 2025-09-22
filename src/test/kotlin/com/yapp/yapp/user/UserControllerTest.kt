@@ -41,7 +41,6 @@ class UserControllerTest : BaseControllerTest() {
             { Assertions.assertThat(response.goal!!.goalId).isEqualTo(userGoal.id) },
             { Assertions.assertThat(response.goal!!.paceGoal).isNotNull() },
             { Assertions.assertThat(response.goal!!.timeGoal).isNotNull() },
-            { Assertions.assertThat(response.goal!!.runningPurpose).isNotNull() },
             { Assertions.assertThat(response.goal!!.distanceMeterGoal).isNotNull() },
             { Assertions.assertThat(response.goal!!.weeklyRunningCount).isNotNull() },
         )

@@ -120,4 +120,10 @@ class RunningRecord(
     fun delete() {
         this.isDeleted = true
     }
+
+    fun isValidRecord(): Boolean {
+        return totalTime >= TimeProvider.minuteToMills(1) &&
+            totalDistance >= 500.0 &&
+            !isDeleted
+    }
 }

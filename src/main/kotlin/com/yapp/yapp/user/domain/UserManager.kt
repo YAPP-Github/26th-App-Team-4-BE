@@ -19,7 +19,6 @@ class UserManager(
             email = user.email,
             nickname = user.nickname,
             provider = user.provider,
-            runnerType = user.runnerType,
             isNew = true,
         )
     }
@@ -52,12 +51,5 @@ class UserManager(
 
     fun getActiveUser(id: Long): User {
         return userDao.getByIdAndIsDeletedFalse(id)
-    }
-
-    fun updateRunnerType(
-        user: User,
-        runnerType: RunnerType,
-    ) {
-        user.updateRunnerType(runnerType)
     }
 }
